@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/screens/home.dart';
 import 'package:living_way/themes/dark_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:provider/provider.dart';
 
 class LivingWayApp extends StatelessWidget {
   const LivingWayApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Living Way',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        home: const HomeScreen());
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<LayoutController>(create: (_) => LayoutController()),
+      ],
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Living Way',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          home: const HomeScreen())
+    );
   }
 }

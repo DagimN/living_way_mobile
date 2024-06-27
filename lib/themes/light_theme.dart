@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 //? Colors
 const lightPrimaryColor = Color(0xFF4F398A);
+const lightInactiveColor = Color(0xFF343635);
 
 //? Gradients
 const lightBackgroundGradient = LinearGradient(
