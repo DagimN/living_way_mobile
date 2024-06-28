@@ -9,6 +9,14 @@ const lightBackgroundGradient = LinearGradient(
     begin: Alignment.topCenter,
     end: Alignment.bottomCenter,
     colors: [Color(0xFFFFFAC7), Color(0xFFFFFFFF)]);
+const lightTopicGradient = LinearGradient(
+  begin: Alignment.bottomLeft,
+  end: Alignment.topRight,
+  colors: [
+    Color(0x3DE3D9FF),
+    Color(0xA5F8F5BB)
+  ]
+);
 
 final lightTheme = ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: lightPrimaryColor),

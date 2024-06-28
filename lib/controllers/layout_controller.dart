@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/screens/activity_screen.dart';
 import 'package:living_way/screens/bible_screen.dart';
-import 'package:living_way/screens/devotion_screen.dart';
+import 'package:living_way/screens/DevotionScreen/index.dart';
 import 'package:living_way/screens/profile_screen.dart';
 import 'package:living_way/screens/testimonial_screen.dart';
 
