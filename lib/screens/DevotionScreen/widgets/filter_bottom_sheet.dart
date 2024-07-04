@@ -18,7 +18,8 @@ class FilterBottomSheet extends StatefulWidget {
   State<FilterBottomSheet> createState() => _FilterBottomSheetState();
 }
 
-class _FilterBottomSheetState extends State<FilterBottomSheet> {
+class _FilterBottomSheetState extends State<FilterBottomSheet>
+    with TickerProviderStateMixin {
   ActivityFilter? activityFilter;
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksSelected = [];
@@ -34,13 +35,18 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    List<String> totalBooks = [...(books['ot'] ?? []), ...(books['nt'] ?? [])];
+    List<String> filteredBooks = books[categoryFilter.name] ?? [];
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    Orientation orientation = MediaQuery.of(context).orientation;
     const Radius radius = Radius.circular(20);
 
     return Container(
         width: screenWidth,
-        height: screenHeight * .5,
+        height: orientation == Orientation.portrait
+            ? screenHeight * .5
+            : screenHeight * .65,
         padding: const EdgeInsets.all(16),
         decoration: const BoxDecoration(
             color: Colors.white,
@@ -250,34 +256,36 @@ class _FilterBottomSheetState extends State<FilterBottomSheet> {
                         ])),
                     Wrap(
                         children: (categoryFilter == CategoryFilter.all
-                                ? [
-                                    ...(books['ot'] ?? []),
-                                    ...(books['nt'] ?? [])
-                                  ]
-                                : (books[categoryFilter.name] ?? []))
-                            .map((book) => Container(
-                                height: 35,
-                                margin: const EdgeInsets.all(5),
-                                child: OutlinedButton(
-                                    style: OutlinedButton.styleFrom(
-                                        foregroundColor:
-                                            booksSelected.contains(book)
-                                                ? Colors.white
-                                                : null,
-                                        backgroundColor:
-                                            booksSelected.contains(book)
-                                                ? lightPrimaryColor
-                                                : Colors.white),
-                                    onPressed: () => setState(() {
-                                          if (!booksSelected.contains(book)) {
-                                            booksSelected.add(book);
-                                          } else {
-                                            booksSelected.remove(book);
-                                          }
-                                        }),
-                                    child: Text(book,
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(fontSize: 10)))))
+                                ? totalBooks
+                                : filteredBooks)
+                            .map((book) => Opacity(
+                                  opacity: 1,
+                                  child: Container(
+                                      height: 35,
+                                      margin: const EdgeInsets.all(5),
+                                      child: OutlinedButton(
+                                          style: OutlinedButton.styleFrom(
+                                              foregroundColor:
+                                                  booksSelected.contains(book)
+                                                      ? Colors.white
+                                                      : null,
+                                              backgroundColor:
+                                                  booksSelected.contains(book)
+                                                      ? lightPrimaryColor
+                                                      : Colors.white),
+                                          onPressed: () => setState(() {
+                                                if (!booksSelected
+                                                    .contains(book)) {
+                                                  booksSelected.add(book);
+                                                } else {
+                                                  booksSelected.remove(book);
+                                                }
+                                              }),
+                                          child: Text(book,
+                                              textAlign: TextAlign.center,
+                                              style: const TextStyle(
+                                                  fontSize: 10)))),
+                                ))
                             .toList())
                   ])))
         ]));

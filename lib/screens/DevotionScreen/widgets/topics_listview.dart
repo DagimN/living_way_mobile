@@ -49,6 +49,7 @@ class TopicsListview extends StatelessWidget {
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
+                      isScrollControlled: true,
                       builder: (BuildContext context) {
                         return FilterBottomSheet(
                           activityFilter: contentController.activityFilter,
