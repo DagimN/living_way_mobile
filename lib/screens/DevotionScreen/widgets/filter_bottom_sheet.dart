@@ -259,33 +259,32 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                 ? totalBooks
                                 : filteredBooks)
                             .map((book) => Opacity(
-                                  opacity: 1,
-                                  child: Container(
-                                      height: 35,
-                                      margin: const EdgeInsets.all(5),
-                                      child: OutlinedButton(
-                                          style: OutlinedButton.styleFrom(
-                                              foregroundColor:
-                                                  booksSelected.contains(book)
-                                                      ? Colors.white
-                                                      : null,
-                                              backgroundColor:
-                                                  booksSelected.contains(book)
-                                                      ? lightPrimaryColor
-                                                      : Colors.white),
-                                          onPressed: () => setState(() {
-                                                if (!booksSelected
-                                                    .contains(book)) {
-                                                  booksSelected.add(book);
-                                                } else {
-                                                  booksSelected.remove(book);
-                                                }
-                                              }),
-                                          child: Text(book,
-                                              textAlign: TextAlign.center,
-                                              style: const TextStyle(
-                                                  fontSize: 10)))),
-                                ))
+                                opacity: 1,
+                                child: Container(
+                                    height: 35,
+                                    margin: const EdgeInsets.all(5),
+                                    child: OutlinedButton(
+                                        style: OutlinedButton.styleFrom(
+                                            foregroundColor:
+                                                booksSelected.contains(book)
+                                                    ? Colors.white
+                                                    : null,
+                                            backgroundColor:
+                                                booksSelected.contains(book)
+                                                    ? lightPrimaryColor
+                                                    : Colors.white),
+                                        onPressed: () => setState(() {
+                                              if (!booksSelected
+                                                  .contains(book)) {
+                                                booksSelected.add(book);
+                                              } else {
+                                                booksSelected.remove(book);
+                                              }
+                                            }),
+                                        child: Text(book,
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontSize: 10))))))
                             .toList())
                   ])))
         ]));

@@ -5,6 +5,7 @@ import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/filter_bottom_sheet.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topic_card.dart';
+import 'package:living_way/screens/search_screen.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -59,10 +60,20 @@ class TopicsListview extends StatelessWidget {
                       });
                 },
                 icon: SvgPicture.asset(AppIcons.filter, height: 24)),
-            IconButton(
-                style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                onPressed: () {},
-                icon: SvgPicture.asset(AppIcons.search, height: 24))
+            Hero(
+                tag: 'search',
+                child: IconButton(
+                    style: IconButton.styleFrom(padding: EdgeInsets.zero),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                              transitionDuration:
+                                  const Duration(milliseconds: 500),
+                              pageBuilder: (_, __, ___) =>
+                                  const SearchScreen()));
+                    },
+                    icon: SvgPicture.asset(AppIcons.search, height: 24)))
           ]),
           SizedBox(
               width: screenWidth,
