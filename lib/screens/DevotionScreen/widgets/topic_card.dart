@@ -46,15 +46,27 @@ class TopicCard extends StatelessWidget {
                             style: const TextStyle(
                                 color: inactiveIconColor, fontSize: 10))
                       ]),
-                      IconButton(
-                          icon: Icon(
-                              topic.isFavorite
-                                  ? Icons.favorite
-                                  : Icons.favorite_border,
-                              color: topic.isFavorite
-                                  ? Colors.red
-                                  : inactiveIconColor),
-                          onPressed: () {})
+                      const SizedBox(height: 5),
+                      Column(children: [
+                        SizedBox(
+                          height: 24,
+                          child: IconButton(
+                              style: IconButton.styleFrom(
+                                  padding: EdgeInsets.zero),
+                              icon: Icon(
+                                  topic.isFavorite
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color: topic.isFavorite
+                                      ? Colors.red
+                                      : inactiveIconColor),
+                              onPressed: () {}),
+                        ),
+                        if (topic.likeCount > 0)
+                          Text(shortenNumber(topic.likeCount),
+                              style: const TextStyle(
+                                  color: inactiveIconColor, fontSize: 10))
+                      ])
                     ]))
           ]),
           if (topic.type != TopicType.discussion)

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/screens/home.dart';
 import 'package:living_way/themes/dark_theme.dart';
@@ -11,15 +12,17 @@ class LivingWayApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
-        ChangeNotifierProvider<LayoutController>(create: (_) => LayoutController()),
-      ],
-      child: MaterialApp(
-          debugShowCheckedModeBanner: false,
-          title: 'Living Way',
-          theme: lightTheme,
-          darkTheme: darkTheme,
-          home: const HomeScreen())
-    );
+        providers: [
+          ChangeNotifierProvider<LayoutController>(
+              create: (_) => LayoutController()),
+          ChangeNotifierProvider<ContentController>(
+              create: (_) => ContentController()),
+        ],
+        child: MaterialApp(
+            debugShowCheckedModeBanner: false,
+            title: 'Living Way',
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            home: const HomeScreen()));
   }
 }
