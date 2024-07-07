@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
 class ContentController extends ChangeNotifier {
-  ActivityFilter? activityFilter;
+  ActivityFilter? topicActivityFilter;
+  ActivityFilter threadActivityFilter = ActivityFilter.latest;
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksFiltered = [];
 
   set setActivityFilter(ActivityFilter? value) {
-    activityFilter = value;
+    topicActivityFilter = value;
+    notifyListeners();
+  }
+
+  set setThreadFilter(ActivityFilter value) {
+    threadActivityFilter = value;
     notifyListeners();
   }
 
@@ -21,6 +27,6 @@ class ContentController extends ChangeNotifier {
   }
 }
 
-enum ActivityFilter { mostActive, mostLiked, mostViewed }
+enum ActivityFilter { mostActive, mostLiked, mostViewed, latest }
 
 enum CategoryFilter { all, ot, nt }

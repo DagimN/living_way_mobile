@@ -12,4 +12,6 @@ abstract class AppIcons {
 
 abstract class AppImages {
   static const String profilePlaceholder  = 'assets/images/profile_placeholder.png';
+  static const String topicBackground =
+      'assets/images/topic_background.png';
 }

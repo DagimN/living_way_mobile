@@ -4,11 +4,13 @@ class Topic {
   final int likeCount;
   final bool isFavorite;
   final TopicType type;
+  final String? backgroundImageUrl;
 
   Topic(
       {required this.title,
       required this.viewCount,
       required this.likeCount,
+      this.backgroundImageUrl,
       this.isFavorite = false,
       this.type = TopicType.discussion});
 }

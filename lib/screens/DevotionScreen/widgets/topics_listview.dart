@@ -24,18 +24,29 @@ class TopicsListview extends StatelessWidget {
           title: 'Book of Daniel',
           viewCount: 18000,
           likeCount: 500,
-          isFavorite: true),
+          isFavorite: true,
+          backgroundImageUrl:
+              "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
       Topic(
           title: 'Book of Hosea',
           viewCount: 6000,
           likeCount: 1000,
-          type: TopicType.audio),
+          type: TopicType.audio,
+          backgroundImageUrl:
+              "https://i0.wp.com/www.cruciformcoc.com/wp-content/uploads/2020/08/Hosea.jpg?resize=400%2C400&ssl=1"),
       Topic(
           title: 'Book of Amos',
           viewCount: 0,
           likeCount: 10000,
-          type: TopicType.video),
-      Topic(title: 'Book of Zephanniah', viewCount: 200000, likeCount: 0)
+          type: TopicType.video,
+          backgroundImageUrl:
+              "https://media.bible.art/ab12395e-bca0-4498-96e9-6669a321bd63-compressed.jpg"),
+      Topic(
+          title: 'Book of Zephanniah',
+          viewCount: 200000,
+          likeCount: 0,
+          backgroundImageUrl:
+              "https://media.bible.art/af6dd47b-bffc-4f30-804d-f087f3ba51ce-compressed.jpg")
     ];
 
     return Container(
@@ -50,13 +61,14 @@ class TopicsListview extends StatelessWidget {
                 onPressed: () {
                   showModalBottomSheet(
                       context: context,
+                      showDragHandle: true,
                       isScrollControlled: true,
                       builder: (BuildContext context) {
                         return FilterBottomSheet(
-                          activityFilter: contentController.activityFilter,
-                          categoryFilter: contentController.categoryFilter,
-                          booksSelected: contentController.booksFiltered,
-                        );
+                            activityFilter:
+                                contentController.topicActivityFilter,
+                            categoryFilter: contentController.categoryFilter,
+                            booksSelected: contentController.booksFiltered);
                       });
                 },
                 icon: SvgPicture.asset(AppIcons.filter, height: 24)),
