@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
 class ContentController extends ChangeNotifier {
-  ActivityFilter? topicActivityFilter;
+  ActivityFilter topicActivityFilter = ActivityFilter.latest;
   ActivityFilter threadActivityFilter = ActivityFilter.latest;
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksFiltered = [];
 
-  set setActivityFilter(ActivityFilter? value) {
+  set setActivityFilter(ActivityFilter value) {
     topicActivityFilter = value;
     notifyListeners();
   }

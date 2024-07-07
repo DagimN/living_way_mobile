@@ -5,7 +5,7 @@ import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
 class FilterBottomSheet extends StatefulWidget {
-  final ActivityFilter? activityFilter;
+  final ActivityFilter activityFilter;
   final CategoryFilter categoryFilter;
   final List<String> booksSelected;
   const FilterBottomSheet(
@@ -20,7 +20,7 @@ class FilterBottomSheet extends StatefulWidget {
 
 class _FilterBottomSheetState extends State<FilterBottomSheet>
     with TickerProviderStateMixin {
-  ActivityFilter? activityFilter;
+  ActivityFilter activityFilter = ActivityFilter.latest;
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksSelected = [];
 
@@ -60,7 +60,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                   child: const Text('Reset',
                       style: TextStyle(color: lightPrimaryColor)),
                   onPressed: () {
-                    contentController.setActivityFilter = null;
+                    contentController.setActivityFilter = ActivityFilter.latest;
                     contentController.categoryFilter = CategoryFilter.all;
                     contentController.setBooksFilter = [];
 
@@ -85,12 +85,36 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                     SizedBox(
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
+                        width: screenWidth,
+                        height: 100,
+                        child: GridView(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2, childAspectRatio: 3.5),
                             children: [
-                          Expanded(
-                              child: Padding(
+                              Container(
+                                  width: screenWidth * .45,
+                                  height: 50,
+                                  padding: const EdgeInsets.all(3),
+                                  child: OutlinedButton(
+                                      style: OutlinedButton.styleFrom(
+                                          foregroundColor: activityFilter ==
+                                                  ActivityFilter.latest
+                                              ? Colors.white
+                                              : null,
+                                          backgroundColor: activityFilter ==
+                                                  ActivityFilter.latest
+                                              ? lightPrimaryColor
+                                              : Colors.white),
+                                      onPressed: () => setState(() {
+                                            activityFilter =
+                                                ActivityFilter.latest;
+                                          }),
+                                      child: const Text('Latest',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 10)))),
+                              Padding(
                                   padding: const EdgeInsets.all(3),
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
@@ -103,16 +127,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                               ? lightPrimaryColor
                                               : Colors.white),
                                       onPressed: () => setState(() {
-                                            activityFilter = activityFilter !=
-                                                    ActivityFilter.mostActive
-                                                ? ActivityFilter.mostActive
-                                                : null;
+                                            activityFilter =
+                                                ActivityFilter.mostActive;
                                           }),
                                       child: const Text('Most Active',
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 10))))),
-                          Expanded(
-                              child: Padding(
+                                          style: TextStyle(fontSize: 10)))),
+                              Padding(
                                   padding: const EdgeInsets.all(3),
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
@@ -125,16 +146,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                               ? lightPrimaryColor
                                               : Colors.white),
                                       onPressed: () => setState(() {
-                                            activityFilter = activityFilter !=
-                                                    ActivityFilter.mostLiked
-                                                ? ActivityFilter.mostLiked
-                                                : null;
+                                            activityFilter =
+                                                ActivityFilter.mostLiked;
                                           }),
                                       child: const Text('Most Liked',
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 10))))),
-                          Expanded(
-                              child: Padding(
+                                          style: TextStyle(fontSize: 10)))),
+                              Padding(
                                   padding: const EdgeInsets.all(3),
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
@@ -147,15 +165,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                               ? lightPrimaryColor
                                               : Colors.white),
                                       onPressed: () => setState(() {
-                                            activityFilter = activityFilter !=
-                                                    ActivityFilter.mostViewed
-                                                ? ActivityFilter.mostViewed
-                                                : null;
+                                            activityFilter =
+                                                ActivityFilter.mostViewed;
                                           }),
                                       child: const Text('Most Viewed',
                                           textAlign: TextAlign.center,
-                                          style: TextStyle(fontSize: 10)))))
-                        ])),
+                                          style: TextStyle(fontSize: 10))))
+                            ])),
                     const SizedBox(height: 16),
                     Container(
                         margin: const EdgeInsets.symmetric(
