@@ -1,3 +1,6 @@
+import 'package:living_way/models/thread.dart';
+import 'package:uuid/uuid.dart';
+
 final books = {
   "ot": [
     "Genesis",
@@ -70,3 +73,56 @@ final books = {
     "Revelation"
   ]
 };
+
+final threads = [
+  ThreadData(
+      threadId: const Uuid(),
+      commenter: const Uuid(),
+      comment: 'Comment 1',
+      likes: 50,
+      subThreads: [
+        ThreadData(
+            threadId: const Uuid(),
+            commenter: const Uuid(),
+            comment: 'Comment 1',
+            likes: 50),
+        ThreadData(
+            threadId: const Uuid(),
+            commenter: const Uuid(),
+            comment: 'Comment 1',
+            likes: 50),
+        ThreadData(
+            threadId: const Uuid(),
+            commenter: const Uuid(),
+            comment: 'Comment 1',
+            likes: 50)
+      ]),
+  ThreadData(
+      threadId: const Uuid(),
+      commenter: const Uuid(),
+      comment: 'Comment 2',
+      likes: 100,
+      subThreads: [
+        ThreadData(
+            threadId: const Uuid(),
+            commenter: const Uuid(),
+            comment: 'Comment 2',
+            likes: 50),
+        ThreadData(
+            threadId: const Uuid(),
+            commenter: const Uuid(),
+            comment: 'Comment 2',
+            likes: 50)
+      ]),
+  ThreadData(
+      threadId: const Uuid(),
+      commenter: const Uuid(),
+      comment: 'Comment 3',
+      subThreads: [
+        ThreadData(
+            threadId: const Uuid(),
+            commenter: const Uuid(),
+            comment: 'Comment 3',
+            likes: 50)
+      ])
+];

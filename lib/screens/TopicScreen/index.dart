@@ -18,9 +18,11 @@ class TopicScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         body: Container(
             decoration: const BoxDecoration(gradient: lightBackgroundGradient),
-            child: Column(children: [
+            child: SingleChildScrollView(
+                child: Column(children: [
               Stack(children: [
                 topic.backgroundImageUrl != null
                     ? CachedNetworkImage(
@@ -45,45 +47,55 @@ class TopicScreen extends StatelessWidget {
                         icon:
                             const Icon(Icons.arrow_back, color: Colors.white)))
               ]),
-              Align(
-                  alignment: Alignment.centerRight,
-                  child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8),
-                      child: DropdownButton<ActivityFilter>(
-                          items: const [
-                            DropdownMenuItem(
-                                value: ActivityFilter.latest,
-                                child: Text('Latest')),
-                            DropdownMenuItem(
-                                value: ActivityFilter.mostActive,
-                                child: Text('Most Active')),
-                            DropdownMenuItem(
-                                value: ActivityFilter.mostLiked,
-                                child: Text('Most Liked')),
-                            DropdownMenuItem(
-                                value: ActivityFilter.mostViewed,
-                                child: Text('Most Viewed'))
-                          ],
-                          underline: Container(
-                              height: 1.0,
-                              decoration: const BoxDecoration(
-                                  border: Border(
-                                      bottom: BorderSide(
-                                          color: lightPrimaryColor,
-                                          width: 0.0)))),
-                          style: const TextStyle(color: lightPrimaryColor),
-                          value: contentController.threadActivityFilter,
-                          onChanged: (value) {
-                            contentController.setThreadFilter =
-                                value ?? ActivityFilter.latest;
-                          }))),
+              Container(
+                  margin:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text('Threads',
+                            style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w600,
+                                color: lightPrimaryColor)),
+                        DropdownButton<ActivityFilter>(
+                            items: const [
+                              DropdownMenuItem(
+                                  value: ActivityFilter.latest,
+                                  child: Text('Latest')),
+                              DropdownMenuItem(
+                                  value: ActivityFilter.mostActive,
+                                  child: Text('Most Active')),
+                              DropdownMenuItem(
+                                  value: ActivityFilter.mostLiked,
+                                  child: Text('Most Liked')),
+                              DropdownMenuItem(
+                                  value: ActivityFilter.mostViewed,
+                                  child: Text('Most Viewed'))
+                            ],
+                            underline: Container(
+                                height: 1.0,
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: lightPrimaryColor,
+                                            width: 0.0)))),
+                            style: const TextStyle(color: lightPrimaryColor),
+                            value: contentController.threadActivityFilter,
+                            onChanged: (value) {
+                              contentController.setThreadFilter =
+                                  value ?? ActivityFilter.latest;
+                            })
+                      ])),
               SizedBox(
                   height: screenHeight * .6,
                   child: ListView.builder(
-                      itemCount: 9,
+                      itemCount: contentController.threads.length,
                       shrinkWrap: true,
-                      itemBuilder: (context, index) =>
-                          Thread(isLast: index == 8)))
-            ])));
+                      itemBuilder: (context, index) {
+                        final thread = contentController.threads[index];
+                        return Thread(data: thread, isLast: index == contentController.threads.length - 1);
+                      }))
+            ]))));
   }
 }
