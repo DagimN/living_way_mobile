@@ -76,52 +76,52 @@ final books = {
 
 final threads = [
   ThreadData(
-      threadId: const Uuid(),
-      commenter: const Uuid(),
+      threadId: const Uuid().v4(),
+      commenter: const Uuid().v4(),
       comment: 'Comment 1',
       likes: 50,
       subThreads: [
         ThreadData(
-            threadId: const Uuid(),
-            commenter: const Uuid(),
+            threadId: const Uuid().v4(),
+            commenter: const Uuid().v4(),
             comment: 'Comment 1',
             likes: 50),
         ThreadData(
-            threadId: const Uuid(),
-            commenter: const Uuid(),
+            threadId: const Uuid().v4(),
+            commenter: const Uuid().v4(),
             comment: 'Comment 1',
             likes: 50),
         ThreadData(
-            threadId: const Uuid(),
-            commenter: const Uuid(),
+            threadId: const Uuid().v4(),
+            commenter: const Uuid().v4(),
             comment: 'Comment 1',
             likes: 50)
       ]),
   ThreadData(
-      threadId: const Uuid(),
-      commenter: const Uuid(),
+      threadId: const Uuid().v4(),
+      commenter: const Uuid().v4(),
       comment: 'Comment 2',
       likes: 100,
       subThreads: [
         ThreadData(
-            threadId: const Uuid(),
-            commenter: const Uuid(),
+            threadId: const Uuid().v4(),
+            commenter: const Uuid().v4(),
             comment: 'Comment 2',
             likes: 50),
         ThreadData(
-            threadId: const Uuid(),
-            commenter: const Uuid(),
+            threadId: const Uuid().v4(),
+            commenter: const Uuid().v4(),
             comment: 'Comment 2',
             likes: 50)
       ]),
   ThreadData(
-      threadId: const Uuid(),
-      commenter: const Uuid(),
+      threadId: const Uuid().v4(),
+      commenter: const Uuid().v4(),
       comment: 'Comment 3',
       subThreads: [
         ThreadData(
-            threadId: const Uuid(),
-            commenter: const Uuid(),
+            threadId: const Uuid().v4(),
+            commenter: const Uuid().v4(),
             comment: 'Comment 3',
             likes: 50)
       ])

@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
 import 'package:living_way/themes/light_theme.dart';
@@ -9,13 +10,15 @@ import 'package:provider/provider.dart';
 
 class TopicScreen extends StatelessWidget {
   final Topic topic;
-  const TopicScreen({super.key, required this.topic});
+  final ThreadData? subThread;
+  const TopicScreen({super.key, required this.topic, this.subThread});
 
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    final doesSubThreadExist = subThread != null;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -90,11 +93,29 @@ class TopicScreen extends StatelessWidget {
               SizedBox(
                   height: screenHeight * .6,
                   child: ListView.builder(
-                      itemCount: contentController.threads.length,
+                      padding: const EdgeInsets.only(bottom: 50),
+                      itemCount:
+                          topic.threads.length + (doesSubThreadExist ? 1 : 0),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        final thread = contentController.threads[index];
-                        return Thread(data: thread, isLast: index == contentController.threads.length - 1);
+                        return index == 0 && doesSubThreadExist
+                            ? Container(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5),
+                                decoration: BoxDecoration(
+                                    color: lightInactiveColor.withOpacity(.2),
+                                    borderRadius: BorderRadius.circular(10)),
+                                child: Thread(
+                                    topic: topic,
+                                    isTop: true,
+                                    data: subThread!))
+                            : Thread(
+                                topic: topic,
+                                data: topic.threads[
+                                    index - (doesSubThreadExist ? 1 : 0)],
+                                isLast: index ==
+                                    topic.threads.length -
+                                        (doesSubThreadExist ? 0 : 1));
                       }))
             ]))));
   }

@@ -26,27 +26,31 @@ class TopicsListview extends StatelessWidget {
           likeCount: 500,
           isFavorite: true,
           backgroundImageUrl:
-              "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
+              "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg",
+          threads: contentController.threads),
       Topic(
           title: 'Book of Hosea',
           viewCount: 6000,
           likeCount: 1000,
           type: TopicType.audio,
           backgroundImageUrl:
-              "https://i0.wp.com/www.cruciformcoc.com/wp-content/uploads/2020/08/Hosea.jpg?resize=400%2C400&ssl=1"),
+              "https://i0.wp.com/www.cruciformcoc.com/wp-content/uploads/2020/08/Hosea.jpg?resize=400%2C400&ssl=1",
+          threads: contentController.threads),
       Topic(
           title: 'Book of Amos',
           viewCount: 0,
           likeCount: 10000,
           type: TopicType.video,
           backgroundImageUrl:
-              "https://media.bible.art/ab12395e-bca0-4498-96e9-6669a321bd63-compressed.jpg"),
+              "https://media.bible.art/ab12395e-bca0-4498-96e9-6669a321bd63-compressed.jpg",
+          threads: contentController.threads),
       Topic(
           title: 'Book of Zephanniah',
           viewCount: 200000,
           likeCount: 0,
           backgroundImageUrl:
-              "https://media.bible.art/af6dd47b-bffc-4f30-804d-f087f3ba51ce-compressed.jpg")
+              "https://media.bible.art/af6dd47b-bffc-4f30-804d-f087f3ba51ce-compressed.jpg",
+          threads: contentController.threads)
     ];
 
     return Container(

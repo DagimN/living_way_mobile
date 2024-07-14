@@ -12,9 +12,12 @@ class CommentBox extends StatelessWidget {
     final contentController = Provider.of<ContentController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    Orientation orientation = MediaQuery.of(context).orientation;
 
     return Container(
-        height: screenHeight * .18,
+        height: orientation == Orientation.portrait
+            ? screenHeight * .18
+            : screenWidth * .18,
         width: screenWidth * .7,
         decoration: BoxDecoration(
             color: Colors.white,
@@ -41,8 +44,12 @@ class CommentBox extends StatelessWidget {
                       icon: const Icon(Icons.backspace_outlined,
                           color: Colors.red, size: 20)),
                   SizedBox(
-                      width: screenWidth * .2,
-                      height: screenHeight * .03,
+                      width: orientation == Orientation.portrait
+                          ? screenWidth * .2
+                          : screenHeight * .2,
+                      height: orientation == Orientation.portrait
+                          ? screenHeight * .03
+                          : screenWidth * .03,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
                               padding: EdgeInsets.zero,
