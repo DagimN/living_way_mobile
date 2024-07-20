@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/models/topic.dart';
+import 'package:living_way/screens/MediaScreen/index.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/utils/shorten_number.dart';
@@ -41,10 +42,15 @@ class TopicCard extends StatelessWidget {
               padding: EdgeInsets.zero,
               shape: RoundedRectangleBorder(borderRadius: borderRadius)),
           onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TopicScreen(topic: topic)));
+            Navigator.push(context, MaterialPageRoute(builder: (context) {
+              switch (topic.type) {
+                case TopicType.audio:
+                case TopicType.video:
+                  return MediaScreen(topic: topic);
+                default:
+                  return TopicScreen(topic: topic);
+              }
+            }));
           },
           child: Stack(children: [
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
