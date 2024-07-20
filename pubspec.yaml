@@ -43,6 +43,7 @@ dependencies:
   media_kit_video: ^1.2.4                        
   media_kit_libs_video: ^1.0.4 
   youtube_player_iframe: ^5.1.2
+  mini_music_visualizer: ^1.1.4
   # media_kit_libs_audio: ^1.0.4
 
 dev_dependencies:

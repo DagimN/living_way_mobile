@@ -67,7 +67,7 @@ class _ThreadState extends State<Thread> {
                         ? screenWidth * .65
                         : screenHeight * .65,
                     child: Text(widget.data.comment))),
-            isCommentBoxVisible
+            isCommentBoxVisible //FIXME: When another comment box is opened close any other that has been opened
                 ? CommentBox(onClose: () {
                     setState(() {
                       threadKey = GlobalKey();

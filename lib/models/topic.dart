@@ -1,3 +1,4 @@
+import 'package:living_way/models/media_metadata.dart';
 import 'package:living_way/models/thread.dart';
 
 class Topic {
@@ -6,17 +7,20 @@ class Topic {
   final int likeCount;
   final bool isFavorite;
   final TopicType type;
-  final String? backgroundImageUrl;
   final List<ThreadData> threads;
+  final String? backgroundImageUrl;
+  final List<MediaMetadata> playlist;
 
-  Topic(
-      {required this.title,
-      required this.viewCount,
-      required this.likeCount,
-      this.backgroundImageUrl,
-      this.isFavorite = false,
-      this.type = TopicType.discussion,
-      this.threads = const []});
+  Topic({
+    required this.title,
+    required this.viewCount,
+    required this.likeCount,
+    this.backgroundImageUrl,
+    this.isFavorite = false,
+    this.threads = const [],
+    this.type = TopicType.discussion,
+    this.playlist = const []
+  });
 
   static Topic fromJson(json) {
     return Topic(
@@ -28,6 +32,9 @@ class Topic {
         type: TopicType.fromString(json['type']),
         threads: (json['threads'] as List)
             .map((e) => ThreadData.fromJson(e))
+            .toList(),
+        playlist: (json['playlist'] as List)
+            .map((e) => MediaMetadata.fromJson(e))
             .toList());
   }
 
@@ -39,7 +46,8 @@ class Topic {
       "backgroundImageUrl": backgroundImageUrl,
       "isFavorite": isFavorite,
       "type": type.name,
-      "threads": threads.map((thread) => thread.toJson()).toList()
+      "threads": threads.map((thread) => thread.toJson()).toList(),
+      "playlist": playlist.map((metadata) => metadata.toJson()).toList()
     };
   }
 }

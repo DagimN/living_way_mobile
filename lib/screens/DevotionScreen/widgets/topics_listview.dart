@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/models/media_metadata.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/filter_bottom_sheet.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topic_card.dart';
@@ -29,10 +30,32 @@ class TopicsListview extends StatelessWidget {
               "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg",
           threads: contentController.threads),
       Topic(
+          title: 'ተፈፀመ 2016',
+          viewCount: 139,
+          likeCount: 10,
+          isFavorite: true,
+          type: TopicType.video,
+          backgroundImageUrl:
+              "https://mypastoralponderings.com/wp-content/uploads/2021/04/1617051446892-d4f1fe46-96cd-4ddc-ac51-30b82c367912_-e1617111616909.jpg?w=769",
+          threads: contentController.threads,
+          playlist: [
+            MediaMetadata(
+                title: 'ነገረ መስቀል: የእግዚአብሔር ጥበብና ሃይል',
+                presenter: 'Yoseph Yisma',
+                videoId: "KLwwB2qUOBg"),
+            MediaMetadata(
+                title: 'መስቀል ( እርሱ ስለ እኛ )',
+                presenter: 'Henock Bekele',
+                videoId: "Mmc0g891eXk"),
+            MediaMetadata(
+                title: 'መስቀሉና ተግባራዊ ሕይወት',
+                presenter: 'Esisha Mengistu',
+                videoId: "n3PNnw8fwJ4")
+          ]),
+      Topic(
           title: 'Book of Hosea',
           viewCount: 6000,
           likeCount: 1000,
-          type: TopicType.audio,
           backgroundImageUrl:
               "https://i0.wp.com/www.cruciformcoc.com/wp-content/uploads/2020/08/Hosea.jpg?resize=400%2C400&ssl=1",
           threads: contentController.threads),
@@ -40,7 +63,6 @@ class TopicsListview extends StatelessWidget {
           title: 'Book of Amos',
           viewCount: 0,
           likeCount: 10000,
-          type: TopicType.video,
           backgroundImageUrl:
               "https://media.bible.art/ab12395e-bca0-4498-96e9-6669a321bd63-compressed.jpg",
           threads: contentController.threads),
