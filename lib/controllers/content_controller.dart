@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
 import 'package:living_way/models/thread.dart';
-
 
 class ContentController extends ChangeNotifier {
   final TextEditingController commentBoxTextEditingController =
@@ -11,6 +11,7 @@ class ContentController extends ChangeNotifier {
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksFiltered = [];
   List<ThreadData> threads = content.threads;
+  ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
 
   set setActivityFilter(ActivityFilter value) {
     topicActivityFilter = value;
@@ -29,6 +30,11 @@ class ContentController extends ChangeNotifier {
 
   set setBooksFilter(List<String> books) {
     booksFiltered = books;
+    notifyListeners();
+  }
+
+  set setCommentingThreadKey(GlobalKey? value) {
+    commentingThreadKeyNotifier.value = value;
     notifyListeners();
   }
 }

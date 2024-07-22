@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
 import 'package:living_way/screens/TopicScreen/widgets/avatar_stack.dart';
 import 'package:living_way/screens/TopicScreen/widgets/comment_box.dart';
+import 'package:provider/provider.dart';
 
 class Thread extends StatefulWidget {
   final Topic topic;
   final ThreadData data;
   final bool isTop;
   final bool isLast;
+  final ValueNotifier<GlobalKey<State<StatefulWidget>>?> threadKeyNotifier;
   const Thread(
       {super.key,
       required this.topic,
       required this.data,
+      required this.threadKeyNotifier,
       this.isTop = false,
       this.isLast = false});
 
@@ -22,14 +26,30 @@ class Thread extends StatefulWidget {
 }
 
 class _ThreadState extends State<Thread> {
-  bool isCommentBoxVisible = false;
   GlobalKey threadKey = GlobalKey();
+  
+  @override
+  void initState() {
+    super.initState();
+
+    //! Might be a bug
+    widget.threadKeyNotifier.addListener(() {
+      if (widget.threadKeyNotifier.value != threadKey && mounted) {
+        setState(() {
+          threadKey = GlobalKey();
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
+    final contentController = Provider.of<ContentController>(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
+    bool isCommentBoxVisible =
+        contentController.commentingThreadKeyNotifier.value == threadKey;
 
     return Container(
         key: threadKey,
@@ -67,11 +87,11 @@ class _ThreadState extends State<Thread> {
                         ? screenWidth * .65
                         : screenHeight * .65,
                     child: Text(widget.data.comment))),
-            isCommentBoxVisible //FIXME: When another comment box is opened close any other that has been opened
+            isCommentBoxVisible 
                 ? CommentBox(onClose: () {
                     setState(() {
                       threadKey = GlobalKey();
-                      isCommentBoxVisible = false;
+                      contentController.setCommentingThreadKey = null;
                     });
                   })
                 : Row(children: [
@@ -84,7 +104,8 @@ class _ThreadState extends State<Thread> {
                         onPressed: () {
                           setState(() {
                             threadKey = GlobalKey();
-                            isCommentBoxVisible = true;
+                            contentController.setCommentingThreadKey =
+                                threadKey;
                           });
                         },
                         icon: const Icon(Icons.comment)),

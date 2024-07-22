@@ -27,7 +27,7 @@ class ThreadsListView extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-                //TODO: Add a comment box for a user to start their own thread
+            //TODO: Add a comment box for a user to start their own thread
             const Text('Threads',
                 style: TextStyle(
                     fontSize: 24,
@@ -75,9 +75,11 @@ class ThreadsListView extends StatelessWidget {
                             color: lightInactiveColor.withOpacity(.2),
                             borderRadius: BorderRadius.circular(10)),
                         child:
-                            Thread(topic: topic, isTop: true, data: subThread!))
+                            Thread(topic: topic, isTop: true, threadKeyNotifier: contentController.commentingThreadKeyNotifier, data: subThread!))
                     : Thread(
                         topic: topic,
+                         threadKeyNotifier:
+                            contentController.commentingThreadKeyNotifier,
                         data:
                             topic.threads[index - (doesSubThreadExist ? 1 : 0)],
                         isLast: index ==

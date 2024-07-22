@@ -17,11 +17,12 @@ class AvatarStack extends StatefulWidget {
 
 class _AvatarStackState extends State<AvatarStack> {
   double? threadContainerHeight;
+  bool isResetted = false;
 
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted && threadContainerHeight == null && !widget.isLast) {
+      if (threadContainerHeight == null && !widget.isLast) {
         setState(() {
           threadContainerHeight =
               (widget.threadKey.currentContext!.findRenderObject() as RenderBox)
