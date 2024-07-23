@@ -21,7 +21,7 @@ class ThreadsListView extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     final contentController = Provider.of<ContentController>(context);
 
-    return SingleChildScrollView(
+    return SingleChildScrollView( //FIXME: When the keyboard pops up, make the text field visible for the user
         child: Column(children: [
       Container(
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),

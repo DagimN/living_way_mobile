@@ -27,19 +27,27 @@ class Thread extends StatefulWidget {
 
 class _ThreadState extends State<Thread> {
   GlobalKey threadKey = GlobalKey();
-  
+  void Function() threadListener = () {};
+
   @override
   void initState() {
     super.initState();
 
-    //! Might be a bug
-    widget.threadKeyNotifier.addListener(() {
+    threadListener = () {
       if (widget.threadKeyNotifier.value != threadKey && mounted) {
         setState(() {
           threadKey = GlobalKey();
         });
       }
-    });
+    };
+
+    widget.threadKeyNotifier.addListener(threadListener);
+  }
+
+  @override
+  void dispose() {
+    widget.threadKeyNotifier.removeListener(threadListener);
+    super.dispose();
   }
 
   @override
@@ -65,6 +73,7 @@ class _ThreadState extends State<Thread> {
             TextButton(
                 onPressed: widget.data.subThreads.isNotEmpty && !widget.isTop
                     ? () {
+                        contentController.setCommentingThreadKey = null;
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -87,7 +96,7 @@ class _ThreadState extends State<Thread> {
                         ? screenWidth * .65
                         : screenHeight * .65,
                     child: Text(widget.data.comment))),
-            isCommentBoxVisible 
+            isCommentBoxVisible
                 ? CommentBox(onClose: () {
                     setState(() {
                       threadKey = GlobalKey();
