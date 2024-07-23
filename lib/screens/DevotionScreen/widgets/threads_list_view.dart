@@ -21,7 +21,7 @@ class ThreadsListView extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     final contentController = Provider.of<ContentController>(context);
 
-    return SingleChildScrollView( //FIXME: When the keyboard pops up, make the text field visible for the user
+    return SingleChildScrollView(
         child: Column(children: [
       Container(
           margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -74,11 +74,15 @@ class ThreadsListView extends StatelessWidget {
                         decoration: BoxDecoration(
                             color: lightInactiveColor.withOpacity(.2),
                             borderRadius: BorderRadius.circular(10)),
-                        child:
-                            Thread(topic: topic, isTop: true, threadKeyNotifier: contentController.commentingThreadKeyNotifier, data: subThread!))
+                        child: Thread(
+                            topic: topic,
+                            isTop: true,
+                            threadKeyNotifier:
+                                contentController.commentingThreadKeyNotifier,
+                            data: subThread!))
                     : Thread(
                         topic: topic,
-                         threadKeyNotifier:
+                        threadKeyNotifier:
                             contentController.commentingThreadKeyNotifier,
                         data:
                             topic.threads[index - (doesSubThreadExist ? 1 : 0)],

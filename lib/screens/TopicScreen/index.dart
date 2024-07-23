@@ -17,7 +17,7 @@ class TopicScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-        resizeToAvoidBottomInset: false,
+        resizeToAvoidBottomInset: true,
         body: Container(
             decoration: const BoxDecoration(gradient: lightBackgroundGradient),
             child: SingleChildScrollView(
