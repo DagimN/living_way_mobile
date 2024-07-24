@@ -74,6 +74,8 @@ class _ThreadState extends State<Thread> {
                 onPressed: widget.data.subThreads.isNotEmpty && !widget.isTop
                     ? () {
                         contentController.setCommentingThreadKey = null;
+                        contentController.commentBoxTextEditingController
+                            .clear();
                         Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -101,6 +103,7 @@ class _ThreadState extends State<Thread> {
                     setState(() {
                       threadKey = GlobalKey();
                       contentController.setCommentingThreadKey = null;
+                      contentController.commentBoxTextEditingController.clear();
                     });
                   })
                 : Row(children: [
@@ -115,6 +118,8 @@ class _ThreadState extends State<Thread> {
                             threadKey = GlobalKey();
                             contentController.setCommentingThreadKey =
                                 threadKey;
+                            contentController.commentBoxTextEditingController
+                                .clear();
                           });
                         },
                         icon: const Icon(Icons.comment)),
