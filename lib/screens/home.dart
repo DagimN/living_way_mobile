@@ -18,6 +18,13 @@ class HomeScreen extends StatelessWidget {
     // Brightness brightness = MediaQuery.of(context).platformBrightness;
 
     return Scaffold(
+        floatingActionButton: layoutController.getSelectedHomePageNavigation ==
+                HomePageNavigation.testimonial
+            ? FloatingActionButton(
+                backgroundColor: lightPrimaryButtonColor,
+                onPressed: () {},
+                child: const Icon(Icons.file_upload_outlined, size: 28))
+            : null,
         body: Container(
             width: screenWidth,
             height: screenHeight,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 //? Colors
 const lightPrimaryColor = Color(0xFF4F398A);
 const lightPrimaryPaleColor = Color(0xFF847AA0);
+const lightPrimaryButtonColor = Color(0xFFB6A3E7);
 const lightInactiveColor = Color(0xFF343635);
 
 //? Gradients
