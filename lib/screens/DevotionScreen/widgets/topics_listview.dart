@@ -42,15 +42,30 @@ class TopicsListview extends StatelessWidget {
             MediaMetadata(
                 title: 'ነገረ መስቀል: የእግዚአብሔር ጥበብና ሃይል',
                 presenter: 'Yoseph Yisma',
-                videoId: "KLwwB2qUOBg"),
+                source: "KLwwB2qUOBg"),
             MediaMetadata(
                 title: 'መስቀል ( እርሱ ስለ እኛ )',
                 presenter: 'Henock Bekele',
-                videoId: "Mmc0g891eXk"),
+                source: "Mmc0g891eXk"),
             MediaMetadata(
                 title: 'መስቀሉና ተግባራዊ ሕይወት',
                 presenter: 'Esisha Mengistu',
-                videoId: "n3PNnw8fwJ4")
+                source: "n3PNnw8fwJ4")
+          ]),
+      Topic(
+          title: 'For His Glory',
+          viewCount: 139,
+          likeCount: 10,
+          isFavorite: true,
+          type: TopicType.audio,
+          backgroundImageUrl:
+              "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/426074019_7954890431204553_8594967751125902832_n.jpg?stp=dst-jpg_e35&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=zT5H13_Co_MQ7kNvgFEQi6X&edm=AGenrX8BAAAA&ccb=7-5&oh=00_AYC990nx1k9bKc91cV0hUdl6ALPWG8TEjHDFxJsKvgGf2A&oe=66A95BC1&_nc_sid=ed990e",
+          threads: contentController.threads,
+          playlist: [
+            MediaMetadata(
+                title: 'Introduction',
+                presenter: 'Admas Getachew',
+                source: 'audio/For his Glory Intro.mp3')
           ]),
       Topic(
           title: 'Book of Hosea',

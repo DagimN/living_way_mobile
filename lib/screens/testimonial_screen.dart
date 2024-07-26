@@ -8,7 +8,8 @@ class TestimonialScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-
+    //FIXME: Give proper layout for landscape mode
+    
     return Column(children: [
       SizedBox(
           height: screenHeight * .35,

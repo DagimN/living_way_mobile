@@ -2,19 +2,19 @@ class MediaMetadata {
   String title;
   String presenter;
   //String duration;
-  String videoId;
+  String source;
 
   MediaMetadata(
-      {required this.title, required this.presenter, required this.videoId});
+      {required this.title, required this.presenter, required this.source});
 
   static MediaMetadata fromJson(json) {
     return MediaMetadata(
         title: json['title'],
         presenter: json['presenter'],
-        videoId: json['videoId']);
+        source: json['source']);
   }
 
   toJson() {
-    return {"title": title, "presenter": presenter, "videoId": videoId};
+    return {"title": title, "presenter": presenter, "source": source};
   }
 }
