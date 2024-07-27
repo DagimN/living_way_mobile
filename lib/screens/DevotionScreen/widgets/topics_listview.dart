@@ -65,7 +65,59 @@ class TopicsListview extends StatelessWidget {
             MediaMetadata(
                 title: 'Introduction',
                 presenter: 'Admas Getachew',
-                source: 'audio/For his Glory Intro.mp3')
+                source: 'audio/Intro.mp3'),
+            MediaMetadata(
+                title: 'Singleness Part 1',
+                presenter: 'Admas Getachew',
+                source: 'audio/Singleness_1.mp3'),
+            MediaMetadata(
+                title: 'Singleness Part 2',
+                presenter: 'Keneaa Zekarias',
+                source: 'audio/Singleness_2.mp3'),
+            MediaMetadata(
+                title: 'Singleness Part 3',
+                presenter: 'Keneaa Zekarias & Admas Getachew',
+                source: 'audio/Singleness_3.mp3'),
+            MediaMetadata(
+                title: 'Manhood & Womanhood',
+                presenter: 'Keneaa Zekarias',
+                source: 'audio/Manhood_Womanhood.mp3'),
+            MediaMetadata(
+                title: 'Manhood',
+                presenter: 'Admas Getachew',
+                source: 'audio/Manhood.mp3'),
+            MediaMetadata(
+                title: 'Womanhood Part 1',
+                presenter: 'Herani Sahlu',
+                source: 'audio/Womanhood_1.mp3'),
+            MediaMetadata(
+                title: 'Womanhood Part 2',
+                presenter: 'Admas Getachew',
+                source: 'audio/Womanhood_2.mp3'),
+            MediaMetadata(
+                title: 'Relationship 1',
+                presenter: 'Admas Getachew',
+                source: 'audio/Relationship_1.mp3'),
+            MediaMetadata(
+                title: 'Relationship 2',
+                presenter: 'Admas Getachew',
+                source: 'audio/Relationship_2.mp3'),
+            MediaMetadata(
+                title: 'Relationship 3 - ማንን ላግባ?',
+                presenter: 'Admas Getachew',
+                source: 'audio/Relationship_3.mp3'),
+            MediaMetadata(
+                title: 'Relationship 4 - በምን እንመዝን?',
+                presenter: 'Admas Getachew',
+                source: 'audio/Relationship_4.mp3'),
+            MediaMetadata(
+                title: 'Relationship 5 - ተጨማሪ ምክሮች',
+                presenter: 'Admas Getachew',
+                source: 'audio/Relationship_5.mp3'),
+            MediaMetadata(
+                title: 'Relationship 6',
+                presenter: 'Admas Getachew',
+                source: 'audio/Relationship_6.mp3')
           ]),
       Topic(
           title: 'Book of Hosea',

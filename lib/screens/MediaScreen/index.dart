@@ -118,7 +118,7 @@ class _MediaScreenState extends State<MediaScreen> {
                         child: TabBarView(children: [
                           ListView.builder(
                               shrinkWrap: true,
-                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 25),
+                              padding: const EdgeInsets.fromLTRB(5, 0, 5, 75),
                               itemCount: widget.topic.playlist.length,
                               itemBuilder: (context, index) {
                                 final metadata = widget.topic.playlist[index];
@@ -143,8 +143,12 @@ class _MediaScreenState extends State<MediaScreen> {
                                         hasStartedPlaying = false;
                                         currentSource = metadata.source;
                                       });
-                                      controller.loadVideoById(
-                                          videoId: metadata.source);
+
+                                      widget.topic.type == TopicType.video
+                                          ? controller.loadVideoById(
+                                              videoId: metadata.source)
+                                          : player
+                                              ?.setSourceAsset(metadata.source);
                                     });
                               }),
                           ThreadsListView(
