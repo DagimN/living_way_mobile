@@ -8,17 +8,21 @@ class TestimonialScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
-    //FIXME: Give proper layout for landscape mode
-    
+    Orientation orientation = MediaQuery.of(context).orientation;
+
     return Column(children: [
       SizedBox(
           height: screenHeight * .35,
           child: Stack(children: [
             Image.asset(AppImages.testimonyBackground,
-                height: screenHeight * .35, fit: BoxFit.cover),
+                width: screenWidth,
+                height: screenHeight * .35,
+                fit: BoxFit.cover),
             Positioned(
                 top: screenHeight * .1,
-                left: screenWidth * .2,
+                left: orientation == Orientation.portrait
+                    ? screenWidth * .2
+                    : screenWidth * .38,
                 child: const Text('TESTIMONY',
                     style: TextStyle(
                         color: Colors.white,
@@ -45,14 +49,17 @@ class TestimonialScreen extends StatelessWidget {
                 ])))
           ])),
       SizedBox(
-          height: screenHeight * .5,
+          height: orientation == Orientation.portrait
+              ? screenHeight * .5
+              : screenHeight * .35,
           child: GridView.builder(
               shrinkWrap: true,
               itemCount: 12,
               padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 10),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  childAspectRatio: 1.2,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                  childAspectRatio:
+                      orientation == Orientation.portrait ? 1.2 : 1.8,
                   crossAxisSpacing: 40,
                   mainAxisSpacing: 15),
               itemBuilder: (context, index) => ElevatedButton(
