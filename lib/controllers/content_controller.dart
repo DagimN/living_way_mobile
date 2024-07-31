@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
+import 'package:living_way/models/book.dart';
 import 'package:living_way/models/thread.dart';
+import 'package:living_way/utils/load_json.dart';
 
 class ContentController extends ChangeNotifier {
   final TextEditingController commentBoxTextEditingController =
@@ -12,6 +14,23 @@ class ContentController extends ChangeNotifier {
   List<String> booksFiltered = [];
   List<ThreadData> threads = content.threads;
   ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
+  List<Book> bible = [];
+  Book? book;
+
+  ContentController() {
+    loadJson('assets/data/en_kjv.json').then((data) {
+      bible = (data as List)
+          .map((e) => Book(
+              name: e['name'],
+              chapters: (e['chapters'] as List)
+                  .map((chapter) => (chapter as List)
+                      .map((verse) => verse.toString())
+                      .toList())
+                  .toList()))
+          .toList();
+      notifyListeners();
+    });
+  }
 
   set setActivityFilter(ActivityFilter value) {
     topicActivityFilter = value;
@@ -35,6 +54,11 @@ class ContentController extends ChangeNotifier {
 
   set setCommentingThreadKey(GlobalKey? value) {
     commentingThreadKeyNotifier.value = value;
+    notifyListeners();
+  }
+
+  set setBook(Book value) {
+    book = value;
     notifyListeners();
   }
 }
