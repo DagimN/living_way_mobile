@@ -32,8 +32,10 @@ class BibleNavigator extends StatelessWidget {
                 if (value != null) {
                   contentController.setBook = value;
                   contentController.setChapter = null;
+                  contentController.setVerse = null;
                 }
               })),
+      //FIXME: When the app loads, populate the chapter indexes
       DropdownButton(
           underline: const SizedBox(),
           icon: const SizedBox(),
@@ -54,6 +56,7 @@ class BibleNavigator extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(':',
               style: TextStyle(color: lightPrimaryColor, fontSize: fontSize))),
+      //FIXME: When the app loads, populate the verse indexes
       DropdownButton(
           underline: const SizedBox(),
           icon: const SizedBox(),
