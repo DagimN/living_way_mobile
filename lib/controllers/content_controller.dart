@@ -17,6 +17,8 @@ class ContentController extends ChangeNotifier {
   List<Book> bible = [];
   List<String> translations = ["KJV", "NKJV", "ASV", "NASB"];
   Book? book;
+  int? chapter;
+  int? verse;
   String? translation;
 
   ContentController() {
@@ -66,6 +68,16 @@ class ContentController extends ChangeNotifier {
 
   set setBook(Book value) {
     book = value;
+    notifyListeners();
+  }
+
+  set setChapter(int? value) {
+    chapter = value;
+    notifyListeners();
+  }
+
+  set setVerse(int? value) {
+    verse = value;
     notifyListeners();
   }
 }
