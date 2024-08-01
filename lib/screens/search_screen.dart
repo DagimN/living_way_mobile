@@ -13,6 +13,7 @@ class SearchScreen extends StatelessWidget {
       Container(
           margin: const EdgeInsets.all(10),
           child: TextField(
+              autofocus: true,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(35)),
