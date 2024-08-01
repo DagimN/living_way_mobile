@@ -15,7 +15,9 @@ class ContentController extends ChangeNotifier {
   List<ThreadData> threads = content.threads;
   ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
   List<Book> bible = [];
+  List<String> translations = ["KJV", "NKJV", "ASV", "NASB"];
   Book? book;
+  String? translation;
 
   ContentController() {
     loadJson('assets/data/en_kjv.json').then((data) {
@@ -54,6 +56,11 @@ class ContentController extends ChangeNotifier {
 
   set setCommentingThreadKey(GlobalKey? value) {
     commentingThreadKeyNotifier.value = value;
+    notifyListeners();
+  }
+
+  set setTranslation(String value) {
+    translation = value;
     notifyListeners();
   }
 

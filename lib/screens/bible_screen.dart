@@ -16,20 +16,54 @@ class BibleScreen extends StatelessWidget {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      DropdownButton(
-                          value: contentController.book ??
-                              contentController.bible[0],
-                          items: contentController.bible
-                              .map((book) => DropdownMenuItem(
-                                  value: book, child: Text(book.name)))
-                              .toList(),
-                          onChanged: (value) {
-                            if (value != null) {
-                              contentController.setBook = value;
-                            }
-                          })
-                    ]),
-              )
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DropdownButton(
+                                value: contentController.book ??
+                                    contentController.bible[0],
+                                items: contentController.bible
+                                    .map((book) => DropdownMenuItem(
+                                        value: book, child: Text(book.name)))
+                                    .toList(),
+                                onChanged: (value) {
+                                  if (value != null) {
+                                    contentController.setBook = value;
+                                  }
+                                }),
+                            Row(children: [
+                              PopupMenuButton<String>(
+                                  initialValue: contentController.translation ??
+                                      contentController.translations.first,
+                                  child: Container(
+                                      width: 50,
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                          color: const Color(0xFFD9D9D9),
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: Center(
+                                          child: Text(contentController.translation ?? contentController.translations.first,
+                                              style: const TextStyle(
+                                                  color: lightPrimaryColor,
+                                                  fontWeight: FontWeight.w700,
+                                                  fontSize: 10)))),
+                                  itemBuilder: (context) => contentController
+                                      .translations
+                                      .map<PopupMenuItem<String>>(
+                                          (translation) => PopupMenuItem(
+                                              onTap: () => contentController
+                                                  .setTranslation = translation,
+                                              child: Text(translation, style: const TextStyle(color: lightPrimaryColor))))
+                                      .toList()),
+                              IconButton(
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                      Icons.notifications_none_rounded,
+                                      color: lightPrimaryColor))
+                            ])
+                          ])
+                    ]))
             : const Center(
                 child: CircularProgressIndicator(color: lightPrimaryColor)));
   }
