@@ -28,6 +28,7 @@ class _BibleScreenState extends State<BibleScreen>
     final selectedChapter = contentController.chapter ?? 0;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    Orientation orientation = MediaQuery.of(context).orientation;
     List<GlobalKey> verseKeys = List.generate(
         selectedBook?.chapters[selectedChapter].length ?? 0,
         (index) => GlobalKey());
@@ -52,18 +53,26 @@ class _BibleScreenState extends State<BibleScreen>
                                       !isBibleNavigatorVisible;
                                 });
                               },
-                              child: Row(children: [
-                                Text(
-                                    '${selectedBook?.name} ${selectedChapter + 1}',
-                                    style: const TextStyle(
-                                        color: lightPrimaryColor,
-                                        fontSize: 24)),
-                                Icon(
-                                    isBibleNavigatorVisible
-                                        ? Icons.arrow_drop_up_rounded
-                                        : Icons.arrow_drop_down_rounded,
-                                    color: lightPrimaryColor)
-                              ])),
+                              child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Container(
+                                        constraints: BoxConstraints(
+                                            maxWidth: orientation ==
+                                                    Orientation.portrait
+                                                ? screenWidth * .5
+                                                : screenWidth * .25),
+                                        child: Text(
+                                            '${selectedBook?.name} ${selectedChapter + 1}',
+                                            style: const TextStyle(
+                                                color: lightPrimaryColor,
+                                                fontSize: 20))),
+                                    Icon(
+                                        isBibleNavigatorVisible
+                                            ? Icons.arrow_drop_up_rounded
+                                            : Icons.arrow_drop_down_rounded,
+                                        color: lightPrimaryColor)
+                                  ])),
                           Row(children: [
                             PopupMenuButton<String>(
                                 initialValue: contentController.translation ??
@@ -105,8 +114,10 @@ class _BibleScreenState extends State<BibleScreen>
                     builder: (context, child) {
                       return Container(
                           width: screenWidth,
-                          height:
-                              (screenHeight * .075) * animationController.value,
+                          height: (orientation == Orientation.portrait
+                                  ? screenHeight * .075
+                                  : screenWidth * .075) *
+                              animationController.value,
                           color: lightPrimaryPanelColor,
                           padding: const EdgeInsets.all(10),
                           child: const BibleNavigator());
@@ -117,33 +128,34 @@ class _BibleScreenState extends State<BibleScreen>
                         child: SingleChildScrollView(
                             controller: layoutController.scrollController,
                             child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children:
                                     (selectedBook?.chapters[selectedChapter] ??
                                             [])
                                         .map((verse) {
-                              final index =
-                                  (selectedBook?.chapters[selectedChapter] ??
+                                  final index = (selectedBook
+                                              ?.chapters[selectedChapter] ??
                                           [])
                                       .indexOf(verse);
 
-                              return Container(
-                                margin:
-                                    const EdgeInsets.symmetric(vertical: 10),
-                                child: RichText(
-                                    key: verseKeys[index],
-                                    text: TextSpan(children: [
-                                      WidgetSpan(
-                                          child: Text('${index + 1} ',
-                                              style: const TextStyle(
-                                                  color: lightPrimaryColor,
-                                                  fontSize: 24))),
-                                      TextSpan(
-                                          text: verse,
-                                          style: const TextStyle(
-                                              color: Colors.black))
-                                    ])),
-                              );
-                            }).toList()))))
+                                  return Container(
+                                      margin: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: RichText(
+                                          key: verseKeys[index],
+                                          text: TextSpan(children: [
+                                            WidgetSpan(
+                                                child: Text('${index + 1} ',
+                                                    style: const TextStyle(
+                                                        color:
+                                                            lightPrimaryColor,
+                                                        fontSize: 24))),
+                                            TextSpan(
+                                                text: verse,
+                                                style: const TextStyle(
+                                                    color: Colors.black))
+                                          ])));
+                                }).toList()))))
               ])
             : const Center(
                 child: CircularProgressIndicator(color: lightPrimaryColor)));

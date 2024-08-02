@@ -29,7 +29,7 @@ class BibleNavigator extends StatelessWidget {
               value: contentController.book ?? contentController.bible[0],
               style: const TextStyle(color: Colors.white),
               dropdownColor: const Color(0xFF7562AA),
-              padding: const EdgeInsets.only(left: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 10),
               items: contentController.bible
                   .map((book) =>
                       DropdownMenuItem(value: book, child: Text(book.name)))
