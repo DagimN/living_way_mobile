@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:living_way/screens/activity_screen.dart';
 import 'package:living_way/screens/BibleScreen/index.dart';
 import 'package:living_way/screens/DevotionScreen/index.dart';
@@ -15,6 +16,8 @@ enum HomePageNavigation {
 
 class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
+  List<GlobalKey> verseKeys = [];
+  final scrollController = ScrollController();
 
   HomePageNavigation get getSelectedHomePageNavigation =>
       _selectedHomePageNavigation;
@@ -36,8 +39,24 @@ class LayoutController extends ChangeNotifier {
     }
   }
 
+  void scrollToTop() {
+    scrollController.animateTo(0,
+        curve: Curves.easeInOut, duration: const Duration(milliseconds: 500));
+  }
+
+  void scrollToVerse(GlobalKey verseKey) {
+    if (verseKey.currentContext != null) {
+      Scrollable.ensureVisible(verseKey.currentContext!,
+          curve: Curves.easeInOut, duration: const Duration(milliseconds: 500));
+    }
+  }
+
   set setSelectedHomePageNavigation(HomePageNavigation value) {
     _selectedHomePageNavigation = value;
     notifyListeners();
+  }
+
+  set setVerseKeys(List<GlobalKey> keys) {
+    verseKeys = keys;
   }
 }
