@@ -18,6 +18,11 @@ class _BibleScreenState extends State<BibleScreen>
   final scrollController = ScrollController();
   late AnimationController animationController = AnimationController(
       vsync: this, duration: const Duration(milliseconds: 300));
+  late AnimationController verseHighlightController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 300),
+      lowerBound: 0.3,
+      value: 1);
   bool isBibleNavigatorVisible = false;
 
   @override
@@ -27,6 +32,7 @@ class _BibleScreenState extends State<BibleScreen>
     final selectedBook =
         contentController.book ?? contentController.bible.firstOrNull;
     final selectedChapter = contentController.chapter ?? 0;
+    final selectedVerse = contentController.verse;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -34,6 +40,7 @@ class _BibleScreenState extends State<BibleScreen>
         selectedBook?.chapters[selectedChapter].length ?? 0,
         (index) => GlobalKey());
     layoutController.setVerseKeys = verseKeys;
+    layoutController.setVerseAnimationController = verseHighlightController;
 
     return SafeArea(
         child: contentController.bible.isNotEmpty
@@ -114,23 +121,40 @@ class _BibleScreenState extends State<BibleScreen>
                                           [])
                                       .indexOf(verse);
 
-                                  return Container(
-                                      margin: const EdgeInsets.symmetric(
-                                          vertical: 10),
-                                      child: RichText(
-                                          key: verseKeys[index],
-                                          text: TextSpan(children: [
-                                            WidgetSpan(
-                                                child: Text('${index + 1} ',
-                                                    style: const TextStyle(
-                                                        color:
-                                                            lightPrimaryColor,
-                                                        fontSize: 24))),
-                                            TextSpan(
-                                                text: verse,
-                                                style: const TextStyle(
-                                                    color: Colors.black))
-                                          ])));
+                                  return AnimatedBuilder(
+                                      animation: verseHighlightController,
+                                      builder: (context, child) {
+                                        final isSelectedVerse =
+                                            selectedVerse == index;
+
+                                        return Container(
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            child: RichText(
+                                                key: verseKeys[index],
+                                                text: TextSpan(children: [
+                                                  WidgetSpan(
+                                                      child: Text(
+                                                          '${index + 1} ',
+                                                          style: TextStyle(
+                                                              color: isSelectedVerse
+                                                                  ? lightPrimaryColor
+                                                                  : lightPrimaryColor
+                                                                      .withOpacity(
+                                                                          verseHighlightController
+                                                                              .value),
+                                                              fontSize: 24))),
+                                                  TextSpan(
+                                                      text: verse,
+                                                      style: TextStyle(
+                                                          color: isSelectedVerse
+                                                              ? Colors.black
+                                                              : Colors.black
+                                                                  .withOpacity(
+                                                                      verseHighlightController
+                                                                          .value)))
+                                                ])));
+                                      });
                                 }).toList()))))
               ])
             : const Center(

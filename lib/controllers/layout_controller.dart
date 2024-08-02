@@ -18,6 +18,16 @@ class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];
   final scrollController = ScrollController();
+  AnimationController? verseHighlightController;
+
+  LayoutController() {
+    scrollController.addListener(() {
+      if (verseHighlightController != null &&
+          verseHighlightController?.value != 1) {
+        verseHighlightController?.forward();
+      }
+    });
+  }
 
   HomePageNavigation get getSelectedHomePageNavigation =>
       _selectedHomePageNavigation;
@@ -44,10 +54,11 @@ class LayoutController extends ChangeNotifier {
         curve: Curves.easeInOut, duration: const Duration(milliseconds: 500));
   }
 
-  void scrollToVerse(GlobalKey verseKey) {
+  void scrollToVerse(GlobalKey verseKey) async {
     if (verseKey.currentContext != null) {
-      Scrollable.ensureVisible(verseKey.currentContext!,
-          curve: Curves.easeInOut, duration: const Duration(milliseconds: 500));
+      await Scrollable.ensureVisible(verseKey.currentContext!,
+          curve: Curves.easeInOut, duration: const Duration(milliseconds: 700));
+      verseHighlightController?.reverse();
     }
   }
 
@@ -58,5 +69,9 @@ class LayoutController extends ChangeNotifier {
 
   set setVerseKeys(List<GlobalKey> keys) {
     verseKeys = keys;
+  }
+
+  set setVerseAnimationController(AnimationController controller) {
+    verseHighlightController = controller;
   }
 }
