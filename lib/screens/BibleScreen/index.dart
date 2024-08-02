@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/screens/BibleScreen/widgets/bible_navigator.dart';
 import 'package:living_way/themes/light_theme.dart';

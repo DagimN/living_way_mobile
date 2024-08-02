@@ -9,6 +9,9 @@ class BibleNavigator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final selectedBook =
+        contentController.book ?? contentController.bible.first;
+    final selectedChapter = contentController.chapter ?? 0;
     double fontSize = 16.0;
 
     return Row(children: [
@@ -35,16 +38,15 @@ class BibleNavigator extends StatelessWidget {
                   contentController.setVerse = null;
                 }
               })),
-      //FIXME: When the app loads, populate the chapter indexes
       DropdownButton(
           underline: const SizedBox(),
           icon: const SizedBox(),
           value: contentController.chapter ?? 0,
           style: TextStyle(color: lightPrimaryColor, fontSize: fontSize),
           dropdownColor: lightPrimaryPanelColor,
-          items: contentController.book?.chapters.map((chapter) {
+          items: selectedBook.chapters.map((chapter) {
             final index =
-                contentController.book?.chapters.indexOf(chapter) ?? 0;
+                selectedBook.chapters.indexOf(chapter);
             return DropdownMenuItem(
                 value: index, child: Text((index + 1).toString()));
           }).toList(),
@@ -56,20 +58,16 @@ class BibleNavigator extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(':',
               style: TextStyle(color: lightPrimaryColor, fontSize: fontSize))),
-      //FIXME: When the app loads, populate the verse indexes
       DropdownButton(
           underline: const SizedBox(),
           icon: const SizedBox(),
           value: contentController.verse ?? 0,
           style: TextStyle(color: lightPrimaryColor, fontSize: fontSize),
           dropdownColor: lightPrimaryPanelColor,
-          items: contentController
-              .book?.chapters[contentController.chapter ?? 0]
+          items: selectedBook.chapters[selectedChapter]
               .map((verse) {
-            final index = contentController
-                    .book?.chapters[contentController.chapter ?? 0]
-                    .indexOf(verse) ??
-                0;
+            final index = selectedBook.chapters[selectedChapter]
+                    .indexOf(verse);
             return DropdownMenuItem(
                 value: index, child: Text((index + 1).toString()));
           }).toList(),
