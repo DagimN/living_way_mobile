@@ -6,6 +6,7 @@ const lightPrimaryPaleColor = Color(0xFF847AA0);
 const lightPrimaryPanelColor = Color(0xFFF6F0FF);
 const lightPrimaryButtonColor = Color(0xFFB6A3E7);
 const lightInactiveColor = Color(0xFF343635);
+const lightPendingColor = Color(0xFFACA295);
 
 //? Gradients
 const lightBackgroundGradient = LinearGradient(

@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
 import 'package:living_way/models/book.dart';
 import 'package:living_way/models/thread.dart';
+import 'package:living_way/models/translation.dart';
 import 'package:living_way/utils/load_json.dart';
 
 class ContentController extends ChangeNotifier {
@@ -15,11 +16,16 @@ class ContentController extends ChangeNotifier {
   List<ThreadData> threads = content.threads;
   ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
   List<Book> bible = [];
-  List<String> translations = ["KJV", "NKJV", "ASV", "NASB"];
+  List<Translation> translations = [
+    Translation(name: "KJV", isAvailabe: true),
+    Translation(name: "NKJV", downloadUrl: ""),
+    Translation(name: "ASV"),
+    Translation(name: "NASB")
+  ];
   Book? book;
   int? chapter;
   int? verse;
-  String? translation;
+  Translation? translation;
 
   ContentController() {
     loadJson('assets/data/en_kjv.json').then((data) {
@@ -61,7 +67,7 @@ class ContentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  set setTranslation(String value) {
+  set setTranslation(Translation value) {
     translation = value;
     notifyListeners();
   }
