@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/widgets/bible_traverser.dart';
 import 'package:living_way/widgets/bottom_navigation_item.dart';
-import 'dart:math' as math;
-
 import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
@@ -51,29 +49,7 @@ class BottomNavigation extends StatelessWidget {
                             icon: Image.asset(AppImages.profilePlaceholder,
                                 height: 24))
                       ]))),
-          Positioned(
-              left: screenWidth * .43,
-              child: Transform.rotate(
-                  angle: math.pi / 4,
-                  child: SizedBox(
-                      height: 48,
-                      width: 48,
-                      child: IconButton(
-                          style: IconButton.styleFrom(
-                              backgroundColor: lightPrimaryColor,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(10))),
-                          onPressed: () {
-                            layoutController.setSelectedHomePageNavigation =
-                                HomePageNavigation.bible;
-                          },
-                          icon: Transform.rotate(
-                              angle: -(math.pi / 4),
-                              child: SvgPicture.asset(AppIcons.bible,
-                                  height: 20,
-                                  width: 20,
-                                  colorFilter: const ColorFilter.mode(
-                                      Colors.white, BlendMode.srcIn)))))))
+          const BibleTraverser()
         ]));
   }
 }
