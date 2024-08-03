@@ -19,6 +19,7 @@ class LayoutController extends ChangeNotifier {
   List<GlobalKey> verseKeys = [];
   final scrollController = ScrollController();
   AnimationController? verseHighlightController;
+  AnimationController? bibleTraverseController;
 
   LayoutController() {
     scrollController.addListener(() {
@@ -63,7 +64,14 @@ class LayoutController extends ChangeNotifier {
   }
 
   set setSelectedHomePageNavigation(HomePageNavigation value) {
+    if (value == HomePageNavigation.bible) {
+      bibleTraverseController?.forward();
+    } else {
+      bibleTraverseController?.reverse();
+    }
+
     _selectedHomePageNavigation = value;
+
     notifyListeners();
   }
 
@@ -73,5 +81,9 @@ class LayoutController extends ChangeNotifier {
 
   set setVerseAnimationController(AnimationController controller) {
     verseHighlightController = controller;
+  }
+
+  set setBibleTraverserAnimationController(AnimationController controller) {
+    bibleTraverseController = controller;
   }
 }

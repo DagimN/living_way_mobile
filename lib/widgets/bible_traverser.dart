@@ -14,8 +14,12 @@ class BibleTraverser extends StatefulWidget {
   _BibleTraverserState createState() => _BibleTraverserState();
 }
 
-class _BibleTraverserState extends State<BibleTraverser> {
-  //TODO: Implement expanding animation for traversing buttons
+class _BibleTraverserState extends State<BibleTraverser>
+    with TickerProviderStateMixin {
+  late final animationController = AnimationController(
+      vsync: this, duration: const Duration(milliseconds: 200), value: 1);
+  late final widthAnimation =
+      Tween(begin: 72.0, end: 144.0).animate(animationController);
 
   @override
   Widget build(BuildContext context) {
@@ -30,54 +34,72 @@ class _BibleTraverserState extends State<BibleTraverser> {
     final isFirst = chapter == 0;
     final isLast = chapter == (selectedBook?.chapters.length ?? 0) - 1;
 
-    return Align(
-        alignment: Alignment.topCenter,
-        child: SizedBox(
-            height: 56,
-            width: isTraversing ? 144 : 72,
-            child: CustomPaint(
-                painter: _DiamondPainter(
-                    isTraversing: isTraversing, borderRadius: 10),
-                child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      if (isTraversing)
-                        IconButton(
-                            style:
-                                IconButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {
-                              if (!isFirst) {
-                                contentController.setChapter = chapter - 1;
-                              }
-                            },
-                            icon: Icon(Icons.arrow_back_ios_rounded,
-                                size: 14,
-                                color: isFirst ? Colors.grey : Colors.white)),
-                      IconButton(
-                          style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                          onPressed: () {
-                            layoutController.setSelectedHomePageNavigation =
-                                HomePageNavigation.bible;
-                          },
-                          icon: SvgPicture.asset(AppIcons.bible,
-                              height: 20,
-                              width: 20,
-                              colorFilter: const ColorFilter.mode(
-                                  Colors.white, BlendMode.srcIn))),
-                      if (isTraversing)
-                        IconButton(
-                            style:
-                                IconButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {
-                              if (!isLast) {
-                                contentController.setChapter = chapter + 1;
-                              }
-                            },
-                            icon: Icon(Icons.arrow_forward_ios_rounded,
-                                size: 14,
-                                color: isLast ? Colors.grey : Colors.white))
-                    ]))));
+    layoutController.setBibleTraverserAnimationController = animationController;
+
+    return AnimatedBuilder(
+        animation: widthAnimation,
+        builder: (context, child) {
+          return Align(
+              alignment: Alignment.topCenter,
+              child: SizedBox(
+                  height: 56,
+                  width: widthAnimation.value,
+                  child: CustomPaint(
+                      painter: _DiamondPainter(
+                          isTraversing: isTraversing, borderRadius: 9),
+                      child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (isTraversing)
+                              Expanded(
+                                child: IconButton(
+                                    style: IconButton.styleFrom(
+                                        padding: EdgeInsets.zero),
+                                    onPressed: () {
+                                      if (!isFirst) {
+                                        contentController.setChapter =
+                                            chapter - 1;
+                                      }
+                                    },
+                                    icon: Icon(Icons.arrow_back_ios_rounded,
+                                        size: 14,
+                                        color: isFirst
+                                            ? Colors.grey
+                                            : Colors.white)),
+                              ),
+                            IconButton(
+                                style: IconButton.styleFrom(
+                                    padding: EdgeInsets.zero),
+                                onPressed: () {
+                                  layoutController
+                                          .setSelectedHomePageNavigation =
+                                      HomePageNavigation.bible;
+                                },
+                                icon: SvgPicture.asset(AppIcons.bible,
+                                    height: 20,
+                                    width: 20,
+                                    colorFilter: const ColorFilter.mode(
+                                        Colors.white, BlendMode.srcIn))),
+                            if (isTraversing)
+                              Expanded(
+                                child: IconButton(
+                                    style: IconButton.styleFrom(
+                                        padding: EdgeInsets.zero),
+                                    onPressed: () {
+                                      if (!isLast) {
+                                        contentController.setChapter =
+                                            chapter + 1;
+                                      }
+                                    },
+                                    icon: Icon(Icons.arrow_forward_ios_rounded,
+                                        size: 14,
+                                        color: isLast
+                                            ? Colors.grey
+                                            : Colors.white)),
+                              )
+                          ]))));
+        });
   }
 }
 
