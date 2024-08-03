@@ -15,7 +15,7 @@ class BottomNavigation extends StatelessWidget {
     final layoutController = Provider.of<LayoutController>(context);
 
     return SizedBox(
-        height: 100,
+        height: 103,
         child: Stack(children: [
           Positioned(
               bottom: 0,
