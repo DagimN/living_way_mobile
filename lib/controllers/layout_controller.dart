@@ -17,6 +17,12 @@ enum HomePageNavigation {
 class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];
+  final List<Map<String, String>> settingsNavigation = [
+    {'name': "General Settings", 'route': '/settings'},
+    {'name': "Profile", 'route': '/profile'},
+    {'name': "Donations", 'route': '/donation'},
+    {'name': "About", 'route': '/about'}
+  ];
   final scrollController = ScrollController();
   AnimationController? verseHighlightController;
   AnimationController? bibleTraverseController;

@@ -83,21 +83,21 @@ class _BibleTraverserState extends State<BibleTraverser>
                                         Colors.white, BlendMode.srcIn))),
                             if (isTraversing)
                               Expanded(
-                                child: IconButton(
-                                    style: IconButton.styleFrom(
-                                        padding: EdgeInsets.zero),
-                                    onPressed: () {
-                                      if (!isLast) {
-                                        contentController.setChapter =
-                                            chapter + 1;
-                                      }
-                                    },
-                                    icon: Icon(Icons.arrow_forward_ios_rounded,
-                                        size: 14,
-                                        color: isLast
-                                            ? Colors.grey
-                                            : Colors.white)),
-                              )
+                                  child: IconButton(
+                                      style: IconButton.styleFrom(
+                                          padding: EdgeInsets.zero),
+                                      onPressed: () {
+                                        if (!isLast) {
+                                          contentController.setChapter =
+                                              chapter + 1;
+                                        }
+                                      },
+                                      icon: Icon(
+                                          Icons.arrow_forward_ios_rounded,
+                                          size: 14,
+                                          color: isLast
+                                              ? Colors.grey
+                                              : Colors.white)))
                           ]))));
         });
   }

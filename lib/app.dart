@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/screens/Settings/about_screen.dart';
+import 'package:living_way/screens/Settings/donation_screen.dart';
+import 'package:living_way/screens/Settings/profile_settings_screen.dart';
+import 'package:living_way/screens/Settings/settings_screen.dart';
 import 'package:living_way/screens/home.dart';
 import 'package:living_way/screens/search_screen.dart';
 import 'package:living_way/themes/dark_theme.dart';
@@ -26,8 +30,12 @@ class LivingWayApp extends StatelessWidget {
             darkTheme: darkTheme,
             initialRoute: '/home',
             routes: {
-              '/home':(context) => const HomeScreen(),
-              '/search': (context) => const SearchScreen()
+              '/home': (context) => const HomeScreen(),
+              '/search': (context) => const SearchScreen(),
+              '/settings': (context) => const SettingsScreen(),
+              '/profile': (context) => const ProfileSettingsScreen(),
+              '/about': (context) => const AboutScreen(),
+              '/donation': (context) => const DonationScreen()
             }));
   }
 }
