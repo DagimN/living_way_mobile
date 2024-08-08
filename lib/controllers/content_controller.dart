@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
+import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/models/book.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/translation.dart';
@@ -22,6 +23,21 @@ class ContentController extends ChangeNotifier {
     Translation(name: "ASV"),
     Translation(name: "NASB")
   ];
+  List<ActivityContent> activityList = [
+    ActivityContent(
+        type: ContentType.article,
+        timestamp: DateTime.now().add(const Duration(days: 1))),
+    ActivityContent(
+        type: ContentType.external,
+        timestamp: DateTime.now().add(const Duration(days: 1))),
+    ActivityContent(
+        type: ContentType.gallery,
+        timestamp: DateTime.now().add(const Duration(days: 1))),
+    ActivityContent(
+        type: ContentType.poll,
+        timestamp: DateTime.now().add(const Duration(days: 1)))
+  ];
+
   Book? book;
   int? chapter;
   int? verse;

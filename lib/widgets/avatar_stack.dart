@@ -2,12 +2,12 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 class AvatarStack extends StatefulWidget {
-  final GlobalKey threadKey;
+  final GlobalKey containerKey;
   final int participantCount;
   final bool isLast;
   const AvatarStack(
       {super.key,
-      required this.threadKey,
+      required this.containerKey,
       required this.participantCount,
       this.isLast = false});
 
@@ -24,10 +24,10 @@ class _AvatarStackState extends State<AvatarStack> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (threadContainerHeight == null && !widget.isLast) {
         setState(() {
-          threadContainerHeight =
-              (widget.threadKey.currentContext!.findRenderObject() as RenderBox)
-                  .size
-                  .height;
+          threadContainerHeight = (widget.containerKey.currentContext!
+                  .findRenderObject() as RenderBox)
+              .size
+              .height;
         });
       }
     });

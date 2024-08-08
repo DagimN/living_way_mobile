@@ -3,7 +3,7 @@ import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
-import 'package:living_way/screens/TopicScreen/widgets/avatar_stack.dart';
+import 'package:living_way/widgets/avatar_stack.dart';
 import 'package:living_way/screens/TopicScreen/widgets/comment_box.dart';
 import 'package:provider/provider.dart';
 
@@ -64,7 +64,7 @@ class _ThreadState extends State<Thread> {
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AvatarStack(
-              threadKey: threadKey,
+              containerKey: threadKey,
               participantCount:
                   !widget.isTop ? widget.data.subThreads.length + 1 : 1,
               isLast: widget.isLast),
