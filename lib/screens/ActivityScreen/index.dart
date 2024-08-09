@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/event.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/external_link.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/gallery.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/poll.dart';
@@ -48,14 +49,17 @@ class ActivityScreen extends StatelessWidget {
                     childWidget = const Poll();
                   case ContentType.external:
                     childWidget = const ExternalLink();
+                  case ContentType.event:
+                    childWidget = const Event();
                   default:
                     childWidget = const SizedBox();
                 }
 
                 return TimelineContainer(
                     title: content.title ?? '',
-                    timestamp: content.timestamp,
+                    timestamp: content.upcomingDate ?? content.timestamp,
                     isOngoing: content.isOngoing,
+                    type: content.type,
                     isLast: index == contentController.activityList.length - 1,
                     child: childWidget);
               }))

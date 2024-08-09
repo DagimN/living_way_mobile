@@ -26,7 +26,7 @@ class ContentController extends ChangeNotifier {
   List<ActivityContent> activityList = [
     ActivityContent(
         isOngoing: true,
-        type: ContentType.article,
+        type: ContentType.event,
         timestamp: DateTime.now().subtract(const Duration(days: 1))),
     ActivityContent(
         type: ContentType.article,

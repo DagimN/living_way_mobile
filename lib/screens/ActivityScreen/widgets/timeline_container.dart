@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:living_way/models/activity_content.dart';
+import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/utils/format_time.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 
@@ -7,12 +9,14 @@ class TimelineContainer extends StatelessWidget {
   final String title;
   final DateTime timestamp;
   final Widget child;
+  final ContentType type;
   final bool isOngoing;
   final bool isLast;
   const TimelineContainer(
       {super.key,
       required this.title,
       required this.child,
+      required this.type,
       required this.timestamp,
       required this.isOngoing,
       this.isLast = false});
@@ -23,12 +27,29 @@ class TimelineContainer extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
+    IconData getIcon() {
+      switch (type) {
+        case ContentType.external:
+          return Icons.link;
+        case ContentType.poll:
+          return Icons.poll;
+        case ContentType.gallery:
+          return Icons.photo;
+        case ContentType.article:
+          return Icons.article;
+        default:
+          return Icons.calendar_month;
+      }
+    }
+
     return Container(
         key: timelineKey,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AvatarStack(
-              containerKey: timelineKey, participantCount: 1, isLast: isLast),
+              containerKey: timelineKey,
+              icon: Icon(getIcon(), color: lightPrimaryColor),
+              isLast: isLast),
           Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             SizedBox(
                 width: orientation == Orientation.portrait
@@ -39,17 +60,18 @@ class TimelineContainer extends StatelessWidget {
                     children: [
                       Text(title, style: const TextStyle(fontSize: 14)),
                       Tooltip(
-                        message: DateFormat("MMMM d, y 'at' h':'m a")
-                            .format(timestamp),
-                        triggerMode: TooltipTriggerMode.tap,
-                        child: Text(
-                            !isOngoing ? formatDateTime(timestamp) : 'Ongoing',
-                            style: TextStyle(
-                                fontSize: 8,
-                                fontStyle: FontStyle.italic,
-                                fontWeight:
-                                    isOngoing ? FontWeight.bold : null)),
-                      )
+                          message: DateFormat("MMMM d, y 'at' h':'m a")
+                              .format(timestamp),
+                          triggerMode: TooltipTriggerMode.tap,
+                          child: Text(
+                              !isOngoing
+                                  ? formatDateTime(timestamp)
+                                  : 'Ongoing',
+                              style: TextStyle(
+                                  fontSize: 8,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight:
+                                      isOngoing ? FontWeight.bold : null)))
                     ])),
             const SizedBox(height: 24),
             child

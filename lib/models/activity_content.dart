@@ -4,6 +4,7 @@ class ActivityContent {
   final List<String> images;
   final ContentType type;
   final DateTime timestamp;
+  final DateTime? upcomingDate;
   final bool isOngoing;
   final String? externalLink;
   final Banner? banner;
@@ -15,6 +16,7 @@ class ActivityContent {
       this.externalLink,
       this.banner,
       this.isOngoing = false,
+      this.upcomingDate,
       required this.type,
       required this.timestamp});
 }
@@ -26,9 +28,4 @@ class Banner {
   Banner({required this.position, required this.url});
 }
 
-enum ContentType {
-  gallery,
-  poll,
-  article,
-  external,
-}
+enum ContentType { gallery, poll, article, external, event }
