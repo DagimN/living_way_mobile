@@ -1,7 +1,9 @@
 class ActivityContent {
+  final String id;
   final String? title;
   final String? body;
   final List<String> images;
+  final List<PollOptions> pollOptions;
   final ContentType type;
   final DateTime timestamp;
   final DateTime? upcomingDate;
@@ -13,10 +15,12 @@ class ActivityContent {
       {this.title,
       this.body,
       this.images = const [],
+      this.pollOptions = const [],
       this.externalLink,
       this.banner,
       this.isOngoing = false,
       this.upcomingDate,
+      required this.id,
       required this.type,
       required this.timestamp});
 }
@@ -26,6 +30,13 @@ class Banner {
   String position;
 
   Banner({required this.position, required this.url});
+}
+
+class PollOptions {
+  String title;
+  int votes;
+
+  PollOptions({required this.title, required this.votes});
 }
 
 enum ContentType { gallery, poll, article, external, event }

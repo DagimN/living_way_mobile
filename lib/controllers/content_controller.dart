@@ -25,32 +25,62 @@ class ContentController extends ChangeNotifier {
   ];
   List<ActivityContent> activityList = [
     ActivityContent(
+        id: '1',
         isOngoing: true,
         type: ContentType.event,
         timestamp: DateTime.now().subtract(const Duration(days: 1))),
     ActivityContent(
+        id: '2',
         type: ContentType.article,
         timestamp: DateTime.now().subtract(const Duration(days: 1))),
     ActivityContent(
+        id: '3',
         type: ContentType.article,
         timestamp: DateTime.now().subtract(const Duration(hours: 1))),
     ActivityContent(
+        id: '4',
         type: ContentType.external,
         timestamp: DateTime.now().add(const Duration(hours: 1))),
     ActivityContent(
+        id: '5',
         type: ContentType.gallery,
         timestamp: DateTime.now().add(const Duration(days: 1))),
     ActivityContent(
+        id: '6',
         type: ContentType.poll,
+        title: 'When will you be available?',
+        pollOptions: [
+          PollOptions(title: '10:00 AM', votes: 28),
+          PollOptions(title: '10:30 AM', votes: 8),
+          PollOptions(title: '11:00 AM', votes: 40),
+          PollOptions(title: '12:00 PM', votes: 100)
+        ],
         timestamp: DateTime.now().add(const Duration(days: 2))),
     ActivityContent(
+        id: '7',
         type: ContentType.poll,
+        title: 'What shall we study?',
+        pollOptions: [
+          PollOptions(title: 'Daniel', votes: 28),
+          PollOptions(title: 'Hosea', votes: 8),
+          PollOptions(title: 'Amos', votes: 40),
+          PollOptions(title: 'Micah', votes: 100)
+        ],
         timestamp: DateTime.now().add(const Duration(days: 8))),
     ActivityContent(
+        id: '8',
         type: ContentType.poll,
+        title: "How old are you?",
+        pollOptions: [
+          PollOptions(title: 'less than 18', votes: 28),
+          PollOptions(title: '18 - 30', votes: 8),
+          PollOptions(title: '31 - 50', votes: 40),
+          PollOptions(title: '51 +', votes: 100)
+        ],
         timestamp: DateTime.now().add(const Duration(days: 12))),
     ActivityContent(
-        type: ContentType.poll,
+        id: '9',
+        type: ContentType.event,
         timestamp: DateTime.now().add(const Duration(days: 720)))
   ];
 

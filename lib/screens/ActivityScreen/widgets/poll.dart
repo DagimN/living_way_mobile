@@ -1,21 +1,31 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_polls/flutter_polls.dart';
+import 'package:living_way/models/activity_content.dart';
+import 'package:living_way/themes/light_theme.dart';
 
 class Poll extends StatelessWidget {
-  const Poll({super.key});
+  final ActivityContent content;
+  const Poll({required this.content, super.key});
 
   @override
   Widget build(BuildContext context) {
-    double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    return Container(
+    return SizedBox(
         width: orientation == Orientation.portrait
             ? screenWidth * .75
             : screenWidth * .85,
-        height: screenHeight * .15,
-        decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(20)),
-        child: Center(child: Text('Poll')));
+        child: FlutterPolls(
+            pollId: content.id,
+            leadingVotedProgessColor: lightPrimaryColor,
+            pollTitle: const Text(""),
+            pollOptions: content.pollOptions
+                .map((option) =>
+                    PollOption(title: Text(option.title), votes: option.votes))
+                .toList(),
+            onVoted: (pollOption, newTotalVotes) {
+              return Future.value(true);
+            }));
   }
 }

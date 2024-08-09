@@ -73,7 +73,7 @@ class TimelineContainer extends StatelessWidget {
                                   fontWeight:
                                       isOngoing ? FontWeight.bold : null)))
                     ])),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             child
           ])
         ]));
