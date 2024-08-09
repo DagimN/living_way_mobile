@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:intl/intl.dart';
 import 'package:living_way/utils/format_time.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 
@@ -38,11 +38,18 @@ class TimelineContainer extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(title, style: const TextStyle(fontSize: 14)),
-                      Text(!isOngoing ? formatDateTime(timestamp) : 'Ongoing',
-                          style: TextStyle(
-                              fontSize: 8,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: isOngoing ? FontWeight.bold : null))
+                      Tooltip(
+                        message: DateFormat("MMMM d, y 'at' h':'m a")
+                            .format(timestamp),
+                        triggerMode: TooltipTriggerMode.tap,
+                        child: Text(
+                            !isOngoing ? formatDateTime(timestamp) : 'Ongoing',
+                            style: TextStyle(
+                                fontSize: 8,
+                                fontStyle: FontStyle.italic,
+                                fontWeight:
+                                    isOngoing ? FontWeight.bold : null)),
+                      )
                     ])),
             const SizedBox(height: 24),
             child
