@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:living_way/utils/format_time.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 
@@ -19,6 +20,8 @@ class TimelineContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     GlobalKey timelineKey = GlobalKey();
+    double screenWidth = MediaQuery.of(context).size.width;
+    Orientation orientation = MediaQuery.of(context).orientation;
 
     return Container(
         key: timelineKey,
@@ -26,15 +29,21 @@ class TimelineContainer extends StatelessWidget {
         child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
           AvatarStack(
               containerKey: timelineKey, participantCount: 1, isLast: isLast),
-          Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-            Row(children: [
-              Text(title, style: const TextStyle(fontSize: 14)),
-              Text(!isOngoing ? formatDateTime(timestamp) : 'Ongoing',
-                  style: TextStyle(
-                      fontSize: 8,
-                      fontStyle: FontStyle.italic,
-                      fontWeight: isOngoing ? FontWeight.bold : null))
-            ]),
+          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            SizedBox(
+                width: orientation == Orientation.portrait
+                    ? screenWidth * .75
+                    : screenWidth * .85,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(title, style: const TextStyle(fontSize: 14)),
+                      Text(!isOngoing ? formatDateTime(timestamp) : 'Ongoing',
+                          style: TextStyle(
+                              fontSize: 8,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: isOngoing ? FontWeight.bold : null))
+                    ])),
             const SizedBox(height: 24),
             child
           ])

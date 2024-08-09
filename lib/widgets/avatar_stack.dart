@@ -22,7 +22,7 @@ class _AvatarStackState extends State<AvatarStack> {
   @override
   Widget build(BuildContext context) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (threadContainerHeight == null && !widget.isLast) {
+      if (threadContainerHeight == null && !widget.isLast && mounted) {
         setState(() {
           threadContainerHeight = (widget.containerKey.currentContext!
                   .findRenderObject() as RenderBox)

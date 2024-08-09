@@ -7,9 +7,12 @@ class Poll extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
+    Orientation orientation = MediaQuery.of(context).orientation;
 
     return Container(
-        width: screenWidth * .75,
+        width: orientation == Orientation.portrait
+            ? screenWidth * .75
+            : screenWidth * .85,
         height: screenHeight * .15,
         decoration: BoxDecoration(
             color: Colors.grey, borderRadius: BorderRadius.circular(20)),
