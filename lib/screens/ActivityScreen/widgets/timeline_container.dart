@@ -1,16 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/utils/format_time.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 
 class TimelineContainer extends StatelessWidget {
   final String title;
   final DateTime timestamp;
   final Widget child;
+  final bool isOngoing;
   final bool isLast;
   const TimelineContainer(
       {super.key,
       required this.title,
       required this.child,
       required this.timestamp,
+      required this.isOngoing,
       this.isLast = false});
 
   @override
@@ -26,7 +29,11 @@ class TimelineContainer extends StatelessWidget {
           Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
             Row(children: [
               Text(title, style: const TextStyle(fontSize: 14)),
-              Text(timestamp.toString(), style: const TextStyle(fontSize: 8))
+              Text(!isOngoing ? formatDateTime(timestamp) : 'Ongoing',
+                  style: TextStyle(
+                      fontSize: 8,
+                      fontStyle: FontStyle.italic,
+                      fontWeight: isOngoing ? FontWeight.bold : null))
             ]),
             const SizedBox(height: 24),
             child

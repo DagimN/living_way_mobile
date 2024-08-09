@@ -4,6 +4,7 @@ class ActivityContent {
   final List<String> images;
   final ContentType type;
   final DateTime timestamp;
+  final bool isOngoing;
   final String? externalLink;
   final Banner? banner;
 
@@ -13,6 +14,7 @@ class ActivityContent {
       this.images = const [],
       this.externalLink,
       this.banner,
+      this.isOngoing = false,
       required this.type,
       required this.timestamp});
 }

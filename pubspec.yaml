@@ -45,6 +45,7 @@ dependencies:
   url_launcher: ^6.3.0
   flutter_polls: ^0.1.6
   image_preview: ^1.1.0
+  intl: ^0.19.0
 
 dev_dependencies:
   flutter_test:

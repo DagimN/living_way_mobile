@@ -55,6 +55,7 @@ class ActivityScreen extends StatelessWidget {
                 return TimelineContainer(
                     title: content.title ?? '',
                     timestamp: content.timestamp,
+                    isOngoing: content.isOngoing,
                     isLast: index == contentController.activityList.length - 1,
                     child: childWidget);
               }))

@@ -25,17 +25,33 @@ class ContentController extends ChangeNotifier {
   ];
   List<ActivityContent> activityList = [
     ActivityContent(
+        isOngoing: true,
         type: ContentType.article,
-        timestamp: DateTime.now().add(const Duration(days: 1))),
+        timestamp: DateTime.now().subtract(const Duration(days: 1))),
+    ActivityContent(
+        type: ContentType.article,
+        timestamp: DateTime.now().subtract(const Duration(days: 1))),
+    ActivityContent(
+        type: ContentType.article,
+        timestamp: DateTime.now().subtract(const Duration(hours: 1))),
     ActivityContent(
         type: ContentType.external,
-        timestamp: DateTime.now().add(const Duration(days: 1))),
+        timestamp: DateTime.now().add(const Duration(hours: 1))),
     ActivityContent(
         type: ContentType.gallery,
         timestamp: DateTime.now().add(const Duration(days: 1))),
     ActivityContent(
         type: ContentType.poll,
-        timestamp: DateTime.now().add(const Duration(days: 1)))
+        timestamp: DateTime.now().add(const Duration(days: 2))),
+    ActivityContent(
+        type: ContentType.poll,
+        timestamp: DateTime.now().add(const Duration(days: 8))),
+    ActivityContent(
+        type: ContentType.poll,
+        timestamp: DateTime.now().add(const Duration(days: 12))),
+    ActivityContent(
+        type: ContentType.poll,
+        timestamp: DateTime.now().add(const Duration(days: 720)))
   ];
 
   Book? book;
