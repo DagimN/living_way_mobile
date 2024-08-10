@@ -3,6 +3,7 @@ class ActivityContent {
   final String? title;
   final String? body;
   final List<String> images;
+  final int minimumAllowedViewImages;
   final List<PollOptions> pollOptions;
   final ContentType type;
   final DateTime timestamp;
@@ -15,6 +16,7 @@ class ActivityContent {
       {this.title,
       this.body,
       this.images = const [],
+      this.minimumAllowedViewImages = 5,
       this.pollOptions = const [],
       this.externalLink,
       this.banner,
@@ -22,7 +24,11 @@ class ActivityContent {
       this.upcomingDate,
       required this.id,
       required this.type,
-      required this.timestamp});
+      required this.timestamp}) {
+    if (minimumAllowedViewImages > 5) {
+      throw RangeError('Minimum allowed images should not be more than 5');
+    }
+  }
 }
 
 class Banner {

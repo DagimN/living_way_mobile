@@ -45,6 +45,7 @@ class ContentController extends ChangeNotifier {
         id: '5',
         type: ContentType.gallery,
         title: "“ሕይወት ለዋጭ ወንጌል” የቲቶ መልዕክት ጥናት Week 2",
+        minimumAllowedViewImages: 5,
         images: [
           "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/454445120_515389501026011_2844082436010991590_n.jpg?stp=dst-jpg_e35_s1080x1080&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=w1VBbM8gkfMQ7kNvgFAS0JR&edm=AGenrX8BAAAA&ccb=7-5&oh=00_AYC7ZZyl1MFvB6ipq4zmRYlOEwmm7DZtqQTNqCaYMsPYqA&oe=66BD48E0&_nc_sid=ed990e",
           "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/454339781_823704839502816_8805898697190177090_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgwOS5zZHIuZjI5MzUwIn0&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=HgbQOvJ6ZZ8Q7kNvgEhfITc&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAxMDg0OTg4NA%3D%3D.2-ccb7-5&oh=00_AYAVHSmMSuzWenGrPEjwPS7oawwPm4j3nkoKfDoqio-BIQ&oe=66BD5CBE&_nc_sid=8f1549",

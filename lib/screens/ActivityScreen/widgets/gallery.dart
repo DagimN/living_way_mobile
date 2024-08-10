@@ -5,7 +5,44 @@ import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class Gallery extends StatelessWidget {
   final List<String> images;
-  const Gallery({super.key, required this.images});
+  final int minimumAllowedImagesForView;
+  const Gallery(
+      {super.key,
+      required this.images,
+      required this.minimumAllowedImagesForView});
+
+  List<QuiltedGridTile> generatePattern() {
+    int length = min(minimumAllowedImagesForView, images.length);
+    switch (length) {
+      case 1:
+        return [const QuiltedGridTile(1, 1)];
+      case 2:
+        return [const QuiltedGridTile(1, 1), const QuiltedGridTile(1, 1)];
+      case 3:
+        return [
+          const QuiltedGridTile(1, 2),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 3)
+        ];
+      case 4:
+        return [
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+        ];
+      case 5:
+        return [
+          const QuiltedGridTile(1, 2),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1),
+          const QuiltedGridTile(1, 1)
+        ];
+      default:
+        return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +50,7 @@ class Gallery extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
     final borderRadius = BorderRadius.circular(10);
+    final itemCount = min(minimumAllowedImagesForView, images.length);
 
     return SizedBox(
         width: orientation == Orientation.portrait
@@ -23,18 +61,16 @@ class Gallery extends StatelessWidget {
             physics: const NeverScrollableScrollPhysics(),
             gridDelegate: SliverQuiltedGridDelegate(
                 mainAxisSpacing: 0,
-                crossAxisCount: 3,
-                pattern: [
-                  const QuiltedGridTile(1, 2),
-                  const QuiltedGridTile(1, 1),
-                  const QuiltedGridTile(1, 1),
-                  const QuiltedGridTile(1, 1),
-                  const QuiltedGridTile(1, 1)
-                ]),
-            childrenDelegate: SliverChildBuilderDelegate(
-                childCount: min(5, images.length), (context, index) {
-              final isLast = index == 4;
-              final remaining = images.length - 5;
+                crossAxisCount: itemCount <= 3
+                    ? itemCount
+                    : itemCount == 4
+                        ? 2
+                        : 3,
+                pattern: generatePattern()),
+            childrenDelegate: SliverChildBuilderDelegate(childCount: itemCount,
+                (context, index) {
+              final isLast = index == (minimumAllowedImagesForView - 1);
+              final remaining = images.length - minimumAllowedImagesForView;
               return Stack(fit: StackFit.expand, children: [
                 Container(
                     margin: const EdgeInsets.all(5),
@@ -46,8 +82,13 @@ class Gallery extends StatelessWidget {
                             errorWidget: (context, url, error) => Icon(
                                 Icons.broken_image,
                                 color: Colors.grey[300]),
-                            memCacheHeight: (screenHeight * .3).toInt(),
-                            maxHeightDiskCache: (screenHeight * .3).toInt()))),
+                            memCacheHeight: orientation == Orientation.portrait
+                                ? (screenHeight * .4).toInt()
+                                : (screenWidth * .4).toInt(),
+                            maxHeightDiskCache:
+                                orientation == Orientation.portrait
+                                    ? (screenHeight * .4).toInt()
+                                    : (screenWidth * .4).toInt()))),
                 if (isLast && remaining > 0)
                   Container(
                       margin: const EdgeInsets.all(5),
