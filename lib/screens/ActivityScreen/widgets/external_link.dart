@@ -1,9 +1,10 @@
 import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:living_way/config/paths.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ExternalLink extends StatelessWidget {
   final ActivityContent content;
@@ -12,6 +13,7 @@ class ExternalLink extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
     final borderRadius = BorderRadius.circular(15);
 
@@ -27,14 +29,18 @@ class ExternalLink extends StatelessWidget {
             child: Stack(children: [
               Container(
                   width: 45,
-                  height: 25,
+                  height: 20,
                   decoration: BoxDecoration(boxShadow: [
                     const BoxShadow(
-                        offset: Offset(0, 0),
+                        offset: Offset(0, 5),
                         blurRadius: 36,
                         color: lightSecondaryColor),
                     BoxShadow(
-                        offset: Offset(screenWidth * .58, 24),
+                        offset: Offset(
+                            orientation == Orientation.portrait
+                                ? screenWidth * .58
+                                : screenWidth * .78,
+                            24),
                         blurRadius: 36,
                         color: lightPrimaryColor)
                   ])),
@@ -61,7 +67,40 @@ class ExternalLink extends StatelessWidget {
             ]),
             onPressed: () {
               showModalBottomSheet(
-                  context: context, builder: (context) => Container());
+                  context: context,
+                  builder: (context) => Container(
+                      width: screenWidth,
+                      margin: const EdgeInsets.all(24),
+                      child: SingleChildScrollView(
+                          child: Column(children: [
+                        Text(content.title ?? "",
+                            style: const TextStyle(
+                                fontSize: 14, fontWeight: FontWeight.w500)),
+                        Text(content.body ?? "",
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 12, fontWeight: FontWeight.w300)),
+                        Container(
+                            height: screenHeight * .28,
+                            width: screenHeight * .28,
+                            margin: const EdgeInsets.all(24),
+                            child: PrettyQrView.data(
+                                data: content.externalLink ?? "",
+                                decoration: const PrettyQrDecoration(
+                                    image: PrettyQrDecorationImage(
+                                        image: AssetImage(
+                                            AppImages.logoTransparent))))),
+                        InkWell(
+                            onTap: () {
+                              launchUrl(Uri.parse(content.externalLink ?? ""));
+                            },
+                            child: Text(content.externalLink ?? "",
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(
+                                    color: Colors.blue,
+                                    decoration: TextDecoration.underline))),
+                        //TODO: Add sharing options
+                      ]))));
             }));
   }
 }
