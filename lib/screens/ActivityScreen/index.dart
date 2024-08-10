@@ -51,7 +51,7 @@ class ActivityScreen extends StatelessWidget {
                   case ContentType.poll:
                     childWidget = Poll(content: content);
                   case ContentType.external:
-                    childWidget = const ExternalLink();
+                    childWidget = ExternalLink(content: content);
                   case ContentType.event:
                     childWidget = const Event();
                   default:

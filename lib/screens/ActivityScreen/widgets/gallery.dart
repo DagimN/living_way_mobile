@@ -73,43 +73,42 @@ class Gallery extends StatelessWidget {
               final isLast = index == (minimumAllowedImagesForView - 1);
               final remaining = images.length - minimumAllowedImagesForView;
               return InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ImagesPreview(images: images, initial: index)));
-                },
-                child: Stack(fit: StackFit.expand, children: [
-                  Container(
-                      margin: const EdgeInsets.all(5),
-                      child: ClipRRect(
-                          borderRadius: borderRadius,
-                          child: CachedNetworkImage(
-                              imageUrl: images[index],
-                              fit: BoxFit.cover,
-                              errorWidget: (context, url, error) => Icon(
-                                  Icons.broken_image,
-                                  color: Colors.grey[300]),
-                              memCacheHeight:
-                                  orientation == Orientation.portrait
-                                      ? (screenHeight * .4).toInt()
-                                      : (screenWidth * .4).toInt(),
-                              maxHeightDiskCache:
-                                  orientation == Orientation.portrait
-                                      ? (screenHeight * .4).toInt()
-                                      : (screenWidth * .4).toInt()))),
-                  if (isLast && remaining > 0)
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                ImagesPreview(images: images, initial: index)));
+                  },
+                  child: Stack(fit: StackFit.expand, children: [
                     Container(
                         margin: const EdgeInsets.all(5),
-                        decoration: BoxDecoration(
-                            color: Colors.black.withOpacity(0.2),
-                            borderRadius: borderRadius),
-                        child: Center(
-                            child: Text('+$remaining',
-                                style: const TextStyle(color: Colors.white))))
-                ]),
-              );
+                        child: ClipRRect(
+                            borderRadius: borderRadius,
+                            child: CachedNetworkImage(
+                                imageUrl: images[index],
+                                fit: BoxFit.cover,
+                                errorWidget: (context, url, error) => Icon(
+                                    Icons.broken_image,
+                                    color: Colors.grey[300]),
+                                memCacheHeight:
+                                    orientation == Orientation.portrait
+                                        ? (screenHeight * .4).toInt()
+                                        : (screenWidth * .4).toInt(),
+                                maxHeightDiskCache:
+                                    orientation == Orientation.portrait
+                                        ? (screenHeight * .4).toInt()
+                                        : (screenWidth * .4).toInt()))),
+                    if (isLast && remaining > 0)
+                      Container(
+                          margin: const EdgeInsets.all(5),
+                          decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.2),
+                              borderRadius: borderRadius),
+                          child: Center(
+                              child: Text('+$remaining',
+                                  style: const TextStyle(color: Colors.white))))
+                  ]));
             })));
   }
 }

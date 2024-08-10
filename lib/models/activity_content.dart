@@ -33,9 +33,10 @@ class ActivityContent {
 
 class Banner {
   String url;
+  String thumbnail;
   String position;
 
-  Banner({required this.position, required this.url});
+  Banner({required this.position, required this.thumbnail, required this.url});
 }
 
 class PollOptions {

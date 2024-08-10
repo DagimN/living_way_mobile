@@ -39,6 +39,9 @@ class ContentController extends ChangeNotifier {
         timestamp: DateTime.now().subtract(const Duration(hours: 1))),
     ActivityContent(
         id: '4',
+        title: "For His Glory Questionairre",
+        body: "See you tomorrow at 10:00. Q&A #ለእርሱ_ክብር",
+        externalLink: "https://app.sli.do/event/6T57oAJjVuyHwVXhbUunAY",
         type: ContentType.external,
         timestamp: DateTime.now().add(const Duration(hours: 1))),
     ActivityContent(
