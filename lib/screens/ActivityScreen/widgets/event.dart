@@ -16,6 +16,6 @@ class Event extends StatelessWidget {
         height: screenHeight * .15,
         decoration: BoxDecoration(
             color: Colors.grey, borderRadius: BorderRadius.circular(20)),
-        child: Center(child: Text('Event')));
+        child:  Center(child: Text('Event')));
   }
 }

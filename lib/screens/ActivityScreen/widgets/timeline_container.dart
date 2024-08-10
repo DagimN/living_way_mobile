@@ -58,7 +58,12 @@ class TimelineContainer extends StatelessWidget {
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(title, style: const TextStyle(fontSize: 14)),
+                      SizedBox(
+                          width: screenWidth * .5,
+                          child: Text(title,
+                              maxLines: 5,
+                              style: const TextStyle(
+                                  fontSize: 16, fontWeight: FontWeight.w400))),
                       Tooltip(
                           message: DateFormat("MMMM d, y 'at' h':'m a")
                               .format(timestamp),
