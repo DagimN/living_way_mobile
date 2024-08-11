@@ -18,7 +18,9 @@ class Article extends StatelessWidget {
         width: orientation == Orientation.portrait
             ? screenWidth * .75
             : screenWidth * .85,
-        height: screenHeight * .15,
+        height: orientation == Orientation.portrait
+            ? screenHeight * .15
+            : screenWidth * .15,
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(radius),
             border: Border.all(
@@ -34,11 +36,11 @@ class Article extends StatelessWidget {
                           child: Column(children: [
                         SizedBox(
                             width: screenWidth,
-                            height: 200,
+                            height: screenHeight * .32,
                             child: ClipRRect(
                                 borderRadius: const BorderRadius.all(radius),
                                 child: CachedNetworkImage(
-                                    fit: BoxFit.fill,
+                                    fit: BoxFit.cover,
                                     memCacheHeight:
                                         orientation == Orientation.portrait
                                             ? (screenHeight * .4).toInt()
@@ -59,7 +61,7 @@ class Article extends StatelessWidget {
 
                           return isImage
                               ? CachedNetworkImage(
-                                  fit: BoxFit.fill,
+                                  fit: BoxFit.cover,
                                   memCacheHeight:
                                       orientation == Orientation.portrait
                                           ? (screenHeight * .4).toInt()

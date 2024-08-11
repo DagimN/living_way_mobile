@@ -17,6 +17,8 @@ class ActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
+    double screenWidth = MediaQuery.of(context).size.width;
+    Orientation orientation = MediaQuery.of(context).orientation;
 
     return SafeArea(
         child: Column(children: [
@@ -34,7 +36,9 @@ class ActivityScreen extends StatelessWidget {
                 color: lightPrimaryColor))
       ]),
       SizedBox(
-          height: screenHeight * .74,
+          height: orientation == Orientation.portrait
+              ? screenHeight * .74
+              : screenWidth * .2,
           child: SingleChildScrollView(
               child:
                   Column(mainAxisAlignment: MainAxisAlignment.end, children: [
