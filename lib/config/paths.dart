@@ -12,10 +12,11 @@ abstract class AppIcons {
 }
 
 abstract class AppImages {
-  static const String profilePlaceholder  = 'assets/images/profile_placeholder.png';
-  static const String topicBackground =
-      'assets/images/topic_background.png';
-  static const String testimonyBackground = 'assets/images/testimony_background.png';
-  static const String logoTransparent =
-      'assets/images/logo_transparent.png';
+  static const String profilePlaceholder =
+      'assets/images/profile_placeholder.png';
+  static const String topicBackground = 'assets/images/topic_background.png';
+  static const String testimonyBackground =
+      'assets/images/testimony_background.png';
+  static const String logoTransparent = 'assets/images/logo_transparent.png';
+  static const String activitiesEnd = 'assets/images/activities_end.png';
 }

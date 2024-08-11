@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
@@ -74,8 +75,17 @@ class ActivityScreen extends StatelessWidget {
                     isLast: index == contentController.activityList.length - 1,
                     child: childWidget);
               })
-            ])
-            //TODO: Add pretty design
+            ]),
+            
+
+            Container(
+                margin: const EdgeInsets.symmetric(vertical: 24),
+                child: Column(children: [
+                  Image.asset(AppImages.activitiesEnd),
+                  //TODO: Add a cursive font
+                  const Text('Your path begins here',
+                      style: TextStyle(fontSize: 16, color: lightPrimaryColor))
+                ]))
           ])))
     ]));
   }
