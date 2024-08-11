@@ -3,6 +3,7 @@ class ActivityContent {
   final String? title;
   final String? body;
   final List<String> images;
+  final List<String> content;
   final int minimumAllowedViewImages;
   final List<PollOptions> pollOptions;
   final ContentType type;
@@ -10,12 +11,13 @@ class ActivityContent {
   final DateTime? upcomingDate;
   final bool isOngoing;
   final String? externalLink;
-  final Banner? banner;
+  final ContentBanner? banner;
 
   ActivityContent(
       {this.title,
       this.body,
       this.images = const [],
+      this.content = const [],
       this.minimumAllowedViewImages = 5,
       this.pollOptions = const [],
       this.externalLink,
@@ -36,12 +38,12 @@ class ActivityContent {
   }
 }
 
-class Banner {
+class ContentBanner {
   String url;
-  String thumbnail;
+  String? thumbnail;
   String position;
 
-  Banner({required this.position, required this.thumbnail, required this.url});
+  ContentBanner({required this.position, this.thumbnail, required this.url});
 }
 
 class PollOptions {

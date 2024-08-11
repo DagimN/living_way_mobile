@@ -51,7 +51,7 @@ class ActivityScreen extends StatelessWidget {
                         minimumAllowedImagesForView:
                             content.minimumAllowedViewImages);
                   case ContentType.article:
-                    childWidget = const Article();
+                    childWidget = Article(content: content);
                   case ContentType.poll:
                     childWidget = Poll(content: content);
                   case ContentType.external:

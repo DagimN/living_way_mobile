@@ -1,13 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:living_way/models/activity_content.dart';
+import 'package:living_way/themes/light_theme.dart';
 
 class Article extends StatelessWidget {
-const Article({ super.key });
+  final ActivityContent content;
+  const Article({super.key, required this.content});
 
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
+    const radius = Radius.circular(20);
 
     return Container(
         width: orientation == Orientation.portrait
@@ -15,7 +20,73 @@ const Article({ super.key });
             : screenWidth * .85,
         height: screenHeight * .15,
         decoration: BoxDecoration(
-            color: Colors.grey, borderRadius: BorderRadius.circular(20)),
-        child: Center(child: Text('Article')));
+            borderRadius: const BorderRadius.all(radius),
+            border: Border.all(
+                color: lightPrimaryColor.withOpacity(0.7), width: 0.3)),
+        child: TextButton(
+            onPressed: () {
+              showModalBottomSheet(
+                  isScrollControlled: true,
+                  context: context,
+                  builder: (context) => SizedBox(
+                        height: screenHeight * .9,
+                        child: SingleChildScrollView(
+                            child: Column(children: [
+                          SizedBox(
+                              width: screenWidth,
+                              height: 200,
+                              child: ClipRRect(
+                                  borderRadius: const BorderRadius.all(radius),
+                                  child: CachedNetworkImage(
+                                      fit: BoxFit.fill,
+                                      memCacheHeight:
+                                          orientation == Orientation.portrait
+                                              ? (screenHeight * .4).toInt()
+                                              : (screenWidth * .4).toInt(),
+                                      maxHeightDiskCache:
+                                          orientation == Orientation.portrait
+                                              ? (screenHeight * .4).toInt()
+                                              : (screenWidth * .4).toInt(),
+                                      imageUrl: content.banner?.url ?? ""))),
+                          Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Text(content.title ?? "",
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 16))),
+                          ...content.content.map((paragraph) => Container(
+                              margin: const EdgeInsets.all(10),
+                              child: Text(paragraph,
+                                  style: const TextStyle(fontSize: 12))))
+                        ])),
+                      ));
+            },
+            style: TextButton.styleFrom(
+                padding: EdgeInsets.zero,
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(radius))),
+            child: Row(children: [
+              SizedBox(
+                  width: screenWidth * .3,
+                  height: 200,
+                  child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: radius, bottomLeft: radius),
+                      child: CachedNetworkImage(
+                          fit: BoxFit.fill,
+                          memCacheHeight: orientation == Orientation.portrait
+                              ? (screenHeight * .4).toInt()
+                              : (screenWidth * .4).toInt(),
+                          maxHeightDiskCache:
+                              orientation == Orientation.portrait
+                                  ? (screenHeight * .4).toInt()
+                                  : (screenWidth * .4).toInt(),
+                          imageUrl: content.banner?.url ?? ""))),
+              Container(
+                  width: screenWidth * .4,
+                  margin: const EdgeInsets.all(5),
+                  child: Text(content.body ?? "",
+                      overflow: TextOverflow.ellipsis, maxLines: 5))
+            ])));
   }
 }
