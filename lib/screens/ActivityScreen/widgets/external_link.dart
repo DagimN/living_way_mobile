@@ -4,6 +4,7 @@ import 'package:living_way/config/paths.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:social_share/social_share.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExternalLink extends StatelessWidget {
@@ -100,6 +101,22 @@ class ExternalLink extends StatelessWidget {
                                     color: Colors.blue,
                                     decoration: TextDecoration.underline))),
                         //TODO: Add sharing options
+                        Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              IconButton(
+                                  onPressed: () {
+                                    SocialShare.copyToClipboard(
+                                        text: content.externalLink ?? "");
+                                  },
+                                  icon: const Icon(Icons.copy)),
+                              IconButton(
+                                  onPressed: () {
+                                    SocialShare.shareOptions(
+                                        content.externalLink ?? "");
+                                  },
+                                  icon: const Icon(Icons.share))
+                            ])
                       ]))));
             }));
   }

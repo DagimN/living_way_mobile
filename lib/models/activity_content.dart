@@ -28,6 +28,11 @@ class ActivityContent {
     if (minimumAllowedViewImages > 5) {
       throw RangeError('Minimum allowed images should not be more than 5');
     }
+
+    if (externalLink == null && type == ContentType.external) {
+      throw ArgumentError(
+          "A content with type external should not have the externalLink has null");
+    }
   }
 }
 
