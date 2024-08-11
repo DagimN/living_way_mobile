@@ -11,6 +11,7 @@ class ActivityContent {
   final DateTime? upcomingDate;
   final bool isOngoing;
   final String? externalLink;
+  final String? locationUrl;
   final ContentBanner? banner;
 
   ActivityContent(
@@ -21,6 +22,7 @@ class ActivityContent {
       this.minimumAllowedViewImages = 5,
       this.pollOptions = const [],
       this.externalLink,
+      this.locationUrl,
       this.banner,
       this.isOngoing = false,
       this.upcomingDate,

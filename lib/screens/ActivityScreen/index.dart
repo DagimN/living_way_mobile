@@ -62,7 +62,7 @@ class ActivityScreen extends StatelessWidget {
                   case ContentType.external:
                     childWidget = ExternalLink(content: content);
                   case ContentType.event:
-                    childWidget = const Event();
+                    childWidget = Event(content: content);
                   default:
                     childWidget = const SizedBox();
                 }
@@ -76,8 +76,6 @@ class ActivityScreen extends StatelessWidget {
                     child: childWidget);
               })
             ]),
-            
-
             Container(
                 margin: const EdgeInsets.symmetric(vertical: 24),
                 child: Column(children: [

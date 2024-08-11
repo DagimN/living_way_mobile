@@ -28,13 +28,23 @@ class ContentController extends ChangeNotifier {
         id: '1',
         isOngoing: true,
         type: ContentType.event,
+        locationUrl: "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu",
+        banner: ContentBanner(
+            position: "",
+            url:
+                "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/426074019_7954890431204553_8594967751125902832_n.jpg?stp=dst-jpg_e35&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=zT5H13_Co_MQ7kNvgFEQi6X&edm=AGenrX8BAAAA&ccb=7-5&oh=00_AYC990nx1k9bKc91cV0hUdl6ALPWG8TEjHDFxJsKvgGf2A&oe=66A95BC1&_nc_sid=ed990e"),
         timestamp: DateTime.now().subtract(const Duration(days: 1))),
     ActivityContent(
         id: '2',
         type: ContentType.article,
         title: "ቤተክርስቲያን አልባ አማኞች",
-        banner: ContentBanner(position: "", thumbnail: "", url: "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fimage_2022_02_15_15_54_05_dab102c7e1.png&w=1920&q=75"),
-        body: "የኮቪድ ወረርሽኝ በተባባሰበት እና የቤተክርስቲያን መሰባሰብ ላይ ገደብ በተጣለ ወቅት፣ አብዛኛውን አማኝ “ቤተክርስቲያን መሄድ ናፈቀኝ” እያለ ሲናገር የቅርብ ጊዜ ትውስታችን ነው፡፡",
+        banner: ContentBanner(
+            position: "",
+            thumbnail: "",
+            url:
+                "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fimage_2022_02_15_15_54_05_dab102c7e1.png&w=1920&q=75"),
+        body:
+            "የኮቪድ ወረርሽኝ በተባባሰበት እና የቤተክርስቲያን መሰባሰብ ላይ ገደብ በተጣለ ወቅት፣ አብዛኛውን አማኝ “ቤተክርስቲያን መሄድ ናፈቀኝ” እያለ ሲናገር የቅርብ ጊዜ ትውስታችን ነው፡፡",
         content: [
           "የኮቪድ ወረርሽኝ በተባባሰበት እና የቤተክርስቲያን መሰባሰብ ላይ ገደብ በተጣለ ወቅት፣ አብዛኛውን አማኝ “ቤተክርስቲያን መሄድ ናፈቀኝ” እያለ ሲናገር የቅርብ ጊዜ ትውስታችን ነው፡፡ እውነት ነው ቤተክርስቲያን፣ የቅዱሳን ሕብረት እጅጉን ይናፍቃል፡፡ ነገር ግን የአንዳንዶቻችንን ናፍቆት የፈጠረው ገደቡ ይመስል ነበር፡፡ ለምን? ትላንትና በሰላሙ ቀን ቤተክርስቲያን ለመሄድ ብዙ አቃቂር የምናወጣ ነበርን፡፡ ልክ ከእጃችን ስናጣው ምን ያህል አስፈላጊ እንደሆነ በጥቂቱ ያየንበት አጋጣሚ ነው፡፡ እውነት ነው፣ ቤተክርስቲያን እስከብዙ ጉድለቷ እጅጉ አስፈላጊ የክርስቶስ አካል ናት፡፡",
           "ዛሬ በዚህች አጭር ጹሁፍ ልንዳስስ የምንፈልገው ከቅርብ ጊዜ ወዲህ አባል የሆኑበት ቤተክርስቲያን ስሌላቸው እና እየጨመሩ ስለመጡ ምዕመናን ነው፡፡ አሁን አሁን በአማኙ በተለይ በወጣቱ ዘንድ የቋንቋ ለውጥ አለ፡፡ ድሮ ድሮ የየት ቤተክርስቲያን አባል ነህ ነበር የሚባለው፣ ዛሬ ዛሬ ግን “ቸርች የት ነው የምትካፈለው?” ወይም አንዳንዶች ሲመልሱ “ቸርች የምካፈለው እዚህ…ነው” ይላሉ፡፡ ይህ በሌጣው ምንም ክፋት የሌለበት ቢመስልም፣ የአንድ ቤተክርስቲያን አባል የመሆንን እሴት እየሸረሸረ ነው፡፡ ሰዎች ሰንበትን ጠብቀው ደስ ያለቸው ቦታ ሄደው ይካፈላሉ፡፡ ከዚያ ያለፈ ነገር አያስፈልግም የሚል አንድምታ አለው፡፡",
