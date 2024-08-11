@@ -28,7 +28,8 @@ class ContentController extends ChangeNotifier {
         id: '1',
         isOngoing: true,
         type: ContentType.event,
-        locationUrl: "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu",
+        locationUrl:
+            "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu",
         banner: ContentBanner(
             position: "",
             url:
@@ -58,10 +59,6 @@ class ContentController extends ChangeNotifier {
           "ስለዚህ የቤተክርስቲያን ደንበኛ ሳይሆን አባል ወይም የዚህ ሕያው አካል ክፍል እንድንሆን የእግዚአብሄር ፈቃድ ነው፡፡ በእንደዚህ ሁኔታ ውስጥ ያላችሁ ወገኖች ዛሬ ትንሽ ቆም ብላችሁ አስቡበት፣ በፀሎትም ሆነ ወንድሞችን በማማከር ጤናማ አስተምህሮ እና ልምምድ ያለቸው ቤተክርስቲያን ውስጥ በአባልነት ለመያዝ ወደዚህ ውሳኔ እንድትመጡ እበረታታችኋለሁ፡፡"
         ],
         timestamp: DateTime.now().subtract(const Duration(days: 1))),
-    // ActivityContent(
-    //     id: '3',
-    //     type: ContentType.article,
-    //     timestamp: DateTime.now().subtract(const Duration(hours: 1))),
     ActivityContent(
         id: '4',
         title: "For His Glory Questionairre",
@@ -118,11 +115,7 @@ class ContentController extends ChangeNotifier {
           PollOptions(title: '31 - 50', votes: 40),
           PollOptions(title: '51 +', votes: 100)
         ],
-        timestamp: DateTime.now().add(const Duration(days: 12))),
-    ActivityContent(
-        id: '9',
-        type: ContentType.event,
-        timestamp: DateTime.now().add(const Duration(days: 720)))
+        timestamp: DateTime.now().add(const Duration(days: 12)))
   ];
 
   Book? book;

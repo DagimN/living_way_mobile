@@ -6,7 +6,12 @@ import 'package:photo_view/photo_view_gallery.dart';
 class ImagesPreview extends StatelessWidget {
   final List<String> images;
   final int initial;
-  const ImagesPreview({super.key, this.initial = 0, required this.images});
+  final ImageProvider? imageProvider;
+  const ImagesPreview(
+      {super.key,
+      this.initial = 0,
+      this.imageProvider,
+      this.images = const []});
 
   @override
   Widget build(BuildContext context) {
@@ -16,18 +21,22 @@ class ImagesPreview extends StatelessWidget {
 
     return Scaffold(
         body: Stack(children: [
-      PhotoViewGallery.builder(
-          itemCount: images.length,
-          pageController: PageController(initialPage: initial),
-          builder: (context, index) {
-            final imageProvider = CachedNetworkImageProvider(images[index],
-                maxHeight: orientation == Orientation.portrait
-                    ? screenHeight.toInt()
-                    : screenWidth.toInt());
-            return PhotoViewGalleryPageOptions(
-                imageProvider: imageProvider,
-                minScale: PhotoViewComputedScale.contained);
-          }),
+      imageProvider != null
+          ? PhotoView(
+              imageProvider: imageProvider,
+              minScale: PhotoViewComputedScale.contained)
+          : PhotoViewGallery.builder(
+              itemCount: images.length,
+              pageController: PageController(initialPage: initial),
+              builder: (context, index) {
+                final imageProvider = CachedNetworkImageProvider(images[index],
+                    maxHeight: orientation == Orientation.portrait
+                        ? screenHeight.toInt()
+                        : screenWidth.toInt());
+                return PhotoViewGalleryPageOptions(
+                    imageProvider: imageProvider,
+                    minScale: PhotoViewComputedScale.contained);
+              }),
       Positioned(
           top: 24,
           child: IconButton(
