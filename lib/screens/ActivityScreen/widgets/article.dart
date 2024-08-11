@@ -29,42 +29,58 @@ class Article extends StatelessWidget {
                   isScrollControlled: true,
                   context: context,
                   builder: (context) => SizedBox(
-                        height: screenHeight * .9,
-                        child: SingleChildScrollView(
-                            child: Column(children: [
-                          SizedBox(
-                              width: screenWidth,
-                              height: 200,
-                              child: ClipRRect(
-                                  borderRadius: const BorderRadius.all(radius),
-                                  child: CachedNetworkImage(
-                                      fit: BoxFit.fill,
-                                      memCacheHeight:
-                                          orientation == Orientation.portrait
-                                              ? (screenHeight * .4).toInt()
-                                              : (screenWidth * .4).toInt(),
-                                      maxHeightDiskCache:
-                                          orientation == Orientation.portrait
-                                              ? (screenHeight * .4).toInt()
-                                              : (screenWidth * .4).toInt(),
-                                      imageUrl: content.banner?.url ?? ""))),
-                          Container(
-                              margin: const EdgeInsets.all(10),
-                              child: Text(content.title ?? "",
-                                  style: const TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16))),
-                          ...content.content.map((paragraph) => Container(
-                              margin: const EdgeInsets.all(10),
-                              child: Text(paragraph,
-                                  style: const TextStyle(fontSize: 12))))
-                        ])),
-                      ));
+                      height: screenHeight * .9,
+                      child: SingleChildScrollView(
+                          child: Column(children: [
+                        SizedBox(
+                            width: screenWidth,
+                            height: 200,
+                            child: ClipRRect(
+                                borderRadius: const BorderRadius.all(radius),
+                                child: CachedNetworkImage(
+                                    fit: BoxFit.fill,
+                                    memCacheHeight:
+                                        orientation == Orientation.portrait
+                                            ? (screenHeight * .4).toInt()
+                                            : (screenWidth * .4).toInt(),
+                                    maxHeightDiskCache:
+                                        orientation == Orientation.portrait
+                                            ? (screenHeight * .4).toInt()
+                                            : (screenWidth * .4).toInt(),
+                                    imageUrl: content.banner?.url ?? ""))),
+                        Container(
+                            margin: const EdgeInsets.all(10),
+                            child: Text(content.title ?? "",
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16))),
+                        ...content.content.map((value) {
+                          bool isImage = value.contains("https://");
+
+                          return isImage
+                              ? CachedNetworkImage(
+                                  fit: BoxFit.fill,
+                                  memCacheHeight:
+                                      orientation == Orientation.portrait
+                                          ? (screenHeight * .4).toInt()
+                                          : (screenWidth * .4).toInt(),
+                                  maxHeightDiskCache:
+                                      orientation == Orientation.portrait
+                                          ? (screenHeight * .4).toInt()
+                                          : (screenWidth * .4).toInt(),
+                                  imageUrl: value)
+                              : Container(
+                                  margin: const EdgeInsets.all(10),
+                                  child: Text(value,
+                                      style: const TextStyle(fontSize: 12)));
+                        })
+                      ]))));
             },
             style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(radius))),
+            //TODO: Implement dynamic banner positioning
             child: Row(children: [
               SizedBox(
                   width: screenWidth * .3,
