@@ -16,6 +16,7 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return SafeArea(
         child: Column(children: [
@@ -32,11 +33,14 @@ class ActivityScreen extends StatelessWidget {
             icon: const Icon(Icons.notifications_none_rounded,
                 color: lightPrimaryColor))
       ]),
-      Expanded(
-          child: ListView.builder(
-              shrinkWrap: true,
-              itemCount: contentController.activityList.length,
-              itemBuilder: (context, index) {
+      SizedBox(
+          height: screenHeight * .74,
+          child: SingleChildScrollView(
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+            Column(children: [
+              ...contentController.activityList.map((activity) {
+                final index = contentController.activityList.indexOf(activity);
                 final content = contentController.activityList[index];
                 final Widget childWidget;
 
@@ -65,7 +69,10 @@ class ActivityScreen extends StatelessWidget {
                     type: content.type,
                     isLast: index == contentController.activityList.length - 1,
                     child: childWidget);
-              }))
+              })
+            ])
+            //TODO: Add pretty design
+          ])))
     ]));
   }
 }

@@ -15,10 +15,8 @@ class ImagesPreview extends StatelessWidget {
     Orientation orientation = MediaQuery.of(context).orientation;
 
     return Scaffold(
-      extendBodyBehindAppBar: true,
-      appBar: AppBar(
-          backgroundColor: Colors.transparent, foregroundColor: Colors.white),
-      body: PhotoViewGallery.builder(
+        body: Stack(children: [
+      PhotoViewGallery.builder(
           itemCount: images.length,
           pageController: PageController(initialPage: initial),
           builder: (context, index) {
@@ -30,6 +28,14 @@ class ImagesPreview extends StatelessWidget {
                 imageProvider: imageProvider,
                 minScale: PhotoViewComputedScale.contained);
           }),
-    );
+      Positioned(
+          top: 24,
+          child: IconButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              icon:
+                  const Icon(Icons.arrow_back, color: Colors.white, size: 24)))
+    ]));
   }
 }

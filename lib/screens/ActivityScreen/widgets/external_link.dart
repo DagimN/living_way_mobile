@@ -100,7 +100,6 @@ class ExternalLink extends StatelessWidget {
                                 style: const TextStyle(
                                     color: Colors.blue,
                                     decoration: TextDecoration.underline))),
-                        //TODO: Add sharing options
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
