@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/screens/Settings/about_screen.dart';
 import 'package:living_way/screens/Settings/donation_screen.dart';
 import 'package:living_way/screens/Settings/profile_settings_screen.dart';
@@ -22,6 +23,8 @@ class LivingWayApp extends StatelessWidget {
               create: (_) => LayoutController()),
           ChangeNotifierProvider<ContentController>(
               create: (_) => ContentController()),
+          ChangeNotifierProvider<ProfileController>(
+              create: (_) => ProfileController()),
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,

@@ -1,6 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/models/profile.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +13,13 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double imageSize = 128.0;
+    final profileController = Provider.of<ProfileController>(context);
     final settingsNavigation =
         Provider.of<LayoutController>(context).settingsNavigation;
+    final profile = profileController.userProfile ??
+        Profile(firstName: "John", lastName: "Doe");
+    final imageProvider =
+        profile.imageUrl != null ? CachedNetworkImageProvider(profile.imageUrl!) : null;
 
     return SafeArea(
         child: Column(children: [
@@ -35,9 +43,11 @@ class ProfileScreen extends StatelessWidget {
                     spreadRadius: 1)
               ],
               image: DecorationImage(
-                  image: Image.asset(AppImages.profilePlaceholder).image))),
-      const Text('John Doe',
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
+                  image: profile.imageUrl != null
+                      ? imageProvider!
+                      : Image.asset(AppImages.profilePlaceholder).image))),
+      Text('${profile.firstName} ${profile.lastName}',
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
       const SizedBox(height: 30),
       Expanded(
           child: ListView.builder(
