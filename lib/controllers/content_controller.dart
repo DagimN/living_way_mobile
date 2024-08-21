@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/models/book.dart';
+import 'package:living_way/models/staff.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/translation.dart';
 import 'package:living_way/utils/load_json.dart';
@@ -116,6 +117,63 @@ class ContentController extends ChangeNotifier {
           PollOptions(title: '51 +', votes: 100)
         ],
         timestamp: DateTime.now().add(const Duration(days: 12)))
+  ];
+  List<Staff> staffs = [
+    Staff(
+        name: 'Admas Getachew',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FAdmas_9d5634fa95.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Keneaa Zekarias',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2F08_j1_9b017be72c.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Henock Bekele',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fhenock_01_be02bb6828.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Elias Seyoum',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Felias_seyoum_01_9b2c436491.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Herani Sahlu',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FHerani_ac8d4aa110.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Burakie Sahle',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FBurakae_7ad25f53fa.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Halleluya Fikre',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FHalle_ce5a7ff718.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Misikir Genene',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FMesikir_068861e0d3.jpg&w=1920&q=100"),
+    Staff(
+        name: 'Henock Mesfin',
+        position: 'Pastor',
+        image:
+            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fhenock_misfin_01_37108eac59.jpg&w=1920&q=100")
+  ];
+  List<String> aspirations = [
+    "Centered in Christ",
+    "Focused on evangelism",
+    "Driven by disciple-making",
+    "Suitable for community life to flourish",
+    "Friendly to newcomers",
+    "A place where believers grow in to maturity",
+    "Broad in ministry, so that believers able to exercise their gift",
+    "Live out the Gospel practically"
   ];
 
   Book? book;
