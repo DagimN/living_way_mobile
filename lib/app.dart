@@ -3,6 +3,7 @@ import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/screens/Settings/about_screen.dart';
+import 'package:living_way/screens/Settings/contacts_screen.dart';
 import 'package:living_way/screens/Settings/donation_screen.dart';
 import 'package:living_way/screens/Settings/profile_settings_screen.dart';
 import 'package:living_way/screens/Settings/settings_screen.dart';
@@ -24,7 +25,7 @@ class LivingWayApp extends StatelessWidget {
           ChangeNotifierProvider<ContentController>(
               create: (_) => ContentController()),
           ChangeNotifierProvider<ProfileController>(
-              create: (_) => ProfileController()),
+              create: (_) => ProfileController())
         ],
         child: MaterialApp(
             debugShowCheckedModeBanner: false,
@@ -37,6 +38,7 @@ class LivingWayApp extends StatelessWidget {
               '/search': (context) => const SearchScreen(),
               '/settings': (context) => const SettingsScreen(),
               '/profile': (context) => const ProfileSettingsScreen(),
+              '/contacts': (context) => const ContactsScreen(),
               '/about': (context) => const AboutScreen(),
               '/donation': (context) => const DonationScreen()
             }));

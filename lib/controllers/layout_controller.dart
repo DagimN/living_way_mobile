@@ -21,6 +21,7 @@ class LayoutController extends ChangeNotifier {
     {'name': "General Settings", 'route': '/settings'},
     {'name': "Profile", 'route': '/profile'},
     {'name': "Donations", 'route': '/donation'},
+    {'name': "Contact Us", 'route': '/contacts'},
     {'name': "About", 'route': '/about'}
   ];
   final scrollController = ScrollController();
