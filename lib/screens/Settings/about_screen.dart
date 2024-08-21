@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -29,7 +30,20 @@ class AboutScreen extends StatelessWidget {
                         ? screenHeight * .3
                         : screenHeight * .4,
                     width: screenWidth * .7),
-                const SizedBox(height: 32),
+                Container(
+                    margin: const EdgeInsets.all(5),
+                    child: FutureBuilder(
+                        future: PackageInfo.fromPlatform(),
+                        builder: (context, snapshot) {
+                          final packageInfo = snapshot.data;
+                          String version = packageInfo?.version ?? "";
+                          String buildNumber = packageInfo?.buildNumber ?? "";
+
+                          return Text('v$version $buildNumber',
+                              style: const TextStyle(
+                                  color: Color(0xFF65829A), fontSize: 10));
+                        })),
+                const SizedBox(height: 24),
                 DefaultTabController(
                     length: 3,
                     child: Column(children: [
