@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/models/book.dart';
+import 'package:living_way/models/contacts.dart';
 import 'package:living_way/models/staff.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/translation.dart';
@@ -174,6 +175,22 @@ class ContentController extends ChangeNotifier {
     "A place where believers grow in to maturity",
     "Broad in ministry, so that believers able to exercise their gift",
     "Live out the Gospel practically"
+  ];
+  List<Contacts> contacts = [
+    Contacts(title: 'Phone Numbers', addressList: ['+251901777774', '+251901777775'], type: ContactType.phone),
+    Contacts(
+        title: 'Email Address',
+        addressList: ['Info@livingwayethiopia.org', 'livingwayethiopia@gmail.com'],
+        type: ContactType.email),
+    Contacts(title: "Address", addressList: [
+      "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu"
+    ], type: ContactType.location),
+    Contacts(title: "Social Media", addressList: [
+      'https://twitter.com/livingwayethiop',
+      "https://www.facebook.com/LivingWayChurch1",
+      "https://www.instagram.com/livingway_church",
+      "https://www.youtube.com/channel/UC7QcE6EYm7PCQjN3fVlRoXg"
+    ], type: ContactType.social)
   ];
 
   Book? book;
