@@ -14,21 +14,33 @@ enum HomePageNavigation {
   profile;
 }
 
+enum AppLocale { en, am }
+
 class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];
+  AppLocale appLocale = AppLocale.en;
+  bool isDarkMode = false;
+  bool willReceiveNotification = true;
+  bool willRemindPrayer = false;
+  double textSize = 12.0;
+  String? selectedFont;
+
+  final List<String> fonts = ['Font 1', 'Font 2', 'Font 3'];
   final List<Map<String, String>> settingsNavigation = [
-    {'name': "General Settings", 'route': '/settings'},
+    {'name': "General", 'route': '/settings'},
     {'name': "Profile", 'route': '/profile'},
     {'name': "Donations", 'route': '/donation'},
     {'name': "Contact Us", 'route': '/contacts'},
     {'name': "About", 'route': '/about'}
   ];
   final scrollController = ScrollController();
+
   AnimationController? verseHighlightController;
   AnimationController? bibleTraverseController;
 
   LayoutController() {
+    selectedFont = fonts.first;
     scrollController.addListener(() {
       if (verseHighlightController != null &&
           verseHighlightController?.value != 1) {
@@ -92,5 +104,30 @@ class LayoutController extends ChangeNotifier {
 
   set setBibleTraverserAnimationController(AnimationController controller) {
     bibleTraverseController = controller;
+  }
+
+  set setAppLocale(AppLocale value) {
+    appLocale = value;
+    notifyListeners();
+  }
+
+  set setTheme(bool value) {
+    isDarkMode = value;
+    notifyListeners();
+  }
+
+  set setTextSize(double value) {
+    textSize = value;
+    notifyListeners();
+  }
+
+  set setWillReceiveNotification(bool value) {
+    willReceiveNotification = value;
+    notifyListeners();
+  }
+
+  set setWillRemindPrayer(bool value) {
+    willRemindPrayer = value;
+    notifyListeners();
   }
 }

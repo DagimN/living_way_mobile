@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:living_way/controllers/layout_controller.dart';
 
 String formatDuration(int seconds) {
   int hours = seconds ~/ 3600;
@@ -10,6 +12,21 @@ String formatDuration(int seconds) {
   }
 
   return '${minutes > 9 ? minutes : '0$minutes'}:${remainingSeconds > 9 ? remainingSeconds : '0$remainingSeconds'}';
+}
+
+String formatTime(TimeOfDay time, AppLocale locale) {
+  //TODO: Format time
+  int minute = time.minute;
+  int hour = time.hour;
+  if (locale == AppLocale.en) {
+    return '$hour:${minute < 10 ? '0$minute' : minute} ${time.period.name.toUpperCase()}';
+  }
+
+  if (locale == AppLocale.am) {
+    return '${hour + 6}:${minute < 10 ? '0$minute' : minute}';
+  }
+
+  return '${time.hour}:${time.minute}';
 }
 
 String formatDateTime(DateTime timestamp) {

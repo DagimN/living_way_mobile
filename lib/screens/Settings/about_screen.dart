@@ -56,6 +56,7 @@ class AboutScreen extends StatelessWidget {
                                   style: const TextStyle(
                                       color: Color(0xFF65829A), fontSize: 10));
                             })),
+                      //TODO: Add 'Check for updates' button
                     const SizedBox(height: 24),
                     DefaultTabController(
                         length: 3,
