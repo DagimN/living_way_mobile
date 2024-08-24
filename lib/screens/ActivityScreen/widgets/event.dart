@@ -45,6 +45,9 @@ class Event extends StatelessWidget {
                                     Icons.broken_image,
                                     color: Colors.grey[300]));
                           },
+                          errorWidget: (context, url, error) => Center(
+                              child: Icon(Icons.broken_image,
+                                  color: Colors.grey[300])),
                           height: orientation == Orientation.portrait
                               ? screenHeight * .35
                               : screenWidth * .35,

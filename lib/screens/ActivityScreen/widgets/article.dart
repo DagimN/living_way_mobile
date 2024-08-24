@@ -41,6 +41,9 @@ class Article extends StatelessWidget {
                                 borderRadius: const BorderRadius.all(radius),
                                 child: CachedNetworkImage(
                                     fit: BoxFit.cover,
+                                    errorWidget: (context, url, error) => Icon(
+                                        Icons.broken_image,
+                                        color: Colors.grey[300]),
                                     memCacheHeight:
                                         orientation == Orientation.portrait
                                             ? (screenHeight * .4).toInt()
@@ -62,6 +65,9 @@ class Article extends StatelessWidget {
                           return isImage
                               ? CachedNetworkImage(
                                   fit: BoxFit.cover,
+                                  errorWidget: (context, url, error) => Icon(
+                                      Icons.broken_image,
+                                      color: Colors.grey[300]),
                                   memCacheHeight:
                                       orientation == Orientation.portrait
                                           ? (screenHeight * .4).toInt()
@@ -91,6 +97,8 @@ class Article extends StatelessWidget {
                       borderRadius: const BorderRadius.only(
                           topLeft: radius, bottomLeft: radius),
                       child: CachedNetworkImage(
+                        errorWidget: (context, url, error) =>
+                              Icon(Icons.broken_image, color: Colors.grey[300]),
                           fit: BoxFit.fill,
                           memCacheHeight: orientation == Orientation.portrait
                               ? (screenHeight * .4).toInt()

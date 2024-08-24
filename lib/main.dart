@@ -5,4 +5,5 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(const LivingWayApp());
+  //TODO: Create a widget that can work as a base screen
 }
