@@ -3,6 +3,7 @@ import "package:living_way/models/profile.dart";
 
 class ProfileController extends ChangeNotifier {
   Profile? userProfile;
+  bool isAnonymous = false;
   List<TimeOfDay> prayerTimes = [const TimeOfDay(hour: 6, minute: 00)];
 
   void removePrayerTime(int index) {
@@ -16,7 +17,12 @@ class ProfileController extends ChangeNotifier {
   }
 
   set setUserProfile(Profile value) {
-    userProfile;
+    userProfile = value;
+    notifyListeners();
+  }
+
+  set setAnonymousProfile(bool value) {
+    isAnonymous = value;
     notifyListeners();
   }
 }

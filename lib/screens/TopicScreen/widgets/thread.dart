@@ -12,12 +12,12 @@ class Thread extends StatefulWidget {
   final ThreadData data;
   final bool isTop;
   final bool isLast;
-  final ValueNotifier<GlobalKey<State<StatefulWidget>>?> threadKeyNotifier;
+  final ValueNotifier<GlobalKey<State<StatefulWidget>>?>? threadKeyNotifier;
   const Thread(
       {super.key,
       required this.topic,
       required this.data,
-      required this.threadKeyNotifier,
+      this.threadKeyNotifier,
       this.isTop = false,
       this.isLast = false});
 
@@ -33,20 +33,24 @@ class _ThreadState extends State<Thread> {
   void initState() {
     super.initState();
 
-    threadListener = () {
-      if (widget.threadKeyNotifier.value != threadKey && mounted) {
-        setState(() {
-          threadKey = GlobalKey();
-        });
-      }
-    };
+    if (widget.threadKeyNotifier != null) {
+      threadListener = () {
+        if (widget.threadKeyNotifier?.value != threadKey && mounted) {
+          setState(() {
+            threadKey = GlobalKey();
+          });
+        }
+      };
 
-    widget.threadKeyNotifier.addListener(threadListener);
+      widget.threadKeyNotifier?.addListener(threadListener);
+    }
   }
 
   @override
   void dispose() {
-    widget.threadKeyNotifier.removeListener(threadListener);
+    if(widget.threadKeyNotifier != null) {
+      widget.threadKeyNotifier?.removeListener(threadListener);
+    }
     super.dispose();
   }
 
