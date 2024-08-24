@@ -118,9 +118,14 @@ class SettingsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               const Text('Text Size'),
-                              Text(layoutController.textSize.toInt().toString(),
-                                  style:
-                                      const TextStyle(color: lightPrimaryColor))
+                              Container(
+                                  margin: const EdgeInsets.only(right: 10),
+                                  child: Text(
+                                      layoutController.textSize
+                                          .toInt()
+                                          .toString(),
+                                      style: const TextStyle(
+                                          color: lightPrimaryColor)))
                             ]),
                         Slider(
                             value: layoutController.textSize,
