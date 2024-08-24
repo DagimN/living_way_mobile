@@ -72,7 +72,7 @@ class ProfileSettingsScreen extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   height: orientation == Orientation.portrait
                       ? screenHeight * .85
-                      : screenWidth * .6,
+                      : screenWidth * .32,
                   child: SingleChildScrollView(
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
