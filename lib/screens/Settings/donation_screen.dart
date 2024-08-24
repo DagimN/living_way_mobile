@@ -14,6 +14,24 @@ class DonationScreen extends StatelessWidget {
             width: screenWidth,
             height: screenHeight,
             decoration: const BoxDecoration(gradient: lightBackgroundGradient),
-            child: const Center(child: Text('Donations Screen'))));
+            child: SafeArea(
+                child: Column(children: [
+              Container(
+                  margin: const EdgeInsets.symmetric(vertical: 10),
+                  child: Row(children: [
+                    IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(Icons.arrow_back,
+                            color: lightPrimaryColor)),
+                    const Text('Donations',
+                        style: TextStyle(
+                            fontSize: 32,
+                            color: lightPrimaryColor,
+                            fontWeight: FontWeight.w300))
+                  ])),
+              const Expanded(child: Center(child: Text('Coming Soon')))
+            ]))));
   }
 }
