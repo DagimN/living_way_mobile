@@ -68,7 +68,7 @@ class TestimonialScreen extends StatelessWidget {
                       backgroundColor: Colors.grey[300],
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20))),
-                  child: const Icon(Icons.play_circle_fill_rounded,
+                  child: const Icon(Icons.article_rounded,
                       color: Color(0xFFFFFBDC)))))
     ]);
   }

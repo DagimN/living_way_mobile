@@ -42,7 +42,6 @@ class BibleNavigator extends StatelessWidget {
                   layoutController.scrollToTop();
                 }
               })),
-      //TODO: Make button obvious
       DropdownButton(
           underline: const SizedBox(),
           iconEnabledColor: lightPrimaryColor,
@@ -63,7 +62,6 @@ class BibleNavigator extends StatelessWidget {
           margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(':',
               style: TextStyle(color: lightPrimaryColor, fontSize: fontSize))),
-      //TODO: Make button obvious
       DropdownButton(
           underline: const SizedBox(),
           iconEnabledColor: lightPrimaryColor,
