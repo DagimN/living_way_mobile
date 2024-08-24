@@ -17,7 +17,7 @@ class BibleNavigator extends StatelessWidget {
 
     double fontSize = 16.0;
 
-    return Row(children: [
+    return Row(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
           margin: const EdgeInsets.only(right: 10),
           decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class BibleNavigator extends StatelessWidget {
       //TODO: Make button obvious
       DropdownButton(
           underline: const SizedBox(),
-          icon: const SizedBox(),
+          iconEnabledColor: lightPrimaryColor,
           value: contentController.chapter ?? 0,
           style: TextStyle(color: lightPrimaryColor, fontSize: fontSize),
           dropdownColor: lightPrimaryPanelColor,
@@ -66,7 +66,7 @@ class BibleNavigator extends StatelessWidget {
       //TODO: Make button obvious
       DropdownButton(
           underline: const SizedBox(),
-          icon: const SizedBox(),
+          iconEnabledColor: lightPrimaryColor,
           value: contentController.verse ?? 0,
           style: TextStyle(color: lightPrimaryColor, fontSize: fontSize),
           dropdownColor: lightPrimaryPanelColor,
