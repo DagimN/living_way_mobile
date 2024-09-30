@@ -1,0 +1,74 @@
+import 'package:flutter/material.dart';
+import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/widgets/dot_indicator.dart';
+import 'package:provider/provider.dart';
+
+class IntroScreen extends StatelessWidget {
+  const IntroScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final layoutController = Provider.of<LayoutController>(context);
+    int index = layoutController.initialIntroductionPageIndex;
+    AppLocale appLocale = layoutController.appLocale;
+
+    List<Widget> pages = [
+      Container(color: Colors.indigo),
+      Container(color: Colors.blue),
+      Container(color: Colors.green),
+      Container(color: Colors.yellow),
+      Container(color: Colors.red),
+    ];
+
+    return Scaffold(
+        appBar: AppBar(
+            leading: TextButton(
+                style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20))),
+                onPressed: () {
+                  //TODO: Add language locale and make functional
+
+                  layoutController.setAppLocale =
+                      appLocale == AppLocale.en ? AppLocale.am : AppLocale.en;
+                },
+                child: Text(appLocale.name.toUpperCase())),
+            actions: [
+              TextButton(
+                  onPressed: () {
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, '/home', (route) => false);
+                  },
+                  child: const Text('Skip'))
+            ]),
+        body: pages[index],
+        bottomSheet: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  index > 0
+                      ? TextButton(
+                          onPressed: () {
+                            layoutController.setIntroPageIndex = index - 1;
+                          },
+                          child: const Text('Back'))
+                      : const SizedBox(width: 65),
+                  Expanded(
+                      child: DotIndicator(
+                          currentIndex: index, dotRadius: 7, pages: pages)),
+                  (index < pages.length - 1)
+                      ? TextButton(
+                          onPressed: () {
+                            layoutController.setIntroPageIndex = index + 1;
+                          },
+                          child: const Text('Next'))
+                      : TextButton(
+                          onPressed: () {
+                            Navigator.pushNamedAndRemoveUntil(
+                                context, '/home', (route) => false);
+                          },
+                          child: const Text('Done'))
+                ])));
+  }
+}

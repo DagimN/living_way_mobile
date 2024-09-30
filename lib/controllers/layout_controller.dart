@@ -23,6 +23,7 @@ class LayoutController extends ChangeNotifier {
   bool isDarkMode = false;
   bool willReceiveNotification = true;
   bool willRemindPrayer = false;
+  int initialIntroductionPageIndex = 0;
   double textSize = 12.0;
   String? selectedFont;
 
@@ -108,6 +109,11 @@ class LayoutController extends ChangeNotifier {
 
   set setAppLocale(AppLocale value) {
     appLocale = value;
+    notifyListeners();
+  }
+
+  set setIntroPageIndex(int value) {
+    initialIntroductionPageIndex = value;
     notifyListeners();
   }
 
