@@ -81,7 +81,7 @@ class ActivityScreen extends StatelessWidget {
                 child: Column(children: [
                   Image.asset(AppImages.activitiesEnd),
                   //TODO: Add a cursive font
-                  const Text('Your path begins here',
+                  const Text('It all started here',
                       style: TextStyle(fontSize: 16, color: lightPrimaryColor))
                 ]))
           ])))
