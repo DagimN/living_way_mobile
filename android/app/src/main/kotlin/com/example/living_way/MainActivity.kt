@@ -1,4 +1,4 @@
-package com.example.living_way
+package com.livingway.app
 
 import io.flutter.embedding.android.FlutterActivity
 
