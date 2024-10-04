@@ -93,6 +93,7 @@ flutter:
   assets:
     - 'assets/svg/'
     - 'assets/images/'
+    - 'assets/icons/'
     - 'assets/animations/'
     - 'assets/audio/'
     - 'assets/data/'

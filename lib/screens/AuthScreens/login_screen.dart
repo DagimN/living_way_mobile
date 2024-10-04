@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:living_way/config/paths.dart';
-import 'package:living_way/services/logging_service.dart';
 import 'package:living_way/themes/light_theme.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,45 +12,28 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   bool obscurePassword = true;
+  bool isLoggingInViaGoogle = false;
+  bool isLoggingInViaManual = false;
 
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+    const radius = Radius.circular(10);
+    bool isPerformingAction = isLoggingInViaGoogle || isLoggingInViaManual;
 
     return Scaffold(
         resizeToAvoidBottomInset: true,
         body: SingleChildScrollView(
             child: Column(children: [
-          SizedBox(
+          Container(
               height: screenHeight * .45,
-              child: Stack(children: [
-                Positioned(
-                    bottom: 5,
-                    child: Image.asset(AppImages.loginBackground,
-                        width: screenWidth,
-                        height: screenHeight * .45,
-                        fit: BoxFit.cover)),
-                Container(
-                    decoration: const BoxDecoration(
-                        gradient: LinearGradient(
-                            begin: Alignment.topCenter,
-                            end: Alignment.bottomCenter,
-                            stops: [
-                      0.15,
-                      0.5,
-                      0.7,
-                      0.85,
-                      1
-                    ],
-                            colors: [
-                      Colors.transparent,
-                      Color(0x3FFFFBDC),
-                      Color(0x7EFFFFFF),
-                      Color(0xBEF9F9F9),
-                      Color(0xFFFEFEFE)
-                    ])))
-              ])),
+              decoration: BoxDecoration(
+                  borderRadius: const BorderRadius.only(
+                      bottomLeft: radius, bottomRight: radius),
+                  image: DecorationImage(
+                      image: Image.asset(AppImages.loginBackground).image,
+                      fit: BoxFit.cover))),
           Container(
               margin: const EdgeInsets.all(16),
               child: Column(
@@ -88,40 +69,99 @@ class _LoginScreenState extends State<LoginScreen> {
                         margin: const EdgeInsets.symmetric(vertical: 24),
                         alignment: Alignment.centerRight,
                         child: InkWell(
-                            onTap: () {},
+                            onTap: !isPerformingAction ? () {} : null,
                             child: const Text('Forgot Password',
                                 style: TextStyle(
                                     decoration: TextDecoration.underline)))),
-                    SizedBox(
-                        width: screenWidth * .7,
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: lightPrimaryColor,
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10))),
-                            child: const Text('Login'),
-                            onPressed: () async {
-                              final account = await GoogleSignIn(
-                                      scopes: <String>['email', 'profile'])
-                                  .signIn();
+                    !isLoggingInViaManual
+                        ? SizedBox(
+                            width: screenWidth * .7,
+                            child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                    backgroundColor: lightPrimaryColor,
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(10))),
+                                onPressed: !isPerformingAction
+                                    ? () async {
+                                        setState(() {
+                                          isLoggingInViaManual = true;
+                                        });
+                                        //TODO: Perform login
+                                        await Future.delayed(
+                                            const Duration(seconds: 10));
 
-                              logger.i(account);
-                            })),
-                    const SizedBox(height: 36),
-                    const Divider(),
-                    //TODO: Make google its own theme
+                                        setState(() {
+                                          isLoggingInViaManual = false;
+                                        });
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context, '/home', (route) => false);
+                                      }
+                                    : null,
+                                child: const Text('Login')))
+                        : const SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                                color: lightPrimaryColor, strokeWidth: 2)),
+                    Container(
+                        margin: const EdgeInsets.all(16),
+                        child: const Divider()),
                     IconButton(
                         style: IconButton.styleFrom(
-                            backgroundColor: lightPrimaryColor),
-                        icon: const FaIcon(FontAwesomeIcons.google,
-                            color: Colors.white),
-                        onPressed: () async {
-                          final account = await GoogleSignIn(
-                              scopes: <String>['email', 'profile']).signIn();
+                            backgroundColor: Colors.white,
+                            elevation: 3,
+                            shadowColor: Colors.black),
+                        icon: isLoggingInViaGoogle
+                            ? const SizedBox(
+                                width: 25,
+                                height: 25,
+                                child: CircularProgressIndicator(
+                                    color: lightPrimaryColor, strokeWidth: 2))
+                            : Image.asset(AppIcons.google,
+                                height: 25, width: 25),
+                        onPressed: !isPerformingAction
+                            ? () async {
+                                setState(() {
+                                  isLoggingInViaGoogle = true;
+                                });
+                                GoogleSignIn(
+                                        scopes: <String>['email', 'profile'])
+                                    .signIn()
+                                    .then((account) {
+                                  //TODO: Perform login
+                                  if (account != null) {
+                                    Navigator.pushNamedAndRemoveUntil(
+                                        context, '/home', (route) => false);
+                                  }
 
-                          logger.i(account);
-                        })
+                                  if (mounted) {
+                                    setState(() {
+                                      isLoggingInViaGoogle = false;
+                                    });
+                                  }
+                                });
+                              }
+                            : null),
+                    Container(
+                        margin: const EdgeInsets.all(10),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text("Don't have an account?"),
+                              const SizedBox(width: 10),
+                              InkWell(
+                                  onTap: !isPerformingAction
+                                      ? () {
+                                          //TODO: Perform sign up
+                                        }
+                                      : null,
+                                  child: const Text('Sign Up',
+                                      style: TextStyle(
+                                          decoration: TextDecoration.underline,
+                                          color: lightPrimaryColor)))
+                            ]))
                   ]))
         ])));
   }
