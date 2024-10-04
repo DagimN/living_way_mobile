@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:living_way/config/paths.dart';
+import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,6 +18,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Provider.of<AuthController>(context);
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     const radius = Radius.circular(10);
@@ -90,7 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         });
                                         //TODO: Perform login
                                         await Future.delayed(
-                                            const Duration(seconds: 10));
+                                            const Duration(seconds: 3));
 
                                         setState(() {
                                           isLoggingInViaManual = false;
@@ -126,12 +129,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                 setState(() {
                                   isLoggingInViaGoogle = true;
                                 });
-                                GoogleSignIn(
-                                        scopes: <String>['email', 'profile'])
-                                    .signIn()
-                                    .then((account) {
-                                  //TODO: Perform login
-                                  if (account != null) {
+
+                                authController
+                                    .loginViaGoogle()
+                                    .then((isSuccess) {
+                                  if (isSuccess) {
                                     Navigator.pushNamedAndRemoveUntil(
                                         context, '/home', (route) => false);
                                   }

@@ -2,6 +2,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
+import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/models/profile.dart';
 import 'package:living_way/models/thread.dart';
@@ -22,6 +23,7 @@ class ProfileSettingsScreen extends StatelessWidget {
     Orientation orientation = MediaQuery.of(context).orientation;
     const profilePosts = ['', '', '', '', ''];
 
+    final authController = Provider.of<AuthController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final profile = profileController.userProfile ??
         Profile(firstName: "John", lastName: "Doe");
@@ -56,8 +58,15 @@ class ProfileSettingsScreen extends StatelessWidget {
                         ]),
                         Row(children: [
                           IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
+                              onPressed: () async {
+                                authController.isLoggedInViaGoogle
+                                    ? await authController.logoutViaGoogle()
+                                    : () {
+                                      //TODO: Perform manual logout
+                                    };
+
+                                Navigator.pushNamedAndRemoveUntil(
+                                    context, '/login', (route) => false);
                               },
                               icon: const Icon(Icons.logout,
                                   color: lightPrimaryColor)),

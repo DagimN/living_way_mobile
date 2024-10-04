@@ -34,23 +34,32 @@ class LivingWayApp extends StatelessWidget {
               create: (_) => ProfileController())
         ],
         child: Consumer<AuthController>(builder: (context, authController, _) {
-          return MaterialApp(
-              debugShowCheckedModeBanner: false,
-              title: 'Living Way',
-              theme: lightTheme,
-              darkTheme: darkTheme,
-              initialRoute: authController.isLoggedIn ? '/home' : '/login',
-              routes: {
-                '/splash': (context) => SplashScreen(context),
-                '/intro': (context) => const IntroScreen(),
-                '/login': (context) => const LoginScreen(),
-                '/home': (context) => const HomeScreen(),
-                '/search': (context) => const SearchScreen(),
-                '/settings': (context) => const SettingsScreen(),
-                '/profile': (context) => const ProfileSettingsScreen(),
-                '/contacts': (context) => const ContactsScreen(),
-                '/about': (context) => const AboutScreen(),
-                '/donation': (context) => const DonationScreen()
+          return FutureBuilder(
+              future: Future.delayed(const Duration(seconds: 3)),
+              builder: (context, snapshot) {
+                return snapshot.connectionState == ConnectionState.done
+                    ? MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        title: 'Living Way',
+                        theme: lightTheme,
+                        darkTheme: darkTheme,
+                        home: authController.isLoggedIn ? const HomeScreen() : const IntroScreen(),
+                        routes: {
+                            '/intro': (context) => const IntroScreen(),
+                            '/login': (context) => const LoginScreen(),
+                            '/home': (context) => const HomeScreen(),
+                            '/search': (context) => const SearchScreen(),
+                            '/settings': (context) => const SettingsScreen(),
+                            '/profile': (context) =>
+                                const ProfileSettingsScreen(),
+                            '/contacts': (context) => const ContactsScreen(),
+                            '/about': (context) => const AboutScreen(),
+                            '/donation': (context) => const DonationScreen()
+                          })
+                    : MaterialApp(
+                        debugShowCheckedModeBanner: false,
+                        home: SplashScreen(context)
+                      );
               });
         }));
   }

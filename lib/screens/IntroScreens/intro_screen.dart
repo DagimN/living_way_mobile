@@ -37,7 +37,7 @@ class IntroScreen extends StatelessWidget {
               TextButton(
                   onPressed: () {
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/home', (route) => false);
+                        context, '/login', (route) => false);
                   },
                   child: const Text('Skip'))
             ]),
@@ -66,7 +66,7 @@ class IntroScreen extends StatelessWidget {
                       : TextButton(
                           onPressed: () {
                             Navigator.pushNamedAndRemoveUntil(
-                                context, '/home', (route) => false);
+                                context, '/login', (route) => false);
                           },
                           child: const Text('Done'))
                 ])));
