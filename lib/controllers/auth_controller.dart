@@ -25,23 +25,48 @@ class AuthController extends ChangeNotifier {
   Future<bool> loginViaGoogle() async {
     final account =
         await GoogleSignIn(scopes: <String>['email', 'profile']).signIn();
-    //TODO: Perform login
 
     if (account != null) {
-      isLoggedInViaGoogle = true;
+      bool success = await performLogin(account.email);
+      isLoggedInViaGoogle = success;
 
-      if (sharedPreferences != null) {
-        await sharedPreferences?.setBool('isLoggedIn', true);
-        await sharedPreferences?.setBool('isLoggedInViaGoogle', true);
-      } else {
-        //TODO: Log error in crashlytics
-        logger.e('Shared preferences has not been initialized');
+      if (success) {
+        if (sharedPreferences != null) {
+          await sharedPreferences?.setBool('isLoggedIn', true);
+          await sharedPreferences?.setBool('isLoggedInViaGoogle', true);
+        } else {
+          //TODO: Log error in crashlytics
+          logger.e('Shared preferences has not been initialized');
+        }
+
+        return true;
       }
-
-      return true;
     }
 
+    await GoogleSignIn().signOut();
+
     return false;
+  }
+
+  Future<bool> performLogin(String email,
+      {String? password, bool? isOAuth = false}) async {
+    //TODO: Perform login
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev" ? Urls.devApiUrl : Urls.prodApiUrl;
+
+    try {
+      //TODO: Encrypt query params
+      final response = await dio.get('$url/api/v1/auth/login',
+          queryParameters: {"em": email, "p": password, "o": isOAuth});
+
+      return true;
+    } catch (error) {
+      logger.e(error);
+      return false;
+    } finally {
+      dio.close();
+    }
   }
 
   Future<void> logoutViaGoogle() async {
