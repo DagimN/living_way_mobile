@@ -59,6 +59,19 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "livingway"
+
+    productFlavors {
+        dev {
+            dimension "livingway"
+            applicationId "com.livingway.app"
+        }
+        dev {
+            dimension "livingway"
+            applicationId "com.livingway.app"
+        }
+    }
 }
 
 flutter {
