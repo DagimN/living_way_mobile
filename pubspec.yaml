@@ -55,6 +55,7 @@ dependencies:
   google_sign_in: ^6.2.1
   flavor_getter: ^0.0.3
   dio: ^5.7.0
+  webview_flutter: ^4.8.0
 
 dev_dependencies:
   flutter_test:

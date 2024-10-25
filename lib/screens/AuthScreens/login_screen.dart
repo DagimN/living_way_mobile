@@ -157,6 +157,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   onTap: !isPerformingAction
                                       ? () {
                                           //TODO: Perform sign up
+                                          Navigator.pushNamed(
+                                              context, '/signup');
                                         }
                                       : null,
                                   child: const Text('Sign Up',

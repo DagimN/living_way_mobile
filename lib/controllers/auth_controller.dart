@@ -48,6 +48,12 @@ class AuthController extends ChangeNotifier {
     return false;
   }
 
+  Future<bool> performSignup() async {
+    await Future.delayed(const Duration(seconds: 3));
+    //TODO: Save signup cache
+    return true;
+  }
+
   Future<bool> performLogin(String email,
       {String? password, bool? isOAuth = false}) async {
     //TODO: Perform login

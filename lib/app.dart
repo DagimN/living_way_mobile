@@ -4,6 +4,7 @@ import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/screens/AuthScreens/login_screen.dart';
+import 'package:living_way/screens/AuthScreens/signup_screen.dart';
 import 'package:living_way/screens/IntroScreens/intro_screen.dart';
 import 'package:living_way/screens/IntroScreens/splash_screen.dart';
 import 'package:living_way/screens/Settings/about_screen.dart';
@@ -47,6 +48,7 @@ class LivingWayApp extends StatelessWidget {
                         routes: {
                             '/intro': (context) => const IntroScreen(),
                             '/login': (context) => const LoginScreen(),
+                            '/signup': (context) => const SignupScreen(),
                             '/home': (context) => const HomeScreen(),
                             '/search': (context) => const SearchScreen(),
                             '/settings': (context) => const SettingsScreen(),
