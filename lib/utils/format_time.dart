@@ -15,7 +15,6 @@ String formatDuration(int seconds) {
 }
 
 String formatTime(TimeOfDay time, AppLocale locale) {
-  //TODO: Format time
   int minute = time.minute;
   int hour = time.hour;
   if (locale == AppLocale.en) {

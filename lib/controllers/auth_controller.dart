@@ -30,6 +30,8 @@ class AuthController extends ChangeNotifier {
       bool success = await performLogin(account.email);
       isLoggedInViaGoogle = success;
 
+      //TODO: Report error
+
       if (success) {
         if (sharedPreferences != null) {
           await sharedPreferences?.setBool('isLoggedIn', true);
