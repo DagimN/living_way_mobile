@@ -3,7 +3,9 @@ import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:living_way/constants/urls.dart';
+import 'package:living_way/models/signup_progress.dart';
 import 'package:living_way/services/logging_service.dart';
+import 'package:living_way/utils/security_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends ChangeNotifier {
@@ -50,23 +52,63 @@ class AuthController extends ChangeNotifier {
     return false;
   }
 
-  Future<bool> performSignup() async {
-    await Future.delayed(const Duration(seconds: 3));
-    //TODO: Save signup cache
-    return true;
-  }
-
-  Future<bool> performLogin(String email,
-      {String? password, bool? isOAuth = false}) async {
-    //TODO: Perform login
+  Future<Response> performSignup() async {
     final dio = Dio();
     final flavor = await FlavorGetter().getFlavor();
     final url = flavor == "dev" ? Urls.devApiUrl : Urls.prodApiUrl;
 
     try {
-      //TODO: Encrypt query params
-      final response = await dio.get('$url/api/v1/auth/login',
-          queryParameters: {"em": email, "p": password, "o": isOAuth});
+      final response = await dio.post('$url/api/v1/auth/signup', data: {
+        "firstName": signupProgress.firstName,
+        "lastName": signupProgress.lastName,
+        "email": signupProgress.email,
+        "password": encrypt(signupProgress.password!),
+        "isClient": true
+      });
+
+      if (response.statusCode != 201) return response;
+
+      if (sharedPreferences != null) {
+        await sharedPreferences?.setBool('isLoggedIn', true);
+        await sharedPreferences?.setBool('isLoggedInViaManual', true);
+      } else {
+        //TODO: Log error in crashlytics
+        logger.e('Shared preferences has not been initialized');
+      }
+
+      return response;
+    } on DioException catch (error) {
+      //TODO: Report error
+      logger.e(error);
+      return error.response ??
+          Response(
+              requestOptions: RequestOptions(),
+              statusCode: 400,
+              statusMessage: error.toString());
+    } on Exception catch (error) {
+      logger.e(error);
+      return Response(
+          requestOptions: RequestOptions(),
+          statusCode: 400,
+          statusMessage: error.toString());
+    } finally {
+      dio.close();
+    }
+  }
+
+  Future<bool> performLogin(String email,
+      {String? password, bool? isOAuth = false}) async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev" ? Urls.devApiUrl : Urls.prodApiUrl;
+
+    try {
+      await dio.get('$url/api/v1/auth/login',
+          queryParameters: {
+            "em": email,
+            "p": password != null ? encrypt(password) : null,
+            "o": isOAuth
+          });
 
       return true;
     } catch (error) {
