@@ -13,6 +13,7 @@ class AuthController extends ChangeNotifier {
   bool isLoggedIn = false;
   bool isLoggedInViaGoogle = false;
   bool isLoggedInViaManual = false;
+  SignupProgress signupProgress = SignupProgress();
 
   AuthController() {
     SharedPreferences.getInstance().then((instance) {
@@ -67,6 +68,8 @@ class AuthController extends ChangeNotifier {
       });
 
       if (response.statusCode != 201) return response;
+
+      signupProgress = SignupProgress();
 
       if (sharedPreferences != null) {
         await sharedPreferences?.setBool('isLoggedIn', true);

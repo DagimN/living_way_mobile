@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:provider/provider.dart';
 
 class PasswordForm extends StatefulWidget {
   final Function() onProgress;
@@ -18,6 +20,8 @@ class _PasswordFormState extends State<PasswordForm> {
 
   @override
   Widget build(BuildContext context) {
+    final authController = Provider.of<AuthController>(context);
+
     return Form(
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -31,7 +35,7 @@ class _PasswordFormState extends State<PasswordForm> {
               child: TextFormField(
                   keyboardType:
                       isPasswordVisible ? TextInputType.visiblePassword : null,
-                  obscureText: isPasswordVisible,
+                  obscureText: !isPasswordVisible,
                   validator: (value) {
                     if (value == null) return "Empty Field";
 
@@ -73,7 +77,7 @@ class _PasswordFormState extends State<PasswordForm> {
                   keyboardType: isConfirmPasswordVisible
                       ? TextInputType.visiblePassword
                       : null,
-                  obscureText: isConfirmPasswordVisible,
+                  obscureText: !isConfirmPasswordVisible,
                   validator: (value) {
                     if (value == null) return "Empty Field";
 
@@ -110,6 +114,9 @@ class _PasswordFormState extends State<PasswordForm> {
                     final isValid = formKey.currentState?.validate() ?? false;
 
                     if (!isValid) return;
+
+                    authController.signupProgress.password =
+                        passwordController.text;
 
                     widget.onProgress();
                   },

@@ -63,17 +63,26 @@ class _SignupScreenState extends State<SignupScreen> {
   }
 
   Widget currentForm(Function() onProgress) {
+    final authController = Provider.of<AuthController>(context);
+
     switch (signupFlowIndex) {
       case 0:
-        return NameForm(onProgress: onProgress);
+        return NameForm(onProgress: onProgress, authController: authController);
       case 1: // Get Email
-        return EmailForm(onProgress: onProgress);
+        return EmailForm(
+            onProgress: onProgress, authController: authController);
       case 2: // Set Password
         return PasswordForm(onProgress: onProgress);
       case 3: // Privacy Policy and terms
         return TermsAndPoliciesForm(onProgress: onProgress);
       case 4: // Signup complete
-        return const SignupComplete();
+        return SignupComplete(
+            onReset: () {
+              setState(() {
+                signupFlowIndex = 0;
+              });
+            },
+            authController: authController);
       default:
         return const SizedBox();
     }

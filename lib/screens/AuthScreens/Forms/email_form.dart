@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
 
 class EmailForm extends StatefulWidget {
+  final AuthController authController;
   final Function() onProgress;
-  const EmailForm({super.key, required this.onProgress});
+  const EmailForm({super.key, required this.onProgress, required this.authController});
 
   @override
   State<EmailForm> createState() => _EmailFormState();
@@ -11,7 +13,7 @@ class EmailForm extends StatefulWidget {
 
 class _EmailFormState extends State<EmailForm> {
   final formKey = GlobalKey<FormState>();
-  final emailController = TextEditingController();
+  late final emailController = TextEditingController(text: widget.authController.signupProgress.email);
 
   @override
   Widget build(BuildContext context) {
@@ -53,6 +55,8 @@ class _EmailFormState extends State<EmailForm> {
                     final isValid = formKey.currentState?.validate() ?? false;
 
                     if (!isValid) return;
+
+                    widget.authController.signupProgress.email = emailController.text;
 
                     widget.onProgress();
                   },
