@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/screens/AuthScreens/Forms/email_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/name_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/password_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/signup_complete.dart';
 import 'package:living_way/screens/AuthScreens/Forms/terms_and_policies_form.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -39,7 +41,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     foregroundColor: Colors.white,
                     title:
                         const Text('Welcome', style: TextStyle(fontSize: 24)))
-                : null,
+                : AppBar(
+                    backgroundColor: Colors.white, leading: const SizedBox()),
             body: SingleChildScrollView(
                 child: Container(
                     height: orientation == Orientation.portrait

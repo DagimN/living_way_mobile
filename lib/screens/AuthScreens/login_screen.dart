@@ -16,6 +16,8 @@ class _LoginScreenState extends State<LoginScreen> {
   bool obscurePassword = true;
   bool isLoggingInViaGoogle = false;
   bool isLoggingInViaManual = false;
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -105,13 +107,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                     const EdgeInsets.symmetric(vertical: 24),
                                 alignment: Alignment.centerRight,
                                 child: InkWell(
-                                    onTap: !isPerformingAction ? () {
-                                      //TODO: Implement forgot password
-                                    } : null,
+                                    onTap: !isPerformingAction
+                                        ? () {
+                                            //TODO: Implement forgot password
+                                          }
+                                        : null,
                                     child: const Text('Forgot Password',
                                         style: TextStyle(
                                             decoration:
                                                 TextDecoration.underline)))),
+                            //FIXME: Refactor for maintainability
                             !isLoggingInViaManual
                                 ? SizedBox(
                                     width: screenWidth * .7,
@@ -134,18 +139,39 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 setState(() {
                                                   isLoggingInViaManual = true;
                                                 });
-                                                //TODO: Perform login
-                                                await Future.delayed(
-                                                    const Duration(seconds: 3));
 
-                                                setState(() {
-                                                  isLoggingInViaManual = false;
+                                                Future.delayed(const Duration(
+                                                        seconds: 3))
+                                                    .then((value) {
+                                                  setState(() {
+                                                    isLoggingInViaManual =
+                                                        false;
+                                                  });
+                                                  Navigator
+                                                      .pushNamedAndRemoveUntil(
+                                                          context,
+                                                          '/home',
+                                                          (route) => false);
                                                 });
-                                                Navigator
-                                                    .pushNamedAndRemoveUntil(
-                                                        context,
-                                                        '/home',
-                                                        (route) => false);
+
+                                                //FIXME: Revert to original
+                                                // authController
+                                                //     .performLogin(
+                                                //         emailController.text,
+                                                //         password:
+                                                //             passwordController
+                                                //                 .text)
+                                                //     .then((value) {
+                                                //   setState(() {
+                                                //     isLoggingInViaManual =
+                                                //         false;
+                                                //   });
+                                                //   Navigator
+                                                //       .pushNamedAndRemoveUntil(
+                                                //           context,
+                                                //           '/home',
+                                                //           (route) => false);
+                                                // });
                                               }
                                             : null,
                                         child: const Text('Login')))
@@ -206,7 +232,6 @@ class _LoginScreenState extends State<LoginScreen> {
                                       InkWell(
                                           onTap: !isPerformingAction
                                               ? () {
-                                                  //TODO: Perform sign up
                                                   Navigator.pushNamed(
                                                       context, '/signup');
                                                 }

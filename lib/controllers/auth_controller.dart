@@ -30,7 +30,7 @@ class AuthController extends ChangeNotifier {
         await GoogleSignIn(scopes: <String>['email', 'profile']).signIn();
 
     if (account != null) {
-      bool success = await performLogin(account.email);
+      bool success = await performLogin(account.email, isOAuth: true);
       isLoggedInViaGoogle = success;
 
       //TODO: Report error
@@ -106,12 +106,11 @@ class AuthController extends ChangeNotifier {
     final url = flavor == "dev" ? Urls.devApiUrl : Urls.prodApiUrl;
 
     try {
-      await dio.get('$url/api/v1/auth/login',
-          queryParameters: {
-            "em": email,
-            "p": password != null ? encrypt(password) : null,
-            "o": isOAuth
-          });
+      await dio.get('$url/api/v1/auth/login', queryParameters: {
+        "em": email,
+        "p": password != null ? encrypt(password) : null,
+        "o": isOAuth
+      });
 
       return true;
     } catch (error) {
@@ -128,6 +127,16 @@ class AuthController extends ChangeNotifier {
     if (sharedPreferences != null) {
       await sharedPreferences?.setBool('isLoggedIn', false);
       await sharedPreferences?.setBool('isLoggedInViaGoogle', false);
+    } else {
+      //TODO: Log error in crashlytics
+      logger.e('Shared preferences has not been initialized');
+    }
+  }
+
+  Future<void> logoutViaManual() async {
+    if (sharedPreferences != null) {
+      await sharedPreferences?.setBool('isLoggedIn', false);
+      await sharedPreferences?.setBool('isLoggedInViaManual', false);
     } else {
       //TODO: Log error in crashlytics
       logger.e('Shared preferences has not been initialized');

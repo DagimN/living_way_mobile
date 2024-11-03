@@ -58,15 +58,15 @@ class ProfileSettingsScreen extends StatelessWidget {
                         ]),
                         Row(children: [
                           IconButton(
-                              onPressed: () async {
-                                authController.isLoggedInViaGoogle
-                                    ? await authController.logoutViaGoogle()
-                                    : () {
-                                      //TODO: Perform manual logout
-                                    };
-
-                                Navigator.pushNamedAndRemoveUntil(
-                                    context, '/login', (route) => false);
+                              onPressed: () {
+                                (authController.isLoggedInViaGoogle
+                                        ? authController.logoutViaGoogle()
+                                        : authController.logoutViaManual())
+                                    .then((value) =>
+                                        Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            '/login',
+                                            (route) => false));
                               },
                               icon: const Icon(Icons.logout,
                                   color: lightPrimaryColor)),
