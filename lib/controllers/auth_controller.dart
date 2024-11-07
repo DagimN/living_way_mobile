@@ -33,6 +33,8 @@ class AuthController extends ChangeNotifier {
       bool success = await performLogin(account.email, isOAuth: true);
       isLoggedInViaGoogle = success;
 
+      //TODO: Handle scenario for oauth account creation
+
       //TODO: Report error
 
       if (success) {
