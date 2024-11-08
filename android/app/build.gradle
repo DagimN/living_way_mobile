@@ -67,7 +67,11 @@ android {
             dimension "livingway"
             applicationId "com.livingway.app"
         }
-        dev {
+        staging {
+            dimension "livingway"
+            applicationId "com.livingway.app"
+        }
+        prod {
             dimension "livingway"
             applicationId "com.livingway.app"
         }

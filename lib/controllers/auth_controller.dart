@@ -58,7 +58,11 @@ class AuthController extends ChangeNotifier {
   Future<Response> performSignup() async {
     final dio = Dio();
     final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev" ? Urls.devApiUrl : Urls.prodApiUrl;
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
 
     try {
       final response = await dio.post('$url/api/v1/auth/signup', data: {
@@ -105,13 +109,18 @@ class AuthController extends ChangeNotifier {
       {String? password, bool? isOAuth = false}) async {
     final dio = Dio();
     final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev" ? Urls.devApiUrl : Urls.prodApiUrl;
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
 
     try {
       await dio.get('$url/api/v1/auth/login', queryParameters: {
         "em": email,
         "p": password != null ? encrypt(password) : null,
-        "o": isOAuth
+        "o": isOAuth,
+        "client": true
       });
 
       return true;

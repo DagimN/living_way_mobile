@@ -11,6 +11,12 @@
         "args": ["--flavor", "dev"]
       },
       {
+        "name": "staging_living_way",
+        "request": "launch",
+        "type": "dart",
+        "args": ["--flavor", "staging"]
+      },
+      {
         "name": "prod_living_way",
         "request": "launch",
         "type": "dart",
@@ -22,6 +28,13 @@
         "type": "dart",
         "flutterMode": "profile",
         "args": ["--flavor", "dev"]
+      },
+      {
+        "name": "staging_living_way (profile mode)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "profile",
+        "args": ["--flavor", "staging"]
       },
       {
         "name": "prod_living_way (profile mode)",
@@ -36,6 +49,13 @@
         "type": "dart",
         "flutterMode": "release",
         "args": ["--flavor", "dev"]
+      },
+      {
+        "name": "staging_living_way (release mode)",
+        "request": "launch",
+        "type": "dart",
+        "flutterMode": "release",
+        "args": ["--flavor", "staging"]
       },
       {
         "name": "prod_living_way (release mode)",
