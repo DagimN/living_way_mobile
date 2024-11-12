@@ -108,8 +108,8 @@ class ProfileSettingsScreen extends StatelessWidget {
                                       image: DecorationImage(
                                           image: profile.imageUrl != null
                                               ? imageProvider!
-                                              : Image.asset(AppImages
-                                                      .profilePlaceholder)
+                                              : Image.asset(
+                                                      AppImages.signupFlow3)
                                                   .image))),
                               Positioned(
                                   bottom: 10,

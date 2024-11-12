@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/screens/IntroScreens/pages/page1.dart';
+import 'package:living_way/screens/IntroScreens/pages/page2.dart';
+import 'package:living_way/screens/IntroScreens/pages/page3.dart';
+import 'package:living_way/screens/IntroScreens/pages/page4.dart';
+import 'package:living_way/screens/IntroScreens/pages/page5.dart';
 import 'package:living_way/widgets/dot_indicator.dart';
 import 'package:provider/provider.dart';
 
@@ -12,13 +17,8 @@ class IntroScreen extends StatelessWidget {
     int index = layoutController.initialIntroductionPageIndex;
     AppLocale appLocale = layoutController.appLocale;
 
-    List<Widget> pages = [
-      Container(color: Colors.indigo),
-      Container(color: Colors.blue),
-      Container(color: Colors.green),
-      Container(color: Colors.yellow),
-      Container(color: Colors.red),
-    ];
+    //FIXME: On this flow the only permitted device orientation should be portrait
+    List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
 
     return Scaffold(
         appBar: AppBar(

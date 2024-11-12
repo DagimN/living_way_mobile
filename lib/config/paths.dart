@@ -15,6 +15,13 @@ abstract class AppIcons {
 abstract class AppImages {
   static const String profilePlaceholder =
       'assets/images/profile_placeholder.png';
+  static const String signupFlow1 = 'assets/images/signup_flow_1.png';
+  static const String signupFlow2 = 'assets/images/signup_flow_2.png';
+  static const String signupFlow3 = 'assets/images/signup_flow_3.png';
+  static const String signupFlow4 =
+      'assets/images/signup_flow_4.png';
+  static const String signupFlow5 =
+      'assets/images/signup_flow_5.png';
   static const String topicBackground = 'assets/images/topic_background.png';
   static const String testimonyBackground =
       'assets/images/testimony_background.png';
