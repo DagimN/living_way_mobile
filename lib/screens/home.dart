@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 // import 'package:living_way/themes/dark_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
@@ -18,6 +19,12 @@ class HomeScreen extends StatelessWidget {
     // Brightness brightness = MediaQuery.of(context).platformBrightness;
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        appBar: AppBar(
+            toolbarHeight: 0,
+            backgroundColor: Colors.transparent,
+            systemOverlayStyle: SystemUiOverlayStyle.dark),
         floatingActionButton: layoutController.getSelectedHomePageNavigation ==
                 HomePageNavigation.testimonial
             ? FloatingActionButton(

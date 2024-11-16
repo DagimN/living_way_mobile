@@ -214,11 +214,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 (route) => false);
                                           }
 
-                                          if (mounted) {
-                                            setState(() {
-                                              isLoggingInViaGoogle = false;
-                                            });
-                                          }
+                                          setState(() {
+                                            isLoggingInViaGoogle = false;
+                                          });
                                         });
                                       }
                                     : null),

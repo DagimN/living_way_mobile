@@ -46,8 +46,8 @@ class BottomNavigation extends StatelessWidget {
                               layoutController.setSelectedHomePageNavigation =
                                   HomePageNavigation.profile;
                             },
-                            icon:
-                                Image.asset(AppImages.signupFlow3, height: 24))
+                            icon: Image.asset(AppImages.profilePlaceholder,
+                                height: 24))
                       ]))),
           const BibleTraverser()
         ]));

@@ -54,7 +54,8 @@ class ProfileScreen extends StatelessWidget {
                           image: DecorationImage(
                               image: profile.imageUrl != null
                                   ? imageProvider!
-                                  : Image.asset(AppImages.signupFlow3).image))),
+                                  : Image.asset(AppImages.profilePlaceholder)
+                                      .image))),
                   Text('${profile.firstName} ${profile.lastName}',
                       style: const TextStyle(
                           fontSize: 24, fontWeight: FontWeight.w400)),
