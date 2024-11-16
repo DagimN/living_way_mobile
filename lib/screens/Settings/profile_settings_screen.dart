@@ -26,9 +26,9 @@ class ProfileSettingsScreen extends StatelessWidget {
     final authController = Provider.of<AuthController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final profile = profileController.userProfile ??
-        Profile(firstName: "John", lastName: "Doe");
-    final imageProvider = profile.imageUrl != null
-        ? CachedNetworkImageProvider(profile.imageUrl!)
+        Profile(id: 'temp-id', firstName: "John", lastName: "Doe");
+    final imageProvider = profile.profileImageUrl != null
+        ? CachedNetworkImageProvider(profile.profileImageUrl!)
         : null;
 
     return Scaffold(
@@ -106,10 +106,10 @@ class ProfileSettingsScreen extends StatelessWidget {
                                             spreadRadius: 1)
                                       ],
                                       image: DecorationImage(
-                                          image: profile.imageUrl != null
+                                          image: profile.profileImageUrl != null
                                               ? imageProvider!
-                                              : Image.asset(
-                                                      AppImages.signupFlow3)
+                                              : Image.asset(AppImages
+                                                      .profilePlaceholder)
                                                   .image))),
                               Positioned(
                                   bottom: 10,

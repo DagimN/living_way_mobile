@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/auth_controller.dart';
+import 'package:living_way/screens/home.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -166,11 +167,12 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 //     isLoggingInViaManual =
                                                 //         false;
                                                 //   });
-                                                //   Navigator
-                                                //       .pushNamedAndRemoveUntil(
-                                                //           context,
-                                                //           '/home',
-                                                //           (route) => false);
+                                                // Navigator.pushAndRemoveUntil(
+                                                //     context,
+                                                //     MaterialPageRoute(
+                                                //         builder: (context) =>
+                                                //             const HomeScreen()),
+                                                //     (route) => false);
                                                 // });
                                               }
                                             : null,
@@ -207,16 +209,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                         authController
                                             .loginViaGoogle()
                                             .then((isSuccess) {
-                                          if (isSuccess) {
-                                            Navigator.pushNamedAndRemoveUntil(
-                                                context,
-                                                '/home',
-                                                (route) => false);
-                                          }
-
                                           setState(() {
                                             isLoggingInViaGoogle = false;
                                           });
+                                          if (isSuccess) {
+                                            Navigator.pushAndRemoveUntil(
+                                                context,
+                                                MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const HomeScreen()),
+                                                (route) => false);
+                                          }
                                         });
                                       }
                                     : null),

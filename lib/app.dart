@@ -35,6 +35,10 @@ class LivingWayApp extends StatelessWidget {
               create: (_) => ProfileController())
         ],
         child: Consumer<AuthController>(builder: (context, authController, _) {
+          final profileController = Provider.of<ProfileController>(context);
+
+          authController.setProfileController = profileController;
+          
           return FutureBuilder(
               future: Future.delayed(const Duration(seconds: 3)),
               builder: (context, snapshot) {
@@ -44,7 +48,9 @@ class LivingWayApp extends StatelessWidget {
                         title: 'Living Way',
                         theme: lightTheme,
                         darkTheme: darkTheme,
-                        home: authController.isLoggedIn ? const HomeScreen() : const IntroScreen(),
+                        home: authController.isLoggedIn
+                            ? const HomeScreen()
+                            : const IntroScreen(),
                         routes: {
                             '/intro': (context) => const IntroScreen(),
                             '/login': (context) => const LoginScreen(),
@@ -60,8 +66,7 @@ class LivingWayApp extends StatelessWidget {
                           })
                     : MaterialApp(
                         debugShowCheckedModeBanner: false,
-                        home: SplashScreen(context)
-                      );
+                        home: SplashScreen(context));
               });
         }));
   }

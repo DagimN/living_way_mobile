@@ -20,9 +20,9 @@ class ProfileScreen extends StatelessWidget {
     final settingsNavigation =
         Provider.of<LayoutController>(context).settingsNavigation;
     final profile = profileController.userProfile ??
-        Profile(firstName: "John", lastName: "Doe");
-    final imageProvider = profile.imageUrl != null
-        ? CachedNetworkImageProvider(profile.imageUrl!)
+        Profile(id: 'temp-id', firstName: "John", lastName: "Doe");
+    final imageProvider = profile.profileImageUrl != null
+        ? CachedNetworkImageProvider(profile.profileImageUrl!)
         : null;
 
     return SafeArea(
@@ -52,7 +52,7 @@ class ProfileScreen extends StatelessWidget {
                                 spreadRadius: 1)
                           ],
                           image: DecorationImage(
-                              image: profile.imageUrl != null
+                              image: profile.profileImageUrl != null
                                   ? imageProvider!
                                   : Image.asset(AppImages.profilePlaceholder)
                                       .image))),

@@ -3,6 +3,8 @@ import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:living_way/constants/urls.dart';
+import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/models/profile.dart';
 import 'package:living_way/models/signup_progress.dart';
 import 'package:living_way/services/logging_service.dart';
 import 'package:living_way/utils/security_functions.dart';
@@ -14,6 +16,7 @@ class AuthController extends ChangeNotifier {
   bool isLoggedInViaGoogle = false;
   bool isLoggedInViaManual = false;
   SignupProgress signupProgress = SignupProgress();
+  ProfileController? profileController;
 
   AuthController() {
     SharedPreferences.getInstance().then((instance) {
@@ -23,6 +26,10 @@ class AuthController extends ChangeNotifier {
       isLoggedInViaManual = instance.getBool('isLoggedInViaManual') ?? false;
       notifyListeners();
     });
+  }
+
+  set setProfileController(ProfileController value) {
+    profileController = value;
   }
 
   Future<bool> loginViaGoogle() async {
@@ -77,6 +84,8 @@ class AuthController extends ChangeNotifier {
 
       signupProgress = SignupProgress();
 
+      profileController?.setUserProfile = Profile.fromJson(response.data['data']);
+
       if (sharedPreferences != null) {
         await sharedPreferences?.setBool('isLoggedIn', true);
         await sharedPreferences?.setBool('isLoggedInViaManual', true);
@@ -116,12 +125,14 @@ class AuthController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      await dio.get('$url/api/v1/auth/login', queryParameters: {
+      final response = await dio.get('$url/api/v1/auth/login', queryParameters: {
         "em": email,
         "p": password != null ? encrypt(password) : null,
         "o": isOAuth,
         "client": true
       });
+
+      profileController?.setUserProfile = Profile.fromJson(response.data['data']);
 
       return true;
     } catch (error) {
