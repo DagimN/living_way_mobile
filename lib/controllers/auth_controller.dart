@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
@@ -84,9 +86,12 @@ class AuthController extends ChangeNotifier {
 
       signupProgress = SignupProgress();
 
-      profileController?.setUserProfile = Profile.fromJson(response.data['data']);
+      profileController?.setUserProfile =
+          Profile.fromJson(response.data['data']);
 
       if (sharedPreferences != null) {
+        await sharedPreferences?.setString(
+            'profile', json.encode(response.data['data']));
         await sharedPreferences?.setBool('isLoggedIn', true);
         await sharedPreferences?.setBool('isLoggedInViaManual', true);
       } else {
@@ -125,14 +130,24 @@ class AuthController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.get('$url/api/v1/auth/login', queryParameters: {
+      final response =
+          await dio.get('$url/api/v1/auth/login', queryParameters: {
         "em": email,
         "p": password != null ? encrypt(password) : null,
         "o": isOAuth,
         "client": true
       });
 
-      profileController?.setUserProfile = Profile.fromJson(response.data['data']);
+      profileController?.setUserProfile =
+          Profile.fromJson(response.data['data']);
+
+      if (sharedPreferences != null) {
+        await sharedPreferences?.setString(
+            'profile', json.encode(response.data['data']));
+      } else {
+        //TODO: Log error in crashlytics
+        logger.e('Shared preferences has not been initialized');
+      }
 
       return true;
     } catch (error) {
@@ -147,6 +162,7 @@ class AuthController extends ChangeNotifier {
     await GoogleSignIn().signOut();
 
     if (sharedPreferences != null) {
+      await sharedPreferences?.remove('profile');
       await sharedPreferences?.setBool('isLoggedIn', false);
       await sharedPreferences?.setBool('isLoggedInViaGoogle', false);
     } else {
@@ -157,6 +173,7 @@ class AuthController extends ChangeNotifier {
 
   Future<void> logoutViaManual() async {
     if (sharedPreferences != null) {
+      await sharedPreferences?.remove('profile');
       await sharedPreferences?.setBool('isLoggedIn', false);
       await sharedPreferences?.setBool('isLoggedInViaManual', false);
     } else {
