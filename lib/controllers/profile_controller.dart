@@ -6,6 +6,7 @@ import "package:shared_preferences/shared_preferences.dart";
 
 class ProfileController extends ChangeNotifier {
   Profile? userProfile;
+  final posts = [];
   bool isAnonymous = false;
   List<TimeOfDay> prayerTimes = [const TimeOfDay(hour: 6, minute: 00)];
 

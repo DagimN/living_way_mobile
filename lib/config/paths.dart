@@ -29,4 +29,5 @@ abstract class AppImages {
   static const String activitiesEnd = 'assets/images/activities_end.png';
   static const String aboutLogo = 'assets/images/about_logo.png';
   static const String loginBackground = 'assets/images/login_bg.jpg';
+  static const String emptyContent = 'assets/images/empty_content.png';
 }

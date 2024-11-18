@@ -21,7 +21,6 @@ class ProfileSettingsScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
-    const profilePosts = ['', '', '', '', ''];
 
     final authController = Provider.of<AuthController>(context);
     final profileController = Provider.of<ProfileController>(context);
@@ -30,6 +29,9 @@ class ProfileSettingsScreen extends StatelessWidget {
     final imageProvider = profile.profileImageUrl != null
         ? CachedNetworkImageProvider(profile.profileImageUrl!)
         : null;
+
+    //TODO: Define model
+    final posts = profileController.posts;
 
     return Scaffold(
         body: Container(
@@ -156,12 +158,12 @@ class ProfileSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text("Your Posts",
+                              const Text("Your Threads",
                                   style: TextStyle(
                                       color: lightPrimaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500)),
-                              profilePosts.length > 3
+                              posts.length > 3
                                   ? InkWell(
                                       onTap: () {},
                                       child: const Text('More',
@@ -172,26 +174,38 @@ class ProfileSettingsScreen extends StatelessWidget {
                                   : const SizedBox()
                             ]),
                         const Divider(),
-                        ListView.builder(
-                            itemCount: min(profilePosts.length, 3),
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              return Thread(
-                                  topic: Topic(
-                                      title: 'Book of Daniel',
-                                      viewCount: 18000,
-                                      likeCount: 500,
-                                      isFavorite: true,
-                                      backgroundImageUrl:
-                                          "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
-                                  isLast: true,
-                                  data: ThreadData(
-                                      threadId: const Uuid().v4(),
-                                      commenter: const Uuid().v4(),
-                                      comment: 'Comment 1',
-                                      likes: 50));
-                            })
+                        posts.isNotEmpty
+                            ? ListView.builder(
+                                itemCount: min(posts.length, 3),
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return Thread(
+                                      topic: Topic(
+                                          title: 'Book of Daniel',
+                                          viewCount: 18000,
+                                          likeCount: 500,
+                                          isFavorite: true,
+                                          backgroundImageUrl:
+                                              "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
+                                      isLast: true,
+                                      data: ThreadData(
+                                          threadId: const Uuid().v4(),
+                                          commenter: const Uuid().v4(),
+                                          comment: 'Comment 1',
+                                          likes: 50));
+                                })
+                            : Container(
+                                alignment: Alignment.center,
+                                margin: const EdgeInsets.only(top: 24),
+                                child: Column(children: [
+                                  Image.asset(AppImages.emptyContent),
+                                  const Text(
+                                      'You have not posted anything yet.',
+                                      style: TextStyle(
+                                          color: Colors.grey,
+                                          fontWeight: FontWeight.w300))
+                                ]))
                       ])))
             ]))));
   }
