@@ -1,6 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/widgets/bible_traverser.dart';
 import 'package:living_way/widgets/bottom_navigation_item.dart';
@@ -13,6 +15,7 @@ class BottomNavigation extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
     final layoutController = Provider.of<LayoutController>(context);
+    final profileController = Provider.of<ProfileController>(context);
 
     return SizedBox(
         height: 103,
@@ -46,8 +49,17 @@ class BottomNavigation extends StatelessWidget {
                               layoutController.setSelectedHomePageNavigation =
                                   HomePageNavigation.profile;
                             },
-                            icon: Image.asset(AppImages.profilePlaceholder,
-                                height: 24))
+                            icon: profileController
+                                        .userProfile?.profileImageUrl !=
+                                    null
+                                ? CircleAvatar(
+                                    backgroundColor: lightPrimaryColor.withOpacity(0.3),
+                                    backgroundImage: CachedNetworkImageProvider(
+                                        profileController
+                                                .userProfile?.profileImageUrl ??
+                                            ""))
+                                : Image.asset(AppImages.profilePlaceholder,
+                                    height: 24))
                       ]))),
           const BibleTraverser()
         ]));

@@ -3,6 +3,7 @@ class Profile {
   String firstName;
   String lastName;
   String? profileImageUrl;
+  String? tokenId;
   bool isAnonymous;
 
   Profile(
@@ -10,6 +11,7 @@ class Profile {
       required this.firstName,
       required this.lastName,
       this.isAnonymous = true,
+      this.tokenId,
       this.profileImageUrl});
 
   static Profile fromJson(Map<String, dynamic> json) {
@@ -18,6 +20,7 @@ class Profile {
         firstName: json['firstName'],
         lastName: json['lastName'],
         profileImageUrl: json['profileImage'],
-        isAnonymous: json['isAnonymous']);
+        isAnonymous: json['isAnonymous'],
+        tokenId: json['tokenId']);
   }
 }

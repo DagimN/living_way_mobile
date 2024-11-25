@@ -10,7 +10,7 @@ import 'package:living_way/screens/IntroScreens/splash_screen.dart';
 import 'package:living_way/screens/Settings/about_screen.dart';
 import 'package:living_way/screens/Settings/contacts_screen.dart';
 import 'package:living_way/screens/Settings/donation_screen.dart';
-import 'package:living_way/screens/Settings/profile_settings_screen.dart';
+import 'package:living_way/screens/Settings/ProfileSettingsScreen/index.dart';
 import 'package:living_way/screens/Settings/settings_screen.dart';
 import 'package:living_way/screens/home.dart';
 import 'package:living_way/screens/search_screen.dart';

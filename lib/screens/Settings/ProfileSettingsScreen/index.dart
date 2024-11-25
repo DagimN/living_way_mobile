@@ -1,19 +1,31 @@
 import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:hl_image_picker/hl_image_picker.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/models/profile.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
+import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/name_update_dialog.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
+import 'package:living_way/services/image_service.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-class ProfileSettingsScreen extends StatelessWidget {
+class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});
+
+  @override
+  State<ProfileSettingsScreen> createState() => _ProfileSettingsScreenState();
+}
+
+class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
+  bool isUpdatingAnonymous = false;
+  bool isUpdatingProfileImage = false;
 
   @override
   Widget build(BuildContext context) {
@@ -30,6 +42,7 @@ class ProfileSettingsScreen extends StatelessWidget {
         ? CachedNetworkImageProvider(profile.profileImageUrl!)
         : null;
 
+    //TODO: Add a design to handle password set/change
     //TODO: Define model
     final posts = profileController.posts;
 
@@ -39,7 +52,8 @@ class ProfileSettingsScreen extends StatelessWidget {
             height: screenHeight,
             decoration: const BoxDecoration(gradient: lightBackgroundGradient),
             child: SafeArea(
-                child: Column(children: [
+                child: SingleChildScrollView(
+                    child: Column(children: [
               Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Row(
@@ -93,26 +107,41 @@ class ProfileSettingsScreen extends StatelessWidget {
                             alignment: Alignment.center,
                             margin: const EdgeInsets.fromLTRB(0, 52, 0, 16),
                             child: Stack(children: [
-                              Container(
-                                  height: imageSize,
-                                  width: imageSize,
-                                  margin: const EdgeInsets.all(14),
-                                  decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      boxShadow: [
-                                        BoxShadow(
-                                            color: lightPrimaryColor
-                                                .withOpacity(.2),
-                                            offset: const Offset(0, 7),
-                                            blurRadius: 21,
-                                            spreadRadius: 1)
-                                      ],
-                                      image: DecorationImage(
-                                          image: profile.profileImageUrl != null
-                                              ? imageProvider!
-                                              : Image.asset(AppImages
-                                                      .profilePlaceholder)
-                                                  .image))),
+                              Stack(children: [
+                                Container(
+                                    height: imageSize,
+                                    width: imageSize,
+                                    margin: const EdgeInsets.all(14),
+                                    decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        boxShadow: [
+                                          BoxShadow(
+                                              color: lightPrimaryColor
+                                                  .withOpacity(.2),
+                                              offset: const Offset(0, 7),
+                                              blurRadius: 21,
+                                              spreadRadius: 1)
+                                        ],
+                                        image: DecorationImage(
+                                            fit: BoxFit.cover,
+                                            image:
+                                                profile.profileImageUrl != null
+                                                    ? imageProvider!
+                                                    : Image.asset(AppImages
+                                                            .profilePlaceholder)
+                                                        .image))),
+                                if (isUpdatingProfileImage)
+                                  Container(
+                                      height: imageSize,
+                                      width: imageSize,
+                                      margin: const EdgeInsets.all(14),
+                                      decoration: BoxDecoration(
+                                          shape: BoxShape.circle,
+                                          color: Colors.black.withOpacity(0.3)),
+                                      child: const Center(
+                                          child: CircularProgressIndicator(
+                                              color: lightPrimaryColor)))
+                              ]),
                               Positioned(
                                   bottom: 10,
                                   right: 10,
@@ -124,7 +153,36 @@ class ProfileSettingsScreen extends StatelessWidget {
                                               backgroundColor: Colors.white,
                                               elevation: 5,
                                               shadowColor: Colors.black),
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            setState(() {
+                                              isUpdatingProfileImage = true;
+                                            });
+
+                                            final images = await ImageService
+                                                .openGallery();
+
+                                            if (images.isNotEmpty) {
+                                              String fileName =
+                                                  images.first.path.split('/').last;
+                                              FormData formData = FormData();
+                                              formData.fields.add(
+                                                  MapEntry('id', profile.id));
+                                              formData.files.add(MapEntry(
+                                                  'image',
+                                                  await MultipartFile.fromFile(
+                                                      images.first.path,
+                                                      filename: fileName)));
+
+                                              await profileController
+                                                  .editProfile(formData);
+                                            } else {
+                                              //TODO: Notify user
+                                            }
+
+                                            setState(() {
+                                              isUpdatingProfileImage = false;
+                                            });
+                                          },
                                           icon: const Icon(Icons.image,
                                               color: lightPrimaryColor,
                                               size: 20))))
@@ -137,7 +195,15 @@ class ProfileSettingsScreen extends StatelessWidget {
                                       fontSize: 24,
                                       fontWeight: FontWeight.w400)),
                               IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return NameUpdateDialog(
+                                              firstName: profile.firstName,
+                                              lastName: profile.lastName);
+                                        });
+                                  },
                                   icon: const Icon(Icons.edit,
                                       color: lightPrimaryColor))
                             ]),
@@ -145,14 +211,40 @@ class ProfileSettingsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               const Text('Anonymous'),
-                              Checkbox(
-                                  checkColor: Colors.white,
-                                  activeColor: lightPrimaryColor,
-                                  value: profileController.isAnonymous,
-                                  onChanged: (value) {
-                                    profileController.setAnonymousProfile =
-                                        value ?? false;
-                                  })
+                              !isUpdatingAnonymous
+                                  ? Checkbox(
+                                      checkColor: Colors.white,
+                                      activeColor: lightPrimaryColor,
+                                      value: profile.isAnonymous,
+                                      onChanged: (value) async {
+                                        setState(() {
+                                          isUpdatingAnonymous = true;
+                                        });
+
+                                        final formData = FormData();
+                                        formData.fields.addAll([
+                                          MapEntry('id', profile.id),
+                                          MapEntry(
+                                              'isAnonymous',
+                                              (value ?? false)
+                                                  ? 'true'
+                                                  : 'false')
+                                        ]);
+
+                                        await profileController
+                                            .editProfile(formData);
+
+                                        setState(() {
+                                          isUpdatingAnonymous = false;
+                                        });
+                                      })
+                                  : Container(
+                                      height: 14,
+                                      width: 14,
+                                      margin: const EdgeInsets.all(16),
+                                      child: const CircularProgressIndicator(
+                                          color: lightPrimaryColor,
+                                          strokeWidth: 2))
                             ]),
                         const SizedBox(height: 32),
                         Row(
@@ -207,6 +299,6 @@ class ProfileSettingsScreen extends StatelessWidget {
                                           fontWeight: FontWeight.w300))
                                 ]))
                       ])))
-            ]))));
+            ])))));
   }
 }

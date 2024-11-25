@@ -52,6 +52,7 @@ class ProfileScreen extends StatelessWidget {
                                 spreadRadius: 1)
                           ],
                           image: DecorationImage(
+                              fit: BoxFit.cover,
                               image: profile.profileImageUrl != null
                                   ? imageProvider!
                                   : Image.asset(AppImages.profilePlaceholder)
