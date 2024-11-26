@@ -2,7 +2,6 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:hl_image_picker/hl_image_picker.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
@@ -10,6 +9,8 @@ import 'package:living_way/models/profile.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/name_update_dialog.dart';
+import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/password_update_dialog.dart';
+import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/setting_option_tile.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
 import 'package:living_way/services/image_service.dart';
 import 'package:living_way/themes/light_theme.dart';
@@ -42,7 +43,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
         ? CachedNetworkImageProvider(profile.profileImageUrl!)
         : null;
 
-    //TODO: Add a design to handle password set/change
     //TODO: Define model
     final posts = profileController.posts;
 
@@ -162,8 +162,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                 .openGallery();
 
                                             if (images.isNotEmpty) {
-                                              String fileName =
-                                                  images.first.path.split('/').last;
+                                              String fileName = images
+                                                  .first.path
+                                                  .split('/')
+                                                  .last;
                                               FormData formData = FormData();
                                               formData.fields.add(
                                                   MapEntry('id', profile.id));
@@ -207,45 +209,46 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   icon: const Icon(Icons.edit,
                                       color: lightPrimaryColor))
                             ]),
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text('Anonymous'),
-                              !isUpdatingAnonymous
-                                  ? Checkbox(
-                                      checkColor: Colors.white,
-                                      activeColor: lightPrimaryColor,
-                                      value: profile.isAnonymous,
-                                      onChanged: (value) async {
-                                        setState(() {
-                                          isUpdatingAnonymous = true;
-                                        });
+                        SettingOptionTile(
+                            title: 'Anonymous',
+                            isUpdating: isUpdatingAnonymous,
+                            trailing: Checkbox(
+                                checkColor: Colors.white,
+                                activeColor: lightPrimaryColor,
+                                value: profile.isAnonymous,
+                                onChanged: (value) async {
+                                  setState(() {
+                                    isUpdatingAnonymous = true;
+                                  });
 
-                                        final formData = FormData();
-                                        formData.fields.addAll([
-                                          MapEntry('id', profile.id),
-                                          MapEntry(
-                                              'isAnonymous',
-                                              (value ?? false)
-                                                  ? 'true'
-                                                  : 'false')
-                                        ]);
+                                  final formData = FormData();
+                                  formData.fields.addAll([
+                                    MapEntry('id', profile.id),
+                                    MapEntry('isAnonymous',
+                                        (value ?? false) ? 'true' : 'false')
+                                  ]);
 
-                                        await profileController
-                                            .editProfile(formData);
+                                  await profileController.editProfile(formData);
 
-                                        setState(() {
-                                          isUpdatingAnonymous = false;
-                                        });
-                                      })
-                                  : Container(
-                                      height: 14,
-                                      width: 14,
-                                      margin: const EdgeInsets.all(16),
-                                      child: const CircularProgressIndicator(
-                                          color: lightPrimaryColor,
-                                          strokeWidth: 2))
-                            ]),
+                                  setState(() {
+                                    isUpdatingAnonymous = false;
+                                  });
+                                })),
+                        SettingOptionTile(
+                            title: 'Change Password',
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) => PasswordUpdateDialog(
+                                      passwordExists: profile.passwordExists));
+                            },
+                            trailing: Container(
+                                margin:
+                                    const EdgeInsets.symmetric(horizontal: 12),
+                                child: const Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    color: Color(0xFF413F2B))),
+                            isLast: true),
                         const SizedBox(height: 32),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -265,7 +268,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                   TextDecoration.underline)))
                                   : const SizedBox()
                             ]),
-                        const Divider(),
                         posts.isNotEmpty
                             ? ListView.builder(
                                 itemCount: min(posts.length, 3),
