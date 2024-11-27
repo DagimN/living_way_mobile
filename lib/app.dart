@@ -3,6 +3,7 @@ import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/AuthScreens/login_screen.dart';
 import 'package:living_way/screens/AuthScreens/signup_screen.dart';
 import 'package:living_way/screens/IntroScreens/intro_screen.dart';
@@ -32,13 +33,15 @@ class LivingWayApp extends StatelessWidget {
           ChangeNotifierProvider<ContentController>(
               create: (_) => ContentController()),
           ChangeNotifierProvider<ProfileController>(
-              create: (_) => ProfileController())
+              create: (_) => ProfileController()),
+          ChangeNotifierProvider<ThemeController>(
+              create: (_) => ThemeController())
         ],
         child: Consumer<AuthController>(builder: (context, authController, _) {
           final profileController = Provider.of<ProfileController>(context);
 
           authController.setProfileController = profileController;
-          
+
           return FutureBuilder(
               future: Future.delayed(const Duration(seconds: 3)),
               builder: (context, snapshot) {

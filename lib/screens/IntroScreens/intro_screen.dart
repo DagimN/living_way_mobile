@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/IntroScreens/pages/page1.dart';
 import 'package:living_way/screens/IntroScreens/pages/page2.dart';
 import 'package:living_way/screens/IntroScreens/pages/page3.dart';
@@ -14,8 +15,9 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     int index = layoutController.initialIntroductionPageIndex;
-    AppLocale appLocale = layoutController.appLocale;
+    AppLocale appLocale = themeController.appLocale;
 
     //FIXME: On this flow the only permitted device orientation should be portrait
     List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
@@ -29,8 +31,7 @@ class IntroScreen extends StatelessWidget {
                 onPressed: () {
                   //TODO: Add language locale and make functional
 
-                  layoutController.setAppLocale =
-                      appLocale == AppLocale.en ? AppLocale.am : AppLocale.en;
+                  themeController.toggleAppLocale();
                 },
                 child: Text(appLocale.name.toUpperCase())),
             actions: [

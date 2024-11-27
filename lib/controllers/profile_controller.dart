@@ -13,6 +13,8 @@ class ProfileController extends ChangeNotifier {
   final posts = [];
   bool isAnonymous = false;
   List<TimeOfDay> prayerTimes = [const TimeOfDay(hour: 6, minute: 00)];
+  bool willReceiveNotification = true;
+  bool willRemindPrayer = false;
 
   ProfileController() {
     SharedPreferences.getInstance().then((instance) async {
@@ -89,6 +91,16 @@ class ProfileController extends ChangeNotifier {
 
   set setUserProfile(Profile value) {
     userProfile = value;
+    notifyListeners();
+  }
+
+  set setWillReceiveNotification(bool value) {
+    willReceiveNotification = value;
+    notifyListeners();
+  }
+
+  set setWillRemindPrayer(bool value) {
+    willRemindPrayer = value;
     notifyListeners();
   }
 }

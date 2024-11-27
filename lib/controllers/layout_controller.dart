@@ -19,15 +19,8 @@ enum AppLocale { en, am }
 class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];
-  AppLocale appLocale = AppLocale.en;
-  bool isDarkMode = false;
-  bool willReceiveNotification = true;
-  bool willRemindPrayer = false;
   int initialIntroductionPageIndex = 0;
-  double textSize = 12.0;
-  String? selectedFont;
-
-  final List<String> fonts = ['Font 1', 'Font 2', 'Font 3'];
+  
   final List<Map<String, String>> settingsNavigation = [
     {'name': "General", 'route': '/settings'},
     {'name': "Profile", 'route': '/profile'},
@@ -41,7 +34,6 @@ class LayoutController extends ChangeNotifier {
   AnimationController? bibleTraverseController;
 
   LayoutController() {
-    selectedFont = fonts.first;
     scrollController.addListener(() {
       if (verseHighlightController != null &&
           verseHighlightController?.value != 1) {
@@ -107,33 +99,8 @@ class LayoutController extends ChangeNotifier {
     bibleTraverseController = controller;
   }
 
-  set setAppLocale(AppLocale value) {
-    appLocale = value;
-    notifyListeners();
-  }
-
   set setIntroPageIndex(int value) {
     initialIntroductionPageIndex = value;
-    notifyListeners();
-  }
-
-  set setTheme(bool value) {
-    isDarkMode = value;
-    notifyListeners();
-  }
-
-  set setTextSize(double value) {
-    textSize = value;
-    notifyListeners();
-  }
-
-  set setWillReceiveNotification(bool value) {
-    willReceiveNotification = value;
-    notifyListeners();
-  }
-
-  set setWillRemindPrayer(bool value) {
-    willRemindPrayer = value;
     notifyListeners();
   }
 }

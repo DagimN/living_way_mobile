@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/utils/format_time.dart';
 import 'package:provider/provider.dart';
@@ -10,11 +10,11 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final layoutController = Provider.of<LayoutController>(context);
+    // final layoutController = Provider.of<LayoutController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final profileController = Provider.of<ProfileController>(context);
-    final appLocale = layoutController.appLocale;
-    final isDarkMode = layoutController.isDarkMode;
-    final willRemindPrayer = layoutController.willRemindPrayer;
+    final appLocale = themeController.appLocale;
+    final willRemindPrayer = profileController.willRemindPrayer;
     final prayerTimes = profileController.prayerTimes;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -67,9 +67,9 @@ class SettingsScreen extends StatelessWidget {
                                   onPressed: () {
                                     //TODO: Set theme
 
-                                    layoutController.setTheme = !isDarkMode;
+                                    themeController.toggleBrightness();
                                   },
-                                  icon: Icon(isDarkMode
+                                  icon: Icon(themeController.brightness == Brightness.dark
                                       ? Icons.nights_stay
                                       : Icons.sunny))
                             ]),
@@ -88,10 +88,7 @@ class SettingsScreen extends StatelessWidget {
                                   onPressed: () {
                                     //TODO: Add language locale and make functional
 
-                                    layoutController.setAppLocale =
-                                        appLocale == AppLocale.en
-                                            ? AppLocale.am
-                                            : AppLocale.en;
+                                    themeController.toggleAppLocale();
                                   },
                                   child: Text(appLocale.name.toUpperCase()))
                             ]),
@@ -100,12 +97,12 @@ class SettingsScreen extends StatelessWidget {
                             children: [
                               const Text('Font'),
                               DropdownButton(
-                                  value: layoutController.selectedFont,
+                                  value: themeController.selectedFont,
                                   underline: const SizedBox(),
                                   iconEnabledColor: lightPrimaryColor,
                                   style:
                                       const TextStyle(color: lightPrimaryColor),
-                                  items: layoutController.fonts
+                                  items: themeController.fonts
                                       .map((font) => DropdownMenuItem(
                                           value: font, child: Text(font)))
                                       .toList(),
@@ -121,20 +118,20 @@ class SettingsScreen extends StatelessWidget {
                               Container(
                                   margin: const EdgeInsets.only(right: 10),
                                   child: Text(
-                                      layoutController.textSize
+                                      (themeController.textSize * 100)
                                           .toInt()
                                           .toString(),
                                       style: const TextStyle(
                                           color: lightPrimaryColor)))
                             ]),
                         Slider(
-                            value: layoutController.textSize,
-                            min: 8,
-                            max: 32,
-                            divisions: 24,
+                            value: themeController.textSize,
+                            min: 0,
+                            max: 100,
+                            divisions: 10,
                             activeColor: lightPrimaryColor,
                             onChanged: (value) {
-                              layoutController.setTextSize = value;
+                              themeController.setTextSize = value;
                             }),
                         const SizedBox(height: 16),
                         const Text("Reminders",
@@ -150,9 +147,9 @@ class SettingsScreen extends StatelessWidget {
                               Switch(
                                   activeColor: lightPrimaryColor,
                                   value:
-                                      layoutController.willReceiveNotification,
+                                      profileController.willReceiveNotification,
                                   onChanged: (value) {
-                                    layoutController
+                                    profileController
                                         .setWillReceiveNotification = value;
                                   })
                             ]),
@@ -164,7 +161,7 @@ class SettingsScreen extends StatelessWidget {
                                   activeColor: lightPrimaryColor,
                                   value: willRemindPrayer,
                                   onChanged: (value) {
-                                    layoutController.setWillRemindPrayer =
+                                    profileController.setWillRemindPrayer =
                                         value;
                                   })
                             ]),
@@ -201,7 +198,7 @@ class SettingsScreen extends StatelessWidget {
                                                   .removePrayerTime(prayerTimes
                                                       .indexOf(time));
                                             } else {
-                                              layoutController
+                                              profileController
                                                   .setWillRemindPrayer = false;
                                             }
                                           },
