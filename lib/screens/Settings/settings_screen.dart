@@ -16,9 +16,13 @@ class SettingsScreen extends StatelessWidget {
     final appLocale = themeController.appLocale;
     final willRemindPrayer = profileController.willRemindPrayer;
     final prayerTimes = profileController.prayerTimes;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
+
+    double textSize = themeController.textSize;
+    Fonts selectedFont = themeController.selectedFont;
 
     return Scaffold(
         body: Container(
@@ -96,13 +100,18 @@ class SettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Font'),
+                              Text('Font',
+                                  style: TextStyle(
+                                      fontFamily: selectedFont.name,
+                                      fontSize: 47 * textSize)),
                               DropdownButton(
                                   value: themeController.selectedFont,
                                   underline: const SizedBox(),
                                   iconEnabledColor: lightPrimaryColor,
-                                  style:
-                                      const TextStyle(color: lightPrimaryColor),
+                                  style: TextStyle(
+                                      color: lightPrimaryColor,
+                                      fontFamily: selectedFont.name,
+                                      fontSize: 47 * textSize),
                                   items: Fonts.values
                                       .map((font) => DropdownMenuItem(
                                           value: font,
@@ -111,28 +120,34 @@ class SettingsScreen extends StatelessWidget {
                                                   fontFamily: font.name))))
                                       .toList(),
                                   onChanged: (value) {
-                                    //TODO: Set Font
+                                    themeController.setFont =
+                                        value ?? Fonts.RobotoSlab;
                                   })
                             ]),
                         const SizedBox(height: 10),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text('Text Size'),
+                              Text('Text Size',
+                                  style: TextStyle(
+                                      fontSize: 47 * textSize,
+                                      fontFamily: selectedFont.name)),
                               Container(
                                   margin: const EdgeInsets.only(right: 10),
                                   child: Text(
                                       (themeController.textSize * 100)
                                           .toInt()
                                           .toString(),
-                                      style: const TextStyle(
+                                      style: TextStyle(
+                                          fontFamily: selectedFont.name,
+                                          fontSize: 47 * textSize,
                                           color: lightPrimaryColor)))
                             ]),
                         Slider(
                             value: themeController.textSize,
-                            min: 0,
-                            max: 100,
-                            divisions: 10,
+                            min: 0.1,
+                            max: 1,
+                            divisions: 9,
                             activeColor: lightPrimaryColor,
                             onChanged: (value) {
                               themeController.setTextSize = value;

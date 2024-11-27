@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,7 @@ class _ChapterPageState extends State<ChapterPage>
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     final layoutController = Provider.of<LayoutController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final selectedVerse = contentController.verse;
     final selectedBook =
         contentController.book ?? contentController.bible.firstOrNull;
@@ -44,7 +46,7 @@ class _ChapterPageState extends State<ChapterPage>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: widget.verses.map((verse) {
                       final index = widget.verses.indexOf(verse);
-                      
+
                       return AnimatedBuilder(
                           animation: verseHighlightController,
                           builder: (context, child) {
@@ -59,15 +61,22 @@ class _ChapterPageState extends State<ChapterPage>
                                       TextSpan(
                                           text: '${index + 1} ',
                                           style: TextStyle(
+                                              fontFamily: themeController
+                                                  .selectedFont.name,
                                               color: isSelectedVerse
                                                   ? lightPrimaryColor
                                                   : lightPrimaryColor.withOpacity(
                                                       verseHighlightController
                                                           .value),
-                                              fontSize: 24)),
+                                              fontSize: 80 *
+                                                  themeController.textSize)),
                                       TextSpan(
                                           text: verse,
                                           style: TextStyle(
+                                              fontSize:
+                                                  47 * themeController.textSize,
+                                              fontFamily: themeController
+                                                  .selectedFont.name,
                                               color: isSelectedVerse
                                                   ? Colors.black
                                                   : Colors.black.withOpacity(

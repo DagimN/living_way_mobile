@@ -11,16 +11,17 @@ class ThemeController extends ChangeNotifier {
   double textSize = 0.3;
   AppLocale appLocale = AppLocale.en;
   Brightness brightness = Brightness.light;
-  Fonts? selectedFont;
+  Fonts selectedFont = Fonts.RobotoSlab;
 
-  ThemeController() {
-    selectedFont = Fonts.RobotoSlab;
-
-    notifyListeners();
-  }
+  //TODO: Save settings as cache and load from cache
 
   set setTextSize(double value) {
     textSize = value;
+    notifyListeners();
+  }
+
+  set setFont(Fonts value) {
+    selectedFont = value;
     notifyListeners();
   }
 
