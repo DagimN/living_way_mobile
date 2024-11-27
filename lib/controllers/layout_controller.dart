@@ -14,8 +14,6 @@ enum HomePageNavigation {
   profile;
 }
 
-enum AppLocale { en, am }
-
 class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];

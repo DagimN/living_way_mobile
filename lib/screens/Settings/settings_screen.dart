@@ -69,7 +69,8 @@ class SettingsScreen extends StatelessWidget {
 
                                     themeController.toggleBrightness();
                                   },
-                                  icon: Icon(themeController.brightness == Brightness.dark
+                                  icon: Icon(themeController.brightness ==
+                                          Brightness.dark
                                       ? Icons.nights_stay
                                       : Icons.sunny))
                             ]),
@@ -102,9 +103,12 @@ class SettingsScreen extends StatelessWidget {
                                   iconEnabledColor: lightPrimaryColor,
                                   style:
                                       const TextStyle(color: lightPrimaryColor),
-                                  items: themeController.fonts
+                                  items: Fonts.values
                                       .map((font) => DropdownMenuItem(
-                                          value: font, child: Text(font)))
+                                          value: font,
+                                          child: Text(font.name,
+                                              style: TextStyle(
+                                                  fontFamily: font.name))))
                                       .toList(),
                                   onChanged: (value) {
                                     //TODO: Set Font
