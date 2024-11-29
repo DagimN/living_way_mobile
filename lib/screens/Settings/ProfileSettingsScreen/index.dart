@@ -10,6 +10,7 @@ import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/name_update_dialog.dart';
 import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/password_update_dialog.dart';
+import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/prompt_delete_profile_dialog.dart';
 import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/setting_option_tile.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
 import 'package:living_way/services/image_service.dart';
@@ -87,8 +88,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               icon: const Icon(Icons.logout,
                                   color: lightPrimaryColor)),
                           IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
+                              onPressed: () async {
+                                showDialog(
+                                    context: context,
+                                    barrierDismissible: false,
+                                    builder: (context) =>
+                                        const PromptDeleteProfileDialog());
                               },
                               icon: const Icon(Icons.delete, color: Colors.red))
                         ])

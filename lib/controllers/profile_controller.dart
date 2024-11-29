@@ -79,6 +79,30 @@ class ProfileController extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteProfile() async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    try {
+      final response =
+          await dio.delete('$url/api/v1/profile/delete', queryParameters: {
+            "id": userProfile?.id
+          });
+
+      if (response.statusCode != 200) return;
+
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+    }
+  }
+
   void removePrayerTime(int index) {
     prayerTimes.removeAt(index);
     notifyListeners();
