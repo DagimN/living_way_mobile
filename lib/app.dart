@@ -12,7 +12,7 @@ import 'package:living_way/screens/Settings/about_screen.dart';
 import 'package:living_way/screens/Settings/contacts_screen.dart';
 import 'package:living_way/screens/Settings/donation_screen.dart';
 import 'package:living_way/screens/Settings/ProfileSettingsScreen/index.dart';
-import 'package:living_way/screens/Settings/settings_screen.dart';
+import 'package:living_way/screens/Settings/GeneralSettingsScreen/index.dart';
 import 'package:living_way/screens/home.dart';
 import 'package:living_way/screens/search_screen.dart';
 import 'package:living_way/themes/dark_theme.dart';
@@ -60,7 +60,8 @@ class LivingWayApp extends StatelessWidget {
                             '/signup': (context) => const SignupScreen(),
                             '/home': (context) => const HomeScreen(),
                             '/search': (context) => const SearchScreen(),
-                            '/settings': (context) => const SettingsScreen(),
+                            '/settings': (context) =>
+                                const GeneralSettingsScreen(),
                             '/profile': (context) =>
                                 const ProfileSettingsScreen(),
                             '/contacts': (context) => const ContactsScreen(),

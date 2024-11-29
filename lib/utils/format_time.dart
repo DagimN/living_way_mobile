@@ -16,13 +16,36 @@ String formatDuration(int seconds) {
 
 String formatTime(TimeOfDay time, AppLocale locale) {
   int minute = time.minute;
-  int hour = time.hour;
+  int hour = 12;
+
+  if (locale == AppLocale.en) {
+    if (time.hour > 12) {
+      hour = time.hour - 12;
+    }
+
+    if (time.hour != 0 && time.hour <= 12) {
+      hour = time.hour;
+    }
+  } else {
+    if (time.hour > 12) {
+      hour = (time.hour - 6) % 12;
+    }
+
+    if (time.hour != 0 && time.hour <= 12) {
+      hour = (time.hour + 6) % 12;
+    }
+
+    if (time.hour == 6) {
+      hour = 12;
+    }
+  }
+
   if (locale == AppLocale.en) {
     return '$hour:${minute < 10 ? '0$minute' : minute} ${time.period.name.toUpperCase()}';
   }
 
   if (locale == AppLocale.am) {
-    return '${hour + 6}:${minute < 10 ? '0$minute' : minute}';
+    return '$hour:${minute < 10 ? '0$minute' : minute}';
   }
 
   return '${time.hour}:${time.minute}';

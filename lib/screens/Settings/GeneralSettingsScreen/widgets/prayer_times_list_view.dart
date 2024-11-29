@@ -1,0 +1,61 @@
+import 'package:flutter/material.dart';
+import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/utils/format_time.dart';
+import 'package:provider/provider.dart';
+
+class PrayerTimesListView extends StatelessWidget {
+  const PrayerTimesListView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final profileController = Provider.of<ProfileController>(context);
+    final themeController = Provider.of<ThemeController>(context);
+    final prayerTimes = profileController.prayerTimes;
+    final appLocale = themeController.appLocale;
+
+    return Column(children: [
+      TextButton(
+          style: TextButton.styleFrom(foregroundColor: lightPrimaryColor),
+          onPressed: () {
+            profileController
+                .addPrayerTime(const TimeOfDay(hour: 23, minute: 0));
+          },
+          child: const Row(children: [Icon(Icons.add), Text('Add Time')])),
+      ...prayerTimes.map((time) =>
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            TextButton(
+                onPressed: () async {
+                  final result = await showTimePicker(
+                      context: context,
+                      initialTime: time,
+                      builder: (context, child) => Theme(
+                          data: ThemeData(
+                              primaryColor: lightPrimaryColor,
+                              timePickerTheme: TimePickerThemeData(
+                                  dayPeriodColor:
+                                      lightPrimaryColor.withOpacity(0.3))),
+                          child: child ?? const SizedBox()));
+
+                  if (result != null) {
+                    profileController.editPrayerTime(
+                        result, prayerTimes.indexOf(time));
+                  }
+                },
+                child: Text(formatTime(time, appLocale))), //FIXME: When locale is am, it is not clear at what time it is
+            IconButton(
+                onPressed: () {
+                  if (prayerTimes.length > 1) {
+                    profileController
+                        .removePrayerTime(prayerTimes.indexOf(time));
+                  } else {
+                    profileController.setWillRemindPrayer = false;
+                  }
+                },
+                icon: const Icon(Icons.remove_circle_outline,
+                    color: lightPrimaryColor))
+          ]))
+    ]);
+  }
+}

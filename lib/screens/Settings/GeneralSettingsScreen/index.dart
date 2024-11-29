@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/screens/Settings/GeneralSettingsScreen/widgets/prayer_times_list_view.dart';
 import 'package:living_way/themes/light_theme.dart';
-import 'package:living_way/utils/format_time.dart';
 import 'package:provider/provider.dart';
 
-class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+class GeneralSettingsScreen extends StatelessWidget {
+  const GeneralSettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    // final layoutController = Provider.of<LayoutController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final appLocale = themeController.appLocale;
     final willRemindPrayer = profileController.willRemindPrayer;
-    final prayerTimes = profileController.prayerTimes;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -30,7 +28,8 @@ class SettingsScreen extends StatelessWidget {
             height: screenHeight,
             decoration: const BoxDecoration(gradient: lightBackgroundGradient),
             child: SafeArea(
-                child: Column(children: [
+                child: SingleChildScrollView(
+                    child: Column(children: [
               Container(
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: Row(children: [
@@ -184,49 +183,8 @@ class SettingsScreen extends StatelessWidget {
                                         value;
                                   })
                             ]),
-                        if (willRemindPrayer)
-                          Column(children: [
-                            TextButton(
-                                style: TextButton.styleFrom(
-                                    foregroundColor: lightPrimaryColor),
-                                onPressed: () {
-                                  profileController.addPrayerTime(
-                                      const TimeOfDay(hour: 23, minute: 0));
-                                },
-                                child: const Row(children: [
-                                  Icon(Icons.add),
-                                  Text('Add Time')
-                                ])),
-                            ...prayerTimes.map((time) => Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      TextButton(
-                                          onPressed: () {
-                                            //TODO: Edit time of day
-                                            showTimePicker(
-                                                context: context,
-                                                initialTime: time);
-                                          },
-                                          child: Text(
-                                              formatTime(time, appLocale))),
-                                      IconButton(
-                                          onPressed: () {
-                                            if (prayerTimes.length > 1) {
-                                              profileController
-                                                  .removePrayerTime(prayerTimes
-                                                      .indexOf(time));
-                                            } else {
-                                              profileController
-                                                  .setWillRemindPrayer = false;
-                                            }
-                                          },
-                                          icon: const Icon(
-                                              Icons.remove_circle_outline,
-                                              color: lightPrimaryColor))
-                                    ]))
-                          ])
+                        if (willRemindPrayer) const PrayerTimesListView()
                       ])))
-            ]))));
+            ])))));
   }
 }

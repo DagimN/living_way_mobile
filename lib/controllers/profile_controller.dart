@@ -130,6 +130,13 @@ class ProfileController extends ChangeNotifier {
         prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
   }
 
+  void editPrayerTime(TimeOfDay value, int index) {
+    prayerTimes.replaceRange(index, index + 1, [value]);
+    notifyListeners();
+        sharedPreferences?.setStringList('reminders',
+        prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
+  }
+
   set setUserProfile(Profile value) {
     userProfile = value;
     notifyListeners();
