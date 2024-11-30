@@ -1,12 +1,16 @@
+import 'package:dio/dio.dart';
+import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
+import 'package:living_way/constants/urls.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/models/book.dart';
 import 'package:living_way/models/contacts.dart';
 import 'package:living_way/models/staff.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/translation.dart';
+import 'package:living_way/services/logging_service.dart';
 import 'package:living_way/utils/load_json.dart';
 
 class ContentController extends ChangeNotifier {
@@ -25,100 +29,8 @@ class ContentController extends ChangeNotifier {
     Translation(name: "ASV"),
     Translation(name: "NASB")
   ];
-  List<ActivityContent> activityList = [
-    ActivityContent(
-        id: '1',
-        isOngoing: true,
-        type: ContentType.event,
-        locationUrl:
-            "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu",
-        banner: ContentBanner(
-            position: "",
-            url:
-                "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/426074019_7954890431204553_8594967751125902832_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xMDgweDEwODAuc2RyLmYyOTM1MC5kZWZhdWx0X2ltYWdlIn0&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=f0YLIiWMKFgQ7kNvgGpn8C3&edm=AFg4Q8wBAAAA&ccb=7-5&ig_cache_key=MzI5ODE1MDE4Nzg2NjgwOTU2NA%3D%3D.2-ccb7-5&oh=00_AYCR7slbEWuTv0xgg5pThINrl8Q6R6zNIDeKcXVQTJZfwQ&oe=66CFCF81&_nc_sid=0b30b7"),
-        timestamp: DateTime.now().subtract(const Duration(days: 1))),
-    ActivityContent(
-        id: '2',
-        type: ContentType.article,
-        title: "ቤተክርስቲያን አልባ አማኞች",
-        banner: ContentBanner(
-            position: "",
-            thumbnail: "",
-            url:
-                "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fimage_2022_02_15_15_54_05_dab102c7e1.png&w=1920&q=75"),
-        body:
-            "የኮቪድ ወረርሽኝ በተባባሰበት እና የቤተክርስቲያን መሰባሰብ ላይ ገደብ በተጣለ ወቅት፣ አብዛኛውን አማኝ “ቤተክርስቲያን መሄድ ናፈቀኝ” እያለ ሲናገር የቅርብ ጊዜ ትውስታችን ነው፡፡",
-        content: [
-          "የኮቪድ ወረርሽኝ በተባባሰበት እና የቤተክርስቲያን መሰባሰብ ላይ ገደብ በተጣለ ወቅት፣ አብዛኛውን አማኝ “ቤተክርስቲያን መሄድ ናፈቀኝ” እያለ ሲናገር የቅርብ ጊዜ ትውስታችን ነው፡፡ እውነት ነው ቤተክርስቲያን፣ የቅዱሳን ሕብረት እጅጉን ይናፍቃል፡፡ ነገር ግን የአንዳንዶቻችንን ናፍቆት የፈጠረው ገደቡ ይመስል ነበር፡፡ ለምን? ትላንትና በሰላሙ ቀን ቤተክርስቲያን ለመሄድ ብዙ አቃቂር የምናወጣ ነበርን፡፡ ልክ ከእጃችን ስናጣው ምን ያህል አስፈላጊ እንደሆነ በጥቂቱ ያየንበት አጋጣሚ ነው፡፡ እውነት ነው፣ ቤተክርስቲያን እስከብዙ ጉድለቷ እጅጉ አስፈላጊ የክርስቶስ አካል ናት፡፡",
-          "ዛሬ በዚህች አጭር ጹሁፍ ልንዳስስ የምንፈልገው ከቅርብ ጊዜ ወዲህ አባል የሆኑበት ቤተክርስቲያን ስሌላቸው እና እየጨመሩ ስለመጡ ምዕመናን ነው፡፡ አሁን አሁን በአማኙ በተለይ በወጣቱ ዘንድ የቋንቋ ለውጥ አለ፡፡ ድሮ ድሮ የየት ቤተክርስቲያን አባል ነህ ነበር የሚባለው፣ ዛሬ ዛሬ ግን “ቸርች የት ነው የምትካፈለው?” ወይም አንዳንዶች ሲመልሱ “ቸርች የምካፈለው እዚህ…ነው” ይላሉ፡፡ ይህ በሌጣው ምንም ክፋት የሌለበት ቢመስልም፣ የአንድ ቤተክርስቲያን አባል የመሆንን እሴት እየሸረሸረ ነው፡፡ ሰዎች ሰንበትን ጠብቀው ደስ ያለቸው ቦታ ሄደው ይካፈላሉ፡፡ ከዚያ ያለፈ ነገር አያስፈልግም የሚል አንድምታ አለው፡፡",
-          "ግን ለምን ቤተክርስቲያን አልባ ምዕመን በዛ? መቼም ይሄ ሰፊ ትንተና ቢፈልግም፣ እንዲሁ ዋና ዋናዎቹን እንመልከት፡፡ እነዚህን ቤተክርስቲያን አልባ ምዕመኖችን በሁለት ከፍለን እንመልከት፡፡ የመጀመሪያዎቹ፣ ወደው ሳይሆን ተገደው (ሙሉ ለሙሉ ልክ ናቸው እያልን አይደለም) ተንሳፋፊ ምዕመን የሆኑ አሉ፡፡ እነዚህ ሰዎች በቤተክርስቲያን መሪዎች፣ አገልጋዮች ተገፍተው እና ተጎድተው ጥጋቸውን የያዙ፣ ተመልሰው ወደቤተክርስቲያን ለመግባት እምነታቸውን ያጡ ናቸው፡፡ አንዳንዶቹም በተለይ አሁን ባለው የኢትዮጲያ ነባራዊ ሁኔታ፣ ከቅርብ ጊዜ ወደዚህ በተተከሉ ቤተክርስቲያኖች ለመገልገል ሄደው፣ ከቀን ወደቀን ያፈነገጡ አስተምህሮዎች፣ ልምምዶች እና የአማራር አካሄዶች ሲያዩና ነገሩ አልጥም ሲላቸው ከዚያ ቦታ ነቅለው ተንሳፋፊ የሆኑም ብዙ ናቸው፡፡ መቼም ከእነዚህ አንዳንዶቹን ቀርበን ስንመለከት፣ በጣም ለቤተክርስቲያን ሊጠቅሙ የሚችሉ እና የነገ ተተኪ ትውልድ ተስፋዎች ነበሩ፤ እውነተኞች ስለሆኑ እና ነገርን ለማደባበስ ስለማይችሉ ብቻ በአሻጥር ከጨዋታው ውጪ የተደረጉ ናቸው፡፡",
-          "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fimage_2022_02_15_15_54_05_dab102c7e1.png&w=1920&q=75",
-          "ሁለተኞቹ፣ ከንቱ ዘመናዊነት ያጠቃቸው፣ ምንም አይነት ኋላፊነት መውሰድ የማይፈልጉ፣ በገዛ ፈቃዳቸው መኖር የሚፈልጉ፣ እንደው ትዝ ሲላቸው ያሰኛቸው ቦታ ብቅ ብለው፣ ወይ የውስጥ ባዶነታቸውን እና ወቀሳቸውን ትንሽ አስታመው ለመውጣት የሚሄዱ ናቸው፡፡ ቀርቦ እነዚህን ሰዎች ለተመለከተ ሰው፣ እግዚአብሔር የመለኪያ ቱንቢውን የሰጣቸው የጥራት እና ደረጃ መዳቢዎች ነው የሚመስሉት፡፡",
-          "ብቻ በዚህም ይሁን በዚያ፣ ይህ ምን ያህል መጽሐፍ ቅዱሳዊ ነው? ምን ያህልስ አዋጭ ነው? አባልነትስ ለምን ይህን ያህል ተፈራ? ብለን መጠየቅ አለብን፡፡ ሲ. ኤስ ሊዊስ አንድ ጊዜ ስለቤተክርስቲያን አባልነት ሲናገር፣ ቃሉ ክርስቲያናዊ ስር መሰረት ቢኖረውም፣ ነገር ግን አለም ወስዳው ትክክለኛውን ትረጉሙን ባዶ አድርጋዋለች ብሏል፡፡ ዛሬ ዛሬ፣ ሰዎች ይህንን ቃል ግዴታን ከመክፈል፣ ከትርጉም የለሽ ስርዓቶች፣ ተራ መመሪያዎች እና ሕጎች፣ ሞኛ ሞኝ ከሆኑ ሰዎች ጋር መሰባሰብ እና ሰላምታ ጋር ያይዙታል፡፡",
-          "እንዲሁም ኤድ ሰቴትዘር በአንድ ጹሁፉ እንደሚናገረው፣ ብዙዎች አባልነትን ሲያስቡ የሚመጣላቸው አንድ ቡድን ወይም ክለብ ውስጥ መካተት ይመስላቸዋል፡፡ ነገር ግን መጽሐፍ ቅዱስ ስለአባልነት ይህንን አይናገርም፤ ጳውሎስ በ1ኛ ቆሮንጦስ ቤተክርስቲያን አካል እንደሆነች ይነግረናል፡፡ የእያንዳንዳችንን ግንኙነት ደግሞ ሲናገር፣ የዚህ አካል አባላት እንደሆንን ይገልፃል፡፡ በመጽሐፍ ቅዱስ “አባል” የሚለው ቃል በተለምዶ ከምንጠቀምበት አጠቃቀም ይልቅ፣ በሕክምናው ያለው አጠቃቀም በደንብ ለመረዳት ይረዳናል፡፡ ለምሳሌ፡- በሆነ አደጋ ወይም አጋጣሚ አንድ ጣታችሁን ብታጡ፣ በዚያች ዕደለቢስ ቀን አካለጎዶሎ/ በቀጥታ ሲተረጎም አባለጎዶሎ (dismembered) ሆናችሁ፡፡ ይህ ትክክለኛው የቴክኒካዊ አጠራር ነው፡፡ የአካላችሁ አባል ከአካላችሁ ተለየ እንደማለት ነው፡፡ በጣምም አሳዛኝ ወይም አስደንጋጭ ነገር ነው፡፡ አሁን አሁን ግን ከአማኞች ህብረት/አካል (body of believers) መለየት ብዙም የማይደንቅ በጣም የተለመደ፣ እንደውም ብዙ ሰባኪዎች እና በየመድረኩ የምንመለከታቸው ዘማሪዎችም የሚያደርጉት ነገር ነው፡፡",
-          "ነገር ግን ከዚህ አካል መለየት ምን ያህል ከባድ እንደሆነ ለመረዳት፣ በመጀመሪያዋ ቤተክርስቲያን ሰዎች ከዚህ አካል ውጪ ሲደረጉ ትለቁ ቅጣት እንደነበር ማስታወስ ጥሩ ነው፡፡ ዛሬ ግን እኛ በራሳችን ላይ በፈቃደኝነት ያስተላለፍነው ትልቅ ቅጣት ነው፡፡የአንዳንዶቻችን ሕይወት ከዕለት ዕለት እያሽቆለቆለ፣ ሕይወትን ያለማን አለብኝነት እየመራን እንገኛለን፡፡ ምናልባት አንዳንዶች በግል በርትተው ይሆናል፣ ይህ ግን ማለት የቅዱሳንን ሕብረት ይተካል ማለት አይደለም፡፡ ማንም ብቻውን የሚሰራ የለም፣ ሕይወት በመስተጋብርም ጭምር የምትሰራ እንጂ! ደግሞስ እግዚአብሔር የሰጠንስ ፀጋ፣ እንዲሁ በከንቱ ለምን ይባክናል፡፡ የተሰጠን በክርስቶስ አካል ውስጥ ለቅዱሳን መታነጽ እና ለአካሉ መገንባትም መሆኑን አንርሳ፡፡",
-          "ሰቴትዘር ይህንን እንዲህ ይገልፀዋል፣ ሰዎች ከክርስቲያን ማህበረሰብ ጋር ለመቆራኝት/ለመያያዝ የቤተክርስቲያን አባልነት ያስፈልጋቸዋል፡፡ ይሄ ለአማኙ ማህበረሰብ ብቻ ሳይሆን፣ ለግለሰቡም ጭምር ሲባል ነው፡፡ የግለኝነት ክርስትና ቅዠት እና ጎጂ ፍላጎት ነው፡፡ ቃሉ እንደሚነግረን ተዋጀተናል ደግሞም በአካሉ ውስጥ ተደርገናል፡፡ የተዋጀነውም ከእግዚአብሔር ሕዝብ ጋር አብረን እንድንሰራ ነው፡፡ አባልነት አያድንም፣ ነገር ግን በመንፈሳዊ ሕይወታችን እንድናድግ እና በክርሰቶስ እንድንበስል ይረዳናል፡፡",
-          "ስለዚህ የቤተክርስቲያን ደንበኛ ሳይሆን አባል ወይም የዚህ ሕያው አካል ክፍል እንድንሆን የእግዚአብሄር ፈቃድ ነው፡፡ በእንደዚህ ሁኔታ ውስጥ ያላችሁ ወገኖች ዛሬ ትንሽ ቆም ብላችሁ አስቡበት፣ በፀሎትም ሆነ ወንድሞችን በማማከር ጤናማ አስተምህሮ እና ልምምድ ያለቸው ቤተክርስቲያን ውስጥ በአባልነት ለመያዝ ወደዚህ ውሳኔ እንድትመጡ እበረታታችኋለሁ፡፡"
-        ],
-        timestamp: DateTime.now().subtract(const Duration(days: 1))),
-    ActivityContent(
-        id: '4',
-        title: "For His Glory Questionairre",
-        body: "See you tomorrow at 10:00. Q&A #ለእርሱ_ክብር",
-        externalLink: "https://app.sli.do/event/6T57oAJjVuyHwVXhbUunAY",
-        type: ContentType.external,
-        timestamp: DateTime.now().add(const Duration(hours: 1))),
-    ActivityContent(
-        id: '5',
-        type: ContentType.gallery,
-        title: "“ሕይወት ለዋጭ ወንጌል” የቲቶ መልዕክት ጥናት Week 2",
-        minimumAllowedViewImages: 5,
-        images: [
-          "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/454445120_515389501026011_2844082436010991590_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=xJLCrpZqIWYQ7kNvgHwIhvM&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAxOTE4MDI3MQ%3D%3D.2-ccb7-5&oh=00_AYAvrRVxAgpAkFXsbAvQ5F23gEc-qzP7KWSChtaeNu74Dg&oe=66CFBDE0&_nc_sid=8f1549",
-          "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/454531749_1023140549365983_669598126976644843_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=vUtgWUVqUJAQ7kNvgGtTbFH&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAxOTM3MDMzMA%3D%3D.2-ccb7-5&oh=00_AYBJbflGovIC952JmbO9CzwNNBpIzFAok15oZ9J4cEjuPQ&oe=66CFAE2D&_nc_sid=8f1549",
-          "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/454347125_502479292505207_2841394535742577413_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=AC0wq3bbIggQ7kNvgGyyQsJ&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAxOTEzOTg1OA%3D%3D.2-ccb7-5&oh=00_AYCMH5JuIrzAVdch4BVrL7ZG1rFGp1lqsTYUsm0vbx_mFg&oe=66CFCC1D&_nc_sid=8f1549",
-          "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/454355896_376052815519260_924894334783785225_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=100&_nc_ohc=my1R_JqQiDQQ7kNvgGZvLXv&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzIxMjA4NjMzNg%3D%3D.2-ccb7-5&oh=00_AYCP98_1MeA4_zXnkN1ZCo6pQ0bAxNVap8CIvTsYwX6tBA&oe=66CFC01D&_nc_sid=8f1549",
-          "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/454383853_844023010691391_7888535021732231256_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=103&_nc_ohc=X3ge8zb_YfYQ7kNvgFhCc_U&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAyNzU5NzMzMg%3D%3D.2-ccb7-5&oh=00_AYARXQoRiVaPk18FFlmdMgIJkX9chvZvuxFofZxMApZmZQ&oe=66CF9B56&_nc_sid=8f1549",
-          "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/454390602_1042964344159074_8526859650911907146_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=106&_nc_ohc=_iT4O0bolxcQ7kNvgESCUGa&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAxOTI1ODU4Nw%3D%3D.2-ccb7-5&oh=00_AYCi21ofO2OGEnX2inDY-VejQoHXqy4ZMKrYjYtg0_-W2Q&oe=66CFBF15&_nc_sid=8f1549",
-          "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/454626324_2402679976789943_2747565838855526354_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=EUDvesMeJd4Q7kNvgFBaSkq&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAxOTE1NDAwOA%3D%3D.2-ccb7-5&oh=00_AYB0JdhIJUfimJ181D1-2Iwg5rsHMPCn-a53B_mDmgaxUA&oe=66CFA813&_nc_sid=8f1549",
-          "https://instagram.fadd1-1.fna.fbcdn.net/v/t51.29350-15/454386924_1223351595469970_2446944206604132944_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd1-1.fna.fbcdn.net&_nc_cat=102&_nc_ohc=zc8Se9elce8Q7kNvgFd2Lbc&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzAyNzUxNzAxNQ%3D%3D.2-ccb7-5&oh=00_AYC_DqptEzDVt9xinr5x0v9CmRj5nZSixLJJbZmuDkGtqg&oe=66CFA749&_nc_sid=8f1549",
-          "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/454387991_845543030855327_4041453556796890906_n.jpg?stp=dst-jpg_e35&efg=eyJ2ZW5jb2RlX3RhZyI6ImltYWdlX3VybGdlbi4xNDQweDgxMC5zZHIuZjI5MzUwLmRlZmF1bHRfaW1hZ2UifQ&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=111&_nc_ohc=8slead9vrfAQ7kNvgFMlfgO&edm=AEhyXUkBAAAA&ccb=7-5&ig_cache_key=MzQyOTI4NTU5NzExOTk1NTAxNg%3D%3D.2-ccb7-5&oh=00_AYCNsFfv7L5TNMehDg6OiKv4m0etu5TWnuAK1dewpf_Agw&oe=66CFA1AF&_nc_sid=8f1549"
-        ],
-        timestamp: DateTime(2024, 8, 7, 16)),
-    ActivityContent(
-        id: '6',
-        type: ContentType.poll,
-        title: 'When will you be available?',
-        pollOptions: [
-          PollOptions(title: '10:00 AM', votes: 28),
-          PollOptions(title: '10:30 AM', votes: 8),
-          PollOptions(title: '11:00 AM', votes: 40),
-          PollOptions(title: '12:00 PM', votes: 100)
-        ],
-        timestamp: DateTime.now().add(const Duration(days: 2))),
-    ActivityContent(
-        id: '7',
-        type: ContentType.poll,
-        title: 'What shall we study?',
-        pollOptions: [
-          PollOptions(title: 'Daniel', votes: 28),
-          PollOptions(title: 'Hosea', votes: 8),
-          PollOptions(title: 'Amos', votes: 40),
-          PollOptions(title: 'Micah', votes: 100)
-        ],
-        timestamp: DateTime.now().add(const Duration(days: 8))),
-    ActivityContent(
-        id: '8',
-        type: ContentType.poll,
-        title: "How old are you?",
-        pollOptions: [
-          PollOptions(title: 'less than 18', votes: 28),
-          PollOptions(title: '18 - 30', votes: 8),
-          PollOptions(title: '31 - 50', votes: 40),
-          PollOptions(title: '51 +', votes: 100)
-        ],
-        timestamp: DateTime.now().add(const Duration(days: 12)))
-  ];
+  int pageIndex = 1;
+  List<ActivityContent> activityList = [];
   List<Staff> staffs = [
     Staff(
         name: 'Admas Getachew',
@@ -171,20 +83,32 @@ class ContentController extends ChangeNotifier {
     "Live out the Gospel practically"
   ];
   List<Contacts> contacts = [
-    Contacts(title: 'Phone Numbers', addressList: ['+251901777774', '+251901777775'], type: ContactType.phone),
+    Contacts(
+        title: 'Phone Numbers',
+        addressList: ['+251901777774', '+251901777775'],
+        type: ContactType.phone),
     Contacts(
         title: 'Email Address',
-        addressList: ['Info@livingwayethiopia.org', 'livingwayethiopia@gmail.com'],
+        addressList: [
+          'Info@livingwayethiopia.org',
+          'livingwayethiopia@gmail.com'
+        ],
         type: ContactType.email),
-    Contacts(title: "Address", addressList: [
-      "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu"
-    ], type: ContactType.location),
-    Contacts(title: "Social Media", addressList: [
-      'https://twitter.com/livingwayethiop',
-      "https://www.facebook.com/LivingWayChurch1",
-      "https://www.instagram.com/livingway_church",
-      "https://www.youtube.com/channel/UC7QcE6EYm7PCQjN3fVlRoXg"
-    ], type: ContactType.social)
+    Contacts(
+        title: "Address",
+        addressList: [
+          "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu"
+        ],
+        type: ContactType.location),
+    Contacts(
+        title: "Social Media",
+        addressList: [
+          'https://twitter.com/livingwayethiop',
+          "https://www.facebook.com/LivingWayChurch1",
+          "https://www.instagram.com/livingway_church",
+          "https://www.youtube.com/channel/UC7QcE6EYm7PCQjN3fVlRoXg"
+        ],
+        type: ContactType.social)
   ];
 
   Book? book;
@@ -205,6 +129,38 @@ class ContentController extends ChangeNotifier {
           .toList();
       notifyListeners();
     });
+
+    fetchActivities();
+  }
+
+  Future<void> fetchActivities() async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    try {
+      final response = await dio
+          .get('$url/api/v1/content/activity', queryParameters: {"page": pageIndex});
+
+      if (response.statusCode != 200) return;
+
+      final result = (response.data as List)
+          .map((json) => ActivityContent.fromJson(json))
+          .toList();
+      
+      activityList.addAll(result);
+      pageIndex++;
+
+      notifyListeners();
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+    }
   }
 
   set setActivityFilter(ActivityFilter value) {
