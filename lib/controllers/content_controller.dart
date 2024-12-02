@@ -143,15 +143,15 @@ class ContentController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio
-          .get('$url/api/v1/content/activity', queryParameters: {"page": pageIndex});
+      final response = await dio.get('$url/api/v1/content/activity',
+          queryParameters: {"page": pageIndex});
 
       if (response.statusCode != 200) return;
 
       final result = (response.data as List)
           .map((json) => ActivityContent.fromJson(json))
           .toList();
-      
+
       activityList.addAll(result);
       pageIndex++;
 

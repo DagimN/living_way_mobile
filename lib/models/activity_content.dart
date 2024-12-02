@@ -81,13 +81,20 @@ class ContentBanner {
 }
 
 class PollOptions {
-  String title;
-  int votes;
+  final String title;
+  final List<String> voters;
 
-  PollOptions({required this.title, required this.votes});
+  PollOptions({required this.title, this.voters = const []});
 
   static PollOptions fromJson(json) {
-    return PollOptions(title: json['title'], votes: json['votes']);
+    return PollOptions(
+        title: json['title'],
+        voters:
+            (json['voters'] as List).map((voter) => voter.toString()).toList());
+  }
+
+  Map<String, dynamic> toJson() {
+    return {"title": title, "voters": voters};
   }
 }
 
