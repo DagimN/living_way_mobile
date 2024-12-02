@@ -80,13 +80,22 @@ class ActivityScreen extends StatelessWidget {
               })
             ]),
             Container(
+                height: contentController.activityList.isEmpty
+                    ? screenHeight * .65
+                    : null,
                 margin: const EdgeInsets.symmetric(vertical: 24),
-                child: Column(children: [
-                  Image.asset(AppImages.activitiesEnd),
-                  //TODO: Add a cursive font
-                  const Text('It all started here',
-                      style: TextStyle(fontSize: 16, color: lightPrimaryColor))
-                ]))
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(AppImages.activitiesEnd),
+                      //TODO: Add a cursive font
+                      Text(
+                          contentController.activityList.isNotEmpty
+                              ? 'It all started here'
+                              : "Nothing to show yet.",
+                          style: const TextStyle(
+                              fontSize: 16, color: lightPrimaryColor))
+                    ]))
           ])))
     ]));
   }
