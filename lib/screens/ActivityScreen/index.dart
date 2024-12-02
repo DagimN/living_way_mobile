@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/event.dart';
@@ -17,6 +18,7 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final userProfile = Provider.of<ProfileController>(context).userProfile;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -58,7 +60,8 @@ class ActivityScreen extends StatelessWidget {
                   case ContentType.article:
                     childWidget = Article(content: content);
                   case ContentType.poll:
-                    childWidget = Poll(content: content);
+                    childWidget =
+                        Poll(content: content, userProfile: userProfile);
                   case ContentType.external:
                     childWidget = ExternalLink(content: content);
                   case ContentType.event:

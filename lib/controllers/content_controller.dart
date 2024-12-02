@@ -163,6 +163,30 @@ class ContentController extends ChangeNotifier {
     }
   }
 
+  Future<bool> updatePoll(ActivityContent poll) async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+    try {
+      final response =
+          await dio.put('$url/api/v1/content/activity/edit', data: {
+        "id": poll.id,
+        "data": poll.toMap()
+      });
+
+      return response.statusCode == 200;
+    } catch (error) {
+      logger.e(error);
+      return false;
+    } finally {
+      dio.close();
+    }
+  }
+
   set setActivityFilter(ActivityFilter value) {
     topicActivityFilter = value;
     notifyListeners();

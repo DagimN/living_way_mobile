@@ -64,6 +64,60 @@ class ActivityContent {
             ? DateTime.parse(json['upcomingDate'])
             : null);
   }
+
+  Map<String, dynamic> toMap() {
+    Map<String, dynamic> map = {};
+
+    if (title != null) {
+      map.addEntries([MapEntry('title', title)]);
+    }
+
+    if (body != null) {
+      map.addEntries([MapEntry('body', body)]);
+    }
+
+    if (images.isNotEmpty) {
+      map.addEntries([MapEntry('images', images)]);
+    }
+
+    if (content.isNotEmpty) {
+      map.addEntries([MapEntry('content', content)]);
+    }
+
+    if (minimumAllowedViewImages > 0) {
+      map.addEntries(
+          [MapEntry('minimumAllowedViewImages', minimumAllowedViewImages)]);
+    }
+
+    if (pollOptions.isNotEmpty) {
+      map.addEntries([
+        MapEntry(
+            "pollOptions", pollOptions.map((poll) => poll.toJson()).toList())
+      ]);
+    }
+
+    if (externalLink != null) {
+      map.addEntries([MapEntry('externalLink', externalLink)]);
+    }
+
+    if (locationUrl != null) {
+      map.addEntries([MapEntry('locationUrl', locationUrl)]);
+    }
+
+    if (banner != null) {
+      map.addEntries([MapEntry('banner', banner)]);
+    }
+
+    if (upcomingDate != null) {
+      map.addEntries([MapEntry('upcomingDate', upcomingDate)]);
+    }
+
+    map.addEntries([MapEntry('isOngoing', isOngoing)]);
+    map.addEntries([MapEntry('type', type.name)]);
+    map.addEntries([MapEntry('timestamp', timestamp.toIso8601String())]);
+
+    return map;
+  }
 }
 
 class ContentBanner {

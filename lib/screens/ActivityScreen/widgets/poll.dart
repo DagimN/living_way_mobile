@@ -1,31 +1,113 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_polls/flutter_polls.dart';
+import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/activity_content.dart';
+import 'package:living_way/models/profile.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/flutter_polls.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:provider/provider.dart';
 
-class Poll extends StatelessWidget {
+class Poll extends StatefulWidget {
   final ActivityContent content;
-  const Poll({required this.content, super.key});
+  final Profile? userProfile;
+  const Poll({super.key, required this.content, this.userProfile});
+
+  @override
+  State<Poll> createState() => _PollState();
+}
+
+class _PollState extends State<Poll> {
+  late ActivityContent content = widget.content;
+  String? selectedPollId;
+
+  @override
+  void initState() {
+    super.initState();
+
+    selectedPollId = content.pollOptions
+        .where((poll) => poll.voters.contains(widget.userProfile?.id))
+        .firstOrNull
+        ?.title;
+  }
 
   @override
   Widget build(BuildContext context) {
+    final contentController = Provider.of<ContentController>(context);
+
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
+    bool hasEnded = (content.upcomingDate != null
+        ? DateTime.now().compareTo(content.upcomingDate ?? DateTime.now()) > 0
+        : !content.isOngoing);
 
     return SizedBox(
         width: orientation == Orientation.portrait
             ? screenWidth * .75
             : screenWidth * .85,
-        child: FlutterPolls(
-            pollId: content.id,
-            leadingVotedProgessColor: lightPrimaryColor,
-            pollTitle: const Text(""),
-            pollOptions: content.pollOptions
-                .map((option) =>
-                    PollOption(title: Text(option.title), votes: option.votes))
-                .toList(),
-            onVoted: (pollOption, newTotalVotes) {
-              return Future.value(true);
-            }));
+        child: Column(children: [
+          FlutterPolls(
+              pollId: widget.content.id,
+              votedProgressColor: lightPrimaryColor.withOpacity(0.3),
+              hasVoted: (selectedPollId != null ||
+                  content.pollOptions.any(
+                      (poll) => poll.voters.contains(widget.userProfile?.id))),
+              pollEnded: hasEnded,
+              leadingVotedProgessColor: lightPrimaryColor.withOpacity(0.7),
+              userVotedOptionId: selectedPollId,
+              pollTitle: selectedPollId != null && !hasEnded
+                  ? Align(
+                      alignment: Alignment.centerRight,
+                      child: IconButton(
+                          onPressed: () async {
+                            final poll = widget.content.pollOptions
+                                .where((poll) => selectedPollId == poll.title)
+                                .first;
+                            final pollIndex = content.pollOptions.indexOf(poll);
+                            final updatingContent = content;
+                            poll.voters.remove(widget.userProfile?.id);
+                            updatingContent.pollOptions
+                                .replaceRange(pollIndex, pollIndex + 1, [poll]);
+
+                            final success = await contentController
+                                .updatePoll(updatingContent);
+
+                            setState(() {
+                              selectedPollId = success ? null : selectedPollId;
+                              content = success ? updatingContent : content;
+                            });
+                          },
+                          icon: const Icon(Icons.undo)))
+                  : const SizedBox(),
+              pollOptions: content.pollOptions
+                  .map((option) => PollOption(
+                      id: option.title,
+                      title: Text(option.title),
+                      votes: option.voters.length))
+                  .toList(),
+              onVoted: (pollOption, newTotalVotes) async {
+                if (widget.userProfile != null) {
+                  final poll = content.pollOptions
+                      .where((poll) => pollOption.id == poll.title)
+                      .first;
+                  final pollIndex = content.pollOptions.indexOf(poll);
+                  final updatingContent = content;
+                  poll.voters.add(widget.userProfile!.id);
+                  updatingContent.pollOptions
+                      .replaceRange(pollIndex, pollIndex + 1, [poll]);
+
+                  final success =
+                      await contentController.updatePoll(updatingContent);
+
+                  setState(() {
+                    selectedPollId = success ? pollOption.id : null;
+                    content = success ? updatingContent : content;
+                  });
+
+                  return Future.value(success);
+                }
+
+                //TODO: Provide warning message
+                return Future.value(false);
+              })
+        ]));
   }
 }
