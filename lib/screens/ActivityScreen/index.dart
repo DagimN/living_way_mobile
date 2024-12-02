@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({super.key});
-
+  //FIXME: There is a performance issue when the list has grown 
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
@@ -42,61 +42,74 @@ class ActivityScreen extends StatelessWidget {
           height: orientation == Orientation.portrait
               ? screenHeight * .74
               : screenWidth * .2,
-          child: SingleChildScrollView(
-              child:
-                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
-            Column(children: [
-              ...contentController.activityList.map((activity) {
-                final index = contentController.activityList.indexOf(activity);
-                final content = contentController.activityList[index];
-                final Widget childWidget;
+          child: !contentController.isFetchingActivity ||
+                  contentController.activityList.isNotEmpty
+              ? SingleChildScrollView(
+                  controller: contentController.activityScrollController,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        ...contentController.activityList.map((activity) {
+                          final index =
+                              contentController.activityList.indexOf(activity);
+                          final content = contentController.activityList[index];
+                          final Widget childWidget;
 
-                switch (content.type) {
-                  case ContentType.gallery:
-                    childWidget = Gallery(
-                        images: content.images,
-                        minimumAllowedImagesForView:
-                            content.minimumAllowedViewImages);
-                  case ContentType.article:
-                    childWidget = Article(content: content);
-                  case ContentType.poll:
-                    childWidget =
-                        Poll(content: content, userProfile: userProfile);
-                  case ContentType.external:
-                    childWidget = ExternalLink(content: content);
-                  case ContentType.event:
-                    childWidget = Event(content: content);
-                  default:
-                    childWidget = const SizedBox();
-                }
+                          switch (content.type) {
+                            case ContentType.gallery:
+                              childWidget = Gallery(
+                                  images: content.images,
+                                  minimumAllowedImagesForView:
+                                      content.minimumAllowedViewImages);
+                            case ContentType.article:
+                              childWidget = Article(content: content);
+                            case ContentType.poll:
+                              childWidget = Poll(
+                                  content: content, userProfile: userProfile);
+                            case ContentType.external:
+                              childWidget = ExternalLink(content: content);
+                            case ContentType.event:
+                              childWidget = Event(content: content);
+                            default:
+                              childWidget = const SizedBox();
+                          }
 
-                return TimelineContainer(
-                    title: content.title ?? '',
-                    timestamp: content.upcomingDate ?? content.timestamp,
-                    isOngoing: content.isOngoing,
-                    type: content.type,
-                    isLast: index == contentController.activityList.length - 1,
-                    child: childWidget);
-              })
-            ]),
-            Container(
-                height: contentController.activityList.isEmpty
-                    ? screenHeight * .65
-                    : null,
-                margin: const EdgeInsets.symmetric(vertical: 24),
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(AppImages.activitiesEnd),
-                      //TODO: Add a cursive font
-                      Text(
-                          contentController.activityList.isNotEmpty
-                              ? 'It all started here'
-                              : "Nothing to show yet.",
-                          style: const TextStyle(
-                              fontSize: 16, color: lightPrimaryColor))
-                    ]))
-          ])))
+                          return TimelineContainer(
+                              title: content.title ?? '',
+                              timestamp:
+                                  content.upcomingDate ?? content.timestamp,
+                              isOngoing: content.isOngoing,
+                              type: content.type,
+                              isLast: index ==
+                                  contentController.activityList.length - 1,
+                              child: childWidget);
+                        }),
+                        Container(
+                            height: contentController.activityList.isEmpty
+                                ? screenHeight * .65
+                                : null,
+                            margin: const EdgeInsets.symmetric(vertical: 24),
+                            child: !contentController.isFetchingActivity
+                                ? Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                        Image.asset(AppImages.activitiesEnd),
+                                        //TODO: Add a cursive font
+                                        Text(
+                                            contentController
+                                                    .activityList.isNotEmpty
+                                                ? 'It all started here'
+                                                : "Nothing to show yet.",
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                color: lightPrimaryColor))
+                                      ])
+                                : const Center(
+                                    child: CircularProgressIndicator(
+                                        color: lightPrimaryColor)))
+                      ]))
+              : const Center(
+                  child: CircularProgressIndicator(color: lightPrimaryColor)))
     ]));
   }
 }

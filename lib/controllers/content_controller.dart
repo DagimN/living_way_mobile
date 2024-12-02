@@ -16,12 +16,7 @@ import 'package:living_way/utils/load_json.dart';
 class ContentController extends ChangeNotifier {
   final TextEditingController commentBoxTextEditingController =
       TextEditingController();
-  ActivityFilter topicActivityFilter = ActivityFilter.latest;
-  ActivityFilter threadActivityFilter = ActivityFilter.latest;
-  CategoryFilter categoryFilter = CategoryFilter.all;
-  List<String> booksFiltered = [];
-  List<ThreadData> threads = content.threads;
-  ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
+  final ScrollController activityScrollController = ScrollController();
   List<Book> bible = [];
   List<Translation> translations = [
     Translation(name: "KJV", isAvailabe: true),
@@ -29,7 +24,6 @@ class ContentController extends ChangeNotifier {
     Translation(name: "ASV"),
     Translation(name: "NASB")
   ];
-  int pageIndex = 1;
   List<ActivityContent> activityList = [];
   List<Staff> staffs = [
     Staff(
@@ -116,6 +110,15 @@ class ContentController extends ChangeNotifier {
   int? verse;
   Translation? translation;
 
+  ActivityFilter topicActivityFilter = ActivityFilter.latest;
+  ActivityFilter threadActivityFilter = ActivityFilter.latest;
+  CategoryFilter categoryFilter = CategoryFilter.all;
+  List<String> booksFiltered = [];
+  List<ThreadData> threads = content.threads;
+  ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
+  int pageIndex = 1;
+  bool isFetchingActivity = false;
+
   ContentController() {
     loadJson('assets/data/en_kjv.json').then((data) {
       bible = (data as List)
@@ -130,7 +133,17 @@ class ContentController extends ChangeNotifier {
       notifyListeners();
     });
 
+    activityScrollController.addListener(scrollListener);
+
     fetchActivities();
+  }
+
+  void scrollListener() {
+    if (activityScrollController.position.pixels >
+        (activityScrollController.position.maxScrollExtent * .7)) {
+          //TODO: Add condition for stop fetching when there is no longer any items left
+      fetchActivities();
+    }
   }
 
   Future<void> fetchActivities() async {
@@ -143,6 +156,9 @@ class ContentController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
+      isFetchingActivity = true;
+      notifyListeners();
+
       final response = await dio.get('$url/api/v1/content/activity',
           queryParameters: {"page": pageIndex});
 
@@ -160,6 +176,8 @@ class ContentController extends ChangeNotifier {
       logger.e(error);
     } finally {
       dio.close();
+      isFetchingActivity = false;
+      notifyListeners();
     }
   }
 
@@ -172,11 +190,8 @@ class ContentController extends ChangeNotifier {
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
     try {
-      final response =
-          await dio.put('$url/api/v1/content/activity/edit', data: {
-        "id": poll.id,
-        "data": poll.toMap()
-      });
+      final response = await dio.put('$url/api/v1/content/activity/edit',
+          data: {"id": poll.id, "data": poll.toMap()});
 
       return response.statusCode == 200;
     } catch (error) {
