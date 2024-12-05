@@ -141,12 +141,12 @@ class ContentController extends ChangeNotifier {
   void scrollListener() {
     if (activityScrollController.position.pixels >
         (activityScrollController.position.maxScrollExtent * .7)) {
-          //TODO: Add condition for stop fetching when there is no longer any items left
+      //TODO: Add condition for stop fetching when there is no longer any items left
       fetchActivities();
     }
   }
 
-  Future<void> fetchActivities() async {
+  Future<void> fetchActivities({bool isRefreshing = false}) async {
     final dio = Dio();
     final flavor = await FlavorGetter().getFlavor();
     final url = flavor == "dev"
@@ -157,6 +157,9 @@ class ContentController extends ChangeNotifier {
 
     try {
       isFetchingActivity = true;
+      if (isRefreshing) {
+        pageIndex = 0;
+      }
       notifyListeners();
 
       final response = await dio.get('$url/api/v1/content/activity',
