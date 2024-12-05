@@ -87,6 +87,7 @@ class ExternalLink extends StatelessWidget {
                             margin: const EdgeInsets.all(24),
                             child: PrettyQrView.data(
                                 data: content.externalLink ?? "",
+                                errorCorrectLevel: QrErrorCorrectLevel.H,
                                 decoration: const PrettyQrDecoration(
                                     image: PrettyQrDecorationImage(
                                         image: AssetImage(

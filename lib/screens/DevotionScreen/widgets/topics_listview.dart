@@ -59,7 +59,7 @@ class TopicsListview extends StatelessWidget {
           isFavorite: true,
           type: TopicType.audio,
           backgroundImageUrl:
-              "https://instagram.fadd2-1.fna.fbcdn.net/v/t51.29350-15/426074019_7954890431204553_8594967751125902832_n.jpg?stp=dst-jpg_e35&_nc_ht=instagram.fadd2-1.fna.fbcdn.net&_nc_cat=109&_nc_ohc=zT5H13_Co_MQ7kNvgFEQi6X&edm=AGenrX8BAAAA&ccb=7-5&oh=00_AYC990nx1k9bKc91cV0hUdl6ALPWG8TEjHDFxJsKvgGf2A&oe=66A95BC1&_nc_sid=ed990e",
+              "https://raw.githubusercontent.com/DagimN/living_way_backend/refs/heads/main/public/a_img/282024.jpg?token=GHSAT0AAAAAAC2D4G2QDOXYRXR2KNXN6VPWZ2RWD6Q",
           threads: contentController.threads,
           playlist: [
             MediaMetadata(
