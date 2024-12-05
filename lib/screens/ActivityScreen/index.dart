@@ -14,7 +14,7 @@ import 'package:provider/provider.dart';
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({super.key});
-  //FIXME: There is a performance issue when the list has grown 
+
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
@@ -44,47 +44,44 @@ class ActivityScreen extends StatelessWidget {
               : screenWidth * .2,
           child: !contentController.isFetchingActivity ||
                   contentController.activityList.isNotEmpty
-              ? SingleChildScrollView(
+              ? ListView.builder(
                   controller: contentController.activityScrollController,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        ...contentController.activityList.map((activity) {
-                          final index =
-                              contentController.activityList.indexOf(activity);
-                          final content = contentController.activityList[index];
-                          final Widget childWidget;
+                  shrinkWrap: true,
+                  itemCount: contentController.activityList.length + 1,
+                  itemBuilder: (context, index) {
+                    final content = contentController.activityList[index];
+                    final Widget childWidget;
 
-                          switch (content.type) {
-                            case ContentType.gallery:
-                              childWidget = Gallery(
-                                  images: content.images,
-                                  minimumAllowedImagesForView:
-                                      content.minimumAllowedViewImages);
-                            case ContentType.article:
-                              childWidget = Article(content: content);
-                            case ContentType.poll:
-                              childWidget = Poll(
-                                  content: content, userProfile: userProfile);
-                            case ContentType.external:
-                              childWidget = ExternalLink(content: content);
-                            case ContentType.event:
-                              childWidget = Event(content: content);
-                            default:
-                              childWidget = const SizedBox();
-                          }
+                    switch (content.type) {
+                      case ContentType.gallery:
+                        childWidget = Gallery(
+                            images: content.images,
+                            minimumAllowedImagesForView:
+                                content.minimumAllowedViewImages);
+                      case ContentType.article:
+                        childWidget = Article(content: content);
+                      case ContentType.poll:
+                        childWidget =
+                            Poll(content: content, userProfile: userProfile);
+                      case ContentType.external:
+                        childWidget = ExternalLink(content: content);
+                      case ContentType.event:
+                        childWidget = Event(content: content);
+                      default:
+                        childWidget = const SizedBox();
+                    }
 
-                          return TimelineContainer(
-                              title: content.title ?? '',
-                              timestamp:
-                                  content.upcomingDate ?? content.timestamp,
-                              isOngoing: content.isOngoing,
-                              type: content.type,
-                              isLast: index ==
-                                  contentController.activityList.length - 1,
-                              child: childWidget);
-                        }),
-                        Container(
+                    return index < contentController.activityList.length
+                        ? TimelineContainer(
+                            title: content.title ?? '',
+                            timestamp:
+                                content.upcomingDate ?? content.timestamp,
+                            isOngoing: content.isOngoing,
+                            type: content.type,
+                            isLast: index ==
+                                contentController.activityList.length - 1,
+                            child: childWidget)
+                        : Container(
                             height: contentController.activityList.isEmpty
                                 ? screenHeight * .65
                                 : null,
@@ -106,8 +103,8 @@ class ActivityScreen extends StatelessWidget {
                                       ])
                                 : const Center(
                                     child: CircularProgressIndicator(
-                                        color: lightPrimaryColor)))
-                      ]))
+                                        color: lightPrimaryColor)));
+                  })
               : const Center(
                   child: CircularProgressIndicator(color: lightPrimaryColor)))
     ]));
