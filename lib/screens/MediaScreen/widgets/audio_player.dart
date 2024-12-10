@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/screens/MediaScreen/widgets/player_slider.dart';
 import 'package:living_way/themes/light_theme.dart';
@@ -33,9 +34,9 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
   @override
   void initState() {
     super.initState();
-    if(widget.audioUrl.contains("audio")){
+    if (widget.audioUrl.contains("audio")) {
       widget.player.setSourceAsset(widget.audioUrl);
-    }else{
+    } else {
       widget.player.setSourceUrl(widget.audioUrl);
     }
 
@@ -123,11 +124,22 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
               child: IconButton(
                   style: IconButton.styleFrom(
                       padding: EdgeInsets.zero,
-                      backgroundColor: lightPrimaryPaleColor),
+                      backgroundColor: lightPrimaryPaleColor,
+                      foregroundColor: Colors.white),
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  icon: const Icon(Icons.arrow_back, color: Colors.white))),
+                  icon: const Icon(Icons.arrow_back))),
+          Positioned(
+              top: 50,
+              right: 15,
+              child: IconButton(
+                  style: IconButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      backgroundColor: lightPrimaryPaleColor,
+                      foregroundColor: Colors.white),
+                  onPressed: () {},
+                  icon: const FaIcon(FontAwesomeIcons.penToSquare))),
           Positioned(
               bottom: -10,
               child: PlayerSlider(

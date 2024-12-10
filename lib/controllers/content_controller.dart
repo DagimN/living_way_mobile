@@ -241,6 +241,33 @@ class ContentController extends ChangeNotifier {
     }
   }
 
+  Future<void> updateTopic(Topic updatedTopic) async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    try {
+      final response = await dio.put('$url/api/v1/content/devotion/edit', data: {
+        "id": updatedTopic.id,
+        "data": updatedTopic.toJson()
+      });
+
+      if (response.statusCode != 200) return;
+
+      notifyListeners();
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+      isFetchingTopic = false;
+      notifyListeners();
+    }
+  }
+
   Map<String, dynamic> populateQuery() {
     final filters = <String>[];
     final queryParameters = {

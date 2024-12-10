@@ -281,6 +281,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 itemBuilder: (context, index) {
                                   return Thread(
                                       topic: Topic(
+                                          id: '',
                                           title: 'Book of Daniel',
                                           viewCount: 18000,
                                           likeCount: 500,

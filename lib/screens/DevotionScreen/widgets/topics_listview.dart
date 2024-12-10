@@ -82,7 +82,7 @@ class TopicsListview extends StatelessWidget {
                             final topic = contentController.topicList.length >
                                     index
                                 ? topics[index]
-                                : Topic(title: '', viewCount: 0, likeCount: 0);
+                                : Topic(id: '',title: '', viewCount: 0, likeCount: 0);
                             return topics.length > index
                                 ? TopicCard(topic: topic)
                                 : contentController.isFetchingTopic

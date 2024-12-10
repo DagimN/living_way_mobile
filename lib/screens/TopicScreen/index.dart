@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
@@ -39,12 +40,22 @@ class TopicScreen extends StatelessWidget {
                     child: IconButton(
                         style: IconButton.styleFrom(
                             padding: EdgeInsets.zero,
-                            backgroundColor: lightPrimaryPaleColor),
+                            backgroundColor: lightPrimaryPaleColor,
+                            foregroundColor: Colors.white),
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon:
-                            const Icon(Icons.arrow_back, color: Colors.white)))
+                        icon: const Icon(Icons.arrow_back))),
+                Positioned(
+                    top: 50,
+                    right: 15,
+                    child: IconButton(
+                        style: IconButton.styleFrom(
+                            padding: EdgeInsets.zero,
+                            backgroundColor: lightPrimaryPaleColor,
+                            foregroundColor: Colors.white),
+                        onPressed: () {},
+                        icon: const FaIcon(FontAwesomeIcons.penToSquare))),
               ]),
               ThreadsListView(
                   topic: topic,
