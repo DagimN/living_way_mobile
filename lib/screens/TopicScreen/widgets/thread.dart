@@ -130,6 +130,7 @@ class _ThreadState extends State<Thread> {
                     if (widget.data.subThreads.isNotEmpty)
                       Text(widget.data.subThreads.length.toString())
                   ])
+                  //TODO: Edit popup menu button for deleting, reporting
           ])
         ]));
   }

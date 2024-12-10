@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/widgets/loader_animation.dart';
@@ -139,18 +138,7 @@ class _VideoPlayerState extends State<VideoPlayer>
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon:
-                            const Icon(Icons.arrow_back))),
-                Positioned(
-                    top: 50,
-                    right: 15,
-                    child: IconButton(
-                        style: IconButton.styleFrom(
-                            padding: EdgeInsets.zero,
-                            backgroundColor: lightPrimaryPaleColor,
-                            foregroundColor: Colors.white),
-                        onPressed: () {},
-                        icon: const FaIcon(FontAwesomeIcons.penToSquare))),
+                        icon: const Icon(Icons.arrow_back)))
               ]));
         }));
   }
