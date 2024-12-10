@@ -33,7 +33,11 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
   @override
   void initState() {
     super.initState();
-    widget.player.setSourceAsset(widget.audioUrl);
+    if(widget.audioUrl.contains("audio")){
+      widget.player.setSourceAsset(widget.audioUrl);
+    }else{
+      widget.player.setSourceUrl(widget.audioUrl);
+    }
 
     seekListener = widget.player.onPositionChanged.listen((duration) {
       double inMilliSeconds = duration.inMilliseconds.toDouble();
@@ -52,7 +56,11 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
 
     audioPlayerListener = widget.player.onPlayerStateChanged.listen((event) {
       if ((event == PlayerState.completed) && mounted) {
-        widget.player.setSourceAsset(widget.audioUrl);
+        if (widget.audioUrl.contains("audio")) {
+          widget.player.setSourceAsset(widget.audioUrl);
+        } else {
+          widget.player.setSourceUrl(widget.audioUrl);
+        }
         setState(() {
           isPlaying = false;
           currentSeek = 0;

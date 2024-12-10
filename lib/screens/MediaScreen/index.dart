@@ -147,8 +147,11 @@ class _MediaScreenState extends State<MediaScreen> {
                                       widget.topic.type == TopicType.video
                                           ? controller.loadVideoById(
                                               videoId: metadata.source)
-                                          : player
-                                              ?.setSourceAsset(metadata.source);
+                                          : (metadata.source.contains("audio"))
+                                              ? player?.setSourceAsset(
+                                                  metadata.source)
+                                              : player?.setSourceUrl(
+                                                  metadata.source);
                                     });
                               }),
                           ThreadsListView(
