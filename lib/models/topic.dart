@@ -11,29 +11,29 @@ class Topic {
   final String? backgroundImageUrl;
   final List<MediaMetadata> playlist;
 
-  Topic({
-    required this.title,
-    required this.viewCount,
-    required this.likeCount,
-    this.backgroundImageUrl,
-    this.isFavorite = false,
-    this.threads = const [],
-    this.type = TopicType.discussion,
-    this.playlist = const []
-  });
+  Topic(
+      {required this.title,
+      required this.viewCount,
+      required this.likeCount,
+      this.backgroundImageUrl,
+      this.isFavorite = false,
+      this.threads = const [],
+      this.type = TopicType.discussion,
+      this.playlist = const []});
 
   static Topic fromJson(json) {
     return Topic(
         title: json['title'],
         viewCount: json['viewCount'],
         likeCount: json['likeCount'],
-        backgroundImageUrl: json['backgroundImageUrl'],
-        isFavorite: json['isFavorite'],
-        type: TopicType.fromString(json['type']),
-        threads: (json['threads'] as List)
+        backgroundImageUrl:
+            json['backgroundImageUrl'],
+        isFavorite: json['isFavorite'] ?? false,
+        type: TopicType.fromString(json['type'] ?? "discussion"),
+        threads: ((json['threads'] as List?) ?? [])
             .map((e) => ThreadData.fromJson(e))
             .toList(),
-        playlist: (json['playlist'] as List)
+        playlist: ((json['playlist'] as List?) ?? [])
             .map((e) => MediaMetadata.fromJson(e))
             .toList());
   }

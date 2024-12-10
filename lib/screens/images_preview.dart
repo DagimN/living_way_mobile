@@ -19,6 +19,8 @@ class ImagesPreview extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
+    //TODO: Optimize image loading and store fetched image in memory
+
     return Scaffold(
         body: Stack(children: [
       imageProvider != null

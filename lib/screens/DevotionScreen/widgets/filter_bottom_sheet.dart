@@ -64,6 +64,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                     contentController.categoryFilter = CategoryFilter.all;
                     contentController.setBooksFilter = [];
 
+                    contentController.fetchTopics(isRefreshing: true);
                     Navigator.pop(context);
                   }),
               TextButton(
@@ -73,6 +74,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                     contentController.setActivityFilter = activityFilter;
                     contentController.setCategoryFilter = categoryFilter;
                     contentController.setBooksFilter = booksSelected;
+
+                    contentController.fetchTopics(isRefreshing: true);
                     Navigator.pop(context);
                   })
             ])

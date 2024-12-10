@@ -9,6 +9,7 @@ import 'package:living_way/models/book.dart';
 import 'package:living_way/models/contacts.dart';
 import 'package:living_way/models/staff.dart';
 import 'package:living_way/models/thread.dart';
+import 'package:living_way/models/topic.dart';
 import 'package:living_way/models/translation.dart';
 import 'package:living_way/services/logging_service.dart';
 import 'package:living_way/utils/load_json.dart';
@@ -17,6 +18,7 @@ class ContentController extends ChangeNotifier {
   final TextEditingController commentBoxTextEditingController =
       TextEditingController();
   final ScrollController activityScrollController = ScrollController();
+  final ScrollController topicScrollController = ScrollController();
   List<Book> bible = [];
   List<Translation> translations = [
     Translation(name: "KJV", isAvailabe: true),
@@ -25,6 +27,8 @@ class ContentController extends ChangeNotifier {
     Translation(name: "NASB")
   ];
   List<ActivityContent> activityList = [];
+  List<Topic> topicList = [];
+
   List<Staff> staffs = [
     Staff(
         name: 'Admas Getachew',
@@ -116,8 +120,11 @@ class ContentController extends ChangeNotifier {
   List<String> booksFiltered = [];
   List<ThreadData> threads = content.threads;
   ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
-  int pageIndex = 1;
+
+  int activityPageIndex = 0;
+  int topicPageIndex = 0;
   bool isFetchingActivity = false;
+  bool isFetchingTopic = false;
 
   ContentController() {
     loadJson('assets/data/en_kjv.json').then((data) {
@@ -133,16 +140,27 @@ class ContentController extends ChangeNotifier {
       notifyListeners();
     });
 
-    activityScrollController.addListener(scrollListener);
+    //TODO: Fetch content from cache if can't access the server
+    activityScrollController.addListener(activityScrollListener);
+    topicScrollController.addListener(topicScrollListener);
 
     fetchActivities();
+    fetchTopics();
   }
 
-  void scrollListener() {
+  void activityScrollListener() {
     if (activityScrollController.position.pixels >
         (activityScrollController.position.maxScrollExtent * .7)) {
       //TODO: Add condition for stop fetching when there is no longer any items left
       fetchActivities();
+    }
+  }
+
+  void topicScrollListener() {
+    if (topicScrollController.position.pixels >
+        (topicScrollController.position.maxScrollExtent * .7)) {
+      //TODO: Add condition for stop fetching when there is no longer any items left
+      fetchTopics();
     }
   }
 
@@ -158,12 +176,13 @@ class ContentController extends ChangeNotifier {
     try {
       isFetchingActivity = true;
       if (isRefreshing) {
-        pageIndex = 0;
+        activityPageIndex = 0;
+        activityList.clear();
       }
       notifyListeners();
 
       final response = await dio.get('$url/api/v1/content/activity',
-          queryParameters: {"page": pageIndex});
+          queryParameters: {"page": activityPageIndex});
 
       if (response.statusCode != 200) return;
 
@@ -172,7 +191,7 @@ class ContentController extends ChangeNotifier {
           .toList();
 
       activityList.addAll(result);
-      pageIndex++;
+      activityPageIndex++;
 
       notifyListeners();
     } catch (error) {
@@ -182,6 +201,64 @@ class ContentController extends ChangeNotifier {
       isFetchingActivity = false;
       notifyListeners();
     }
+  }
+
+  Future<void> fetchTopics({bool isRefreshing = false}) async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    try {
+      isFetchingTopic = true;
+      if (isRefreshing) {
+        topicPageIndex = 0;
+        topicList.clear();
+      }
+      notifyListeners();
+
+      final response = await dio.get('$url/api/v1/content/devotion',
+          queryParameters: populateQuery());
+
+      if (response.statusCode != 200) return;
+
+      final result =
+          (response.data as List).map((json) => Topic.fromJson(json)).toList();
+
+      topicList.addAll(result);
+      topicPageIndex++;
+
+      notifyListeners();
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+      isFetchingTopic = false;
+      notifyListeners();
+    }
+  }
+
+  Map<String, dynamic> populateQuery() {
+    final filters = <String>[];
+    final queryParameters = {
+      "page": topicPageIndex,
+      "sort": topicActivityFilter.name
+    };
+
+    if (categoryFilter != CategoryFilter.all) {
+      filters.add(categoryFilter.name);
+    }
+
+    filters.addAll(booksFiltered);
+
+    if (filters.isNotEmpty) {
+      queryParameters.addEntries([MapEntry('filters', filters)]);
+    }
+
+    return queryParameters;
   }
 
   Future<bool> updatePoll(ActivityContent poll) async {

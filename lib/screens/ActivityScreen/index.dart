@@ -54,7 +54,13 @@ class ActivityScreen extends StatelessWidget {
                       shrinkWrap: true,
                       itemCount: contentController.activityList.length + 1,
                       itemBuilder: (context, index) {
-                        final content = contentController.activityList[index];
+                        final content =
+                            contentController.activityList.length > index
+                                ? contentController.activityList[index]
+                                : ActivityContent(
+                                    id: '',
+                                    type: ContentType.undefined,
+                                    timestamp: DateTime.now());
                         final Widget childWidget;
 
                         switch (content.type) {
@@ -97,8 +103,13 @@ class ActivityScreen extends StatelessWidget {
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
                                         children: [
-                                            Image.asset(
-                                                AppImages.activitiesEnd),
+                                            Container(
+                                                margin:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 16),
+                                                child: Image.asset(
+                                                    AppImages.activitiesEnd)),
                                             //TODO: Add a cursive font
                                             Text(
                                                 contentController

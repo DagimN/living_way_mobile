@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/screens/images_preview.dart';
 import 'package:living_way/themes/light_theme.dart';
@@ -34,6 +33,7 @@ class Event extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: CachedNetworkImage(
+                        //TODO: Add a placeholder fetching animation if the image is not ready yet
                           imageUrl: content.banner?.url ?? "",
                           imageBuilder: (context, provider) {
                             imageProvider = provider;
