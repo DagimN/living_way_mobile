@@ -118,7 +118,18 @@ class ActivityScreen extends StatelessWidget {
                                                     : "Nothing to show yet.",
                                                 style: const TextStyle(
                                                     fontSize: 16,
-                                                    color: lightPrimaryColor))
+                                                    color: lightPrimaryColor)),
+                                            if (contentController
+                                                .activityList.isEmpty)
+                                              IconButton(
+                                                  icon: const Icon(
+                                                      Icons.refresh,
+                                                      color: lightPrimaryColor),
+                                                  onPressed: () {
+                                                    contentController
+                                                        .fetchActivities(
+                                                            isRefreshing: true);
+                                                  })
                                           ])
                                     : const Center(
                                         child: CircularProgressIndicator(
