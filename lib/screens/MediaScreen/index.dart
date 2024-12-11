@@ -176,32 +176,33 @@ class _MediaScreenState extends State<MediaScreen>
                     ]))
               ])),
               //FIXME: Refactor for DRY
-              Positioned(
-                  bottom: 0,
-                  child: Container(
-                      height: 50,
-                      width: screenWidth * .93,
-                      margin: const EdgeInsets.all(10),
-                      child: TextField(
-                          controller: commentController,
-                          onSubmitted: userProfile != null
-                              ? (value) =>
-                                  onSubmitted(contentController, userProfile)
-                              : null,
-                          decoration: InputDecoration(
-                              suffixIcon: IconButton(
-                                  icon: const Icon(Icons.send),
-                                  onPressed: userProfile != null
-                                      ? () => onSubmitted(
-                                          contentController, userProfile)
-                                      : null),
-                              fillColor: Colors.white,
-                              filled: true,
-                              contentPadding:
-                                  const EdgeInsets.symmetric(horizontal: 14),
-                              border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(24)),
-                              hintText: "What's on your mind?"))))
+              if (contentController.commentingThreadKeyNotifier.value == null)
+                Positioned(
+                    bottom: 0,
+                    child: Container(
+                        height: 50,
+                        width: screenWidth * .93,
+                        margin: const EdgeInsets.all(10),
+                        child: TextField(
+                            controller: commentController,
+                            onSubmitted: userProfile != null
+                                ? (value) =>
+                                    onSubmitted(contentController, userProfile)
+                                : null,
+                            decoration: InputDecoration(
+                                suffixIcon: IconButton(
+                                    icon: const Icon(Icons.send),
+                                    onPressed: userProfile != null
+                                        ? () => onSubmitted(
+                                            contentController, userProfile)
+                                        : null),
+                                fillColor: Colors.white,
+                                filled: true,
+                                contentPadding:
+                                    const EdgeInsets.symmetric(horizontal: 14),
+                                border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(24)),
+                                hintText: "What's on your mind?"))))
             ])));
   }
 

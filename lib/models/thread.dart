@@ -4,7 +4,7 @@ class ThreadData {
   String threadId;
   String commenter;
   String comment;
-  int likes;
+  List<String> likers;
   List<BibleQuote> quotes;
   List<ThreadData> subThreads;
 
@@ -12,7 +12,7 @@ class ThreadData {
       {required this.threadId,
       required this.commenter,
       required this.comment,
-      this.likes = 0,
+      this.likers = const [],
       this.quotes = const [],
       this.subThreads = const []});
 
@@ -21,7 +21,8 @@ class ThreadData {
         threadId: json['threadId'],
         commenter: json['commenter'],
         comment: json['comment'],
-        likes: json['likes'],
+        likers:
+            ((json['likers'] as List?) ?? []).map((e) => e.toString()).toList(),
         quotes: (json['quotes'] as List)
             .map((e) => BibleQuote.fromJson(e))
             .toList(),
@@ -35,7 +36,7 @@ class ThreadData {
       "threadId": threadId,
       "commenter": commenter,
       "comment": comment,
-      "likes": likes,
+      "likers": likers,
       "quotes": quotes.map((quote) => quote.toJson()).toList(),
       "subThreads": subThreads.map((thread) => thread.toJson()).toList()
     };

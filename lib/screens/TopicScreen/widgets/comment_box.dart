@@ -4,8 +4,9 @@ import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
 class CommentBox extends StatelessWidget {
+  final void Function() onSubmit;
   final void Function() onClose;
-  const CommentBox({super.key, required this.onClose});
+  const CommentBox({super.key, required this.onSubmit, required this.onClose});
 
   @override
   Widget build(BuildContext context) {
@@ -57,6 +58,7 @@ class CommentBox extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               backgroundColor: lightPrimaryColor),
                           onPressed: () {
+                            onSubmit();
                             onClose();
                           },
                           child: const Text('Submit',

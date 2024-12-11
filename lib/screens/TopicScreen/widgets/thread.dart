@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
+import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/utils/shorten_number.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 import 'package:living_way/screens/TopicScreen/widgets/comment_box.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 class Thread extends StatefulWidget {
   final Topic topic;
   final ThreadData data;
+  final bool hasSubThread;
   final bool isTop;
   final bool isLast;
   final ValueNotifier<GlobalKey<State<StatefulWidget>>?>? threadKeyNotifier;
@@ -18,6 +23,7 @@ class Thread extends StatefulWidget {
       required this.topic,
       required this.data,
       this.threadKeyNotifier,
+      this.hasSubThread = false,
       this.isTop = false,
       this.isLast = false});
 
@@ -48,7 +54,7 @@ class _ThreadState extends State<Thread> {
 
   @override
   void dispose() {
-    if(widget.threadKeyNotifier != null) {
+    if (widget.threadKeyNotifier != null) {
       widget.threadKeyNotifier?.removeListener(threadListener);
     }
     super.dispose();
@@ -57,6 +63,7 @@ class _ThreadState extends State<Thread> {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final userProfile = Provider.of<ProfileController>(context).userProfile;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -86,6 +93,9 @@ class _ThreadState extends State<Thread> {
                                 builder: (context) => TopicScreen(
                                     topic: Topic.fromJson({
                                       ...widget.topic.toJson(),
+                                      "_id": widget.topic.id,
+                                      "viewCount": widget.topic.viewCount,
+                                      "likeCount": widget.topic.likeCount,
                                       "threads": widget.data.subThreads
                                           .map((thread) => thread.toJson())
                                           .toList()
@@ -102,35 +112,82 @@ class _ThreadState extends State<Thread> {
                         ? screenWidth * .65
                         : screenHeight * .65,
                     child: Text(widget.data.comment))),
-            isCommentBoxVisible
-                ? CommentBox(onClose: () {
-                    setState(() {
-                      threadKey = GlobalKey();
-                      contentController.setCommentingThreadKey = null;
-                      contentController.commentBoxTextEditingController.clear();
-                    });
-                  })
-                : Row(children: [
-                    IconButton(
-                        onPressed: () {},
-                        icon: const Icon(Icons.thumb_up_alt_outlined)),
-                    if (widget.data.likes > 0)
-                      Text(widget.data.likes.toString()),
-                    IconButton(
-                        onPressed: () {
-                          setState(() {
-                            threadKey = GlobalKey();
-                            contentController.setCommentingThreadKey =
-                                threadKey;
-                            contentController.commentBoxTextEditingController
-                                .clear();
-                          });
-                        },
-                        icon: const Icon(Icons.comment)),
-                    if (widget.data.subThreads.isNotEmpty)
-                      Text(widget.data.subThreads.length.toString())
-                  ])
-                  //TODO: Edit popup menu button for deleting, reporting
+            if (widget.topic.threads
+                .any((thread) => thread.threadId == widget.data.threadId))
+              isCommentBoxVisible
+                  ? CommentBox(onSubmit: () async {
+                      final comment = contentController
+                          .commentBoxTextEditingController.text;
+                      final topic = widget.topic;
+                      final threadIndex = topic.threads.indexOf(widget.data);
+
+                      if (userProfile != null) {
+                        widget.data.subThreads.add(ThreadData(
+                            threadId: const Uuid().v4(),
+                            //TODO: Add thread flow field
+                            commenter: userProfile.id,
+                            comment: comment));
+                        topic.threads.replaceRange(
+                            threadIndex, threadIndex + 1, [widget.data]);
+
+                        await contentController.updateTopic(topic);
+                      }
+                    }, onClose: () {
+                      setState(() {
+                        threadKey = GlobalKey();
+                        contentController.setCommentingThreadKey = null;
+                        contentController.commentBoxTextEditingController
+                            .clear();
+                      });
+                    })
+                  : Row(children: [
+                      IconButton(
+                          onPressed: () async {
+                            if (userProfile != null) {
+                              final topic = widget.topic;
+                              final threadIndex =
+                                  topic.threads.indexOf(widget.data);
+                              if (!widget.data.likers
+                                  .contains(userProfile.id)) {
+                                widget.data.likers.add(userProfile.id);
+                              } else {
+                                widget.data.likers.remove(userProfile.id);
+                              }
+
+                              topic.threads.replaceRange(
+                                  threadIndex, threadIndex + 1, [widget.data]);
+
+                              await contentController.updateTopic(topic);
+                              setState(() {});
+                            }
+                          },
+                          icon: Icon(
+                              widget.data.likers.contains(userProfile?.id)
+                                  ? Icons.thumb_up
+                                  : Icons.thumb_up_alt_outlined,
+                              color:
+                                  widget.data.likers.contains(userProfile?.id)
+                                      ? lightPrimaryColor
+                                      : null)),
+                      if (widget.data.likers.isNotEmpty)
+                        Text(shortenNumber(widget.data.likers.length)),
+                      if (!widget.hasSubThread)
+                        IconButton(
+                            onPressed: () {
+                              setState(() {
+                                threadKey = GlobalKey();
+                                contentController.setCommentingThreadKey =
+                                    threadKey;
+                                contentController
+                                    .commentBoxTextEditingController
+                                    .clear();
+                              });
+                            },
+                            icon: const Icon(Icons.comment)),
+                      if (widget.data.subThreads.isNotEmpty)
+                        Text(widget.data.subThreads.length.toString())
+                    ])
+            //TODO: Edit popup menu button for deleting, reporting
           ])
         ]));
   }

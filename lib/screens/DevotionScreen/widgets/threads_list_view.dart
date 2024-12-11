@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
@@ -88,6 +87,7 @@ class ThreadsListView extends StatelessWidget {
                             topic: topic,
                             threadKeyNotifier:
                                 contentController.commentingThreadKeyNotifier,
+                            hasSubThread: doesSubThreadExist,
                             data: topic
                                 .threads[index - (doesSubThreadExist ? 1 : 0)],
                             isLast: index ==

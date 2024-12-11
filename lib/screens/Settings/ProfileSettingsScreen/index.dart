@@ -293,7 +293,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                           threadId: const Uuid().v4(),
                                           commenter: const Uuid().v4(),
                                           comment: 'Comment 1',
-                                          likes: 50));
+                                          likers: []));
                                 })
                             : Container(
                                 alignment: Alignment.center,

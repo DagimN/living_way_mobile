@@ -20,7 +20,8 @@ class TopicScreen extends StatefulWidget {
   State<TopicScreen> createState() => _TopicScreenState();
 }
 
-class _TopicScreenState extends State<TopicScreen> with TickerProviderStateMixin{
+class _TopicScreenState extends State<TopicScreen>
+    with TickerProviderStateMixin {
   final commentController = TextEditingController();
   late final tabController = TabController(length: 2, vsync: this);
 
@@ -35,39 +36,39 @@ class _TopicScreenState extends State<TopicScreen> with TickerProviderStateMixin
         resizeToAvoidBottomInset: true,
         body: Container(
             decoration: const BoxDecoration(gradient: lightBackgroundGradient),
-            child: Stack(
-              children: [
-                SingleChildScrollView(
-                    child: Column(children: [
-                  Stack(children: [
-                    widget.topic.backgroundImageUrl != null
-                        ? CachedNetworkImage(
-                            imageUrl: widget.topic.backgroundImageUrl ?? "",
-                            height: screenHeight * .3,
-                            width: screenWidth,
-                            fit: BoxFit.cover)
-                        : Image.asset(AppImages.topicBackground,
-                            height: screenHeight * .3,
-                            width: screenWidth,
-                            fit: BoxFit.cover),
-                    Positioned(
-                        top: 50,
-                        left: 15,
-                        child: IconButton(
-                            style: IconButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                backgroundColor: lightPrimaryPaleColor,
-                                foregroundColor: Colors.white),
-                            onPressed: () {
-                              Navigator.pop(context);
-                            },
-                            icon: const Icon(Icons.arrow_back)))
-                  ]),
-                  ThreadsListView(
-                      topic: widget.topic,
-                      doesSubThreadExist: widget.subThread != null,
-                      subThread: widget.subThread)
-                ])),
+            child: Stack(children: [
+              SingleChildScrollView(
+                  child: Column(children: [
+                Stack(children: [
+                  widget.topic.backgroundImageUrl != null
+                      ? CachedNetworkImage(
+                          imageUrl: widget.topic.backgroundImageUrl ?? "",
+                          height: screenHeight * .3,
+                          width: screenWidth,
+                          fit: BoxFit.cover)
+                      : Image.asset(AppImages.topicBackground,
+                          height: screenHeight * .3,
+                          width: screenWidth,
+                          fit: BoxFit.cover),
+                  Positioned(
+                      top: 50,
+                      left: 15,
+                      child: IconButton(
+                          style: IconButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              backgroundColor: lightPrimaryPaleColor,
+                              foregroundColor: Colors.white),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back)))
+                ]),
+                ThreadsListView(
+                    topic: widget.topic,
+                    doesSubThreadExist: widget.subThread != null,
+                    subThread: widget.subThread)
+              ])),
+              if (contentController.commentingThreadKeyNotifier.value == null)
                 Positioned(
                     bottom: 0,
                     child: Container(
@@ -94,8 +95,7 @@ class _TopicScreenState extends State<TopicScreen> with TickerProviderStateMixin
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(24)),
                                 hintText: "What's on your mind?"))))
-              ]
-            )));
+            ])));
   }
 
   void onSubmitted(ContentController contentController, Profile profile) async {

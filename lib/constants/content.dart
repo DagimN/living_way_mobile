@@ -79,40 +79,40 @@ final threads = [
       threadId: const Uuid().v4(),
       commenter: const Uuid().v4(),
       comment: 'Comment 1',
-      likes: 50,
+      likers: [],
       subThreads: [
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 1',
-            likes: 50),
+            likers: []),
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 1',
-            likes: 50),
+            likers: []),
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 1',
-            likes: 50)
+            likers: [])
       ]),
   ThreadData(
       threadId: const Uuid().v4(),
       commenter: const Uuid().v4(),
       comment: 'Comment 2',
-      likes: 100,
+      likers: [],
       subThreads: [
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 2',
-            likes: 50),
+            likers: []),
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 2',
-            likes: 50)
+            likers: [])
       ]),
   ThreadData(
       threadId: const Uuid().v4(),
@@ -123,6 +123,6 @@ final threads = [
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 3',
-            likes: 50)
+            likers: [])
       ])
 ];
