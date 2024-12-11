@@ -20,6 +20,24 @@ class ThreadsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
     final contentController = Provider.of<ContentController>(context);
+    final threads = topic.threads;
+
+    threads.sort((threadA, threadB) {
+      if (contentController.threadActivityFilter == ActivityFilter.mostActive) {
+        return (threadB.likers.length + threadB.subThreads.length) -
+            (threadA.subThreads.length + threadA.likers.length);
+      }
+
+      if (contentController.threadActivityFilter == ActivityFilter.mostLiked) {
+        return threadB.likers.length - threadA.likers.length;
+      }
+
+      if (contentController.threadActivityFilter == ActivityFilter.latest) {
+        return threadB.timestamp.compareTo(threadA.timestamp);
+      }
+
+      return 0;
+    });
 
     return SingleChildScrollView(
         physics: const NeverScrollableScrollPhysics(),
@@ -44,10 +62,7 @@ class ThreadsListView extends StatelessWidget {
                               child: Text('Most Active')),
                           DropdownMenuItem(
                               value: ActivityFilter.mostLiked,
-                              child: Text('Most Liked')),
-                          DropdownMenuItem(
-                              value: ActivityFilter.mostViewed,
-                              child: Text('Most Viewed'))
+                              child: Text('Most Liked'))
                         ],
                         underline: Container(
                             height: 1.0,
@@ -67,8 +82,7 @@ class ThreadsListView extends StatelessWidget {
               height: screenHeight * .6,
               child: ListView.builder(
                   padding: const EdgeInsets.only(bottom: 300),
-                  itemCount:
-                      topic.threads.length + (doesSubThreadExist ? 1 : 0),
+                  itemCount: threads.length + (doesSubThreadExist ? 1 : 0),
                   shrinkWrap: true,
                   itemBuilder: (context, index) {
                     return index == 0 && doesSubThreadExist
@@ -88,11 +102,9 @@ class ThreadsListView extends StatelessWidget {
                             threadKeyNotifier:
                                 contentController.commentingThreadKeyNotifier,
                             hasSubThread: doesSubThreadExist,
-                            data: topic
-                                .threads[index - (doesSubThreadExist ? 1 : 0)],
+                            data: threads[index - (doesSubThreadExist ? 1 : 0)],
                             isLast: index ==
-                                topic.threads.length -
-                                    (doesSubThreadExist ? 0 : 1));
+                                threads.length - (doesSubThreadExist ? 0 : 1));
                   }))
         ]));
   }

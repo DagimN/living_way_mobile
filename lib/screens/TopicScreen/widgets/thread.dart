@@ -119,16 +119,18 @@ class _ThreadState extends State<Thread> {
                       final comment = contentController
                           .commentBoxTextEditingController.text;
                       final topic = widget.topic;
+                      final thread = widget.data;
                       final threadIndex = topic.threads.indexOf(widget.data);
 
                       if (userProfile != null) {
-                        widget.data.subThreads.add(ThreadData(
+                        thread.subThreads.add(ThreadData(
                             threadId: const Uuid().v4(),
                             //TODO: Add thread flow field
                             commenter: userProfile.id,
-                            comment: comment));
+                            comment: comment,
+                            timestamp: DateTime.now()));
                         topic.threads.replaceRange(
-                            threadIndex, threadIndex + 1, [widget.data]);
+                            threadIndex, threadIndex + 1, [thread]);
 
                         await contentController.updateTopic(topic);
                       }
@@ -145,17 +147,18 @@ class _ThreadState extends State<Thread> {
                           onPressed: () async {
                             if (userProfile != null) {
                               final topic = widget.topic;
+                              final thread = widget.data;
                               final threadIndex =
                                   topic.threads.indexOf(widget.data);
-                              if (!widget.data.likers
+                              if (!thread.likers
                                   .contains(userProfile.id)) {
-                                widget.data.likers.add(userProfile.id);
+                                thread.likers.add(userProfile.id);
                               } else {
-                                widget.data.likers.remove(userProfile.id);
+                                thread.likers.remove(userProfile.id);
                               }
 
                               topic.threads.replaceRange(
-                                  threadIndex, threadIndex + 1, [widget.data]);
+                                  threadIndex, threadIndex + 1, [thread]);
 
                               await contentController.updateTopic(topic);
                               setState(() {});

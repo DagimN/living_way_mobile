@@ -290,6 +290,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
                                       isLast: true,
                                       data: ThreadData(
+                                        timestamp: DateTime.now(),
                                           threadId: const Uuid().v4(),
                                           commenter: const Uuid().v4(),
                                           comment: 'Comment 1',

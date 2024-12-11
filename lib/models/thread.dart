@@ -7,11 +7,13 @@ class ThreadData {
   List<String> likers;
   List<BibleQuote> quotes;
   List<ThreadData> subThreads;
+  DateTime timestamp;
 
   ThreadData(
       {required this.threadId,
       required this.commenter,
       required this.comment,
+      required this.timestamp,
       this.likers = const [],
       this.quotes = const [],
       this.subThreads = const []});
@@ -21,6 +23,7 @@ class ThreadData {
         threadId: json['threadId'],
         commenter: json['commenter'],
         comment: json['comment'],
+        timestamp: DateTime.tryParse(json['timestamp']) ?? DateTime.now(),
         likers:
             ((json['likers'] as List?) ?? []).map((e) => e.toString()).toList(),
         quotes: (json['quotes'] as List)
@@ -38,7 +41,8 @@ class ThreadData {
       "comment": comment,
       "likers": likers,
       "quotes": quotes.map((quote) => quote.toJson()).toList(),
-      "subThreads": subThreads.map((thread) => thread.toJson()).toList()
+      "subThreads": subThreads.map((thread) => thread.toJson()).toList(),
+      "timestamp": timestamp.toIso8601String()
     };
   }
 }

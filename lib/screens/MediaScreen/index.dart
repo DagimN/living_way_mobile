@@ -214,6 +214,7 @@ class _MediaScreenState extends State<MediaScreen>
 
     final topic = widget.topic;
     topic.threads.add(ThreadData(
+      timestamp: DateTime.now(),
         threadId: const Uuid().v4(),
         commenter: profile.id,
         comment: commentController.text));

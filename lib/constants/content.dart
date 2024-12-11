@@ -80,21 +80,25 @@ final threads = [
       commenter: const Uuid().v4(),
       comment: 'Comment 1',
       likers: [],
+      timestamp: DateTime.now(),
       subThreads: [
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 1',
+            timestamp: DateTime.now(),
             likers: []),
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 1',
+            timestamp: DateTime.now(),
             likers: []),
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 1',
+            timestamp: DateTime.now(),
             likers: [])
       ]),
   ThreadData(
@@ -102,27 +106,32 @@ final threads = [
       commenter: const Uuid().v4(),
       comment: 'Comment 2',
       likers: [],
+      timestamp: DateTime.now(),
       subThreads: [
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 2',
+            timestamp: DateTime.now(),
             likers: []),
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 2',
+            timestamp: DateTime.now(),
             likers: [])
       ]),
   ThreadData(
       threadId: const Uuid().v4(),
       commenter: const Uuid().v4(),
       comment: 'Comment 3',
+      timestamp: DateTime.now(),
       subThreads: [
         ThreadData(
             threadId: const Uuid().v4(),
             commenter: const Uuid().v4(),
             comment: 'Comment 3',
+            timestamp: DateTime.now(),
             likers: [])
       ])
 ];
