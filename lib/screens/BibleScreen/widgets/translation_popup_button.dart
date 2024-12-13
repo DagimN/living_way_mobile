@@ -12,7 +12,7 @@ class TranslationPopupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
-    
+
     return PopupMenuButton<Translation>(
         initialValue: contentController.translation ??
             contentController.translations.first,
@@ -33,21 +33,22 @@ class TranslationPopupButton extends StatelessWidget {
         itemBuilder: (context) => contentController.translations
             .map<PopupMenuItem<Translation>>((translation) => PopupMenuItem(
                 onTap: () {
-                  if (translation.isAvailabe) {
+                  if (translation.status == TranslationStatus.available) {
                     contentController.setTranslation = translation;
-
                     return;
                   }
 
-                  if (translation.downloadUrl == null) {
+                  if (translation.status == TranslationStatus.pending) {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                         backgroundColor: lightPendingColor,
                         content: Row(children: [
                           Text('Coming Soon'),
                           //TODO: Add a notify me to get a push notification
                         ])));
-                  } else {
-                    //TODO: Download translation
+                  }
+                  
+                  if(translation.status == TranslationStatus.ready) {
+                    contentController.downloadTranslation(translation.name);
                   }
                 },
                 child: Row(
@@ -55,16 +56,13 @@ class TranslationPopupButton extends StatelessWidget {
                     children: [
                       Text(translation.name,
                           style: TextStyle(
-                              color: !translation.isAvailabe &&
-                                      translation.downloadUrl == null
+                              color: translation.status == TranslationStatus.pending
                                   ? lightPendingColor
                                   : lightPrimaryColor)),
-                      if (!translation.isAvailabe &&
-                          translation.downloadUrl != null)
+                      if (translation.status == TranslationStatus.ready)
                         const Icon(Icons.download_rounded,
                             color: lightPrimaryColor),
-                      if (!translation.isAvailabe &&
-                          translation.downloadUrl == null)
+                      if (translation.status == TranslationStatus.pending)
                         SvgPicture.asset(AppIcons.pending,
                             height: 16,
                             colorFilter: const ColorFilter.mode(

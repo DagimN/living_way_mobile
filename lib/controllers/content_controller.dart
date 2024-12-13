@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +14,8 @@ import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/models/translation.dart';
 import 'package:living_way/services/logging_service.dart';
-import 'package:living_way/utils/load_json.dart';
+import 'package:living_way/utils/storage_functions.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ContentController extends ChangeNotifier {
   final TextEditingController commentBoxTextEditingController =
@@ -21,10 +24,11 @@ class ContentController extends ChangeNotifier {
   final ScrollController topicScrollController = ScrollController();
   List<Book> bible = [];
   List<Translation> translations = [
-    Translation(name: "KJV", isAvailabe: true),
-    Translation(name: "NKJV", downloadUrl: ""),
-    Translation(name: "ASV"),
-    Translation(name: "NASB")
+    Translation(
+        name: "KJV",
+        status: TranslationStatus.available,
+        path: 'assets/data/en_kjv.json',
+        isDefault: true)
   ];
   List<ActivityContent> activityList = [];
   List<Topic> topicList = [];
@@ -113,6 +117,7 @@ class ContentController extends ChangeNotifier {
   int? chapter;
   int? verse;
   Translation? translation;
+  SharedPreferences? sharedPreferences;
 
   ActivityFilter topicActivityFilter = ActivityFilter.latest;
   ActivityFilter threadActivityFilter = ActivityFilter.latest;
@@ -127,23 +132,26 @@ class ContentController extends ChangeNotifier {
   bool isFetchingTopic = false;
 
   ContentController() {
-    loadJson('assets/data/en_kjv.json').then((data) {
-      bible = (data as List)
-          .map((e) => Book(
-              name: e['name'],
-              chapters: (e['chapters'] as List)
-                  .map((chapter) => (chapter as List)
-                      .map((verse) => verse.toString())
-                      .toList())
-                  .toList()))
-          .toList();
-      notifyListeners();
-    });
+    loadTranslation(translations.first,
+        isDefault: translations.first.isDefault);
 
+    SharedPreferences.getInstance().then((instance) {
+      sharedPreferences = instance;
+
+      populateTranslationList(
+          (json.decode(instance.getString('translations') ?? "[]") as List)
+              .map((translation) => Translation.fromMap(translation))
+              .toList());
+
+      notifyListeners();
+
+      fetchTranslations();
+    });
     //TODO: Fetch content from cache if can't access the server
     activityScrollController.addListener(activityScrollListener);
     topicScrollController.addListener(topicScrollListener);
 
+    //TODO: Clean up files which are not being used (translations)
     fetchActivities();
     fetchTopics();
   }
@@ -251,10 +259,8 @@ class ContentController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.put('$url/api/v1/content/devotion/edit', data: {
-        "id": updatedTopic.id,
-        "data": updatedTopic.toJson()
-      });
+      final response = await dio.put('$url/api/v1/content/devotion/edit',
+          data: {"id": updatedTopic.id, "data": updatedTopic.toJson()});
 
       if (response.statusCode != 200) return;
 
@@ -309,6 +315,107 @@ class ContentController extends ChangeNotifier {
     }
   }
 
+  Future<void> fetchTranslations() async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+    try {
+      final response = await dio.get('$url/api/v1/content/bible');
+
+      populateTranslationList((response.data['translations'] as List)
+          .map((translation) => Translation.fromMap(translation))
+          .toList());
+
+      notifyListeners();
+      sharedPreferences?.setString(
+          'translations',
+          json.encode(
+              translations.map((translation) => translation.toMap()).toList()));
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+    }
+  }
+
+  void populateTranslationList(List<Translation> incomingTranslations) {
+    for (final incomingTranslation in incomingTranslations) {
+      final index = translations.indexWhere((loadedTranslation) =>
+          loadedTranslation.name == incomingTranslation.name);
+
+      if (index != -1 &&
+          translations[index].status != TranslationStatus.available) {
+        translations.replaceRange(index, index + 1, [incomingTranslation]);
+      }
+
+      if (index == -1) {
+        translations.add(incomingTranslation);
+      }
+    }
+  }
+
+  Future<void> downloadTranslation(String name) async {
+    final dio = Dio();
+    final flavor = await FlavorGetter().getFlavor();
+    final url = flavor == "dev"
+        ? Urls.devApiUrl
+        : flavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+    try {
+      final response = await dio
+          .get('$url/api/v1/content/bible', queryParameters: {"name": name});
+      final index =
+          translations.indexWhere((translation) => translation.name == name);
+      final filePath =
+          await writeFile('$name.json', json.encode(response.data));
+      final updatedTranslation = Translation(
+          name: name, path: filePath, status: TranslationStatus.available);
+
+      translation = updatedTranslation;
+      translations[index] = updatedTranslation;
+
+      notifyListeners();
+
+      loadTranslation(updatedTranslation,
+          isDefault: updatedTranslation.isDefault);
+
+      sharedPreferences?.setString(
+          'translations',
+          json.encode(
+              translations.map((translation) => translation.toMap()).toList()));
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+    }
+  }
+
+  Future<void> loadTranslation(Translation translation,
+      {bool isDefault = false}) async {
+    List data = [];
+    if (isDefault) {
+      data = await loadJson(translation.path!);
+    } else {
+      data = json.decode((await readFile(translation.path ?? "")) ?? "[]");
+    }
+
+    bible = data
+        .map((e) => Book(
+            name: e['name'],
+            chapters: (e['chapters'] as List)
+                .map((chapter) =>
+                    (chapter as List).map((verse) => verse.toString()).toList())
+                .toList()))
+        .toList();
+
+    notifyListeners();
+  }
+
   set setActivityFilter(ActivityFilter value) {
     topicActivityFilter = value;
     notifyListeners();
@@ -337,6 +444,8 @@ class ContentController extends ChangeNotifier {
   set setTranslation(Translation value) {
     translation = value;
     notifyListeners();
+
+    loadTranslation(value, isDefault: value.isDefault);
   }
 
   set setBook(Book value) {
