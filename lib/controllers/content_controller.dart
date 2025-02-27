@@ -28,6 +28,11 @@ class ContentController extends ChangeNotifier {
         name: "KJV",
         status: TranslationStatus.available,
         path: 'assets/data/en_kjv.json',
+        isDefault: true),
+    Translation(
+        name: "NASB",
+        status: TranslationStatus.available,
+        path: 'assets/data/am_nasb.json',
         isDefault: true)
   ];
   List<ActivityContent> activityList = [];
@@ -180,6 +185,7 @@ class ContentController extends ChangeNotifier {
         : flavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
+    //BUG: Flavor is not being fetched
 
     try {
       isFetchingActivity = true;
