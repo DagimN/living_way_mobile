@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "836583958038",
+    "project_id": "living-way-staging",
+    "storage_bucket": "living-way-staging.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836583958038:android:58f2786922a27b3b35b737",
+        "android_client_info": {
+          "package_name": "com.livingway.app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAggkJrRrNHzIRBYKYYTbxhfofQY3r_HBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
