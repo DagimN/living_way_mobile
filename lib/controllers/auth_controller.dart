@@ -42,8 +42,6 @@ class AuthController extends ChangeNotifier {
       bool success = await performLogin(account.email, isOAuth: true);
       isLoggedInViaGoogle = success;
 
-      //TODO: Handle scenario for oauth account creation
-
       //TODO: Report error
 
       if (success) {
@@ -51,8 +49,9 @@ class AuthController extends ChangeNotifier {
           await sharedPreferences?.setBool('isLoggedIn', true);
           await sharedPreferences?.setBool('isLoggedInViaGoogle', true);
         } else {
-          //TODO: Log error in crashlytics
-          logger.e('Shared preferences has not been initialized');
+          const message = 'Shared preferences has not been initialized';
+          logger.e(message);
+          throw ErrorDescription(message);
         }
 
         return true;
@@ -95,8 +94,9 @@ class AuthController extends ChangeNotifier {
         await sharedPreferences?.setBool('isLoggedIn', true);
         await sharedPreferences?.setBool('isLoggedInViaManual', true);
       } else {
-        //TODO: Log error in crashlytics
-        logger.e('Shared preferences has not been initialized');
+        const message = 'Shared preferences has not been initialized';
+        logger.e(message);
+        throw ErrorDescription(message);
       }
 
       return response;
@@ -145,8 +145,9 @@ class AuthController extends ChangeNotifier {
         await sharedPreferences?.setString(
             'profile', json.encode(response.data['data']));
       } else {
-        //TODO: Log error in crashlytics
-        logger.e('Shared preferences has not been initialized');
+        const message = 'Shared preferences has not been initialized';
+        logger.e(message);
+        throw ErrorDescription(message);
       }
 
       return true;
@@ -166,8 +167,9 @@ class AuthController extends ChangeNotifier {
       await sharedPreferences?.setBool('isLoggedIn', false);
       await sharedPreferences?.setBool('isLoggedInViaGoogle', false);
     } else {
-      //TODO: Log error in crashlytics
-      logger.e('Shared preferences has not been initialized');
+      const message = 'Shared preferences has not been initialized';
+      logger.e(message);
+      throw ErrorDescription(message);
     }
   }
 
@@ -177,8 +179,9 @@ class AuthController extends ChangeNotifier {
       await sharedPreferences?.setBool('isLoggedIn', false);
       await sharedPreferences?.setBool('isLoggedInViaManual', false);
     } else {
-      //TODO: Log error in crashlytics
-      logger.e('Shared preferences has not been initialized');
+      const message = 'Shared preferences has not been initialized';
+      logger.e(message);
+      throw ErrorDescription(message);
     }
   }
 }
