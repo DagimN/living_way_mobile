@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topics_listview.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:lottie/lottie.dart';
 
 class DevotionScreen extends StatelessWidget {
@@ -16,19 +17,14 @@ class DevotionScreen extends StatelessWidget {
         child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Container(
-            margin: const EdgeInsets.all(10),
-            child: const Text('Devotion',
-                style: TextStyle(
-                    fontSize: 32,
-                    color: lightPrimaryColor,
-                    fontWeight: FontWeight.w300))),
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none_rounded,
-                color: lightPrimaryColor))
-      ]),
+      BaseAppBar(
+          title: Container(
+              margin: const EdgeInsets.all(10),
+              child: const Text('Devotion',
+                  style: TextStyle(
+                      fontSize: 32,
+                      color: lightPrimaryColor,
+                      fontWeight: FontWeight.w300)))),
       Align(
           alignment: Alignment.topCenter,
           child: SizedBox(

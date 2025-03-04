@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/models/activity_content.dart';
-import 'package:living_way/screens/images_preview.dart';
+import 'package:living_way/screens/ActivityScreen/images_preview.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 

@@ -10,6 +10,9 @@ abstract class AppIcons {
   static const String search = 'assets/svg/search.svg';
   static const String pending = 'assets/svg/pending.svg';
   static const String google = 'assets/icons/google.png';
+  static const String home = 'assets/svg/home.svg';
+  static const String fire = 'assets/svg/fire.svg';
+  static const String calendar = 'assets/svg/calendar.svg';
 }
 
 abstract class AppImages {

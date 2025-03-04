@@ -6,9 +6,13 @@ import 'package:provider/provider.dart';
 
 class BottomNavigationItem extends StatelessWidget {
   final HomePageNavigation homePageNavigation;
-  final String icon;
+  final String? icon;
+  final Icon iconWidegt;
   const BottomNavigationItem(
-      {super.key, required this.icon, required this.homePageNavigation});
+      {super.key,
+      required this.homePageNavigation,
+      this.icon,
+      this.iconWidegt = const Icon(Icons.home_mini)});
 
   @override
   Widget build(BuildContext context) {
@@ -21,11 +25,15 @@ class BottomNavigationItem extends StatelessWidget {
           onPressed: () {
             layoutController.setSelectedHomePageNavigation = homePageNavigation;
           },
-          icon: SvgPicture.asset(icon,
-              height: 32,
-              colorFilter: ColorFilter.mode(
-                  selected ? lightPrimaryColor : lightInactiveColor,
-                  BlendMode.srcIn))),
+          icon: icon != null
+              ? SvgPicture.asset(icon!,
+                  height: 28,
+                  colorFilter: ColorFilter.mode(
+                      selected ? lightPrimaryColor : lightInactiveColor,
+                      BlendMode.srcIn))
+              : Icon(iconWidegt.icon,
+                  size: iconWidegt.size,
+                  color: selected ? lightPrimaryColor : lightInactiveColor)),
       if (selected)
         Container(
             height: 3,

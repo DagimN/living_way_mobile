@@ -10,6 +10,7 @@ import 'package:living_way/screens/ActivityScreen/widgets/gallery.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/poll.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/timeline_container.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class ActivityScreen extends StatelessWidget {
@@ -25,22 +26,17 @@ class ActivityScreen extends StatelessWidget {
 
     return SafeArea(
         child: Column(children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Container(
-            margin: const EdgeInsets.all(10),
-            child: const Text('Activities',
-                style: TextStyle(
-                    fontSize: 32,
-                    color: lightPrimaryColor,
-                    fontWeight: FontWeight.w300))),
-        IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.notifications_none_rounded,
-                color: lightPrimaryColor))
-      ]),
+      BaseAppBar(
+          title: Container(
+              margin: const EdgeInsets.all(10),
+              child: const Text('Activities',
+                  style: TextStyle(
+                      fontSize: 32,
+                      color: lightPrimaryColor,
+                      fontWeight: FontWeight.w300)))),
       SizedBox(
           height: orientation == Orientation.portrait
-              ? screenHeight * .74
+              ? screenHeight * .7
               : screenWidth * .2,
           child: !contentController.isFetchingActivity ||
                   contentController.activityList.isNotEmpty

@@ -2,7 +2,7 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
-import 'package:living_way/screens/images_preview.dart';
+import 'package:living_way/screens/ActivityScreen/images_preview.dart';
 
 class Gallery extends StatelessWidget {
   final List<String> images;

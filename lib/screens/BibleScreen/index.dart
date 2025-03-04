@@ -4,6 +4,7 @@ import 'package:living_way/screens/BibleScreen/widgets/bible_navigator.dart';
 import 'package:living_way/screens/BibleScreen/widgets/chapter_page.dart';
 import 'package:living_way/screens/BibleScreen/widgets/translation_popup_button.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:provider/provider.dart';
 
 class BibleScreen extends StatefulWidget {
@@ -33,51 +34,38 @@ class _BibleScreenState extends State<BibleScreen>
     return SafeArea(
         child: contentController.bible.isNotEmpty
             ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Container(
-                    margin: const EdgeInsets.all(10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          TextButton(
-                              onPressed: () {
-                                isBibleNavigatorVisible
-                                    ? animationController.reverse()
-                                    : animationController.forward();
+                BaseAppBar(
+                    title: TextButton(
+                        onPressed: () {
+                          isBibleNavigatorVisible
+                              ? animationController.reverse()
+                              : animationController.forward();
 
-                                setState(() {
-                                  isBibleNavigatorVisible =
-                                      !isBibleNavigatorVisible;
-                                });
-                              },
-                              child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        constraints: BoxConstraints(
-                                            maxWidth: orientation ==
-                                                    Orientation.portrait
-                                                ? screenWidth * .5
-                                                : screenWidth * .25),
-                                        child: Text(
-                                            '${selectedBook?.name} ${selectedChapter + 1}',
-                                            style: const TextStyle(
-                                                color: lightPrimaryColor,
-                                                fontSize: 20))),
-                                    Icon(
-                                        isBibleNavigatorVisible
-                                            ? Icons.arrow_drop_up_rounded
-                                            : Icons.arrow_drop_down_rounded,
-                                        color: lightPrimaryColor)
-                                  ])),
-                          Row(children: [
-                            const TranslationPopupButton(),
-                            IconButton(
-                                onPressed: () {},
-                                icon: const Icon(
-                                    Icons.notifications_none_rounded,
-                                    color: lightPrimaryColor))
-                          ])
-                        ])),
+                          setState(() {
+                            isBibleNavigatorVisible = !isBibleNavigatorVisible;
+                          });
+                        },
+                        child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                  constraints: BoxConstraints(
+                                      maxWidth:
+                                          orientation == Orientation.portrait
+                                              ? screenWidth * .35
+                                              : screenWidth * .25),
+                                  child: Text(
+                                      '${selectedBook?.name} ${selectedChapter + 1}',
+                                      style: const TextStyle(
+                                          color: lightPrimaryColor,
+                                          fontSize: 20))),
+                              Icon(
+                                  isBibleNavigatorVisible
+                                      ? Icons.arrow_drop_up_rounded
+                                      : Icons.arrow_drop_down_rounded,
+                                  color: lightPrimaryColor)
+                            ])),
+                    actions: const [TranslationPopupButton()]),
                 AnimatedBuilder(
                     animation: CurvedAnimation(
                         parent: animationController,
@@ -93,7 +81,8 @@ class _BibleScreenState extends State<BibleScreen>
                           padding: const EdgeInsets.all(10),
                           child: const BibleNavigator());
                     }),
-                    ChapterPage(verses: (selectedBook?.chapters[selectedChapter] ?? []))
+                ChapterPage(
+                    verses: (selectedBook?.chapters[selectedChapter] ?? []))
               ])
             : const Center(
                 child: CircularProgressIndicator(color: lightPrimaryColor)));

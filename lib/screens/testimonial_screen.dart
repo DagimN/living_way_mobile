@@ -19,7 +19,7 @@ class TestimonialScreen extends StatelessWidget {
                 height: screenHeight * .35,
                 fit: BoxFit.cover),
             Positioned(
-                top: screenHeight * .1,
+                top: screenHeight * .12,
                 left: orientation == Orientation.portrait
                     ? screenWidth * .2
                     : screenWidth * .38,

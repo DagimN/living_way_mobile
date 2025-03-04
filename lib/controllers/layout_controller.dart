@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:living_way/screens/ActivityScreen/index.dart';
 import 'package:living_way/screens/BibleScreen/index.dart';
 import 'package:living_way/screens/DevotionScreen/index.dart';
-import 'package:living_way/screens/profile_screen.dart';
+import 'package:living_way/screens/more_screen.dart';
 import 'package:living_way/screens/testimonial_screen.dart';
 
 enum HomePageNavigation {
@@ -11,14 +11,14 @@ enum HomePageNavigation {
   testimonial,
   bible,
   activity,
-  profile;
+  other;
 }
 
 class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];
   int initialIntroductionPageIndex = 0;
-  
+
   final List<Map<String, String>> settingsNavigation = [
     {'name': "General", 'route': '/settings'},
     {'name': "Profile", 'route': '/profile'},
@@ -53,8 +53,8 @@ class LayoutController extends ChangeNotifier {
         return const BibleScreen();
       case HomePageNavigation.activity:
         return const ActivityScreen();
-      case HomePageNavigation.profile:
-        return const ProfileScreen();
+      case HomePageNavigation.other:
+        return const MoreScreen();
       default:
         return const SizedBox();
     }
