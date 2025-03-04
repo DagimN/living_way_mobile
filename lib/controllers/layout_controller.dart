@@ -18,6 +18,7 @@ class LayoutController extends ChangeNotifier {
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
   List<GlobalKey> verseKeys = [];
   int initialIntroductionPageIndex = 0;
+  bool showSplashScreen = true;
 
   final List<Map<String, String>> settingsNavigation = [
     {'name': "General", 'route': '/settings'},
@@ -37,6 +38,11 @@ class LayoutController extends ChangeNotifier {
           verseHighlightController?.value != 1) {
         verseHighlightController?.forward();
       }
+    });
+
+    Future.delayed(const Duration(seconds: 3), () {
+      showSplashScreen = false;
+      notifyListeners();
     });
   }
 

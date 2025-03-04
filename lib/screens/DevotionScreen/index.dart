@@ -47,7 +47,6 @@ class DevotionScreen extends StatelessWidget {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         color: Colors.grey,
-                        //TODO: Add custom font Ephesis
                         fontFamily: 'Ephesis',
                         fontSize: 20)))
           ])),
