@@ -2,7 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class BaseAppBar extends StatelessWidget {
@@ -13,6 +14,7 @@ class BaseAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     return Container(
         margin: const EdgeInsets.all(10),
@@ -23,15 +25,17 @@ class BaseAppBar extends StatelessWidget {
             ...actions,
             IconButton(
                 onPressed: () {},
-                icon: const Icon(Icons.notifications_none_rounded,
-                    color: lightPrimaryColor)),
+                icon: Icon(Icons.notifications_none_rounded,
+                    color: AppTheme(themeController.brightness).iconColor)),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, "/profile");
                 },
                 icon: profileController.userProfile?.profileImageUrl != null
                     ? CircleAvatar(
-                        backgroundColor: lightPrimaryColor.withOpacity(0.3),
+                        backgroundColor: AppTheme(themeController.brightness)
+                            .primaryColor
+                            .withOpacity(0.3),
                         backgroundImage: CachedNetworkImageProvider(
                             profileController.userProfile?.profileImageUrl ??
                                 ""))

@@ -212,8 +212,10 @@ class ContentController extends ChangeNotifier {
       logger.e(error);
     } finally {
       dio.close();
-      isFetchingActivity = false;
-      notifyListeners();
+      Future.delayed(const Duration(seconds: 3), () {
+        isFetchingActivity = false;
+        notifyListeners();
+      });
     }
   }
 
@@ -250,8 +252,10 @@ class ContentController extends ChangeNotifier {
       logger.e(error);
     } finally {
       dio.close();
-      isFetchingTopic = false;
-      notifyListeners();
+      Future.delayed(const Duration(seconds: 3), () {
+        isFetchingTopic = false;
+        notifyListeners();
+      });
     }
   }
 

@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/contacts.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,7 +46,9 @@ class ContactsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
+    
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -53,7 +57,9 @@ class ContactsScreen extends StatelessWidget {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: const BoxDecoration(gradient: lightBackgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    AppTheme(themeController.brightness).backgroundGradient),
             child: SafeArea(
                 child: Column(children: [
               Container(

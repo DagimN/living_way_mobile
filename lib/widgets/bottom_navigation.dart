@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/widgets/bible_traverser.dart';
 import 'package:living_way/widgets/bottom_navigation_item.dart';
+import 'package:provider/provider.dart';
 
 class BottomNavigation extends StatelessWidget {
   const BottomNavigation({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
@@ -23,9 +26,11 @@ class BottomNavigation extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      border: const Border(
+                      border: Border(
                           top: BorderSide(
-                              color: lightPrimaryColor, width: 2.5))),
+                              color: AppTheme(themeController.brightness)
+                                  .primaryColor,
+                              width: 2.5))),
                   child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

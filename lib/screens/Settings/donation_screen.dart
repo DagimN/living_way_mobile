@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
+import 'package:provider/provider.dart';
 
 class DonationScreen extends StatelessWidget {
   const DonationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -13,7 +17,9 @@ class DonationScreen extends StatelessWidget {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: const BoxDecoration(gradient: lightBackgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    AppTheme(themeController.brightness).backgroundGradient),
             child: SafeArea(
                 child: Column(children: [
               Container(

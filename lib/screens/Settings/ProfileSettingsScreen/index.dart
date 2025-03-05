@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/profile.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
@@ -14,6 +15,7 @@ import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/prompt
 import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/setting_option_tile.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
 import 'package:living_way/services/image_service.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -36,6 +38,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
+    final themeController = Provider.of<ThemeController>(context);
     final authController = Provider.of<AuthController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final profile = profileController.userProfile ??
@@ -51,7 +54,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: const BoxDecoration(gradient: lightBackgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    AppTheme(themeController.brightness).backgroundGradient),
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Column(children: [
@@ -290,7 +295,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
                                       isLast: true,
                                       data: ThreadData(
-                                        timestamp: DateTime.now(),
+                                          timestamp: DateTime.now(),
                                           threadId: const Uuid().v4(),
                                           commenter: const Uuid().v4(),
                                           comment: 'Comment 1',

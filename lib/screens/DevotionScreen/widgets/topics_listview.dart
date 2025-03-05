@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/filter_bottom_sheet.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topic_card.dart';
 import 'package:living_way/screens/search_screen.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class TopicsListview extends StatelessWidget {
@@ -15,6 +16,7 @@ class TopicsListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final topics = contentController.topicList;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -26,14 +28,17 @@ class TopicsListview extends StatelessWidget {
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Row(children: [
-              const Text('Topics',
-                  style: TextStyle(fontSize: 16, color: lightPrimaryColor)),
+              Text('Topics',
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: AppTheme(themeController.brightness).iconColor)),
               IconButton(
                   style: IconButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () {
                     showModalBottomSheet(
                         context: context,
-                        showDragHandle: true,
+                        backgroundColor: AppTheme(themeController.brightness)
+                            .backgroundColor,
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           return FilterBottomSheet(
@@ -43,7 +48,11 @@ class TopicsListview extends StatelessWidget {
                               booksSelected: contentController.booksFiltered);
                         });
                   },
-                  icon: SvgPicture.asset(AppIcons.filter, height: 24)),
+                  icon: SvgPicture.asset(AppIcons.filter,
+                      height: 24,
+                      colorFilter: ColorFilter.mode(
+                          AppTheme(themeController.brightness).iconColor,
+                          BlendMode.srcIn))),
               Hero(
                   tag: 'search',
                   child: IconButton(
@@ -57,14 +66,19 @@ class TopicsListview extends StatelessWidget {
                                 pageBuilder: (_, __, ___) =>
                                     const SearchScreen()));
                       },
-                      icon: SvgPicture.asset(AppIcons.search, height: 24)))
+                      icon: SvgPicture.asset(AppIcons.search,
+                          height: 24,
+                          colorFilter: ColorFilter.mode(
+                              AppTheme(themeController.brightness).iconColor,
+                              BlendMode.srcIn))))
             ]),
             IconButton(
                 style: IconButton.styleFrom(padding: EdgeInsets.zero),
                 onPressed: () {
                   contentController.fetchTopics(isRefreshing: true);
                 },
-                icon: const Icon(Icons.refresh))
+                icon: Icon(Icons.refresh,
+                    color: AppTheme(themeController.brightness).iconColor))
           ]),
           SizedBox(
               width: screenWidth,
@@ -79,29 +93,36 @@ class TopicsListview extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemCount: topics.length + 1,
                           itemBuilder: (context, index) {
-                            final topic = contentController.topicList.length >
-                                    index
-                                ? topics[index]
-                                : Topic(id: '',title: '', viewCount: 0, likeCount: 0);
+                            final topic =
+                                contentController.topicList.length > index
+                                    ? topics[index]
+                                    : Topic(
+                                        id: '',
+                                        title: '',
+                                        viewCount: 0,
+                                        likeCount: 0);
                             return topics.length > index
                                 ? TopicCard(topic: topic)
                                 : contentController.isFetchingTopic
                                     ? Container(
                                         height: 10,
-                                        width: 30,
+                                        width: 40,
                                         alignment: Alignment.center,
                                         margin: const EdgeInsets.all(10),
-                                        child: const CircularProgressIndicator(
+                                        child: CircularProgressIndicator(
                                             strokeWidth: 2,
-                                            color: lightPrimaryColor))
+                                            color: AppTheme(
+                                                    themeController.brightness)
+                                                .primaryColor))
                                     : const SizedBox();
                           })
                       : const Center(
                           child: Text('No topics yet. Come back later',
                               style: TextStyle(color: Colors.grey)))
-                  : const Center(
-                      child:
-                          CircularProgressIndicator(color: lightPrimaryColor)))
+                  : Center(
+                      child: CircularProgressIndicator(
+                          color: AppTheme(themeController.brightness)
+                              .primaryColor)))
         ]));
   }
 }

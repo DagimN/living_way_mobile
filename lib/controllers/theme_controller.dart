@@ -25,6 +25,8 @@ class ThemeController extends ChangeNotifier {
       brightness =
           Brightness.values[sharedPreferences?.getInt('brightness') ?? 1];
       selectedFont = Fonts.values[sharedPreferences?.getInt('font') ?? 5];
+      
+      notifyListeners();
     });
   }
 

@@ -4,9 +4,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/MediaScreen/index.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/utils/shorten_number.dart';
 import 'package:provider/provider.dart';
@@ -18,7 +20,9 @@ class TopicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -137,9 +141,10 @@ class TopicCard extends StatelessWidget {
                             ? screenWidth * .095
                             : screenHeight * .095,
                         padding: const EdgeInsets.all(5),
-                        decoration: const BoxDecoration(
-                            color: lightPrimaryColor,
-                            borderRadius: BorderRadius.only(
+                        decoration: BoxDecoration(
+                            color: AppTheme(themeController.brightness)
+                                .secondaryColor,
+                            borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(20),
                                 bottomLeft: Radius.circular(20))),
                         child: SvgPicture.asset(

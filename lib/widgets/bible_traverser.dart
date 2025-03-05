@@ -3,7 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class BibleTraverser extends StatefulWidget {
@@ -25,6 +26,7 @@ class _BibleTraverserState extends State<BibleTraverser>
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final chapter = contentController.chapter ?? 0;
     final selectedBook =
         contentController.book ?? contentController.bible.firstOrNull;
@@ -46,7 +48,10 @@ class _BibleTraverserState extends State<BibleTraverser>
                   width: widthAnimation.value,
                   child: CustomPaint(
                       painter: _DiamondPainter(
-                          isTraversing: isTraversing, borderRadius: 9),
+                          isTraversing: isTraversing,
+                          borderRadius: 9,
+                          color: AppTheme(themeController.brightness)
+                              .primaryColor),
                       child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -104,16 +109,20 @@ class _BibleTraverserState extends State<BibleTraverser>
 }
 
 class _DiamondPainter extends CustomPainter {
+  final Color color;
   final double borderRadius;
   final bool isTraversing;
-  _DiamondPainter({required this.borderRadius, required this.isTraversing});
+  _DiamondPainter(
+      {required this.borderRadius,
+      required this.isTraversing,
+      required this.color});
 
   @override
   void paint(Canvas canvas, Size size) {
     final verticalArcFactor = size.width / size.height;
     final horizontalArcFactor = size.height / size.width;
 
-    final paint = Paint()..color = lightPrimaryColor;
+    final paint = Paint()..color = color;
     final path = Path()
 
       //Top Corner

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/Settings/GeneralSettingsScreen/widgets/prayer_times_list_view.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,9 @@ class GeneralSettingsScreen extends StatelessWidget {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: const BoxDecoration(gradient: lightBackgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    AppTheme(themeController.brightness).backgroundGradient),
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Column(children: [
@@ -68,8 +71,6 @@ class GeneralSettingsScreen extends StatelessWidget {
                                   style: IconButton.styleFrom(
                                       foregroundColor: lightPrimaryColor),
                                   onPressed: () {
-                                    //TODO: Set theme
-
                                     themeController.toggleBrightness();
                                   },
                                   icon: Icon(themeController.brightness ==

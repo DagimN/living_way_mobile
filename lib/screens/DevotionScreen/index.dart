@@ -1,18 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topics_listview.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class DevotionScreen extends StatelessWidget {
   const DevotionScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
+
     return SafeArea(
         child: SingleChildScrollView(
             child:
@@ -20,11 +25,11 @@ class DevotionScreen extends StatelessWidget {
       BaseAppBar(
           title: Container(
               margin: const EdgeInsets.all(10),
-              child: const Text('Devotion',
+              child: Text('Today',
                   style: TextStyle(
                       fontSize: 32,
-                      color: lightPrimaryColor,
-                      fontWeight: FontWeight.w300)))),
+                      color: AppTheme(themeController.brightness).iconColor,
+                      fontWeight: FontWeight.w400)))),
       Align(
           alignment: Alignment.topCenter,
           child: SizedBox(
@@ -36,8 +41,9 @@ class DevotionScreen extends StatelessWidget {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             SvgPicture.asset(AppIcons.quote,
                 height: 40,
-                colorFilter:
-                    const ColorFilter.mode(lightPrimaryColor, BlendMode.srcIn)),
+                colorFilter: ColorFilter.mode(
+                    AppTheme(themeController.brightness).primaryColor,
+                    BlendMode.srcIn)),
             const SizedBox(width: 10),
             SizedBox(
                 width: screenWidth * .7,

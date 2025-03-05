@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/profile.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/threads_list_view.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
@@ -28,6 +30,7 @@ class _TopicScreenState extends State<TopicScreen>
   @override
   Widget build(BuildContext context) {
     final userProfile = Provider.of<ProfileController>(context).userProfile;
+    final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -35,7 +38,9 @@ class _TopicScreenState extends State<TopicScreen>
     return Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
-            decoration: const BoxDecoration(gradient: lightBackgroundGradient),
+            decoration: BoxDecoration(
+                gradient:
+                    AppTheme(themeController.brightness).backgroundGradient),
             child: Stack(children: [
               SingleChildScrollView(
                   child: Column(children: [

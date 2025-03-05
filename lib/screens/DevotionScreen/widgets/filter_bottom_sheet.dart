@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/constants/content.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +37,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     List<String> totalBooks = [...(books['ot'] ?? []), ...(books['nt'] ?? [])];
     List<String> filteredBooks = books[categoryFilter.name] ?? [];
     double screenHeight = MediaQuery.of(context).size.height;
@@ -48,17 +51,23 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
             ? screenHeight * .5
             : screenHeight * .65,
         padding: const EdgeInsets.all(16),
-        decoration: const BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.only(topLeft: radius, topRight: radius)),
+        decoration: BoxDecoration(
+            color: AppTheme(themeController.brightness).backgroundColor,
+            borderRadius:
+                const BorderRadius.only(topLeft: radius, topRight: radius)),
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            const Text('Filter',
-                style: TextStyle(fontWeight: FontWeight.w600, fontSize: 24)),
+            Text('Filter',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24,
+                    color: AppTheme(themeController.brightness).accentColor)),
             Row(children: [
               TextButton(
-                  child: const Text('Reset',
-                      style: TextStyle(color: lightPrimaryColor)),
+                  child: Text('Reset',
+                      style: TextStyle(
+                          color: AppTheme(themeController.brightness)
+                              .primaryColor)),
                   onPressed: () {
                     contentController.setActivityFilter = ActivityFilter.latest;
                     contentController.categoryFilter = CategoryFilter.all;
@@ -68,8 +77,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                     Navigator.pop(context);
                   }),
               TextButton(
-                  child: const Text('Apply',
-                      style: TextStyle(color: lightPrimaryColor)),
+                  child: Text('Apply',
+                      style: TextStyle(
+                          color: AppTheme(themeController.brightness)
+                              .primaryColor)),
                   onPressed: () {
                     contentController.setActivityFilter = activityFilter;
                     contentController.setCategoryFilter = categoryFilter;
@@ -80,7 +91,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                   })
             ])
           ]),
-          Divider(color: Colors.grey[200]),
+          Divider(color: AppTheme(themeController.brightness).dividerColor),
           SizedBox(
               height: screenHeight * .38,
               child: SingleChildScrollView(
@@ -105,11 +116,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                           foregroundColor: activityFilter ==
                                                   ActivityFilter.latest
                                               ? Colors.white
-                                              : null,
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .inactiveChipColor,
                                           backgroundColor: activityFilter ==
                                                   ActivityFilter.latest
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              ? AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
                                                 ActivityFilter.latest;
@@ -124,11 +141,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                           foregroundColor: activityFilter ==
                                                   ActivityFilter.mostActive
                                               ? Colors.white
-                                              : null,
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .inactiveChipColor,
                                           backgroundColor: activityFilter ==
                                                   ActivityFilter.mostActive
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              ? AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
                                                 ActivityFilter.mostActive;
@@ -143,11 +166,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                           foregroundColor: activityFilter ==
                                                   ActivityFilter.mostLiked
                                               ? Colors.white
-                                              : null,
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .inactiveChipColor,
                                           backgroundColor: activityFilter ==
                                                   ActivityFilter.mostLiked
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              ? AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
                                                 ActivityFilter.mostLiked;
@@ -162,11 +191,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                           foregroundColor: activityFilter ==
                                                   ActivityFilter.mostViewed
                                               ? Colors.white
-                                              : null,
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .inactiveChipColor,
                                           backgroundColor: activityFilter ==
                                                   ActivityFilter.mostViewed
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              ? AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor
+                                              : AppTheme(themeController
+                                                      .brightness)
+                                                  .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
                                                 ActivityFilter.mostViewed;
@@ -179,9 +214,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                     Container(
                         margin: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
-                        child: const Text('Category',
+                        child: Text('Category',
                             style: TextStyle(
-                                color: lightPrimaryColor,
+                                color: AppTheme(themeController.brightness)
+                                    .subHeadingColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w400))),
                     SizedBox(
@@ -195,11 +231,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                       foregroundColor:
                                           categoryFilter == CategoryFilter.all
                                               ? Colors.white
-                                              : null,
-                                      backgroundColor:
-                                          categoryFilter == CategoryFilter.all
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              : AppTheme(themeController.brightness)
+                                              .inactiveChipColor,
+                                      backgroundColor: categoryFilter ==
+                                              CategoryFilter.all
+                                          ? AppTheme(themeController.brightness)
+                                              .primaryColor
+                                          : AppTheme(themeController.brightness)
+                                              .chipColor),
                                   onPressed: () => setState(() {
                                         categoryFilter = CategoryFilter.all;
                                       }),
@@ -214,11 +253,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                       foregroundColor:
                                           categoryFilter == CategoryFilter.ot
                                               ? Colors.white
-                                              : null,
-                                      backgroundColor:
-                                          categoryFilter == CategoryFilter.ot
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              : AppTheme(themeController.brightness)
+                                              .inactiveChipColor,
+                                      backgroundColor: categoryFilter ==
+                                              CategoryFilter.ot
+                                          ? AppTheme(themeController.brightness)
+                                              .primaryColor
+                                          : AppTheme(themeController.brightness)
+                                              .chipColor),
                                   onPressed: () => setState(() {
                                         categoryFilter = CategoryFilter.ot;
                                         booksSelected.removeWhere((book) =>
@@ -235,11 +277,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                       foregroundColor:
                                           categoryFilter == CategoryFilter.nt
                                               ? Colors.white
-                                              : null,
-                                      backgroundColor:
-                                          categoryFilter == CategoryFilter.nt
-                                              ? lightPrimaryColor
-                                              : Colors.white),
+                                              : AppTheme(themeController.brightness)
+                                              .inactiveChipColor,
+                                      backgroundColor: categoryFilter ==
+                                              CategoryFilter.nt
+                                          ? AppTheme(themeController.brightness)
+                                              .primaryColor
+                                          : AppTheme(themeController.brightness)
+                                              .chipColor),
                                   onPressed: () => setState(() {
                                         categoryFilter = CategoryFilter.nt;
                                         booksSelected.removeWhere((book) =>
@@ -254,9 +299,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                         margin: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
                         child: Row(children: [
-                          const Text('Books',
+                          Text('Books',
                               style: TextStyle(
-                                  color: lightPrimaryColor,
+                                  color: AppTheme(themeController.brightness)
+                                      .subHeadingColor,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w400)),
                           if (booksSelected.isNotEmpty)
@@ -287,11 +333,17 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                             foregroundColor:
                                                 booksSelected.contains(book)
                                                     ? Colors.white
-                                                    : null,
+                                                    : AppTheme(themeController
+                                                            .brightness)
+                                                        .inactiveChipColor,
                                             backgroundColor:
                                                 booksSelected.contains(book)
-                                                    ? lightPrimaryColor
-                                                    : Colors.white),
+                                                    ? AppTheme(themeController
+                                                            .brightness)
+                                                        .primaryColor
+                                                    : AppTheme(themeController
+                                                            .brightness)
+                                                        .chipColor),
                                         onPressed: () => setState(() {
                                               if (!booksSelected
                                                   .contains(book)) {
@@ -302,8 +354,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                             }),
                                         child: Text(book,
                                             textAlign: TextAlign.center,
-                                            style: const TextStyle(
-                                                fontSize: 10))))))
+                                            style: const TextStyle(fontSize: 10))))))
                             .toList())
                   ])))
         ]));

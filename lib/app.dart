@@ -16,8 +16,7 @@ import 'package:living_way/screens/Settings/ProfileSettingsScreen/index.dart';
 import 'package:living_way/screens/Settings/GeneralSettingsScreen/index.dart';
 import 'package:living_way/screens/home.dart';
 import 'package:living_way/screens/search_screen.dart';
-import 'package:living_way/themes/dark_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class LivingWayApp extends StatelessWidget {
@@ -43,6 +42,7 @@ class LivingWayApp extends StatelessWidget {
         child: Consumer<AuthController>(builder: (context, authController, _) {
           final profileController = Provider.of<ProfileController>(context);
           final layoutController = Provider.of<LayoutController>(context);
+          final themeController = Provider.of<ThemeController>(context);
 
           Provider.of<NotificationController>(context);
 
@@ -52,8 +52,11 @@ class LivingWayApp extends StatelessWidget {
               ? MaterialApp(
                   debugShowCheckedModeBanner: false,
                   title: 'Living Way',
-                  theme: lightTheme,
-                  darkTheme: darkTheme,
+                  theme: ThemeData(
+                      colorScheme: ColorScheme.fromSeed(
+                          seedColor: AppTheme(themeController.brightness)
+                              .primaryColor),
+                      useMaterial3: true),
                   home: authController.isLoggedIn
                       ? const HomeScreen()
                       : const IntroScreen(),
