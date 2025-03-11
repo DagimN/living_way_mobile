@@ -6,7 +6,6 @@ import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/filter_bottom_sheet.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topic_card.dart';
-import 'package:living_way/screens/search_screen.dart';
 import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
@@ -27,11 +26,11 @@ class TopicsListview extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Text('Topics',
+                style: TextStyle(
+                    fontSize: 16,
+                    color: AppTheme(themeController.brightness).iconColor)),
             Row(children: [
-              Text('Topics',
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: AppTheme(themeController.brightness).iconColor)),
               IconButton(
                   style: IconButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () {
@@ -53,32 +52,14 @@ class TopicsListview extends StatelessWidget {
                       colorFilter: ColorFilter.mode(
                           AppTheme(themeController.brightness).iconColor,
                           BlendMode.srcIn))),
-              Hero(
-                  tag: 'search',
-                  child: IconButton(
-                      style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            PageRouteBuilder(
-                                transitionDuration:
-                                    const Duration(milliseconds: 500),
-                                pageBuilder: (_, __, ___) =>
-                                    const SearchScreen()));
-                      },
-                      icon: SvgPicture.asset(AppIcons.search,
-                          height: 24,
-                          colorFilter: ColorFilter.mode(
-                              AppTheme(themeController.brightness).iconColor,
-                              BlendMode.srcIn))))
-            ]),
-            IconButton(
-                style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                onPressed: () {
-                  contentController.fetchTopics(isRefreshing: true);
-                },
-                icon: Icon(Icons.refresh,
-                    color: AppTheme(themeController.brightness).iconColor))
+              IconButton(
+                  style: IconButton.styleFrom(padding: EdgeInsets.zero),
+                  onPressed: () {
+                    contentController.fetchTopics(isRefreshing: true);
+                  },
+                  icon: Icon(Icons.refresh,
+                      color: AppTheme(themeController.brightness).iconColor))
+            ])
           ]),
           SizedBox(
               width: screenWidth,

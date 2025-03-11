@@ -24,7 +24,7 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
             toolbarHeight: 0,
             backgroundColor: Colors.transparent,
-            systemOverlayStyle: SystemUiOverlayStyle.dark),
+            systemOverlayStyle: SystemUiOverlayStyle.light),
         floatingActionButton: layoutController.getSelectedHomePageNavigation ==
                 HomePageNavigation.testimonial
             ? FloatingActionButton(
