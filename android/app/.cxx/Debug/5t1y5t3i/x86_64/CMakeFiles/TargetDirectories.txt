@@ -1,0 +1,2 @@
+C:/Users/dagmn/Documents/Projects/Living_way/Source/living_way/android/app/.cxx/Debug/5t1y5t3i/x86_64/CMakeFiles/edit_cache.dir
+C:/Users/dagmn/Documents/Projects/Living_way/Source/living_way/android/app/.cxx/Debug/5t1y5t3i/x86_64/CMakeFiles/rebuild_cache.dir
