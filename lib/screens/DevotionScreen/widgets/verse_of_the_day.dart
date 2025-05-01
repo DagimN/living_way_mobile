@@ -6,7 +6,9 @@ class VerseOfTheDay extends StatelessWidget {
   final bool isEnlarged;
   final Radius radius;
   const VerseOfTheDay(
-      {super.key, required this.isEnlarged, this.radius = const Radius.circular(16)});
+      {super.key,
+      required this.isEnlarged,
+      this.radius = const Radius.circular(16)});
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class VerseOfTheDay extends StatelessWidget {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(height: 36),
                         Text('Verse of the day',
                             style: TextStyle(
                                 color: Colors.white,

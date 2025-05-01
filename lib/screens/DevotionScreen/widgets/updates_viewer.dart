@@ -35,8 +35,8 @@ class _UpdatesViewerState extends State<UpdatesViewer> {
               child: Container(
                   width: screenWidth,
                   height: orientation == Orientation.portrait
-                      ? screenHeight * .35
-                      : screenWidth * .25,
+                      ? screenHeight * .4
+                      : screenWidth * .3,
                   decoration: BoxDecoration(
                       image: const DecorationImage(
                           image: image, fit: BoxFit.cover),

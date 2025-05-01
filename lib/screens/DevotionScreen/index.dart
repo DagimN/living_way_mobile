@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/screens/DevotionScreen/widgets/story_list_view.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/topics_listview.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/updates_viewer.dart';
 import 'package:living_way/screens/search_screen.dart';
@@ -24,7 +24,7 @@ class DevotionScreen extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 100),
         child: SizedBox(
             height: orientation == Orientation.portrait
-                ? screenHeight * .8
+                ? screenHeight * .9
                 : screenHeight * .7,
             child: SingleChildScrollView(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -34,8 +34,9 @@ class DevotionScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 32,
                           color: AppTheme(themeController.brightness).iconColor,
-                          fontWeight: FontWeight.w400)), actions: [
-                            Hero(
+                          fontWeight: FontWeight.w400)),
+                  actions: [
+                    Hero(
                         tag: 'search',
                         child: IconButton(
                             style:
@@ -55,8 +56,11 @@ class DevotionScreen extends StatelessWidget {
                                     AppTheme(themeController.brightness)
                                         .iconColor,
                                     BlendMode.srcIn))))
-                          ]),
-              const TopicsListview()
+                  ]),
+              const Padding(
+                  padding: EdgeInsets.all(8.0), child: StoryListView()),
+              const TopicsListview(),
+              const SizedBox(height: 70)
             ]))));
   }
 }

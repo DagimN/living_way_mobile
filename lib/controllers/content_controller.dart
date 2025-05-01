@@ -37,6 +37,8 @@ class ContentController extends ChangeNotifier {
   ];
   List<ActivityContent> activityList = [];
   List<Topic> topicList = [];
+  List<String> stories = ['1', '2', '3', '4', '5', '6'];
+  List<String> viewedStories = [];
 
   List<Staff> staffs = [
     Staff(
@@ -135,6 +137,7 @@ class ContentController extends ChangeNotifier {
   int topicPageIndex = 0;
   bool isFetchingActivity = false;
   bool isFetchingTopic = false;
+  bool isFetchingStories = true; //FIXME: Revert back to original
 
   ContentController() {
     loadTranslation(translations.first,
@@ -147,6 +150,8 @@ class ContentController extends ChangeNotifier {
           (json.decode(instance.getString('translations') ?? "[]") as List)
               .map((translation) => Translation.fromMap(translation))
               .toList());
+
+      viewedStories = instance.getStringList('viewedStories') ?? [];
 
       notifyListeners();
 
@@ -424,6 +429,16 @@ class ContentController extends ChangeNotifier {
         .toList();
 
     notifyListeners();
+  }
+
+  void viewStory(String storyId) {
+    if (!viewedStories.contains(storyId)) {
+      viewedStories.add(storyId);
+      
+      sharedPreferences?.setStringList('viewedStories', viewedStories);
+
+      notifyListeners();
+    }
   }
 
   set setActivityFilter(ActivityFilter value) {

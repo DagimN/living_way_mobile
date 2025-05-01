@@ -61,8 +61,6 @@ class LayoutController extends ChangeNotifier {
         return const ActivityScreen();
       case HomePageNavigation.other:
         return const MoreScreen();
-      default:
-        return const SizedBox();
     }
   }
 
