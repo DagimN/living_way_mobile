@@ -1,8 +1,5 @@
 import 'package:encrypt/encrypt.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-final secretKey = dotenv.env['ENCRYPTION_SECRET_KEY'] ?? '';
-final secretIv = dotenv.env['ENCRYPTION_IV'] ?? '';
+import 'package:living_way/config/env.dart';
 
 //Encryption function used for hiding the content in a message
 String encrypt(String text) {

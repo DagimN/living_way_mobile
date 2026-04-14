@@ -65,6 +65,7 @@ dependencies:
   firebase_core:
   video_player: ^2.9.5
   shimmer: ^3.0.0
+  functional_status_codes: ^3.2.0
 
 dev_dependencies:
   flutter_test:

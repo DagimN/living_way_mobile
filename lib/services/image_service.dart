@@ -1,6 +1,10 @@
 import 'dart:io';
 
+import 'package:dio/dio.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
+import 'package:living_way/config/env.dart';
+import 'package:living_way/constants/urls.dart';
 import 'package:living_way/services/logging_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -35,5 +39,42 @@ abstract class ImageService {
     }
 
     return [];
+  }
+
+  static Future<List<String>> fetchImages(
+      {String page = '1',
+      List<String> categories = const ['wallpapers', 'nature']}) async {
+    try {
+      final dio = Dio(BaseOptions(baseUrl: Urls.unsplashApiUrl));
+      final response = await dio.get('/search/photos', queryParameters: {
+        'query': categories.join(','),
+        'client_id': unsplasAccessKey,
+        'page': page,
+        'per_page': '30'
+      });
+
+      if (!response.statusCode.isSuccess) {
+        logger.w({
+          "data": response.data,
+          "status": response.statusCode,
+          "error": response.statusMessage
+        });
+        return [Urls.imageApiUrl];
+      }
+
+      if (response.headers.value('x-ratelimit-remaining') == '0') {
+        logger.w('Rate limit exceeded for today.(UnsplashAPI)');
+        return [Urls.imageApiUrl];
+      }
+
+      final data = List.from(response.data)
+          .map((item) => item['urls']['regular'] as String)
+          .toList();
+
+      return data;
+    } catch (error) {
+      logger.e(error);
+      return [Urls.imageApiUrl];
+    }
   }
 }

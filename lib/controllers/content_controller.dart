@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ import 'package:living_way/models/staff.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/models/translation.dart';
+import 'package:living_way/services/image_service.dart';
 import 'package:living_way/services/logging_service.dart';
 import 'package:living_way/utils/storage_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -22,6 +24,7 @@ class ContentController extends ChangeNotifier {
       TextEditingController();
   final ScrollController activityScrollController = ScrollController();
   final ScrollController topicScrollController = ScrollController();
+  List<String> images = [Urls.imageApiUrl];
   List<Book> bible = [];
   List<Translation> translations = [
     Translation(
@@ -143,7 +146,7 @@ class ContentController extends ChangeNotifier {
     loadTranslation(translations.first,
         isDefault: translations.first.isDefault);
 
-    SharedPreferences.getInstance().then((instance) {
+    SharedPreferences.getInstance().then((instance) async {
       sharedPreferences = instance;
 
       populateTranslationList(
@@ -152,6 +155,17 @@ class ContentController extends ChangeNotifier {
               .toList());
 
       viewedStories = instance.getStringList('viewedStories') ?? [];
+      images = instance.getStringList('images') ?? [];
+      final lastImagesFetched =
+          DateTime.tryParse(instance.getString('lastImagesFetched') ?? "") ??
+              DateTime.now();
+
+      if (images.isEmpty ||
+          DateTime.now().difference(lastImagesFetched).inDays > 7) {
+        images = await ImageService.fetchImages(page: Random(15).toString());
+        instance.setStringList('images', images);
+        instance.setString('lastImagesFetched', DateTime.now().toString());
+      }
 
       notifyListeners();
 
