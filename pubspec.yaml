@@ -60,7 +60,6 @@ dependencies:
   permission_handler: ^11.3.1
   path_provider: ^2.1.4
   onesignal_flutter: ^5.2.9
-  flavor_getter: ^0.0.3
   firebase_crashlytics: ^4.1.0
   firebase_analytics: ^11.3.0
   firebase_core:

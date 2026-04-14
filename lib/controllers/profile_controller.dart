@@ -1,7 +1,7 @@
 import "dart:convert";
 import "package:dio/dio.dart";
-import "package:flavor_getter/flavor_getter.dart";
 import "package:flutter/material.dart";
+import "package:flutter/services.dart";
 import "package:living_way/constants/urls.dart";
 import "package:living_way/models/profile.dart";
 import "package:living_way/services/logging_service.dart";
@@ -46,10 +46,9 @@ class ProfileController extends ChangeNotifier {
 
   Future<Profile?> syncProfile(Profile profile) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
@@ -73,10 +72,9 @@ class ProfileController extends ChangeNotifier {
 
   Future<void> editProfile(FormData formData) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
@@ -97,10 +95,9 @@ class ProfileController extends ChangeNotifier {
 
   Future<void> deleteProfile() async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
@@ -133,7 +130,7 @@ class ProfileController extends ChangeNotifier {
   void editPrayerTime(TimeOfDay value, int index) {
     prayerTimes.replaceRange(index, index + 1, [value]);
     notifyListeners();
-        sharedPreferences?.setStringList('reminders',
+    sharedPreferences?.setStringList('reminders',
         prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
   }
 

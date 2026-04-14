@@ -9,7 +9,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:836583958038:android:58f2786922a27b3b35b737",
         "android_client_info": {
-          "package_name": "com.livingway.app"
+          "package_name": "com.livingway.app.dev"
         }
       },
       "oauth_client": [],

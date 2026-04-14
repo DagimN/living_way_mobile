@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:living_way/constants/urls.dart';
 import 'package:living_way/controllers/profile_controller.dart';
@@ -65,10 +65,9 @@ class AuthController extends ChangeNotifier {
 
   Future<Response> performSignup() async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
@@ -122,10 +121,9 @@ class AuthController extends ChangeNotifier {
   Future<bool> performLogin(String email,
       {String? password, bool? isOAuth = false}) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 

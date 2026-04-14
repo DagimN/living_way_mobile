@@ -1,8 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
-import 'package:flavor_getter/flavor_getter.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/constants/content.dart' as content;
 import 'package:living_way/constants/urls.dart';
@@ -184,13 +184,11 @@ class ContentController extends ChangeNotifier {
 
   Future<void> fetchActivities({bool isRefreshing = false}) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
-    //BUG: Flavor is not being fetched
 
     try {
       isFetchingActivity = true;
@@ -226,10 +224,9 @@ class ContentController extends ChangeNotifier {
 
   Future<void> fetchTopics({bool isRefreshing = false}) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
@@ -266,10 +263,9 @@ class ContentController extends ChangeNotifier {
 
   Future<void> updateTopic(Topic updatedTopic) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
@@ -311,10 +307,9 @@ class ContentController extends ChangeNotifier {
 
   Future<bool> updatePoll(ActivityContent poll) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
     try {
@@ -332,10 +327,9 @@ class ContentController extends ChangeNotifier {
 
   Future<void> fetchTranslations() async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
     try {
@@ -375,10 +369,9 @@ class ContentController extends ChangeNotifier {
 
   Future<void> downloadTranslation(String name) async {
     final dio = Dio();
-    final flavor = await FlavorGetter().getFlavor();
-    final url = flavor == "dev"
+    const url = appFlavor == "dev"
         ? Urls.devApiUrl
-        : flavor == "staging"
+        : appFlavor == "staging"
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
     try {
@@ -434,7 +427,7 @@ class ContentController extends ChangeNotifier {
   void viewStory(String storyId) {
     if (!viewedStories.contains(storyId)) {
       viewedStories.add(storyId);
-      
+
       sharedPreferences?.setStringList('viewedStories', viewedStories);
 
       notifyListeners();

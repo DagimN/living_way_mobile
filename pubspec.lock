@@ -329,14 +329,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
-  flavor_getter:
-    dependency: "direct main"
-    description:
-      name: flavor_getter
-      sha256: "6596a2503614192a0b130da8df86d54e7714a946980d19056a8290265bac6e16"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.0.4"
   flutter:
     dependency: "direct main"
     description: flutter
