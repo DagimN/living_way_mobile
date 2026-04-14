@@ -1,9 +1,11 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/activity_content.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExternalLink extends StatelessWidget {
@@ -15,7 +17,9 @@ class ExternalLink extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
+
     final borderRadius = BorderRadius.circular(15);
+    final themeController = Provider.of<ThemeController>(context);
 
     return Container(
         width: orientation == Orientation.portrait
@@ -31,10 +35,11 @@ class ExternalLink extends StatelessWidget {
                   width: 45,
                   height: 20,
                   decoration: BoxDecoration(boxShadow: [
-                    const BoxShadow(
-                        offset: Offset(0, 5),
+                    BoxShadow(
+                        offset: const Offset(0, 5),
                         blurRadius: 36,
-                        color: lightSecondaryColor),
+                        color: AppTheme(themeController.brightness)
+                            .secondaryColor),
                     BoxShadow(
                         offset: Offset(
                             orientation == Orientation.portrait
@@ -42,7 +47,8 @@ class ExternalLink extends StatelessWidget {
                                 : screenWidth * .78,
                             24),
                         blurRadius: 36,
-                        color: lightPrimaryColor)
+                        color:
+                            AppTheme(themeController.brightness).primaryColor)
                   ])),
               ClipRRect(
                   borderRadius: borderRadius,
@@ -61,8 +67,9 @@ class ExternalLink extends StatelessWidget {
                         SizedBox(
                             width: screenWidth * .45,
                             child: Text(content.body ?? "")),
-                        const Icon(Icons.arrow_circle_right_outlined,
-                            color: lightPrimaryColor)
+                        Icon(Icons.arrow_circle_right_outlined,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)
                       ]))
             ]),
             onPressed: () {

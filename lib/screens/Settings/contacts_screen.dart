@@ -5,7 +5,6 @@ import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/contacts.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -48,7 +47,7 @@ class ContactsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
-    
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -69,12 +68,14 @@ class ContactsScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back,
-                            color: lightPrimaryColor)),
-                    const Text('Contact Us',
+                        icon: Icon(Icons.arrow_back,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)),
+                    Text('Contact Us',
                         style: TextStyle(
                             fontSize: 32,
-                            color: lightPrimaryColor,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor,
                             fontWeight: FontWeight.w300))
                   ])),
               SizedBox(
@@ -89,7 +90,8 @@ class ContactsScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                              gradient: lightTopicGradient,
+                              gradient: AppTheme(themeController.brightness)
+                                  .topicGradient,
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -98,9 +100,11 @@ class ContactsScreen extends StatelessWidget {
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 12),
                                     child: Text(contact.title,
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 14,
-                                            color: lightPrimaryColor))),
+                                            color: AppTheme(
+                                                    themeController.brightness)
+                                                .primaryColor))),
                                 ...addresses.map((address) {
                                   return TextButton(
                                       onPressed: () async {
@@ -155,7 +159,9 @@ class ContactsScreen extends StatelessWidget {
                                                         ContactType.social
                                                     ? address
                                                     : null),
-                                            color: lightPrimaryColor),
+                                            color: AppTheme(
+                                                    themeController.brightness)
+                                                .primaryColor),
                                         const SizedBox(width: 20),
                                         SizedBox(
                                             width: orientation ==

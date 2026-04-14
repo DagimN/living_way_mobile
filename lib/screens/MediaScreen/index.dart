@@ -11,7 +11,6 @@ import "package:living_way/screens/DevotionScreen/widgets/threads_list_view.dart
 import "package:living_way/screens/MediaScreen/widgets/audio_player.dart";
 import "package:living_way/screens/MediaScreen/widgets/video_player.dart";
 import "package:living_way/themes/app_theme.dart";
-import "package:living_way/themes/light_theme.dart";
 import "package:provider/provider.dart";
 import "package:uuid/uuid.dart";
 import "package:youtube_player_iframe/youtube_player_iframe.dart";
@@ -155,7 +154,10 @@ class _MediaScreenState extends State<MediaScreen>
                                               child: MiniMusicVisualizer(
                                                   radius: 20,
                                                   animate: isPlaying,
-                                                  color: lightPrimaryColor))
+                                                  color: AppTheme(
+                                                          themeController
+                                                              .brightness)
+                                                      .primaryColor))
                                           : null,
                                       onTap: () {
                                         setState(() {
@@ -219,7 +221,7 @@ class _MediaScreenState extends State<MediaScreen>
 
     final topic = widget.topic;
     topic.threads.add(ThreadData(
-      timestamp: DateTime.now(),
+        timestamp: DateTime.now(),
         threadId: const Uuid().v4(),
         commenter: profile.id,
         comment: commentController.text));

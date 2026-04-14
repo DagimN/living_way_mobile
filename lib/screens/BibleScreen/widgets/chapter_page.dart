@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class ChapterPage extends StatefulWidget {
@@ -64,10 +64,16 @@ class _ChapterPageState extends State<ChapterPage>
                                               fontFamily: themeController
                                                   .selectedFont.name,
                                               color: isSelectedVerse
-                                                  ? lightPrimaryColor
-                                                  : lightPrimaryColor.withOpacity(
-                                                      verseHighlightController
-                                                          .value),
+                                                  ? AppTheme(themeController
+                                                          .brightness)
+                                                      .primaryColor
+                                                  : AppTheme(themeController
+                                                          .brightness)
+                                                      .primaryColor
+                                                      .withAlpha(
+                                                          verseHighlightController
+                                                              .value
+                                                              .toInt()),
                                               fontSize: 80 *
                                                   themeController.textSize)),
                                       TextSpan(

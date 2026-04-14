@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/themes/dark_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/dark_theme.dart' as dark;
+import 'package:living_way/themes/light_theme.dart' as light;
 
 class AppTheme {
   Brightness brightness;
@@ -9,44 +9,60 @@ class AppTheme {
 
   Color get primaryColor {
     return brightness == Brightness.light
-        ? lightPrimaryColor
-        : darkPrimaryColor;
+        ? light.primaryColor
+        : dark.primaryColor;
+  }
+
+  Color get primaryPaleColor {
+    return brightness == Brightness.light
+        ? light.primaryColor
+        : dark.primaryColor;
+  }
+
+  Color get primaryPanelColor {
+    return brightness == Brightness.light
+        ? light.primaryPanelColor
+        : dark.primaryPanelColor;
   }
 
   Color get secondaryColor {
     return brightness == Brightness.light
-        ? lightPrimaryColor
-        : darkSecondaryColor;
+        ? light.primaryColor
+        : dark.secondaryColor;
   }
 
   Color get inactiveColor {
     return brightness == Brightness.light
-        ? lightInactiveColor
-        : darkInactiveColor;
+        ? light.inactiveColor
+        : dark.inactiveColor;
   }
 
   Color get backgroundColor {
     return brightness == Brightness.light
-        ? lightBackgroundColor
-        : darkBackgroundColor;
+        ? light.backgroundColor
+        : dark.backgroundColor;
   }
 
   Color get accentColor {
-    return brightness == Brightness.light ? lightAccentColor : darkAccentColor;
+    return brightness == Brightness.light
+        ? light.accentColor
+        : dark.accentColor;
   }
 
   Color get subHeadingColor {
-    return brightness == Brightness.light ? lightPrimaryColor : darkAccentColor;
+    return brightness == Brightness.light
+        ? light.primaryColor
+        : dark.accentColor;
   }
 
   Color get dividerColor {
     return brightness == Brightness.light
         ? Colors.grey[200]!
-        : darkAccentColor.withOpacity(0.5);
+        : dark.accentColor.withAlpha(128);
   }
 
   Color get chipColor {
-    return brightness == Brightness.light ? Colors.white : darkInactiveColor;
+    return brightness == Brightness.light ? Colors.white : inactiveColor;
   }
 
   Color? get inactiveChipColor {
@@ -54,18 +70,30 @@ class AppTheme {
   }
 
   Color get iconColor {
-    return brightness == Brightness.light ? Colors.black : darkAppBarColor;
+    return brightness == Brightness.light ? Colors.black : dark.appBarColor;
   }
 
   Color get primaryButtonColor {
     return brightness == Brightness.light
-        ? lightPrimaryButtonColor
-        : darkPrimaryButtonColor;
+        ? light.primaryButtonColor
+        : dark.primaryButtonColor;
+  }
+
+  Color get pendingColor {
+    return brightness == Brightness.light
+        ? light.pendingColor
+        : dark.pendingColor;
   }
 
   LinearGradient get backgroundGradient {
     return brightness == Brightness.light
-        ? lightBackgroundGradient
-        : darkBackgroundGradient;
+        ? light.backgroundGradient
+        : dark.backgroundGradient;
+  }
+
+  LinearGradient get topicGradient {
+    return brightness == Brightness.light
+        ? light.topicGradient
+        : dark.topicGradient;
   }
 }

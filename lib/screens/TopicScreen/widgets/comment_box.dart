@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class CommentBox extends StatelessWidget {
@@ -11,6 +12,8 @@ class CommentBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -22,7 +25,9 @@ class CommentBox extends StatelessWidget {
         width: screenWidth * .7,
         decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(color: lightPrimaryColor, width: 1),
+            border: Border.all(
+                color: AppTheme(themeController.brightness).primaryColor,
+                width: 1),
             borderRadius: BorderRadius.circular(12)),
         child: Stack(children: [
           Column(children: [
@@ -56,7 +61,9 @@ class CommentBox extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              backgroundColor: lightPrimaryColor),
+                              backgroundColor:
+                                  AppTheme(themeController.brightness)
+                                      .primaryColor),
                           onPressed: () {
                             onSubmit();
                             onClose();
@@ -75,10 +82,14 @@ class CommentBox extends StatelessWidget {
                   child: IconButton(
                       style: IconButton.styleFrom(
                           padding: EdgeInsets.zero,
-                          backgroundColor: lightInactiveColor.withOpacity(.3)),
+                          backgroundColor: AppTheme(themeController.brightness)
+                              .inactiveColor
+                              .withAlpha(76)),
                       onPressed: onClose,
-                      icon: const Icon(Icons.close,
-                          size: 16, color: lightInactiveColor))))
+                      icon: Icon(Icons.close,
+                          size: 16,
+                          color: AppTheme(themeController.brightness)
+                              .inactiveColor))))
         ]));
   }
 }

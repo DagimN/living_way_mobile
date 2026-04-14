@@ -9,7 +9,6 @@ import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/DevotionScreen/widgets/threads_list_view.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -61,7 +60,9 @@ class _TopicScreenState extends State<TopicScreen>
                       child: IconButton(
                           style: IconButton.styleFrom(
                               padding: EdgeInsets.zero,
-                              backgroundColor: lightPrimaryPaleColor,
+                              backgroundColor:
+                                  AppTheme(themeController.brightness)
+                                      .primaryPaleColor,
                               foregroundColor: Colors.white),
                           onPressed: () {
                             Navigator.pop(context);

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
 class DonationScreen extends StatelessWidget {
@@ -29,12 +28,14 @@ class DonationScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back,
-                            color: lightPrimaryColor)),
-                    const Text('Donations',
+                        icon: Icon(Icons.arrow_back,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)),
+                    Text('Donations',
                         style: TextStyle(
                             fontSize: 32,
-                            color: lightPrimaryColor,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor,
                             fontWeight: FontWeight.w300))
                   ])),
               const Expanded(child: Center(child: Text('Coming Soon')))

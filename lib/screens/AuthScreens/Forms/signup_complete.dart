@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class SignupComplete extends StatefulWidget {
   final AuthController authController;
@@ -45,30 +47,33 @@ class _SignupCompleteState extends State<SignupComplete> {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.sizeOf(context).height;
 
-    return SizedBox(height: screenHeight * .7, child: signupStatusWidget());
+    return SizedBox(
+        height: screenHeight * .7, child: signupStatusWidget(themeController));
   }
 
-  Widget signupStatusWidget() {
+  Widget signupStatusWidget(ThemeController themeController) {
     if (isSigningUp) {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
             height: 100,
             width: 100,
             margin: const EdgeInsets.all(16),
-            child: const CircularProgressIndicator(color: lightPrimaryColor)),
+            child: CircularProgressIndicator(
+                color: AppTheme(themeController.brightness).primaryColor)),
         const Text('Finalizing Profile')
       ]);
     }
 
     if (isSignupSuccessful && !isSigningUp) {
-      return const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.check_circle, color: lightPrimaryColor, size: 128),
-            Text('Signup Completed')
-          ]);
+      return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(Icons.check_circle,
+            color: AppTheme(themeController.brightness).primaryColor,
+            size: 128),
+        const Text('Signup Completed')
+      ]);
     }
 
     if (!isSignupSuccessful && !isSigningUp) {
@@ -89,8 +94,9 @@ class _SignupCompleteState extends State<SignupComplete> {
               child: const Icon(Icons.arrow_back)),
           const SizedBox(width: 25),
           ElevatedButton(
-              style:
-                  ElevatedButton.styleFrom(backgroundColor: lightPrimaryColor),
+              style: ElevatedButton.styleFrom(
+                  backgroundColor:
+                      AppTheme(themeController.brightness).primaryColor),
               onPressed: () {
                 setState(() {
                   isSigningUp = true;

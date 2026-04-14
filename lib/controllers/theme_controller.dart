@@ -13,7 +13,7 @@ class ThemeController extends ChangeNotifier {
 
   double textSize = 0.3;
   AppLocale appLocale = AppLocale.en;
-  Brightness brightness = Brightness.light;
+  Brightness brightness = Brightness.dark;
   Fonts selectedFont = Fonts.RobotoSlab;
 
   ThemeController() {
@@ -25,7 +25,7 @@ class ThemeController extends ChangeNotifier {
       brightness =
           Brightness.values[sharedPreferences?.getInt('brightness') ?? 1];
       selectedFont = Fonts.values[sharedPreferences?.getInt('font') ?? 5];
-      
+
       notifyListeners();
     });
   }

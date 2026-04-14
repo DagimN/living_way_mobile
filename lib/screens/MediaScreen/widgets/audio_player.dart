@@ -4,8 +4,10 @@ import 'package:audioplayers/audioplayers.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/MediaScreen/widgets/player_slider.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class AudioMediaPlayer extends StatefulWidget {
   final AudioPlayer player;
@@ -79,6 +81,7 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     const Radius radius = Radius.circular(7);
@@ -116,14 +119,16 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
                     });
                   },
                   icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
-                      color: lightPrimaryColor))),
+                      color:
+                          AppTheme(themeController.brightness).primaryColor))),
           Positioned(
               top: 50,
               left: 15,
               child: IconButton(
                   style: IconButton.styleFrom(
                       padding: EdgeInsets.zero,
-                      backgroundColor: lightPrimaryPaleColor,
+                      backgroundColor:
+                          AppTheme(themeController.brightness).primaryColor,
                       foregroundColor: Colors.white),
                   onPressed: () {
                     Navigator.pop(context);

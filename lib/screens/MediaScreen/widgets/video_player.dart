@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/widgets/loader_animation.dart';
+import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 
 class VideoPlayer extends StatefulWidget {
@@ -60,6 +62,7 @@ class _VideoPlayerState extends State<VideoPlayer>
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     const Radius radius = Radius.circular(7);
@@ -118,8 +121,9 @@ class _VideoPlayerState extends State<VideoPlayer>
                             widget.controller
                                 .loadVideoById(videoId: widget.videoId);
                           },
-                          icon: const Icon(Icons.play_arrow,
-                              color: lightPrimaryColor))),
+                          icon: Icon(Icons.play_arrow,
+                              color: AppTheme(themeController.brightness)
+                                  .primaryColor))),
                 FutureBuilder(
                     future: videoContext.ytController.playerState,
                     builder: (context, snapshot) {
@@ -133,7 +137,9 @@ class _VideoPlayerState extends State<VideoPlayer>
                     child: IconButton(
                         style: IconButton.styleFrom(
                             padding: EdgeInsets.zero,
-                            backgroundColor: lightPrimaryPaleColor,
+                            backgroundColor:
+                                AppTheme(themeController.brightness)
+                                    .primaryPaleColor,
                             foregroundColor: Colors.white),
                         onPressed: () {
                           Navigator.pop(context);

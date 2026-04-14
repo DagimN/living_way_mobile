@@ -3,7 +3,6 @@ import 'package:living_way/constants/content.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
 class FilterBottomSheet extends StatefulWidget {
@@ -228,10 +227,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                               margin: const EdgeInsets.all(5),
                               child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                      foregroundColor:
-                                          categoryFilter == CategoryFilter.all
-                                              ? Colors.white
-                                              : AppTheme(themeController.brightness)
+                                      foregroundColor: categoryFilter ==
+                                              CategoryFilter.all
+                                          ? Colors.white
+                                          : AppTheme(themeController.brightness)
                                               .inactiveChipColor,
                                       backgroundColor: categoryFilter ==
                                               CategoryFilter.all
@@ -250,10 +249,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                               margin: const EdgeInsets.all(5),
                               child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                      foregroundColor:
-                                          categoryFilter == CategoryFilter.ot
-                                              ? Colors.white
-                                              : AppTheme(themeController.brightness)
+                                      foregroundColor: categoryFilter ==
+                                              CategoryFilter.ot
+                                          ? Colors.white
+                                          : AppTheme(themeController.brightness)
                                               .inactiveChipColor,
                                       backgroundColor: categoryFilter ==
                                               CategoryFilter.ot
@@ -274,10 +273,10 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                               margin: const EdgeInsets.all(5),
                               child: OutlinedButton(
                                   style: OutlinedButton.styleFrom(
-                                      foregroundColor:
-                                          categoryFilter == CategoryFilter.nt
-                                              ? Colors.white
-                                              : AppTheme(themeController.brightness)
+                                      foregroundColor: categoryFilter ==
+                                              CategoryFilter.nt
+                                          ? Colors.white
+                                          : AppTheme(themeController.brightness)
                                               .inactiveChipColor,
                                       backgroundColor: categoryFilter ==
                                               CategoryFilter.nt
@@ -311,7 +310,9 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                     const EdgeInsets.symmetric(horizontal: 3),
                                 padding: const EdgeInsets.all(5),
                                 decoration: BoxDecoration(
-                                    color: lightPrimaryColor.withOpacity(0.4),
+                                    color: AppTheme(themeController.brightness)
+                                        .primaryColor
+                                        .withAlpha(102),
                                     shape: BoxShape.circle),
                                 child: Text(booksSelected.length.toString(),
                                     style: const TextStyle(
@@ -336,14 +337,12 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                                     : AppTheme(themeController
                                                             .brightness)
                                                         .inactiveChipColor,
-                                            backgroundColor:
-                                                booksSelected.contains(book)
-                                                    ? AppTheme(themeController
-                                                            .brightness)
-                                                        .primaryColor
-                                                    : AppTheme(themeController
-                                                            .brightness)
-                                                        .chipColor),
+                                            backgroundColor: booksSelected
+                                                    .contains(book)
+                                                ? AppTheme(themeController.brightness)
+                                                    .primaryColor
+                                                : AppTheme(themeController.brightness)
+                                                    .chipColor),
                                         onPressed: () => setState(() {
                                               if (!booksSelected
                                                   .contains(book)) {
@@ -354,7 +353,8 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                             }),
                                         child: Text(book,
                                             textAlign: TextAlign.center,
-                                            style: const TextStyle(fontSize: 10))))))
+                                            style: const TextStyle(
+                                                fontSize: 10))))))
                             .toList())
                   ])))
         ]));

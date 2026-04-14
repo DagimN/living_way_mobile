@@ -4,7 +4,6 @@ import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -34,8 +33,9 @@ class AboutScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(Icons.arrow_back,
-                          color: lightPrimaryColor))),
+                      icon: Icon(Icons.arrow_back,
+                          color: AppTheme(themeController.brightness)
+                              .primaryColor))),
               SizedBox(
                   height: orientation == Orientation.portrait
                       ? screenHeight * .85
@@ -61,7 +61,7 @@ class AboutScreen extends StatelessWidget {
                                   style: const TextStyle(
                                       color: Color(0xFF65829A), fontSize: 10));
                             })),
-                      //TODO: Add 'Check for updates' button
+                    //TODO: Add 'Check for updates' button
                     const SizedBox(height: 24),
                     DefaultTabController(
                         length: 3,
@@ -134,7 +134,9 @@ class AboutScreen extends StatelessWidget {
                                       return Container(
                                           margin: const EdgeInsets.all(5),
                                           decoration: BoxDecoration(
-                                              gradient: lightTopicGradient,
+                                              gradient: AppTheme(themeController
+                                                      .brightness)
+                                                  .topicGradient,
                                               borderRadius:
                                                   BorderRadius.circular(16)),
                                           child: Column(children: [
@@ -172,14 +174,20 @@ class AboutScreen extends StatelessWidget {
                                                         fit: BoxFit.cover))),
                                             const SizedBox(height: 10),
                                             Text(staff.name,
-                                                style: const TextStyle(
-                                                    color: lightPrimaryColor,
+                                                style: TextStyle(
+                                                    color: AppTheme(
+                                                            themeController
+                                                                .brightness)
+                                                        .primaryColor,
                                                     fontWeight: FontWeight.w500,
                                                     fontSize: 14)),
                                             if (staff.position != null)
                                               Text(staff.position!,
-                                                  style: const TextStyle(
-                                                      color: lightPrimaryColor,
+                                                  style: TextStyle(
+                                                      color: AppTheme(
+                                                              themeController
+                                                                  .brightness)
+                                                          .primaryColor,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 12))

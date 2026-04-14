@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class PromptDeleteProfileDialog extends StatefulWidget {
@@ -18,6 +19,7 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final authController = Provider.of<AuthController>(context);
 
     return AlertDialog(
@@ -52,9 +54,11 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
                     child: const Text('Cancel'))
               ]
             : [
-                const Center(
+                Center(
                     child: CircularProgressIndicator(
-                        color: lightPrimaryColor, strokeWidth: 2))
+                        color:
+                            AppTheme(themeController.brightness).primaryColor,
+                        strokeWidth: 2))
               ]);
   }
 }

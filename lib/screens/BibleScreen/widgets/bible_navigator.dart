@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class BibleNavigator extends StatelessWidget {
@@ -11,6 +12,7 @@ class BibleNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     final layoutController = Provider.of<LayoutController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final selectedBook =
         contentController.book ?? contentController.bible.first;
     final selectedChapter = contentController.chapter ?? 0;
@@ -44,10 +46,12 @@ class BibleNavigator extends StatelessWidget {
               })),
       DropdownButton(
           underline: const SizedBox(),
-          iconEnabledColor: lightPrimaryColor,
+          iconEnabledColor: AppTheme(themeController.brightness).primaryColor,
           value: contentController.chapter ?? 0,
-          style: TextStyle(color: lightPrimaryColor, fontSize: fontSize),
-          dropdownColor: lightPrimaryPanelColor,
+          style: TextStyle(
+              color: AppTheme(themeController.brightness).primaryColor,
+              fontSize: fontSize),
+          dropdownColor: AppTheme(themeController.brightness).primaryPanelColor,
           items: selectedBook.chapters.map((chapter) {
             final index = selectedBook.chapters.indexOf(chapter);
             return DropdownMenuItem(
@@ -61,13 +65,17 @@ class BibleNavigator extends StatelessWidget {
       Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(':',
-              style: TextStyle(color: lightPrimaryColor, fontSize: fontSize))),
+              style: TextStyle(
+                  color: AppTheme(themeController.brightness).primaryColor,
+                  fontSize: fontSize))),
       DropdownButton(
           underline: const SizedBox(),
-          iconEnabledColor: lightPrimaryColor,
+          iconEnabledColor: AppTheme(themeController.brightness).primaryColor,
           value: contentController.verse ?? 0,
-          style: TextStyle(color: lightPrimaryColor, fontSize: fontSize),
-          dropdownColor: lightPrimaryPanelColor,
+          style: TextStyle(
+              color: AppTheme(themeController.brightness).primaryColor,
+              fontSize: fontSize),
+          dropdownColor: AppTheme(themeController.brightness).primaryPanelColor,
           items: selectedBook.chapters[selectedChapter].map((verse) {
             final index = selectedBook.chapters[selectedChapter].indexOf(verse);
             return DropdownMenuItem(

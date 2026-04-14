@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/utils/shorten_number.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 import 'package:living_way/screens/TopicScreen/widgets/comment_box.dart';
@@ -64,6 +65,8 @@ class _ThreadState extends State<Thread> {
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
+    final themeController = Provider.of<ThemeController>(context);
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -150,8 +153,7 @@ class _ThreadState extends State<Thread> {
                               final thread = widget.data;
                               final threadIndex =
                                   topic.threads.indexOf(widget.data);
-                              if (!thread.likers
-                                  .contains(userProfile.id)) {
+                              if (!thread.likers.contains(userProfile.id)) {
                                 thread.likers.add(userProfile.id);
                               } else {
                                 thread.likers.remove(userProfile.id);
@@ -170,7 +172,8 @@ class _ThreadState extends State<Thread> {
                                   : Icons.thumb_up_alt_outlined,
                               color:
                                   widget.data.likers.contains(userProfile?.id)
-                                      ? lightPrimaryColor
+                                      ? AppTheme(themeController.brightness)
+                                          .primaryColor
                                       : null)),
                       if (widget.data.likers.isNotEmpty)
                         Text(shortenNumber(widget.data.likers.length)),

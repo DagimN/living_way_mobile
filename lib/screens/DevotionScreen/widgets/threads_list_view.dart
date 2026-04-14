@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/thread.dart';
 import 'package:living_way/models/topic.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
 
@@ -19,6 +20,8 @@ class ThreadsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
+
+    final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
     final threads = topic.threads;
 
@@ -47,11 +50,12 @@ class ThreadsListView extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Text('Threads',
+                    Text('Threads',
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
-                            color: lightPrimaryColor)),
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)),
                     DropdownButton<ActivityFilter>(
                         items: const [
                           DropdownMenuItem(
@@ -66,12 +70,16 @@ class ThreadsListView extends StatelessWidget {
                         ],
                         underline: Container(
                             height: 1.0,
-                            decoration: const BoxDecoration(
+                            decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
-                                        color: lightPrimaryColor,
+                                        color:
+                                            AppTheme(themeController.brightness)
+                                                .primaryColor,
                                         width: 0.0)))),
-                        style: const TextStyle(color: lightPrimaryColor),
+                        style: TextStyle(
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor),
                         value: contentController.threadActivityFilter,
                         onChanged: (value) {
                           contentController.setThreadFilter =
@@ -89,7 +97,9 @@ class ThreadsListView extends StatelessWidget {
                         ? Container(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             decoration: BoxDecoration(
-                                color: lightInactiveColor.withOpacity(.2),
+                                color: AppTheme(themeController.brightness)
+                                    .inactiveColor
+                                    .withAlpha(51),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Thread(
                                 topic: topic,

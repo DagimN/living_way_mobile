@@ -1,7 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/utils/security_functions.dart';
 import 'package:provider/provider.dart';
 
@@ -27,6 +28,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     return AlertDialog(
         title: const Text('Change password'),
@@ -166,13 +168,17 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                         Navigator.pop(context);
                       });
                     },
-                    child: const Text('Update',
-                        style: TextStyle(color: lightPrimaryColor)))
+                    child: Text('Update',
+                        style: TextStyle(
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)))
               ]
             : [
-                const Center(
+                Center(
                     child: CircularProgressIndicator(
-                        color: lightPrimaryColor, strokeWidth: 2))
+                        color:
+                            AppTheme(themeController.brightness).primaryColor,
+                        strokeWidth: 2))
               ]);
   }
 }

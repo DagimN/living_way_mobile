@@ -1,7 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/activity_content.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class Article extends StatelessWidget {
   final ActivityContent content;
@@ -9,6 +11,7 @@ class Article extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -24,7 +27,10 @@ class Article extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(radius),
             border: Border.all(
-                color: lightPrimaryColor.withOpacity(0.7), width: 0.3)),
+                color: AppTheme(themeController.brightness)
+                    .primaryColor
+                    .withAlpha(178),
+                width: 0.3)),
         child: TextButton(
             onPressed: () {
               showModalBottomSheet(
@@ -97,7 +103,7 @@ class Article extends StatelessWidget {
                       borderRadius: const BorderRadius.only(
                           topLeft: radius, bottomLeft: radius),
                       child: CachedNetworkImage(
-                        errorWidget: (context, url, error) =>
+                          errorWidget: (context, url, error) =>
                               Icon(Icons.broken_image, color: Colors.grey[300]),
                           fit: BoxFit.fill,
                           memCacheHeight: orientation == Orientation.portrait

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class SettingOptionTile extends StatelessWidget {
   final String title;
@@ -17,6 +19,8 @@ class SettingOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
+
     return InkWell(
         onTap: onTap,
         child: Column(children: [
@@ -28,8 +32,10 @@ class SettingOptionTile extends StatelessWidget {
                     height: 14,
                     width: 14,
                     margin: const EdgeInsets.all(16),
-                    child: const CircularProgressIndicator(
-                        color: lightPrimaryColor, strokeWidth: 2))
+                    child: CircularProgressIndicator(
+                        color:
+                            AppTheme(themeController.brightness).primaryColor,
+                        strokeWidth: 2))
           ]),
           if (!isLast) const Divider(),
           const SizedBox(height: 16)

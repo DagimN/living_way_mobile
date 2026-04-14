@@ -1,5 +1,5 @@
 abstract class Urls {
-  static const devApiUrl = "http://192.168.1.100:3000";
+  static const devApiUrl = "http://10.160.171.26:3000";
   static const stagingApiUrl = "https://living-way-backend-tj3y.vercel.app";
   static const prodApiUrl = "https://living-way-backend-tj3y.vercel.app";
   static const termsUrl = "https://policies.google.com/terms?hl=en-US";

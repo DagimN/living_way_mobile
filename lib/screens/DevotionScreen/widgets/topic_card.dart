@@ -9,7 +9,6 @@ import 'package:living_way/models/topic.dart';
 import 'package:living_way/screens/MediaScreen/index.dart';
 import 'package:living_way/screens/TopicScreen/index.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:living_way/utils/shorten_number.dart';
 import 'package:provider/provider.dart';
 
@@ -38,14 +37,15 @@ class TopicCard extends StatelessWidget {
             image: topic.backgroundImageUrl != null
                 ? DecorationImage(
                     fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                        lightInactiveColor, BlendMode.saturation),
+                    colorFilter: ColorFilter.mode(
+                        AppTheme(themeController.brightness).inactiveColor,
+                        BlendMode.saturation),
                     opacity: 0.3,
                     image: CachedNetworkImageProvider(
                         topic.backgroundImageUrl ?? ""))
                 : null,
             borderRadius: borderRadius,
-            gradient: lightTopicGradient),
+            gradient: AppTheme(themeController.brightness).topicGradient),
         child: TextButton(
             style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,

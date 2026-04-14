@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/AuthScreens/Forms/email_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/name_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/password_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/signup_complete.dart';
 import 'package:living_way/screens/AuthScreens/Forms/terms_and_policies_form.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {
@@ -24,6 +25,7 @@ class _SignupScreenState extends State<SignupScreen> {
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
     Orientation orientation = MediaQuery.orientationOf(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     return PopScope(
         canPop: signupFlowIndex == 0,
@@ -37,7 +39,8 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Scaffold(
             appBar: signupFlowIndex != maxSignUpFlow
                 ? AppBar(
-                    backgroundColor: lightPrimaryColor,
+                    backgroundColor:
+                        AppTheme(themeController.brightness).primaryColor,
                     foregroundColor: Colors.white,
                     title:
                         const Text('Welcome', style: TextStyle(fontSize: 24)))
@@ -57,9 +60,12 @@ class _SignupScreenState extends State<SignupScreen> {
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: LinearProgressIndicator(
-                              color: lightPrimaryColor,
+                              color: AppTheme(themeController.brightness)
+                                  .primaryColor,
                               backgroundColor:
-                                  lightPrimaryColor.withOpacity(0.2),
+                                  AppTheme(themeController.brightness)
+                                      .primaryColor
+                                      .withAlpha(51),
                               value: signupFlowIndex / maxSignUpFlow,
                               borderRadius: BorderRadius.circular(20)))
                     ])))));

@@ -14,6 +14,7 @@ class StoryListView extends StatelessWidget {
     final contentController = Provider.of<ContentController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final stories = contentController.stories;
+    //TODO: Sort stories which are not yet seen as priority as well as fetching from the api
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;

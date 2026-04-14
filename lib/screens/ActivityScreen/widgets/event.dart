@@ -1,8 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/screens/ActivityScreen/images_preview.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Event extends StatelessWidget {
@@ -11,6 +13,7 @@ class Event extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -33,7 +36,7 @@ class Event extends StatelessWidget {
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: CachedNetworkImage(
-                        //TODO: Add a placeholder fetching animation if the image is not ready yet
+                          //TODO: Add a placeholder fetching animation if the image is not ready yet
                           imageUrl: content.banner?.url ?? "",
                           imageBuilder: (context, provider) {
                             imageProvider = provider;
@@ -65,7 +68,8 @@ class Event extends StatelessWidget {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
-                        backgroundColor: lightPrimaryColor),
+                        backgroundColor:
+                            AppTheme(themeController.brightness).primaryColor),
                     onPressed: () {
                       launchUrl(Uri.parse(content.locationUrl ?? ""),
                           mode: LaunchMode.externalApplication);

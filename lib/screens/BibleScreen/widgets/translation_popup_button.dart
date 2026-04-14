@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/translation.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class TranslationPopupButton extends StatelessWidget {
@@ -12,6 +13,7 @@ class TranslationPopupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     return PopupMenuButton<Translation>(
         initialValue: contentController.translation ??
@@ -26,8 +28,9 @@ class TranslationPopupButton extends StatelessWidget {
                 child: Text(
                     contentController.translation?.name ??
                         contentController.translations.first.name,
-                    style: const TextStyle(
-                        color: lightPrimaryColor,
+                    style: TextStyle(
+                        color:
+                            AppTheme(themeController.brightness).primaryColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 10)))),
         itemBuilder: (context) => contentController.translations
@@ -39,15 +42,16 @@ class TranslationPopupButton extends StatelessWidget {
                   }
 
                   if (translation.status == TranslationStatus.pending) {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                        backgroundColor: lightPendingColor,
-                        content: Row(children: [
+                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                        backgroundColor:
+                            AppTheme(themeController.brightness).pendingColor,
+                        content: const Row(children: [
                           Text('Coming Soon'),
                           //TODO: Add a notify me to get a push notification
                         ])));
                   }
-                  
-                  if(translation.status == TranslationStatus.ready) {
+
+                  if (translation.status == TranslationStatus.ready) {
                     contentController.downloadTranslation(translation.name);
                   }
                 },
@@ -56,17 +60,23 @@ class TranslationPopupButton extends StatelessWidget {
                     children: [
                       Text(translation.name,
                           style: TextStyle(
-                              color: translation.status == TranslationStatus.pending
-                                  ? lightPendingColor
-                                  : lightPrimaryColor)),
+                              color: translation.status ==
+                                      TranslationStatus.pending
+                                  ? AppTheme(themeController.brightness)
+                                      .pendingColor
+                                  : AppTheme(themeController.brightness)
+                                      .primaryColor)),
                       if (translation.status == TranslationStatus.ready)
-                        const Icon(Icons.download_rounded,
-                            color: lightPrimaryColor),
+                        Icon(Icons.download_rounded,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor),
                       if (translation.status == TranslationStatus.pending)
                         SvgPicture.asset(AppIcons.pending,
                             height: 16,
-                            colorFilter: const ColorFilter.mode(
-                                lightPendingColor, BlendMode.srcIn))
+                            colorFilter: ColorFilter.mode(
+                                AppTheme(themeController.brightness)
+                                    .pendingColor,
+                                BlendMode.srcIn))
                     ])))
             .toList());
   }

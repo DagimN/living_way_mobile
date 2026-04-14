@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
+import 'package:provider/provider.dart';
 
 class NameForm extends StatefulWidget {
   final AuthController authController;
   final Function() onProgress;
-  const NameForm({super.key, required this.onProgress, required this.authController});
+  const NameForm(
+      {super.key, required this.onProgress, required this.authController});
 
   @override
   State<NameForm> createState() => _NameFormState();
@@ -13,12 +16,15 @@ class NameForm extends StatefulWidget {
 
 class _NameFormState extends State<NameForm> {
   final formKey = GlobalKey<FormState>();
-  late final firstNameController = TextEditingController(text: widget.authController.signupProgress.firstName);
+  late final firstNameController = TextEditingController(
+      text: widget.authController.signupProgress.firstName);
   late final lastNameController = TextEditingController(
       text: widget.authController.signupProgress.lastName);
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
+
     return Form(
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -56,7 +62,8 @@ class _NameFormState extends State<NameForm> {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: lightPrimaryColor,
+                      backgroundColor:
+                          AppTheme(themeController.brightness).primaryColor,
                       foregroundColor: Colors.white),
                   onPressed: () {
                     final isValid = formKey.currentState?.validate() ?? false;

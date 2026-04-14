@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/profile_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/event.dart';
@@ -9,7 +10,7 @@ import 'package:living_way/screens/ActivityScreen/widgets/external_link.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/gallery.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/poll.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/timeline_container.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +20,9 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -29,10 +32,10 @@ class ActivityScreen extends StatelessWidget {
       BaseAppBar(
           title: Container(
               margin: const EdgeInsets.all(10),
-              child: const Text('Activities',
+              child: Text('Activities',
                   style: TextStyle(
                       fontSize: 32,
-                      color: lightPrimaryColor,
+                      color: AppTheme(themeController.brightness).primaryColor,
                       fontWeight: FontWeight.w300)))),
       SizedBox(
           height: orientation == Orientation.portrait
@@ -112,27 +115,36 @@ class ActivityScreen extends StatelessWidget {
                                                         .activityList.isNotEmpty
                                                     ? 'It all started here'
                                                     : "Nothing to show yet.",
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 16,
-                                                    color: lightPrimaryColor)),
+                                                    color: AppTheme(
+                                                            themeController
+                                                                .brightness)
+                                                        .primaryColor)),
                                             if (contentController
                                                 .activityList.isEmpty)
                                               IconButton(
-                                                  icon: const Icon(
-                                                      Icons.refresh,
-                                                      color: lightPrimaryColor),
+                                                  icon: Icon(Icons.refresh,
+                                                      color: AppTheme(
+                                                              themeController
+                                                                  .brightness)
+                                                          .primaryColor),
                                                   onPressed: () {
                                                     contentController
                                                         .fetchActivities(
                                                             isRefreshing: true);
                                                   })
                                           ])
-                                    : const Center(
+                                    : Center(
                                         child: CircularProgressIndicator(
-                                            color: lightPrimaryColor)));
+                                            color: AppTheme(
+                                                    themeController.brightness)
+                                                .primaryColor)));
                       }))
-              : const Center(
-                  child: CircularProgressIndicator(color: lightPrimaryColor)))
+              : Center(
+                  child: CircularProgressIndicator(
+                      color:
+                          AppTheme(themeController.brightness).primaryColor)))
     ]));
   }
 }

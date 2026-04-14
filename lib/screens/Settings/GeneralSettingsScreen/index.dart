@@ -3,7 +3,6 @@ import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/Settings/GeneralSettingsScreen/widgets/prayer_times_list_view.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 
 class GeneralSettingsScreen extends StatelessWidget {
@@ -40,12 +39,14 @@ class GeneralSettingsScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: const Icon(Icons.arrow_back,
-                            color: lightPrimaryColor)),
-                    const Text('General',
+                        icon: Icon(Icons.arrow_back,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)),
+                    Text('General',
                         style: TextStyle(
                             fontSize: 32,
-                            color: lightPrimaryColor,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor,
                             fontWeight: FontWeight.w300))
                   ])),
               Container(
@@ -57,9 +58,10 @@ class GeneralSettingsScreen extends StatelessWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                        const Text("Interface",
+                        Text("Interface",
                             style: TextStyle(
-                                color: lightPrimaryColor,
+                                color: AppTheme(themeController.brightness)
+                                    .primaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         const Divider(),
@@ -69,7 +71,9 @@ class GeneralSettingsScreen extends StatelessWidget {
                               const Text('Theme'),
                               IconButton(
                                   style: IconButton.styleFrom(
-                                      foregroundColor: lightPrimaryColor),
+                                      foregroundColor:
+                                          AppTheme(themeController.brightness)
+                                              .primaryColor),
                                   onPressed: () {
                                     themeController.toggleBrightness();
                                   },
@@ -85,8 +89,12 @@ class GeneralSettingsScreen extends StatelessWidget {
                               TextButton(
                                   style: TextButton.styleFrom(
                                       backgroundColor:
-                                          lightPrimaryColor.withOpacity(0.2),
-                                      foregroundColor: lightPrimaryColor,
+                                          AppTheme(themeController.brightness)
+                                              .primaryColor
+                                              .withAlpha(51),
+                                      foregroundColor:
+                                          AppTheme(themeController.brightness)
+                                              .primaryColor,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20))),
@@ -107,9 +115,13 @@ class GeneralSettingsScreen extends StatelessWidget {
                               DropdownButton(
                                   value: themeController.selectedFont,
                                   underline: const SizedBox(),
-                                  iconEnabledColor: lightPrimaryColor,
+                                  iconEnabledColor:
+                                      AppTheme(themeController.brightness)
+                                          .primaryColor,
                                   style: TextStyle(
-                                      color: lightPrimaryColor,
+                                      color:
+                                          AppTheme(themeController.brightness)
+                                              .primaryColor,
                                       fontFamily: selectedFont.name,
                                       fontSize: 47 * textSize),
                                   items: Fonts.values
@@ -141,21 +153,25 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       style: TextStyle(
                                           fontFamily: selectedFont.name,
                                           fontSize: 47 * textSize,
-                                          color: lightPrimaryColor)))
+                                          color: AppTheme(
+                                                  themeController.brightness)
+                                              .primaryColor)))
                             ]),
                         Slider(
                             value: themeController.textSize,
                             min: 0.1,
                             max: 1,
                             divisions: 9,
-                            activeColor: lightPrimaryColor,
+                            activeColor: AppTheme(themeController.brightness)
+                                .primaryColor,
                             onChanged: (value) {
                               themeController.setTextSize = value;
                             }),
                         const SizedBox(height: 16),
-                        const Text("Reminders",
+                        Text("Reminders",
                             style: TextStyle(
-                                color: lightPrimaryColor,
+                                color: AppTheme(themeController.brightness)
+                                    .primaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         const Divider(),
@@ -164,7 +180,9 @@ class GeneralSettingsScreen extends StatelessWidget {
                             children: [
                               const Text("Receive notifications"),
                               Switch(
-                                  activeColor: lightPrimaryColor,
+                                  activeThumbColor:
+                                      AppTheme(themeController.brightness)
+                                          .primaryColor,
                                   value:
                                       profileController.willReceiveNotification,
                                   onChanged: (value) {
@@ -177,7 +195,9 @@ class GeneralSettingsScreen extends StatelessWidget {
                             children: [
                               const Text("Prayer Reminder"),
                               Switch(
-                                  activeColor: lightPrimaryColor,
+                                  activeThumbColor:
+                                      AppTheme(themeController.brightness)
+                                          .primaryColor,
                                   value: willRemindPrayer,
                                   onChanged: (value) {
                                     profileController.setWillRemindPrayer =

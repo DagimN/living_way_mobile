@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/utils/format_time.dart';
 import 'package:provider/provider.dart';
 
@@ -17,7 +17,9 @@ class PrayerTimesListView extends StatelessWidget {
 
     return Column(children: [
       TextButton(
-          style: TextButton.styleFrom(foregroundColor: lightPrimaryColor),
+          style: TextButton.styleFrom(
+              foregroundColor:
+                  AppTheme(themeController.brightness).primaryColor),
           onPressed: () {
             profileController
                 .addPrayerTime(const TimeOfDay(hour: 23, minute: 0));
@@ -32,10 +34,13 @@ class PrayerTimesListView extends StatelessWidget {
                       initialTime: time,
                       builder: (context, child) => Theme(
                           data: ThemeData(
-                              primaryColor: lightPrimaryColor,
+                              primaryColor: AppTheme(themeController.brightness)
+                                  .primaryColor,
                               timePickerTheme: TimePickerThemeData(
                                   dayPeriodColor:
-                                      lightPrimaryColor.withOpacity(0.3))),
+                                      AppTheme(themeController.brightness)
+                                          .primaryColor
+                                          .withAlpha(76))),
                           child: child ?? const SizedBox()));
 
                   if (result != null) {
@@ -43,7 +48,8 @@ class PrayerTimesListView extends StatelessWidget {
                         result, prayerTimes.indexOf(time));
                   }
                 },
-                child: Text(formatTime(time, appLocale))), //FIXME: When locale is am, it is not clear at what time it is
+                child: Text(formatTime(time,
+                    appLocale))), //FIXME: When locale is am, it is not clear at what time it is
             IconButton(
                 onPressed: () {
                   if (prayerTimes.length > 1) {
@@ -53,8 +59,8 @@ class PrayerTimesListView extends StatelessWidget {
                     profileController.setWillRemindPrayer = false;
                   }
                 },
-                icon: const Icon(Icons.remove_circle_outline,
-                    color: lightPrimaryColor))
+                icon: Icon(Icons.remove_circle_outline,
+                    color: AppTheme(themeController.brightness).primaryColor))
           ]))
     ]);
   }

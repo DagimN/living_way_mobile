@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/models/activity_content.dart';
 import 'package:living_way/models/profile.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/flutter_polls.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class Poll extends StatefulWidget {
@@ -32,6 +33,7 @@ class _PollState extends State<Poll> {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -46,12 +48,16 @@ class _PollState extends State<Poll> {
         child: Column(children: [
           FlutterPolls(
               pollId: widget.content.id,
-              votedProgressColor: lightPrimaryColor.withOpacity(0.3),
+              votedProgressColor: AppTheme(themeController.brightness)
+                  .primaryColor
+                  .withAlpha(76),
               hasVoted: (selectedPollId != null ||
                   content.pollOptions.any(
                       (poll) => poll.voters.contains(widget.userProfile?.id))),
               pollEnded: hasEnded,
-              leadingVotedProgessColor: lightPrimaryColor.withOpacity(0.7),
+              leadingVotedProgessColor: AppTheme(themeController.brightness)
+                  .primaryColor
+                  .withAlpha(178),
               userVotedOptionId: selectedPollId,
               pollTitle: selectedPollId != null && !hasEnded
                   ? Align(

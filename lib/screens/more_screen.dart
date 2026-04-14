@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -14,6 +15,7 @@ class MoreScreen extends StatelessWidget {
     Orientation orientation = MediaQuery.of(context).orientation;
     final settingsNavigation =
         Provider.of<LayoutController>(context).settingsNavigation;
+    final themeController = Provider.of<ThemeController>(context);
 
     return SafeArea(
         child: SingleChildScrollView(
@@ -25,10 +27,11 @@ class MoreScreen extends StatelessWidget {
                   BaseAppBar(
                       title: Container(
                           margin: const EdgeInsets.all(10),
-                          child: const Text('More',
+                          child: Text('More',
                               style: TextStyle(
                                   fontSize: 32,
-                                  color: lightPrimaryColor,
+                                  color: AppTheme(themeController.brightness)
+                                      .primaryColor,
                                   fontWeight: FontWeight.w300)))),
                   const SizedBox(height: 30),
                   Expanded(

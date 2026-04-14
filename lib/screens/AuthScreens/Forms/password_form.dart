@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class PasswordForm extends StatefulWidget {
@@ -21,6 +22,7 @@ class _PasswordFormState extends State<PasswordForm> {
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     return Form(
         key: formKey,
@@ -108,7 +110,8 @@ class _PasswordFormState extends State<PasswordForm> {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: lightPrimaryColor,
+                      backgroundColor:
+                          AppTheme(themeController.brightness).primaryColor,
                       foregroundColor: Colors.white),
                   onPressed: () {
                     final isValid = formKey.currentState?.validate() ?? false;

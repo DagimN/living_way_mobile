@@ -16,7 +16,6 @@ import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/settin
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
 import 'package:living_way/services/image_service.dart';
 import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/themes/light_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -70,12 +69,14 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               onPressed: () {
                                 Navigator.pop(context);
                               },
-                              icon: const Icon(Icons.arrow_back,
-                                  color: lightPrimaryColor)),
-                          const Text('Profile',
+                              icon: Icon(Icons.arrow_back,
+                                  color: AppTheme(themeController.brightness)
+                                      .primaryColor)),
+                          Text('Profile',
                               style: TextStyle(
                                   fontSize: 32,
-                                  color: lightPrimaryColor,
+                                  color: AppTheme(themeController.brightness)
+                                      .primaryColor,
                                   fontWeight: FontWeight.w300))
                         ]),
                         Row(children: [
@@ -90,8 +91,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                             '/login',
                                             (route) => false));
                               },
-                              icon: const Icon(Icons.logout,
-                                  color: lightPrimaryColor)),
+                              icon: Icon(Icons.logout,
+                                  color: AppTheme(themeController.brightness)
+                                      .primaryColor)),
                           IconButton(
                               onPressed: () async {
                                 showDialog(
@@ -126,8 +128,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         shape: BoxShape.circle,
                                         boxShadow: [
                                           BoxShadow(
-                                              color: lightPrimaryColor
-                                                  .withOpacity(.2),
+                                              color: AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor
+                                                  .withAlpha(51),
                                               offset: const Offset(0, 7),
                                               blurRadius: 21,
                                               spreadRadius: 1)
@@ -147,10 +151,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       margin: const EdgeInsets.all(14),
                                       decoration: BoxDecoration(
                                           shape: BoxShape.circle,
-                                          color: Colors.black.withOpacity(0.3)),
-                                      child: const Center(
+                                          color: Colors.black.withAlpha(76)),
+                                      child: Center(
                                           child: CircularProgressIndicator(
-                                              color: lightPrimaryColor)))
+                                              color: AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor)))
                               ]),
                               Positioned(
                                   bottom: 10,
@@ -195,8 +201,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               isUpdatingProfileImage = false;
                                             });
                                           },
-                                          icon: const Icon(Icons.image,
-                                              color: lightPrimaryColor,
+                                          icon: Icon(Icons.image,
+                                              color: AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor,
                                               size: 20))))
                             ])),
                         Row(
@@ -216,15 +224,19 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               lastName: profile.lastName);
                                         });
                                   },
-                                  icon: const Icon(Icons.edit,
-                                      color: lightPrimaryColor))
+                                  icon: Icon(Icons.edit,
+                                      color:
+                                          AppTheme(themeController.brightness)
+                                              .primaryColor))
                             ]),
                         SettingOptionTile(
                             title: 'Anonymous',
                             isUpdating: isUpdatingAnonymous,
                             trailing: Checkbox(
                                 checkColor: Colors.white,
-                                activeColor: lightPrimaryColor,
+                                activeColor:
+                                    AppTheme(themeController.brightness)
+                                        .primaryColor,
                                 value: profile.isAnonymous,
                                 onChanged: (value) async {
                                   setState(() {
@@ -263,17 +275,21 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              const Text("Your Threads",
+                              Text("Your Threads",
                                   style: TextStyle(
-                                      color: lightPrimaryColor,
+                                      color:
+                                          AppTheme(themeController.brightness)
+                                              .primaryColor,
                                       fontSize: 16,
                                       fontWeight: FontWeight.w500)),
                               posts.length > 3
                                   ? InkWell(
                                       onTap: () {},
-                                      child: const Text('More',
+                                      child: Text('More',
                                           style: TextStyle(
-                                              color: lightPrimaryColor,
+                                              color: AppTheme(themeController
+                                                      .brightness)
+                                                  .primaryColor,
                                               decoration:
                                                   TextDecoration.underline)))
                                   : const SizedBox()

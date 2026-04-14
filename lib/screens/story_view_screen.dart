@@ -19,7 +19,7 @@ class StoryViewScreenState extends State<StoryViewScreen> {
       VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
   double currentSeek = 0;
   bool isInitialized = false;
-
+  //TODO: Only portrait mode in this screen
   @override
   void initState() {
     super.initState();

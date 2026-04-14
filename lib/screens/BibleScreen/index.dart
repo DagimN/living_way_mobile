@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/BibleScreen/widgets/bible_navigator.dart';
 import 'package:living_way/screens/BibleScreen/widgets/chapter_page.dart';
 import 'package:living_way/screens/BibleScreen/widgets/translation_popup_button.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:living_way/widgets/base_app_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -24,6 +25,7 @@ class _BibleScreenState extends State<BibleScreen>
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
+    final themeController = Provider.of<ThemeController>(context);
     final selectedBook =
         contentController.book ?? contentController.bible.firstOrNull;
     final selectedChapter = contentController.chapter ?? 0;
@@ -56,14 +58,17 @@ class _BibleScreenState extends State<BibleScreen>
                                               : screenWidth * .25),
                                   child: Text(
                                       '${selectedBook?.name} ${selectedChapter + 1}',
-                                      style: const TextStyle(
-                                          color: lightPrimaryColor,
+                                      style: TextStyle(
+                                          color: AppTheme(
+                                                  themeController.brightness)
+                                              .primaryColor,
                                           fontSize: 20))),
                               Icon(
                                   isBibleNavigatorVisible
                                       ? Icons.arrow_drop_up_rounded
                                       : Icons.arrow_drop_down_rounded,
-                                  color: lightPrimaryColor)
+                                  color: AppTheme(themeController.brightness)
+                                      .primaryColor)
                             ])),
                     actions: const [TranslationPopupButton()]),
                 AnimatedBuilder(
@@ -77,14 +82,16 @@ class _BibleScreenState extends State<BibleScreen>
                                   ? screenHeight * .075
                                   : screenWidth * .075) *
                               animationController.value,
-                          color: lightPrimaryPanelColor,
+                          color: AppTheme(themeController.brightness)
+                              .primaryPanelColor,
                           padding: const EdgeInsets.all(10),
                           child: const BibleNavigator());
                     }),
                 ChapterPage(
                     verses: (selectedBook?.chapters[selectedChapter] ?? []))
               ])
-            : const Center(
-                child: CircularProgressIndicator(color: lightPrimaryColor)));
+            : Center(
+                child: CircularProgressIndicator(
+                    color: AppTheme(themeController.brightness).primaryColor)));
   }
 }

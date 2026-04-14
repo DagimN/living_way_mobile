@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/config/paths.dart';
 import 'package:living_way/controllers/auth_controller.dart';
+import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/home.dart';
-import 'package:living_way/themes/light_theme.dart';
+import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -23,6 +24,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context);
+    final themeController = Provider.of<ThemeController>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -123,7 +125,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: screenWidth * .7,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor: lightPrimaryColor,
+                                            backgroundColor:
+                                                AppTheme(themeController
+                                                        .brightness)
+                                                    .primaryColor,
                                             foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -177,11 +182,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                               }
                                             : null,
                                         child: const Text('Login')))
-                                : const SizedBox(
+                                : SizedBox(
                                     width: 25,
                                     height: 25,
                                     child: CircularProgressIndicator(
-                                        color: lightPrimaryColor,
+                                        color:
+                                            AppTheme(themeController.brightness)
+                                                .primaryColor,
                                         strokeWidth: 2)),
                             Container(
                                 margin: const EdgeInsets.all(16),
@@ -192,11 +199,13 @@ class _LoginScreenState extends State<LoginScreen> {
                                     elevation: 3,
                                     shadowColor: Colors.black),
                                 icon: isLoggingInViaGoogle
-                                    ? const SizedBox(
+                                    ? SizedBox(
                                         width: 25,
                                         height: 25,
                                         child: CircularProgressIndicator(
-                                            color: lightPrimaryColor,
+                                            color: AppTheme(
+                                                    themeController.brightness)
+                                                .primaryColor,
                                             strokeWidth: 2))
                                     : Image.asset(AppIcons.google,
                                         height: 25, width: 25),
@@ -237,11 +246,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       context, '/signup');
                                                 }
                                               : null,
-                                          child: const Text('Sign Up',
+                                          child: Text('Sign Up',
                                               style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,
-                                                  color: lightPrimaryColor)))
+                                                  color: AppTheme(
+                                                          themeController
+                                                              .brightness)
+                                                      .primaryColor)))
                                     ]))
                           ]))
                 ]))));
