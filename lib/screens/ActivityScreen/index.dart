@@ -1,25 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/activity_content.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/event.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/external_link.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/gallery.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/poll.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/timeline_container.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/widgets/base_app_bar.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import 'widgets/article.dart';
+import 'widgets/event.dart';
+import 'widgets/external_link.dart';
+import 'widgets/gallery.dart';
+import 'widgets/poll.dart';
+import 'widgets/timeline_container.dart';
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final activityController = Provider.of<ActivityController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
 
@@ -41,21 +38,21 @@ class ActivityScreen extends StatelessWidget {
           height: orientation == Orientation.portrait
               ? screenHeight * .7
               : screenWidth * .2,
-          child: !contentController.isFetchingActivity ||
-                  contentController.activityList.isNotEmpty
+          child: !activityController.isFetching ||
+                  activityController.activityList.isNotEmpty
               ? RefreshIndicator(
                   onRefresh: () async {
-                    return await contentController.fetchActivities(
+                    return await activityController.fetchActivities(
                         isRefreshing: true);
                   },
                   child: ListView.builder(
-                      controller: contentController.activityScrollController,
+                      controller: activityController.scrollController,
                       shrinkWrap: true,
-                      itemCount: contentController.activityList.length + 1,
+                      itemCount: activityController.activityList.length + 1,
                       itemBuilder: (context, index) {
                         final content =
-                            contentController.activityList.length > index
-                                ? contentController.activityList[index]
+                            activityController.activityList.length > index
+                                ? activityController.activityList[index]
                                 : ActivityContent(
                                     id: '',
                                     type: ContentType.undefined,
@@ -81,7 +78,7 @@ class ActivityScreen extends StatelessWidget {
                             childWidget = const SizedBox();
                         }
 
-                        return index < contentController.activityList.length
+                        return index < activityController.activityList.length
                             ? TimelineContainer(
                                 title: content.title ?? '',
                                 timestamp:
@@ -89,15 +86,15 @@ class ActivityScreen extends StatelessWidget {
                                 isOngoing: content.isOngoing,
                                 type: content.type,
                                 isLast: index ==
-                                    contentController.activityList.length - 1,
+                                    activityController.activityList.length - 1,
                                 child: childWidget)
                             : Container(
-                                height: contentController.activityList.isEmpty
+                                height: activityController.activityList.isEmpty
                                     ? screenHeight * .65
                                     : null,
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 24),
-                                child: !contentController.isFetchingActivity
+                                child: !activityController.isFetching
                                     ? Column(
                                         mainAxisAlignment:
                                             MainAxisAlignment.center,
@@ -111,7 +108,7 @@ class ActivityScreen extends StatelessWidget {
                                                     AppImages.activitiesEnd)),
                                             //TODO: Add a cursive font
                                             Text(
-                                                contentController
+                                                activityController
                                                         .activityList.isNotEmpty
                                                     ? 'It all started here'
                                                     : "Nothing to show yet.",
@@ -121,7 +118,7 @@ class ActivityScreen extends StatelessWidget {
                                                             themeController
                                                                 .brightness)
                                                         .primaryColor)),
-                                            if (contentController
+                                            if (activityController
                                                 .activityList.isEmpty)
                                               IconButton(
                                                   icon: Icon(Icons.refresh,
@@ -130,7 +127,7 @@ class ActivityScreen extends StatelessWidget {
                                                                   .brightness)
                                                           .primaryColor),
                                                   onPressed: () {
-                                                    contentController
+                                                    activityController
                                                         .fetchActivities(
                                                             isRefreshing: true);
                                                   })

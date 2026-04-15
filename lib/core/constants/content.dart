@@ -1,4 +1,4 @@
-import 'package:living_way/models/thread.dart';
+import 'package:living_way/core/models/thread.dart';
 import 'package:uuid/uuid.dart';
 
 final books = {

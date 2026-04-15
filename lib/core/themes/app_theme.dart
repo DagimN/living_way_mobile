@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/themes/dark_theme.dart' as dark;
-import 'package:living_way/themes/light_theme.dart' as light;
+import 'package:living_way/core/themes/dark_theme.dart' as dark;
+import 'package:living_way/core/themes/light_theme.dart' as light;
 
 class AppTheme {
   Brightness brightness;

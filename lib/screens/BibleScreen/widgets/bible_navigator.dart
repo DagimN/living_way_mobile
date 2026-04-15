@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class BibleNavigator extends StatelessWidget {
@@ -10,12 +8,11 @@ class BibleNavigator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final selectedBook =
-        contentController.book ?? contentController.bible.first;
-    final selectedChapter = contentController.chapter ?? 0;
+    final selectedBook = bibleController.book ?? bibleController.bible.first;
+    final selectedChapter = bibleController.chapter ?? 0;
 
     double fontSize = 16.0;
 
@@ -28,26 +25,26 @@ class BibleNavigator extends StatelessWidget {
           child: DropdownButton(
               underline: const SizedBox(),
               icon: const SizedBox(),
-              value: contentController.book ?? contentController.bible[0],
+              value: bibleController.book ?? bibleController.bible[0],
               style: const TextStyle(color: Colors.white),
               dropdownColor: const Color(0xFF7562AA),
               padding: const EdgeInsets.symmetric(horizontal: 10),
-              items: contentController.bible
+              items: bibleController.bible
                   .map((book) =>
                       DropdownMenuItem(value: book, child: Text(book.name)))
                   .toList(),
               onChanged: (value) {
                 if (value != null) {
-                  contentController.setBook = value;
-                  contentController.setChapter = null;
-                  contentController.setVerse = null;
+                  bibleController.setBook = value;
+                  bibleController.setChapter = null;
+                  bibleController.setVerse = null;
                   layoutController.scrollToTop();
                 }
               })),
       DropdownButton(
           underline: const SizedBox(),
           iconEnabledColor: AppTheme(themeController.brightness).primaryColor,
-          value: contentController.chapter ?? 0,
+          value: bibleController.chapter ?? 0,
           style: TextStyle(
               color: AppTheme(themeController.brightness).primaryColor,
               fontSize: fontSize),
@@ -58,8 +55,8 @@ class BibleNavigator extends StatelessWidget {
                 value: index, child: Text((index + 1).toString()));
           }).toList(),
           onChanged: (value) {
-            contentController.setChapter = value;
-            contentController.setVerse = null;
+            bibleController.setChapter = value;
+            bibleController.setVerse = null;
             layoutController.scrollToTop();
           }),
       Container(
@@ -71,7 +68,7 @@ class BibleNavigator extends StatelessWidget {
       DropdownButton(
           underline: const SizedBox(),
           iconEnabledColor: AppTheme(themeController.brightness).primaryColor,
-          value: contentController.verse ?? 0,
+          value: bibleController.verse ?? 0,
           style: TextStyle(
               color: AppTheme(themeController.brightness).primaryColor,
               fontSize: fontSize),
@@ -84,7 +81,7 @@ class BibleNavigator extends StatelessWidget {
           onChanged: (value) {
             layoutController
                 .scrollToVerse(layoutController.verseKeys[value ?? 0]);
-            contentController.setVerse = value;
+            bibleController.setVerse = value;
           })
     ]);
   }

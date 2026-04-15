@@ -1,15 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/topic.dart';
-import 'package:living_way/screens/MediaScreen/index.dart';
-import 'package:living_way/screens/TopicScreen/index.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/utils/shorten_number.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/screens/screens.dart';
 import 'package:provider/provider.dart';
 
 class TopicCard extends StatelessWidget {
@@ -18,7 +12,7 @@ class TopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
 
@@ -54,7 +48,7 @@ class TopicCard extends StatelessWidget {
               if (userProfile != null &&
                   !topic.viewers.contains(userProfile.id)) {
                 topic.viewers.add(userProfile.id);
-                contentController.updateTopic(topic);
+                devotionController.updateTopic(topic);
               }
 
               Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -119,7 +113,7 @@ class TopicCard extends StatelessWidget {
                                           topic.likers.remove(userProfile.id);
                                         }
 
-                                        await contentController
+                                        await devotionController
                                             .updateTopic(topic);
                                       }
                                     })),

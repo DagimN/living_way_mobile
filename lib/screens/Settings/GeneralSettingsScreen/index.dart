@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/screens/Settings/GeneralSettingsScreen/widgets/prayer_times_list_view.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
+
+import 'widgets/prayer_times_list_view.dart';
 
 class GeneralSettingsScreen extends StatelessWidget {
   const GeneralSettingsScreen({super.key});

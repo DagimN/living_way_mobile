@@ -2,22 +2,16 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/auth_controller.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/profile.dart';
-import 'package:living_way/models/thread.dart';
-import 'package:living_way/models/topic.dart';
-import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/name_update_dialog.dart';
-import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/password_update_dialog.dart';
-import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/prompt_delete_profile_dialog.dart';
-import 'package:living_way/screens/Settings/ProfileSettingsScreen/widgets/setting_option_tile.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
-import 'package:living_way/services/image_service.dart';
-import 'package:living_way/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+
+import 'widgets/name_update_dialog.dart';
+import 'widgets/password_update_dialog.dart';
+import 'widgets/prompt_delete_profile_dialog.dart';
+import 'widgets/setting_option_tile.dart';
 
 class ProfileSettingsScreen extends StatefulWidget {
   const ProfileSettingsScreen({super.key});

@@ -1,7 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'verse_of_the_day.dart';

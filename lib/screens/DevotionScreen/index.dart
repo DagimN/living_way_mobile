@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/screens/DevotionScreen/widgets/story_list_view.dart';
-import 'package:living_way/screens/DevotionScreen/widgets/topics_listview.dart';
-import 'package:living_way/screens/DevotionScreen/widgets/updates_viewer.dart';
-import 'package:living_way/screens/search_screen.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/widgets/base_app_bar.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/screens/screens.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import 'widgets/story_list_view.dart';
+import 'widgets/topics_listview.dart';
+import 'widgets/updates_viewer.dart';
 
 class DevotionScreen extends StatelessWidget {
   const DevotionScreen({super.key});

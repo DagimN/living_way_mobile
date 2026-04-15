@@ -1,20 +1,16 @@
 import "dart:async";
 import "package:audioplayers/audioplayers.dart" as audioplayers;
 import "package:flutter/material.dart";
-import "package:living_way/controllers/content_controller.dart";
-import "package:living_way/controllers/profile_controller.dart";
-import "package:living_way/controllers/theme_controller.dart";
-import "package:living_way/models/profile.dart";
-import "package:living_way/models/thread.dart";
-import "package:living_way/models/topic.dart";
+import "package:living_way/controllers/controllers.dart";
+import "package:living_way/core/core.dart";
 import "package:living_way/screens/DevotionScreen/widgets/threads_list_view.dart";
-import "package:living_way/screens/MediaScreen/widgets/audio_player.dart";
-import "package:living_way/screens/MediaScreen/widgets/video_player.dart";
-import "package:living_way/themes/app_theme.dart";
 import "package:provider/provider.dart";
 import "package:uuid/uuid.dart";
 import "package:youtube_player_iframe/youtube_player_iframe.dart";
 import "package:mini_music_visualizer/mini_music_visualizer.dart";
+
+import "widgets/audio_player.dart";
+import "widgets/video_player.dart";
 
 class MediaScreen extends StatefulWidget {
   final Topic topic;
@@ -101,7 +97,7 @@ class _MediaScreenState extends State<MediaScreen>
   Widget build(BuildContext context) {
     final userProfile = Provider.of<ProfileController>(context).userProfile;
     final themeController = Provider.of<ThemeController>(context);
-    final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
 
@@ -183,7 +179,7 @@ class _MediaScreenState extends State<MediaScreen>
                     ]))
               ])),
               //FIXME: Refactor for DRY
-              if (contentController.commentingThreadKeyNotifier.value == null)
+              if (devotionController.commentingThreadKeyNotifier.value == null)
                 Positioned(
                     bottom: 0,
                     child: Container(
@@ -194,14 +190,14 @@ class _MediaScreenState extends State<MediaScreen>
                             controller: commentController,
                             onSubmitted: userProfile != null
                                 ? (value) =>
-                                    onSubmitted(contentController, userProfile)
+                                    onSubmitted(devotionController, userProfile)
                                 : null,
                             decoration: InputDecoration(
                                 suffixIcon: IconButton(
                                     icon: const Icon(Icons.send),
                                     onPressed: userProfile != null
                                         ? () => onSubmitted(
-                                            contentController, userProfile)
+                                            devotionController, userProfile)
                                         : null),
                                 fillColor: Colors.white,
                                 filled: true,
@@ -213,7 +209,8 @@ class _MediaScreenState extends State<MediaScreen>
             ])));
   }
 
-  void onSubmitted(ContentController contentController, Profile profile) async {
+  void onSubmitted(
+      DevotionController devotionController, Profile profile) async {
     if (commentController.text.isEmpty) {
       //TODO: Warn user
       return;
@@ -228,6 +225,6 @@ class _MediaScreenState extends State<MediaScreen>
     tabController.animateTo(1);
     commentController.clear();
     FocusManager.instance.primaryFocus?.unfocus();
-    await contentController.updateTopic(topic);
+    await devotionController.updateTopic(topic);
   }
 }

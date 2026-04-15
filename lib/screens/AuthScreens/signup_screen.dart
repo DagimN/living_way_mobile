@@ -6,7 +6,7 @@ import 'package:living_way/screens/AuthScreens/Forms/name_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/password_form.dart';
 import 'package:living_way/screens/AuthScreens/Forms/signup_complete.dart';
 import 'package:living_way/screens/AuthScreens/Forms/terms_and_policies_form.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class SignupScreen extends StatefulWidget {

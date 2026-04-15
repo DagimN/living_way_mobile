@@ -1,5 +1,5 @@
 import 'package:encrypt/encrypt.dart';
-import 'package:living_way/config/env.dart';
+import 'package:living_way/core/config/env.dart';
 
 //Encryption function used for hiding the content in a message
 String encrypt(String text) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/config/paths.dart';
+import 'package:living_way/core/config/paths.dart';
 
 class TestimonialScreen extends StatelessWidget {
   const TestimonialScreen({super.key});

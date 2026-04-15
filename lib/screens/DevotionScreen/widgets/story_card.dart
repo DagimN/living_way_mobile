@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/screens/story_view_screen.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';

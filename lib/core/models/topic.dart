@@ -1,5 +1,5 @@
-import 'package:living_way/models/media_metadata.dart';
-import 'package:living_way/models/thread.dart';
+import 'package:living_way/core/models/media_metadata.dart';
+import 'package:living_way/core/models/thread.dart';
 
 class Topic {
   final String id;

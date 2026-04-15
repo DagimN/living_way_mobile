@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import 'story_card.dart';
@@ -11,6 +10,7 @@ class StoryListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final devotionController = Provider.of<DevotionController>(context);
     final contentController = Provider.of<ContentController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final stories = contentController.stories;
@@ -25,7 +25,7 @@ class StoryListView extends StatelessWidget {
         height: orientation == Orientation.portrait
             ? screenHeight * .30
             : screenWidth * .30,
-        child: !contentController.isFetchingTopic || stories.isNotEmpty
+        child: !devotionController.isFetching || stories.isNotEmpty
             ? stories.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,

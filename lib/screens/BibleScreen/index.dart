@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/screens/BibleScreen/widgets/bible_navigator.dart';
-import 'package:living_way/screens/BibleScreen/widgets/chapter_page.dart';
-import 'package:living_way/screens/BibleScreen/widgets/translation_popup_button.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/widgets/base_app_bar.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import 'widgets/bible_navigator.dart';
+import 'widgets/chapter_page.dart';
+import 'widgets/translation_popup_button.dart';
 
 class BibleScreen extends StatefulWidget {
   const BibleScreen({super.key});
@@ -24,17 +24,17 @@ class _BibleScreenState extends State<BibleScreen>
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final selectedBook =
-        contentController.book ?? contentController.bible.firstOrNull;
-    final selectedChapter = contentController.chapter ?? 0;
+        bibleController.book ?? bibleController.bible.firstOrNull;
+    final selectedChapter = bibleController.chapter ?? 0;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
     return SafeArea(
-        child: contentController.bible.isNotEmpty
+        child: bibleController.bible.isNotEmpty
             ? Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 BaseAppBar(
                     title: TextButton(

@@ -4,12 +4,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:living_way/constants/urls.dart';
+import 'package:living_way/core/constants/urls.dart';
 import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/models/profile.dart';
-import 'package:living_way/models/signup_progress.dart';
-import 'package:living_way/services/logging_service.dart';
-import 'package:living_way/utils/security_functions.dart';
+import 'package:living_way/core/models/profile.dart';
+import 'package:living_way/core/models/signup_progress.dart';
+import 'package:living_way/core/services/logging_service.dart';
+import 'package:living_way/core/utils/security_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthController extends ChangeNotifier {

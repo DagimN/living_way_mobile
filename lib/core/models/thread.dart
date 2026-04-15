@@ -1,4 +1,4 @@
-import 'package:living_way/models/bible_quote.dart';
+import 'package:living_way/core/models/bible_quote.dart';
 
 class ThreadData {
   String threadId;

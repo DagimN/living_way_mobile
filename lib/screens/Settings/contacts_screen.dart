@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:living_way/config/paths.dart';
+import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/content_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/contacts.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/models/contacts.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';

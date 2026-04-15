@@ -1,9 +1,9 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import 'package:living_way/config/paths.dart';
+import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/activity_content.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/models/activity_content.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';

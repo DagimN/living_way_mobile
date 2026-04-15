@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'package:living_way/services/logging_service.dart';
+import 'package:living_way/core/services/logging_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart';

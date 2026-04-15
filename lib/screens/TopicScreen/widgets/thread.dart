@@ -1,16 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/thread.dart';
-import 'package:living_way/models/topic.dart';
-import 'package:living_way/screens/TopicScreen/index.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/utils/shorten_number.dart';
-import 'package:living_way/widgets/avatar_stack.dart';
-import 'package:living_way/screens/TopicScreen/widgets/comment_box.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/screens/screens.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
+
+import 'comment_box.dart';
 
 class Thread extends StatefulWidget {
   final Topic topic;
@@ -63,7 +59,7 @@ class _ThreadState extends State<Thread> {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
     final themeController = Provider.of<ThemeController>(context);
 
@@ -71,7 +67,7 @@ class _ThreadState extends State<Thread> {
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
     bool isCommentBoxVisible =
-        contentController.commentingThreadKeyNotifier.value == threadKey;
+        devotionController.commentingThreadKeyNotifier.value == threadKey;
 
     return Container(
         key: threadKey,
@@ -87,8 +83,8 @@ class _ThreadState extends State<Thread> {
             TextButton(
                 onPressed: widget.data.subThreads.isNotEmpty && !widget.isTop
                     ? () {
-                        contentController.setCommentingThreadKey = null;
-                        contentController.commentBoxTextEditingController
+                        devotionController.setCommentingThreadKey = null;
+                        devotionController.commentBoxTextEditingController
                             .clear();
                         Navigator.push(
                             context,
@@ -119,7 +115,7 @@ class _ThreadState extends State<Thread> {
                 .any((thread) => thread.threadId == widget.data.threadId))
               isCommentBoxVisible
                   ? CommentBox(onSubmit: () async {
-                      final comment = contentController
+                      final comment = devotionController
                           .commentBoxTextEditingController.text;
                       final topic = widget.topic;
                       final thread = widget.data;
@@ -135,13 +131,13 @@ class _ThreadState extends State<Thread> {
                         topic.threads.replaceRange(
                             threadIndex, threadIndex + 1, [thread]);
 
-                        await contentController.updateTopic(topic);
+                        await devotionController.updateTopic(topic);
                       }
                     }, onClose: () {
                       setState(() {
                         threadKey = GlobalKey();
-                        contentController.setCommentingThreadKey = null;
-                        contentController.commentBoxTextEditingController
+                        devotionController.setCommentingThreadKey = null;
+                        devotionController.commentBoxTextEditingController
                             .clear();
                       });
                     })
@@ -162,7 +158,7 @@ class _ThreadState extends State<Thread> {
                               topic.threads.replaceRange(
                                   threadIndex, threadIndex + 1, [thread]);
 
-                              await contentController.updateTopic(topic);
+                              await devotionController.updateTopic(topic);
                               setState(() {});
                             }
                           },
@@ -182,9 +178,9 @@ class _ThreadState extends State<Thread> {
                             onPressed: () {
                               setState(() {
                                 threadKey = GlobalKey();
-                                contentController.setCommentingThreadKey =
+                                devotionController.setCommentingThreadKey =
                                     threadKey;
-                                contentController
+                                devotionController
                                     .commentBoxTextEditingController
                                     .clear();
                               });

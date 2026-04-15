@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class CommentBox extends StatelessWidget {
@@ -11,7 +10,7 @@ class CommentBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     final themeController = Provider.of<ThemeController>(context);
 
     double screenHeight = MediaQuery.of(context).size.height;
@@ -32,7 +31,7 @@ class CommentBox extends StatelessWidget {
         child: Stack(children: [
           Column(children: [
             TextField(
-                controller: contentController.commentBoxTextEditingController,
+                controller: devotionController.commentBoxTextEditingController,
                 minLines: 3,
                 maxLines: 3,
                 decoration: const InputDecoration(
@@ -44,7 +43,7 @@ class CommentBox extends StatelessWidget {
                 child: Row(mainAxisAlignment: MainAxisAlignment.end, children: [
                   IconButton(
                       onPressed: () {
-                        contentController.commentBoxTextEditingController
+                        devotionController.commentBoxTextEditingController
                             .clear();
                       },
                       icon: const Icon(Icons.backspace_outlined,

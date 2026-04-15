@@ -2,10 +2,9 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/widgets/loader_animation.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
 

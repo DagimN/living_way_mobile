@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/activity_content.dart';
-import 'package:living_way/models/profile.dart';
-import 'package:living_way/screens/ActivityScreen/widgets/flutter_polls.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
+
+import 'flutter_polls.dart';
 
 class Poll extends StatefulWidget {
   final ActivityContent content;
@@ -32,7 +30,7 @@ class _PollState extends State<Poll> {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final activityController = Provider.of<ActivityController>(context);
     final themeController = Provider.of<ThemeController>(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -73,7 +71,7 @@ class _PollState extends State<Poll> {
                             updatingContent.pollOptions
                                 .replaceRange(pollIndex, pollIndex + 1, [poll]);
 
-                            final success = await contentController
+                            final success = await activityController
                                 .updatePoll(updatingContent);
 
                             setState(() {
@@ -101,7 +99,7 @@ class _PollState extends State<Poll> {
                       .replaceRange(pollIndex, pollIndex + 1, [poll]);
 
                   final success =
-                      await contentController.updatePoll(updatingContent);
+                      await activityController.updatePoll(updatingContent);
 
                   setState(() {
                     selectedPollId = success ? pollOption.id : null;

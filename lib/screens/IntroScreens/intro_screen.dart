@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/screens/IntroScreens/pages/page1.dart';
-import 'package:living_way/screens/IntroScreens/pages/page2.dart';
-import 'package:living_way/screens/IntroScreens/pages/page3.dart';
-import 'package:living_way/screens/IntroScreens/pages/page4.dart';
-import 'package:living_way/screens/IntroScreens/pages/page5.dart';
-import 'package:living_way/widgets/dot_indicator.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
+
+import 'pages/page1.dart';
+import 'pages/page2.dart';
+import 'pages/page3.dart';
+import 'pages/page4.dart';
+import 'pages/page5.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});

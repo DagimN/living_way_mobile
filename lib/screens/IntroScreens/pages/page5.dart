@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/config/paths.dart';
+import 'package:living_way/core/config/paths.dart';
 
 class Page5 extends StatelessWidget {
   const Page5({super.key});

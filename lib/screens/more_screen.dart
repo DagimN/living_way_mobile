@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:living_way/widgets/base_app_bar.dart';
+import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 class MoreScreen extends StatelessWidget {

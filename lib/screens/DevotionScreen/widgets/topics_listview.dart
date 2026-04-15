@@ -1,22 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/topic.dart';
-import 'package:living_way/screens/DevotionScreen/widgets/filter_bottom_sheet.dart';
-import 'package:living_way/screens/DevotionScreen/widgets/topic_card.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
+
+import 'filter_bottom_sheet.dart';
+import 'topic_card.dart';
 
 class TopicsListview extends StatelessWidget {
   const TopicsListview({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final topics = contentController.topicList;
+    final topics = devotionController.topicList;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -41,10 +39,9 @@ class TopicsListview extends StatelessWidget {
                         isScrollControlled: true,
                         builder: (BuildContext context) {
                           return FilterBottomSheet(
-                              activityFilter:
-                                  contentController.topicActivityFilter,
-                              categoryFilter: contentController.categoryFilter,
-                              booksSelected: contentController.booksFiltered);
+                              sortOption: devotionController.sortOption,
+                              categoryFilter: devotionController.categoryFilter,
+                              booksSelected: devotionController.booksFiltered);
                         });
                   },
                   icon: SvgPicture.asset(AppIcons.filter,
@@ -55,7 +52,7 @@ class TopicsListview extends StatelessWidget {
               IconButton(
                   style: IconButton.styleFrom(padding: EdgeInsets.zero),
                   onPressed: () {
-                    contentController.fetchTopics(isRefreshing: true);
+                    devotionController.fetchTopics(isRefreshing: true);
                   },
                   icon: Icon(Icons.refresh,
                       color: AppTheme(themeController.brightness).iconColor))
@@ -66,16 +63,16 @@ class TopicsListview extends StatelessWidget {
               height: orientation == Orientation.portrait
                   ? screenHeight * .15
                   : screenWidth * .15,
-              child: !contentController.isFetchingTopic || topics.isNotEmpty
+              child: !devotionController.isFetching || topics.isNotEmpty
                   ? topics.isNotEmpty
                       ? ListView.builder(
-                          controller: contentController.topicScrollController,
+                          controller: devotionController.scrollController,
                           shrinkWrap: true,
                           scrollDirection: Axis.horizontal,
                           itemCount: topics.length + 1,
                           itemBuilder: (context, index) {
                             final topic =
-                                contentController.topicList.length > index
+                                devotionController.topicList.length > index
                                     ? topics[index]
                                     : Topic(
                                         id: '',
@@ -84,7 +81,7 @@ class TopicsListview extends StatelessWidget {
                                         likeCount: 0);
                             return topics.length > index
                                 ? TopicCard(topic: topic)
-                                : contentController.isFetchingTopic
+                                : devotionController.isFetching
                                     ? Container(
                                         height: 10,
                                         width: 40,

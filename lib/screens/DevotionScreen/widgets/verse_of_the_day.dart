@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/controllers.dart';
 import 'package:provider/provider.dart';
 
 class VerseOfTheDay extends StatelessWidget {
@@ -12,7 +12,7 @@ class VerseOfTheDay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final bibleController = Provider.of<BibleController>(context);
 
     return Container(
         decoration: BoxDecoration(
@@ -43,7 +43,7 @@ class VerseOfTheDay extends StatelessWidget {
                       ])),
               Align(
                   alignment: Alignment.center,
-                  child: Text(contentController.bible[58].chapters[0][0],
+                  child: Text(bibleController.bible[58].chapters[0][0],
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,

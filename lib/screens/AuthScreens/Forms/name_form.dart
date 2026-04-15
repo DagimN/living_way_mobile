@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class NameForm extends StatefulWidget {

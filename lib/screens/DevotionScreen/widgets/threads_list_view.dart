@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/thread.dart';
-import 'package:living_way/models/topic.dart';
-import 'package:living_way/themes/app_theme.dart';
-import 'package:provider/provider.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/TopicScreen/widgets/thread.dart';
+import 'package:provider/provider.dart';
 
 class ThreadsListView extends StatelessWidget {
   final bool doesSubThreadExist;
@@ -23,19 +20,20 @@ class ThreadsListView extends StatelessWidget {
 
     final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     final threads = topic.threads;
 
     threads.sort((threadA, threadB) {
-      if (contentController.threadActivityFilter == ActivityFilter.mostActive) {
+      if (contentController.threadActivityFilter == SortOptions.mostActive) {
         return (threadB.likers.length + threadB.subThreads.length) -
             (threadA.subThreads.length + threadA.likers.length);
       }
 
-      if (contentController.threadActivityFilter == ActivityFilter.mostLiked) {
+      if (contentController.threadActivityFilter == SortOptions.mostLiked) {
         return threadB.likers.length - threadA.likers.length;
       }
 
-      if (contentController.threadActivityFilter == ActivityFilter.latest) {
+      if (contentController.threadActivityFilter == SortOptions.latest) {
         return threadB.timestamp.compareTo(threadA.timestamp);
       }
 
@@ -56,16 +54,15 @@ class ThreadsListView extends StatelessWidget {
                             fontWeight: FontWeight.w600,
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)),
-                    DropdownButton<ActivityFilter>(
+                    DropdownButton<SortOptions>(
                         items: const [
                           DropdownMenuItem(
-                              value: ActivityFilter.latest,
-                              child: Text('Latest')),
+                              value: SortOptions.latest, child: Text('Latest')),
                           DropdownMenuItem(
-                              value: ActivityFilter.mostActive,
+                              value: SortOptions.mostActive,
                               child: Text('Most Active')),
                           DropdownMenuItem(
-                              value: ActivityFilter.mostLiked,
+                              value: SortOptions.mostLiked,
                               child: Text('Most Liked'))
                         ],
                         underline: Container(
@@ -83,7 +80,7 @@ class ThreadsListView extends StatelessWidget {
                         value: contentController.threadActivityFilter,
                         onChanged: (value) {
                           contentController.setThreadFilter =
-                              value ?? ActivityFilter.latest;
+                              value ?? SortOptions.latest;
                         })
                   ])),
           SizedBox(
@@ -104,13 +101,13 @@ class ThreadsListView extends StatelessWidget {
                             child: Thread(
                                 topic: topic,
                                 isTop: true,
-                                threadKeyNotifier: contentController
+                                threadKeyNotifier: devotionController
                                     .commentingThreadKeyNotifier,
                                 data: subThread!))
                         : Thread(
                             topic: topic,
                             threadKeyNotifier:
-                                contentController.commentingThreadKeyNotifier,
+                                devotionController.commentingThreadKeyNotifier,
                             hasSubThread: doesSubThreadExist,
                             data: threads[index - (doesSubThreadExist ? 1 : 0)],
                             isLast: index ==

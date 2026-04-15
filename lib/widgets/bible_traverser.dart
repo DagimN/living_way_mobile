@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class BibleTraverser extends StatefulWidget {
@@ -25,11 +22,11 @@ class _BibleTraverserState extends State<BibleTraverser>
   @override
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
-    final contentController = Provider.of<ContentController>(context);
+    final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final chapter = contentController.chapter ?? 0;
+    final chapter = bibleController.chapter ?? 0;
     final selectedBook =
-        contentController.book ?? contentController.bible.firstOrNull;
+        bibleController.book ?? bibleController.bible.firstOrNull;
 
     final isTraversing = layoutController.getSelectedHomePageNavigation ==
         HomePageNavigation.bible;
@@ -63,7 +60,7 @@ class _BibleTraverserState extends State<BibleTraverser>
                                         padding: EdgeInsets.zero),
                                     onPressed: () {
                                       if (!isFirst) {
-                                        contentController.setChapter =
+                                        bibleController.setChapter =
                                             chapter - 1;
                                       }
                                     },
@@ -93,7 +90,7 @@ class _BibleTraverserState extends State<BibleTraverser>
                                           padding: EdgeInsets.zero),
                                       onPressed: () {
                                         if (!isLast) {
-                                          contentController.setChapter =
+                                          bibleController.setChapter =
                                               chapter + 1;
                                         }
                                       },

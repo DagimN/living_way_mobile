@@ -2,9 +2,9 @@ import "dart:convert";
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:living_way/constants/urls.dart";
-import "package:living_way/models/profile.dart";
-import "package:living_way/services/logging_service.dart";
+import "package:living_way/core/constants/urls.dart";
+import "package:living_way/core/models/profile.dart";
+import "package:living_way/core/services/logging_service.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
 class ProfileController extends ChangeNotifier {

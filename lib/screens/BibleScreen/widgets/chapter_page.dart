@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class ChapterPage extends StatefulWidget {
@@ -23,13 +21,13 @@ class _ChapterPageState extends State<ChapterPage>
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final selectedVerse = contentController.verse;
+    final selectedVerse = bibleController.verse;
     final selectedBook =
-        contentController.book ?? contentController.bible.firstOrNull;
-    final selectedChapter = contentController.chapter ?? 0;
+        bibleController.book ?? bibleController.bible.firstOrNull;
+    final selectedChapter = bibleController.chapter ?? 0;
 
     List<GlobalKey> verseKeys = List.generate(
         selectedBook?.chapters[selectedChapter].length ?? 0,

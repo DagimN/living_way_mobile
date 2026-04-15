@@ -3,9 +3,9 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
-import 'package:living_way/config/env.dart';
-import 'package:living_way/constants/urls.dart';
-import 'package:living_way/services/logging_service.dart';
+import 'package:living_way/core/config/env.dart';
+import 'package:living_way/core/constants/urls.dart';
+import 'package:living_way/core/services/logging_service.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class ImageService {

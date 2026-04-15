@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/constants/content.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class FilterBottomSheet extends StatefulWidget {
-  final ActivityFilter activityFilter;
+  final SortOptions sortOption;
   final CategoryFilter categoryFilter;
   final List<String> booksSelected;
   const FilterBottomSheet(
       {super.key,
-      required this.activityFilter,
+      required this.sortOption,
       required this.categoryFilter,
       required this.booksSelected});
 
@@ -21,21 +19,21 @@ class FilterBottomSheet extends StatefulWidget {
 
 class _FilterBottomSheetState extends State<FilterBottomSheet>
     with TickerProviderStateMixin {
-  ActivityFilter activityFilter = ActivityFilter.latest;
+  SortOptions activityFilter = SortOptions.latest;
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksSelected = [];
 
   @override
   void initState() {
     super.initState();
-    activityFilter = widget.activityFilter;
+    activityFilter = widget.sortOption;
     categoryFilter = widget.categoryFilter;
     booksSelected = widget.booksSelected;
   }
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
     final themeController = Provider.of<ThemeController>(context);
     List<String> totalBooks = [...(books['ot'] ?? []), ...(books['nt'] ?? [])];
     List<String> filteredBooks = books[categoryFilter.name] ?? [];
@@ -68,11 +66,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                           color: AppTheme(themeController.brightness)
                               .primaryColor)),
                   onPressed: () {
-                    contentController.setActivityFilter = ActivityFilter.latest;
-                    contentController.categoryFilter = CategoryFilter.all;
-                    contentController.setBooksFilter = [];
+                    devotionController.setSortOption = SortOptions.latest;
+                    devotionController.categoryFilter = CategoryFilter.all;
+                    devotionController.setBooksFilter = [];
 
-                    contentController.fetchTopics(isRefreshing: true);
+                    devotionController.fetchTopics(isRefreshing: true);
                     Navigator.pop(context);
                   }),
               TextButton(
@@ -81,11 +79,11 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                           color: AppTheme(themeController.brightness)
                               .primaryColor)),
                   onPressed: () {
-                    contentController.setActivityFilter = activityFilter;
-                    contentController.setCategoryFilter = categoryFilter;
-                    contentController.setBooksFilter = booksSelected;
+                    devotionController.setSortOption = activityFilter;
+                    devotionController.setCategoryFilter = categoryFilter;
+                    devotionController.setBooksFilter = booksSelected;
 
-                    contentController.fetchTopics(isRefreshing: true);
+                    devotionController.fetchTopics(isRefreshing: true);
                     Navigator.pop(context);
                   })
             ])
@@ -113,13 +111,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
                                           foregroundColor: activityFilter ==
-                                                  ActivityFilter.latest
+                                                  SortOptions.latest
                                               ? Colors.white
                                               : AppTheme(themeController
                                                       .brightness)
                                                   .inactiveChipColor,
                                           backgroundColor: activityFilter ==
-                                                  ActivityFilter.latest
+                                                  SortOptions.latest
                                               ? AppTheme(themeController
                                                       .brightness)
                                                   .primaryColor
@@ -127,8 +125,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                                       .brightness)
                                                   .chipColor),
                                       onPressed: () => setState(() {
-                                            activityFilter =
-                                                ActivityFilter.latest;
+                                            activityFilter = SortOptions.latest;
                                           }),
                                       child: const Text('Latest',
                                           textAlign: TextAlign.center,
@@ -138,13 +135,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
                                           foregroundColor: activityFilter ==
-                                                  ActivityFilter.mostActive
+                                                  SortOptions.mostActive
                                               ? Colors.white
                                               : AppTheme(themeController
                                                       .brightness)
                                                   .inactiveChipColor,
                                           backgroundColor: activityFilter ==
-                                                  ActivityFilter.mostActive
+                                                  SortOptions.mostActive
                                               ? AppTheme(themeController
                                                       .brightness)
                                                   .primaryColor
@@ -153,7 +150,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                                   .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
-                                                ActivityFilter.mostActive;
+                                                SortOptions.mostActive;
                                           }),
                                       child: const Text('Most Active',
                                           textAlign: TextAlign.center,
@@ -163,13 +160,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
                                           foregroundColor: activityFilter ==
-                                                  ActivityFilter.mostLiked
+                                                  SortOptions.mostLiked
                                               ? Colors.white
                                               : AppTheme(themeController
                                                       .brightness)
                                                   .inactiveChipColor,
                                           backgroundColor: activityFilter ==
-                                                  ActivityFilter.mostLiked
+                                                  SortOptions.mostLiked
                                               ? AppTheme(themeController
                                                       .brightness)
                                                   .primaryColor
@@ -178,7 +175,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                                   .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
-                                                ActivityFilter.mostLiked;
+                                                SortOptions.mostLiked;
                                           }),
                                       child: const Text('Most Liked',
                                           textAlign: TextAlign.center,
@@ -188,13 +185,13 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                   child: OutlinedButton(
                                       style: OutlinedButton.styleFrom(
                                           foregroundColor: activityFilter ==
-                                                  ActivityFilter.mostViewed
+                                                  SortOptions.mostViewed
                                               ? Colors.white
                                               : AppTheme(themeController
                                                       .brightness)
                                                   .inactiveChipColor,
                                           backgroundColor: activityFilter ==
-                                                  ActivityFilter.mostViewed
+                                                  SortOptions.mostViewed
                                               ? AppTheme(themeController
                                                       .brightness)
                                                   .primaryColor
@@ -203,7 +200,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                                   .chipColor),
                                       onPressed: () => setState(() {
                                             activityFilter =
-                                                ActivityFilter.mostViewed;
+                                                SortOptions.mostViewed;
                                           }),
                                       child: const Text('Most Viewed',
                                           textAlign: TextAlign.center,

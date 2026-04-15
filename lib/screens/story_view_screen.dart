@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/screens/MediaScreen/widgets/player_slider.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
+
+import 'MediaScreen/widgets/player_slider.dart';
 
 class StoryViewScreen extends StatefulWidget {
   final String id;

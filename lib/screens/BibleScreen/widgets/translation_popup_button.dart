@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:living_way/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/models/translation.dart';
-import 'package:living_way/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class TranslationPopupButton extends StatelessWidget {
@@ -12,12 +9,12 @@ class TranslationPopupButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final contentController = Provider.of<ContentController>(context);
+    final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
 
     return PopupMenuButton<Translation>(
-        initialValue: contentController.translation ??
-            contentController.translations.first,
+        initialValue:
+            bibleController.translation ?? bibleController.translations.first,
         child: Container(
             width: 50,
             padding: const EdgeInsets.all(5),
@@ -26,18 +23,18 @@ class TranslationPopupButton extends StatelessWidget {
                 borderRadius: BorderRadius.circular(20)),
             child: Center(
                 child: Text(
-                    contentController.translation?.name ??
-                        contentController.translations.first.name,
+                    bibleController.translation?.name ??
+                        bibleController.translations.first.name,
                     style: TextStyle(
                         color:
                             AppTheme(themeController.brightness).primaryColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 10)))),
-        itemBuilder: (context) => contentController.translations
+        itemBuilder: (context) => bibleController.translations
             .map<PopupMenuItem<Translation>>((translation) => PopupMenuItem(
                 onTap: () {
                   if (translation.status == TranslationStatus.available) {
-                    contentController.setTranslation = translation;
+                    bibleController.setTranslation = translation;
                     return;
                   }
 
@@ -52,7 +49,7 @@ class TranslationPopupButton extends StatelessWidget {
                   }
 
                   if (translation.status == TranslationStatus.ready) {
-                    contentController.downloadTranslation(translation.name);
+                    bibleController.downloadTranslation(translation.name);
                   }
                 },
                 child: Row(
