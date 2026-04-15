@@ -2,12 +2,7 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/core/models/book.dart';
-import 'package:living_way/core/models/translation.dart';
-import 'package:living_way/core/services/logging_service.dart';
-import 'package:living_way/core/utils/storage_functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:living_way/core/core.dart';
 
 class BibleController extends ChangeNotifier {
   List<Book> bible = [];
@@ -28,7 +23,6 @@ class BibleController extends ChangeNotifier {
   int? chapter;
   int? verse;
   Translation? translation;
-  SharedPreferences? sharedPreferences;
 
   BibleController() {
     loadTranslation(translations.first,
@@ -37,14 +31,12 @@ class BibleController extends ChangeNotifier {
   }
 
   Future<void> _initPersistence() async {
-    sharedPreferences = await SharedPreferences.getInstance();
-    final data = sharedPreferences?.getString('translations');
-    if (data != null) {
-      final list = (json.decode(data) as List)
-          .map((t) => Translation.fromMap(t))
-          .toList();
-      _populateTranslationList(list);
-    }
+    final data = await CacheService.instance
+        .readData<String>('translations', defaultValue: '[]');
+    final list =
+        (json.decode(data) as List).map((t) => Translation.fromMap(t)).toList();
+    _populateTranslationList(list);
+
     fetchTranslations();
   }
 
@@ -82,7 +74,7 @@ class BibleController extends ChangeNotifier {
 
       _populateTranslationList(list);
 
-      sharedPreferences?.setString(
+      await CacheService.instance.writeData(
           'translations',
           json.encode(
               translations.map((translation) => translation.toMap()).toList()));
@@ -116,7 +108,7 @@ class BibleController extends ChangeNotifier {
 
       loadTranslation(updatedTranslation,
           isDefault: updatedTranslation.isDefault);
-      sharedPreferences?.setString(
+      await CacheService.instance.writeData(
           'translations',
           json.encode(
               translations.map((translation) => translation.toMap()).toList()));

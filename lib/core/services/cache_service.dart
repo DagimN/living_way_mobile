@@ -1,0 +1,49 @@
+import 'package:shared_preferences/shared_preferences.dart';
+
+class CacheService {
+  static final CacheService _instance = CacheService._internal();
+  static CacheService get instance => _instance;
+  CacheService._internal();
+
+  Future<T> readData<T>(String key, {required T defaultValue}) async {
+    final sharedPreferences = SharedPreferencesAsync();
+
+    if (T is String) await sharedPreferences.getString(key);
+
+    if (T is bool) await sharedPreferences.getBool(key);
+
+    if (T is int) await sharedPreferences.getInt(key);
+
+    if (T is double) await sharedPreferences.getDouble(key);
+
+    if (T is List<String>) {
+      await sharedPreferences.getStringList(key);
+    }
+
+    return defaultValue;
+  }
+
+  Future<void> writeData<T>(String key, T value) async {
+    final sharedPreferences = SharedPreferencesAsync();
+
+    if (value is String) await sharedPreferences.setString(key, value);
+
+    if (value is bool) await sharedPreferences.setBool(key, value);
+
+    if (value is int) await sharedPreferences.setInt(key, value);
+
+    if (value is double) await sharedPreferences.setDouble(key, value);
+
+    if (value is List<String>) {
+      await sharedPreferences.setStringList(key, value);
+    }
+  }
+
+  Future<void> deleteData(String key) async {
+    final sharedPreferences = SharedPreferencesAsync();
+
+    sharedPreferences.remove(key);
+  }
+
+  //TODO: Implement Hive for complex data
+}

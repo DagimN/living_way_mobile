@@ -3,17 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/core/models/profile.dart';
-import 'package:living_way/core/models/signup_progress.dart';
-import 'package:living_way/core/services/logging_service.dart';
-import 'package:living_way/core/utils/security_functions.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/controllers/controllers.dart';
 
 class AuthController extends ChangeNotifier {
-  SharedPreferences? sharedPreferences;
   bool isLoggedIn = false;
   bool isLoggedInViaGoogle = false;
   bool isLoggedInViaManual = false;
@@ -21,13 +16,17 @@ class AuthController extends ChangeNotifier {
   ProfileController? profileController;
 
   AuthController() {
-    SharedPreferences.getInstance().then((instance) {
-      sharedPreferences = instance;
-      isLoggedIn = instance.getBool('isLoggedIn') ?? false;
-      isLoggedInViaGoogle = instance.getBool('isLoggedInViaGoogle') ?? false;
-      isLoggedInViaManual = instance.getBool('isLoggedInViaManual') ?? false;
-      notifyListeners();
-    });
+    init();
+  }
+
+  Future<void> init() async {
+    isLoggedIn = await CacheService.instance
+        .readData<bool>('isLoggedIn', defaultValue: false);
+    isLoggedInViaGoogle = await CacheService.instance
+        .readData<bool>('isLoggedInViaGoogle', defaultValue: false);
+    isLoggedInViaManual = await CacheService.instance
+        .readData<bool>('isLoggedInViaManual', defaultValue: false);
+    notifyListeners();
   }
 
   set setProfileController(ProfileController value) {
@@ -45,14 +44,9 @@ class AuthController extends ChangeNotifier {
       //TODO: Report error
 
       if (success) {
-        if (sharedPreferences != null) {
-          await sharedPreferences?.setBool('isLoggedIn', true);
-          await sharedPreferences?.setBool('isLoggedInViaGoogle', true);
-        } else {
-          const message = 'Shared preferences has not been initialized';
-          logger.e(message);
-          throw ErrorDescription(message);
-        }
+        await CacheService.instance.writeData<bool>('isLoggedIn', true);
+        await CacheService.instance
+            .writeData<bool>('isLoggedInViaGoogle', true);
 
         return true;
       }
@@ -80,23 +74,17 @@ class AuthController extends ChangeNotifier {
         "isClient": true
       });
 
-      if (response.statusCode != 201) return response;
+      if (!response.statusCode.isSuccess) return response;
 
       signupProgress = SignupProgress();
 
-      profileController?.setUserProfile =
-          Profile.fromJson(response.data['data']);
+      final data = response.data['data'];
+      profileController?.setUserProfile = Profile.fromJson(data);
 
-      if (sharedPreferences != null) {
-        await sharedPreferences?.setString(
-            'profile', json.encode(response.data['data']));
-        await sharedPreferences?.setBool('isLoggedIn', true);
-        await sharedPreferences?.setBool('isLoggedInViaManual', true);
-      } else {
-        const message = 'Shared preferences has not been initialized';
-        logger.e(message);
-        throw ErrorDescription(message);
-      }
+      await CacheService.instance
+          .writeData<String>('profile', json.encode(data));
+      await CacheService.instance.writeData<bool>('isLoggedIn', true);
+      await CacheService.instance.writeData<bool>('isLoggedInViaManual', true);
 
       return response;
     } on DioException catch (error) {
@@ -136,17 +124,11 @@ class AuthController extends ChangeNotifier {
         "client": true
       });
 
-      profileController?.setUserProfile =
-          Profile.fromJson(response.data['data']);
+      final data = response.data['data'];
 
-      if (sharedPreferences != null) {
-        await sharedPreferences?.setString(
-            'profile', json.encode(response.data['data']));
-      } else {
-        const message = 'Shared preferences has not been initialized';
-        logger.e(message);
-        throw ErrorDescription(message);
-      }
+      profileController?.setUserProfile = Profile.fromJson(data);
+      await CacheService.instance
+          .writeData<String>('profile', json.encode(data));
 
       return true;
     } catch (error) {
@@ -159,27 +141,14 @@ class AuthController extends ChangeNotifier {
 
   Future<void> logoutViaGoogle() async {
     await GoogleSignIn().signOut();
-
-    if (sharedPreferences != null) {
-      await sharedPreferences?.remove('profile');
-      await sharedPreferences?.setBool('isLoggedIn', false);
-      await sharedPreferences?.setBool('isLoggedInViaGoogle', false);
-    } else {
-      const message = 'Shared preferences has not been initialized';
-      logger.e(message);
-      throw ErrorDescription(message);
-    }
+    await CacheService.instance.deleteData('profile');
+    await CacheService.instance.writeData('isLoggedIn', false);
+    await CacheService.instance.writeData('isLoggedInViaGoogle', false);
   }
 
   Future<void> logoutViaManual() async {
-    if (sharedPreferences != null) {
-      await sharedPreferences?.remove('profile');
-      await sharedPreferences?.setBool('isLoggedIn', false);
-      await sharedPreferences?.setBool('isLoggedInViaManual', false);
-    } else {
-      const message = 'Shared preferences has not been initialized';
-      logger.e(message);
-      throw ErrorDescription(message);
-    }
+    await CacheService.instance.deleteData('profile');
+    await CacheService.instance.writeData<bool>('isLoggedIn', false);
+    await CacheService.instance.writeData<bool>('isLoggedInViaManual', false);
   }
 }

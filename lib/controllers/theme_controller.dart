@@ -1,45 +1,40 @@
-// ignore_for_file: constant_identifier_names
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
-enum AppLocale { en, am }
-
-enum Fonts { Futura, Georgia, Helvetica, OpenSans, Quicksand, RobotoSlab }
+import 'package:living_way/core/core.dart';
 
 class ThemeController extends ChangeNotifier {
-  SharedPreferences? sharedPreferences;
-
   double textSize = 0.3;
   AppLocale appLocale = AppLocale.en;
   Brightness brightness = Brightness.dark;
   Fonts selectedFont = Fonts.RobotoSlab;
 
   ThemeController() {
-    SharedPreferences.getInstance().then((instance) {
-      sharedPreferences = instance;
+    _init();
+  }
 
-      textSize = sharedPreferences?.getDouble('textSize') ?? 0.3;
-      appLocale = AppLocale.values[sharedPreferences?.getInt('locale') ?? 0];
-      brightness =
-          Brightness.values[sharedPreferences?.getInt('brightness') ?? 1];
-      selectedFont = Fonts.values[sharedPreferences?.getInt('font') ?? 5];
+  Future<void> _init() async {
+    textSize = await CacheService.instance
+        .readData<double>('textSize', defaultValue: 0.3);
+    appLocale = AppLocale.values[
+        await CacheService.instance.readData<int>('locale', defaultValue: 0)];
+    brightness = Brightness.values[await CacheService.instance
+        .readData<int>('brightness', defaultValue: 1)];
+    selectedFont = Fonts.values[
+        await CacheService.instance.readData<int>('font', defaultValue: 5)];
 
-      notifyListeners();
-    });
+    notifyListeners();
   }
 
   set setTextSize(double value) {
     textSize = value;
     notifyListeners();
-    sharedPreferences?.setDouble('textSize', value);
+    CacheService.instance.writeData<double>('textSize', value);
   }
 
   set setFont(Fonts value) {
     selectedFont = value;
     notifyListeners();
-    sharedPreferences?.setInt('font', value.index);
+    CacheService.instance.writeData<int>('font', value.index);
   }
 
   void toggleAppLocale() {
@@ -50,7 +45,7 @@ class ThemeController extends ChangeNotifier {
     }
 
     notifyListeners();
-    sharedPreferences?.setInt('locale', appLocale.index);
+    CacheService.instance.writeData<int>('locale', appLocale.index);
   }
 
   void toggleBrightness() {
@@ -61,6 +56,6 @@ class ThemeController extends ChangeNotifier {
     }
 
     notifyListeners();
-    sharedPreferences?.setInt('brightness', brightness.index);
+    CacheService.instance.writeData<int>('brightness', brightness.index);
   }
 }

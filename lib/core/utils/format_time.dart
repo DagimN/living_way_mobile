@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/core/core.dart';
 
 String formatDuration(int seconds) {
   int hours = seconds ~/ 3600;

@@ -16,6 +16,7 @@ export 'models/thread.dart';
 export 'models/topic.dart';
 export 'models/translation.dart';
 
+export 'services/cache_service.dart';
 export 'services/image_service.dart';
 export 'services/logging_service.dart';
 

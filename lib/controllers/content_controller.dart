@@ -3,13 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/core/constants/content.dart' as content;
-import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/core/enums.dart';
-import 'package:living_way/core/models/contacts.dart';
-import 'package:living_way/core/models/staff.dart';
-import 'package:living_way/core/models/thread.dart';
-import 'package:living_way/core/services/image_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:living_way/core/core.dart';
 
 class ContentController extends ChangeNotifier {
   List<String> images = [Urls.imageApiUrl];
@@ -95,43 +89,44 @@ class ContentController extends ChangeNotifier {
         type: ContactType.social)
   ];
 
-  SharedPreferences? sharedPreferences;
-
   SortOptions threadActivityFilter = SortOptions.latest;
   List<ThreadData> threads = content.threads;
 
   bool isFetchingStories = true; //FIXME: Revert back to original
 
   ContentController() {
-    SharedPreferences.getInstance().then((instance) async {
-      //TODO: Implement a cache service class
-      sharedPreferences = instance;
-
-      viewedStories = instance.getStringList('viewedStories') ?? [];
-      images = instance.getStringList('images') ?? [];
-      final lastImagesFetched =
-          DateTime.tryParse(instance.getString('lastImagesFetched') ?? "") ??
-              DateTime.now();
-
-      if (images.isEmpty ||
-          DateTime.now().difference(lastImagesFetched).inDays > 7) {
-        images = await ImageService.fetchImages(page: Random(15).toString());
-        instance.setStringList('images', images);
-        instance.setString('lastImagesFetched', DateTime.now().toString());
-      }
-
-      notifyListeners();
-    });
+    _init();
     //TODO: Fetch content from cache if can't access the server
 
     //TODO: Clean up files which are not being used (translations)
+  }
+
+  Future<void> _init() async {
+    viewedStories = await CacheService.instance
+        .readData<List<String>>('viewedStories', defaultValue: []);
+    images = await CacheService.instance
+        .readData<List<String>>('images', defaultValue: []);
+    final lastImagesFetched = DateTime.parse(await CacheService.instance
+        .readData<String>('lastImagesFetched',
+            defaultValue: DateTime.now().toString()));
+
+    if (images.isEmpty ||
+        DateTime.now().difference(lastImagesFetched).inDays > 7) {
+      images = await ImageService.fetchImages(page: Random(15).toString());
+      await CacheService.instance.writeData<List<String>>('images', images);
+      await CacheService.instance
+          .writeData<String>('lastImagesFetched', DateTime.now().toString());
+    }
+
+    notifyListeners();
   }
 
   void viewStory(String storyId) {
     if (!viewedStories.contains(storyId)) {
       viewedStories.add(storyId);
 
-      sharedPreferences?.setStringList('viewedStories', viewedStories);
+      CacheService.instance
+          .writeData<List<String>>('viewedStories', viewedStories);
 
       notifyListeners();
     }

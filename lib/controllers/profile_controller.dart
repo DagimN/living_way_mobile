@@ -2,16 +2,12 @@ import "dart:convert";
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
-import "package:living_way/core/constants/urls.dart";
-import "package:living_way/core/models/profile.dart";
-import "package:living_way/core/services/logging_service.dart";
-import "package:shared_preferences/shared_preferences.dart";
+import "package:living_way/core/core.dart";
 
 class ProfileController extends ChangeNotifier {
   final posts = [];
 
   Profile? userProfile;
-  SharedPreferences? sharedPreferences;
 
   bool isAnonymous = false;
   List<TimeOfDay> prayerTimes = [const TimeOfDay(hour: 6, minute: 00)];
@@ -19,29 +15,31 @@ class ProfileController extends ChangeNotifier {
   bool willRemindPrayer = false;
 
   ProfileController() {
-    SharedPreferences.getInstance().then((instance) async {
-      final profileCache = instance.getString('profile');
-      sharedPreferences = instance;
-      //TODO: Implement stay logged in feature
+    //TODO: Implement stay logged in feature
 
-      if (profileCache != null) {
-        final profile = Profile.fromJson(json.decode(profileCache));
-        userProfile = await syncProfile(profile) ?? profile;
-      }
+    _init();
+  }
 
-      willReceiveNotification =
-          instance.getBool('willReceiveNotification') ?? true;
-      willRemindPrayer = instance.getBool('willRemindPrayer') ?? false;
-      prayerTimes =
-          (instance.getStringList('reminders') ?? []).map((timeString) {
-        final time = timeString.split(":");
-        final hour = int.parse(time[0]);
-        final minute = int.parse(time[1]);
-        return TimeOfDay(hour: hour, minute: minute);
-      }).toList();
+  Future<void> _init() async {
+    final profileCache = await CacheService.instance
+        .readData<String>('profile', defaultValue: '{}');
+    final profile = Profile.fromJson(json.decode(profileCache));
 
-      notifyListeners();
-    });
+    userProfile = await syncProfile(profile) ?? profile;
+    willReceiveNotification = await CacheService.instance
+        .readData<bool>('willReceiveNotification', defaultValue: true);
+    willRemindPrayer = await CacheService.instance
+        .readData<bool>('willRemindPrayer', defaultValue: false);
+    prayerTimes = (await CacheService.instance
+            .readData<List<String>>('reminders', defaultValue: []))
+        .map((timeString) {
+      final time = timeString.split(":");
+      final hour = int.parse(time[0]);
+      final minute = int.parse(time[1]);
+      return TimeOfDay(hour: hour, minute: minute);
+    }).toList();
+
+    notifyListeners();
   }
 
   Future<Profile?> syncProfile(Profile profile) async {
@@ -58,10 +56,11 @@ class ProfileController extends ChangeNotifier {
 
       if (response.statusCode != 200) return null;
 
-      sharedPreferences?.setString(
-          'profile', json.encode(response.data['data']));
+      final data = response.data['data'];
+      await CacheService.instance
+          .writeData<String>('profile', json.encode(data));
 
-      return Profile.fromJson(response.data['data']);
+      return Profile.fromJson(data);
     } catch (error) {
       logger.e(error);
       return null;
@@ -116,21 +115,21 @@ class ProfileController extends ChangeNotifier {
   void removePrayerTime(int index) {
     prayerTimes.removeAt(index);
     notifyListeners();
-    sharedPreferences?.setStringList('reminders',
+    CacheService.instance.writeData<List<String>>('reminders',
         prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
   }
 
   void addPrayerTime(TimeOfDay value) {
     prayerTimes.add(value);
     notifyListeners();
-    sharedPreferences?.setStringList('reminders',
+    CacheService.instance.writeData<List<String>>('reminders',
         prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
   }
 
   void editPrayerTime(TimeOfDay value, int index) {
     prayerTimes.replaceRange(index, index + 1, [value]);
     notifyListeners();
-    sharedPreferences?.setStringList('reminders',
+    CacheService.instance.writeData<List<String>>('reminders',
         prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
   }
 
@@ -142,12 +141,12 @@ class ProfileController extends ChangeNotifier {
   set setWillReceiveNotification(bool value) {
     willReceiveNotification = value;
     notifyListeners();
-    sharedPreferences?.setBool('willReceiveNotification', value);
+    CacheService.instance.writeData<bool>('willReceiveNotification', value);
   }
 
   set setWillRemindPrayer(bool value) {
     willRemindPrayer = value;
     notifyListeners();
-    sharedPreferences?.setBool('willRemindPrayer', value);
+    CacheService.instance.writeData<bool>('willRemindPrayer', value);
   }
 }

@@ -50,7 +50,6 @@ dependencies:
   pretty_qr_code: ^3.3.0
   package_info_plus: ^8.0.2
   font_awesome_flutter: ^10.7.0
-  shared_preferences: ^2.2.3
   google_sign_in: ^6.2.1
   dio: ^5.7.0
   webview_flutter: ^4.8.0
@@ -66,6 +65,7 @@ dependencies:
   video_player: ^2.9.5
   shimmer: ^3.0.0
   functional_status_codes: ^3.2.0
+  shared_preferences: ^2.5.5
 
 dev_dependencies:
   flutter_test:
