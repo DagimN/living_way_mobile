@@ -67,7 +67,7 @@ abstract class ImageService {
         return [Urls.imageApiUrl];
       }
 
-      final data = List.from(response.data)
+      final data = List.from(response.data['results'])
           .map((item) => item['urls']['regular'] as String)
           .toList();
 

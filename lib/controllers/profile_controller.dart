@@ -23,9 +23,13 @@ class ProfileController extends ChangeNotifier {
   Future<void> _init() async {
     final profileCache = await CacheService.instance
         .readData<String>('profile', defaultValue: '{}');
-    final profile = Profile.fromJson(json.decode(profileCache));
 
-    userProfile = await syncProfile(profile) ?? profile;
+    if (profileCache != "{}") {
+      final profile = Profile.fromJson(json.decode(profileCache));
+
+      userProfile = await syncProfile(profile) ?? profile;
+    }
+
     willReceiveNotification = await CacheService.instance
         .readData<bool>('willReceiveNotification', defaultValue: true);
     willRemindPrayer = await CacheService.instance
