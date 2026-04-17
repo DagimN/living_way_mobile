@@ -33,14 +33,18 @@ class VerseOfTheDay extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const SizedBox(height: 36),
-                        Text('Verse of the day',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: isEnlarged ? 20 : 16)),
-                        Text(verseOfTheDay.labelWithTranslation,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: isEnlarged ? 28 : 24))
+                        FittedBox(
+                          child: Text('Verse of the day',
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: isEnlarged ? 20 : 16)),
+                        ),
+                        FittedBox(
+                          child: Text(verseOfTheDay.labelWithTranslation,
+                              style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: isEnlarged ? 28 : 24)),
+                        )
                       ])),
               Align(
                   alignment: Alignment.center,

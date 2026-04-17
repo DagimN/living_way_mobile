@@ -22,12 +22,15 @@ class UpdatesViewerExpanded extends StatelessWidget {
         backgroundColor: AppTheme(brightness).backgroundColor,
         body: Hero(
             tag: "updates",
-            child: Container(
-                width: screenWidth,
-                height: screenHeight,
-                decoration: BoxDecoration(
-                    image: DecorationImage(image: image, fit: BoxFit.cover),
-                    gradient: AppTheme(brightness).backgroundGradient),
-                child: const VerseOfTheDay(isEnlarged: true))));
+            child: Material(
+              type: MaterialType.transparency,
+              child: Container(
+                  width: screenWidth,
+                  height: screenHeight,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(image: image, fit: BoxFit.cover),
+                      gradient: AppTheme(brightness).backgroundGradient),
+                  child: const VerseOfTheDay(isEnlarged: true)),
+            )));
   }
 }

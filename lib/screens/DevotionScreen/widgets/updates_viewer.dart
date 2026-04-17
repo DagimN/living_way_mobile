@@ -36,17 +36,20 @@ class _UpdatesViewerState extends State<UpdatesViewer> {
         child: Builder(builder: (context) {
           return Hero(
               tag: 'updates',
-              child: Container(
-                  width: screenWidth,
-                  height: orientation == Orientation.portrait
-                      ? screenHeight * .4
-                      : screenWidth * .3,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          image: currentImage, fit: BoxFit.cover),
-                      borderRadius: BorderRadius.only(
-                          bottomLeft: radius, bottomRight: radius)),
-                  child: VerseOfTheDay(isEnlarged: false, radius: radius)));
+              child: Material(
+                type: MaterialType.transparency,
+                child: Container(
+                    width: screenWidth,
+                    height: orientation == Orientation.portrait
+                        ? screenHeight * .4
+                        : screenWidth * .3,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: currentImage, fit: BoxFit.cover),
+                        borderRadius: BorderRadius.only(
+                            bottomLeft: radius, bottomRight: radius)),
+                    child: VerseOfTheDay(isEnlarged: false, radius: radius)),
+              ));
         }));
   }
 }
