@@ -26,9 +26,8 @@ class _BibleScreenState extends State<BibleScreen>
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final selectedBook =
-        bibleController.book ?? bibleController.bible.firstOrNull;
-    final selectedChapter = bibleController.chapter ?? 0;
+    final selectedPassage = bibleController.passage;
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -56,8 +55,7 @@ class _BibleScreenState extends State<BibleScreen>
                                           orientation == Orientation.portrait
                                               ? screenWidth * .35
                                               : screenWidth * .25),
-                                  child: Text(
-                                      '${selectedBook?.name} ${selectedChapter + 1}',
+                                  child: Text(selectedPassage.label,
                                       style: TextStyle(
                                           color: AppTheme(
                                                   themeController.brightness)
@@ -87,8 +85,7 @@ class _BibleScreenState extends State<BibleScreen>
                           padding: const EdgeInsets.all(10),
                           child: const BibleNavigator());
                     }),
-                ChapterPage(
-                    verses: (selectedBook?.chapters[selectedChapter] ?? []))
+                ChapterPage(verses: (selectedPassage.verses))
               ])
             : Center(
                 child: CircularProgressIndicator(

@@ -13,6 +13,7 @@ class VerseOfTheDay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
+    final verseOfTheDay = bibleController.verseOfTheDay;
 
     return Container(
         decoration: BoxDecoration(
@@ -36,14 +37,14 @@ class VerseOfTheDay extends StatelessWidget {
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: isEnlarged ? 20 : 16)),
-                        Text('James 1:1 NKJV',
+                        Text(verseOfTheDay.labelWithTranslation,
                             style: TextStyle(
                                 color: Colors.white,
                                 fontSize: isEnlarged ? 28 : 24))
                       ])),
               Align(
                   alignment: Alignment.center,
-                  child: Text(bibleController.bible[58].chapters[0][0],
+                  child: Text(verseOfTheDay.text,
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,

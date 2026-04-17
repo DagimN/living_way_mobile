@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -18,15 +19,31 @@ class BibleController extends ChangeNotifier {
         path: 'assets/data/am_nasb.json',
         isDefault: true)
   ];
+  Translation translation = Translation(
+      name: "KJV",
+      status: TranslationStatus.available,
+      path: 'assets/data/en_kjv.json',
+      isDefault: true);
 
-  Book? book;
-  int? chapter;
-  int? verse;
-  Translation? translation;
+  Passage passage = Passage(book: Book.empty());
+  Passage verseOfTheDay = Passage(book: Book.empty());
 
   BibleController() {
-    loadTranslation(translations.first,
-        isDefault: translations.first.isDefault);
+    loadTranslation(translations.first, isDefault: translations.first.isDefault)
+        .then((value) {
+      final todaysDailyVerse = dailyVerses[Random()
+          .nextInt(dailyVerses.length - 1)]; //TODO: Send a push notification
+
+      verseOfTheDay.setVerseOfTheDay((
+        bible[todaysDailyVerse.$1],
+        todaysDailyVerse.$2,
+        todaysDailyVerse.$3,
+        todaysDailyVerse.$4
+      ));
+      verseOfTheDay.translation = translation;
+      notifyListeners();
+    });
+
     _initPersistence();
   }
 
@@ -121,38 +138,41 @@ class BibleController extends ChangeNotifier {
     }
   }
 
-  Future<void> loadTranslation(Translation t, {bool isDefault = false}) async {
+  Future<void> loadTranslation(Translation translation,
+      {bool isDefault = false}) async {
     List data = isDefault
-        ? await loadJson(t.path!)
-        : json.decode((await readFile(t.path ?? "")) ?? "[]");
-    bible = data
-        .map((e) => Book(
-            name: e['name'],
-            chapters: (e['chapters'] as List)
-                .map((c) => (c as List).map((v) => v.toString()).toList())
-                .toList()))
+        ? await loadJson(translation.path!)
+        : json.decode((await readFile(translation.path ?? "")) ?? "[]");
+    bible = data.indexed
+        .map((book) => Book.fromJson({...book.$2, 'index': book.$1}))
         .toList();
+
+    passage.book = bible[passage.book.index];
+    verseOfTheDay.book = bible[verseOfTheDay.book.index];
+    passage.translation = translation;
+    verseOfTheDay.translation;
     notifyListeners();
   }
 
   set setTranslation(Translation v) {
     translation = v;
     loadTranslation(v, isDefault: v.isDefault);
+    //TODO: Save translation to cache
     notifyListeners();
   }
 
-  set setBook(Book v) {
-    book = v;
+  set setBook(Book value) {
+    passage.book = value;
     notifyListeners();
   }
 
   set setChapter(int? v) {
-    chapter = v;
+    passage.chapter = v;
     notifyListeners();
   }
 
   set setVerse(int? v) {
-    verse = v;
+    passage.verse = v;
     notifyListeners();
   }
 }

@@ -48,9 +48,10 @@ class LivingWayApp extends StatelessWidget {
                           seedColor: AppTheme(themeController.brightness)
                               .primaryColor),
                       useMaterial3: true),
-                  home: authController.isLoggedIn
-                      ? const HomeScreen()
-                      : const IntroScreen(),
+                  home: const HomeScreen(),
+                  // authController.isLoggedIn FIXME: Prioritize anonymous login
+                  //     ? const HomeScreen()
+                  //     : const IntroScreen(),
                   routes: {
                       '/intro': (context) => const IntroScreen(),
                       '/login': (context) => const LoginScreen(),

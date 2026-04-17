@@ -1,3 +1,5 @@
+export 'models/passage.dart';
+
 export 'config/env.dart';
 export 'config/paths.dart';
 

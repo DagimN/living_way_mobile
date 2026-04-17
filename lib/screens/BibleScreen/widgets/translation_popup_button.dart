@@ -13,8 +13,7 @@ class TranslationPopupButton extends StatelessWidget {
     final themeController = Provider.of<ThemeController>(context);
 
     return PopupMenuButton<Translation>(
-        initialValue:
-            bibleController.translation ?? bibleController.translations.first,
+        initialValue: bibleController.translation,
         child: Container(
             width: 50,
             padding: const EdgeInsets.all(5),
@@ -22,9 +21,7 @@ class TranslationPopupButton extends StatelessWidget {
                 color: const Color(0xFFD9D9D9),
                 borderRadius: BorderRadius.circular(20)),
             child: Center(
-                child: Text(
-                    bibleController.translation?.name ??
-                        bibleController.translations.first.name,
+                child: Text(bibleController.translation.name,
                     style: TextStyle(
                         color:
                             AppTheme(themeController.brightness).primaryColor,

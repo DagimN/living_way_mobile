@@ -135,3 +135,9 @@ final threads = [
             likers: [])
       ])
 ];
+
+List<(int, int, int, int?)> dailyVerses = [
+  (48, 3, 14, null),
+  (39, 23, 25, 26),
+  (42, 14, 7, null)
+];

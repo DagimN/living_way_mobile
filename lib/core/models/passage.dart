@@ -1,0 +1,80 @@
+import 'book.dart';
+import 'translation.dart';
+
+class Passage {
+  Book book;
+  Translation? translation;
+  int? _chapter;
+  int? _verse;
+  int? _toVerse;
+
+  Passage({required this.book});
+
+  int get chapter => _chapter ?? 0;
+  int get verse => _verse ?? 0;
+
+  set chapter(int? v) {
+    _chapter = v;
+    _verse = 0;
+  }
+
+  set verse(int? v) {
+    _verse = v;
+  }
+
+  void setVerseOfTheDay((Book, int, int, int?) value) {
+    book = value.$1;
+    _chapter = value.$2;
+    _verse = value.$3;
+    _toVerse = value.$4;
+  }
+
+  String get text {
+    if (book.chapters.isNotEmpty) {
+      if (_toVerse != null) {
+        String text = '';
+
+        for (int from = _verse ?? 0; from <= _toVerse!; from++) {
+          text += '${book.chapters[_chapter ?? 0][from]} ';
+        }
+
+        return text;
+      }
+
+      return book.chapters[_chapter ?? 0][_verse ?? 0];
+    }
+
+    return '';
+  }
+
+  String get label {
+    final chapter = (_chapter ?? 0) + 1;
+    final verse = (_verse ?? 0) + 1;
+
+    if (_verse == null) {
+      return '${book.name} $chapter';
+    }
+
+    if (_toVerse == null) {
+      return '${book.name} $chapter:$verse';
+    }
+
+    return '${book.name} $chapter:$verse-$_toVerse';
+  }
+
+  String get labelWithTranslation {
+    final chapter = (_chapter ?? 0) + 1;
+    final verse = (_verse ?? 0) + 1;
+    final toVerse = (_toVerse ?? 0) + 1;
+
+    if (_toVerse == null) {
+      return '${book.name} $chapter:$verse  ${translation?.name}';
+    }
+
+    return '${book.name} $chapter:$verse-$toVerse  ${translation?.name}';
+  }
+
+  List<String> get verses {
+    return book.chapters.isEmpty ? [] : book.chapters[chapter];
+  }
+}

@@ -24,14 +24,13 @@ class _BibleTraverserState extends State<BibleTraverser>
     final layoutController = Provider.of<LayoutController>(context);
     final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final chapter = bibleController.chapter ?? 0;
-    final selectedBook =
-        bibleController.book ?? bibleController.bible.firstOrNull;
+    final selectedPassage = bibleController.passage;
 
     final isTraversing = layoutController.getSelectedHomePageNavigation ==
         HomePageNavigation.bible;
-    final isFirst = chapter == 0;
-    final isLast = chapter == (selectedBook?.chapters.length ?? 0) - 1;
+    final isFirst = selectedPassage.chapter == 0;
+    final isLast =
+        selectedPassage.chapter == (selectedPassage.book.chapters.length) - 1;
 
     layoutController.setBibleTraverserAnimationController = animationController;
 
@@ -61,7 +60,7 @@ class _BibleTraverserState extends State<BibleTraverser>
                                     onPressed: () {
                                       if (!isFirst) {
                                         bibleController.setChapter =
-                                            chapter - 1;
+                                            selectedPassage.chapter - 1;
                                       }
                                     },
                                     icon: Icon(Icons.arrow_back_ios_rounded,
@@ -91,7 +90,7 @@ class _BibleTraverserState extends State<BibleTraverser>
                                       onPressed: () {
                                         if (!isLast) {
                                           bibleController.setChapter =
-                                              chapter + 1;
+                                              selectedPassage.chapter + 1;
                                         }
                                       },
                                       icon: Icon(

@@ -24,14 +24,10 @@ class _ChapterPageState extends State<ChapterPage>
     final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final selectedVerse = bibleController.verse;
-    final selectedBook =
-        bibleController.book ?? bibleController.bible.firstOrNull;
-    final selectedChapter = bibleController.chapter ?? 0;
+    final selectedPassage = bibleController.passage;
 
-    List<GlobalKey> verseKeys = List.generate(
-        selectedBook?.chapters[selectedChapter].length ?? 0,
-        (index) => GlobalKey());
+    List<GlobalKey> verseKeys =
+        List.generate(selectedPassage.verses.length, (index) => GlobalKey());
     layoutController.setVerseKeys = verseKeys;
     layoutController.setVerseAnimationController = verseHighlightController;
 
@@ -48,7 +44,8 @@ class _ChapterPageState extends State<ChapterPage>
                       return AnimatedBuilder(
                           animation: verseHighlightController,
                           builder: (context, child) {
-                            final isSelectedVerse = selectedVerse == index;
+                            final isSelectedVerse =
+                                selectedPassage.verse == index;
 
                             return Container(
                                 margin:
