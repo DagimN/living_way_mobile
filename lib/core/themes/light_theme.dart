@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 // Colors
-const primaryColor = Color(0xFF4F398A);
+const primaryColor = Color(0xFFDA920D);
 const backgroundColor = Colors.white;
 const primaryPaleColor = Color(0xFF847AA0);
 const primaryPanelColor = Color(0xFFF6F0FF);

@@ -19,6 +19,7 @@ class LayoutController extends ChangeNotifier {
   List<GlobalKey> verseKeys = [];
   int initialIntroductionPageIndex = 0;
   bool showSplashScreen = true;
+  bool showVerseOfTheDayControls = true;
 
   final List<Map<String, String>> settingsNavigation = [
     {'name': "General", 'route': '/settings'},
@@ -103,6 +104,11 @@ class LayoutController extends ChangeNotifier {
 
   set setIntroPageIndex(int value) {
     initialIntroductionPageIndex = value;
+    notifyListeners();
+  }
+
+  set setShowVerseOfTheDayControls(bool value) {
+    showVerseOfTheDayControls = value;
     notifyListeners();
   }
 }

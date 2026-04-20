@@ -1,11 +1,17 @@
 import 'dart:io';
+import 'dart:typed_data';
+import 'dart:ui' as ui;
 
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
+import 'package:gal/gal.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
 import 'package:living_way/core/config/env.dart';
 import 'package:living_way/core/constants/urls.dart';
 import 'package:living_way/core/services/logging_service.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 abstract class ImageService {
@@ -75,6 +81,69 @@ abstract class ImageService {
     } catch (error) {
       logger.e(error);
       return [Urls.imageApiUrl];
+    }
+  }
+
+  static Future<void> captureAndSaveImage(
+      BuildContext context, GlobalKey key) async {
+    try {
+      final isGranted = await checkPermission();
+
+      if (!isGranted) {
+        throw ErrorDescription(
+            'Permission for accessing the storage is denied');
+      }
+
+      if (key.currentContext == null) {
+        throw ErrorDescription('No context for the repaint boundary.');
+      }
+
+      RenderRepaintBoundary boundary =
+          key.currentContext?.findRenderObject() as RenderRepaintBoundary;
+
+      ui.Image image = await boundary.toImage(pixelRatio: 3.0);
+      ByteData? byteData =
+          await image.toByteData(format: ui.ImageByteFormat.png);
+
+      if (byteData == null) {
+        throw ErrorDescription('Failed to get image data');
+      }
+
+      final tempDir = await getTemporaryDirectory();
+      final file = await File('${tempDir.path}/verse_share.png').create();
+      await file.writeAsBytes(byteData.buffer.asUint8List());
+
+      await Gal.putImage(file.path, album: 'Living Way');
+
+      await file.delete();
+
+      logger.i('Image successfully saved');
+      // Show Success Message
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Row(
+              children: [
+                Icon(Icons.check_circle, color: Colors.white),
+                SizedBox(width: 12),
+                Text('Saved to Living Way album'),
+              ],
+            ),
+            backgroundColor: const Color(0xFF16A085), // Your brand Teal
+            behavior: SnackBarBehavior.floating,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+            duration: const Duration(seconds: 2),
+          ),
+        );
+      }
+    } catch (e) {
+      logger.e("Error capturing image: $e");
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to save image.')),
+        );
+      }
     }
   }
 }

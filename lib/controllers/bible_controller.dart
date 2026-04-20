@@ -175,4 +175,9 @@ class BibleController extends ChangeNotifier {
     passage.verse = v;
     notifyListeners();
   }
+
+  set setPassage(Passage value) {
+    passage = value;
+    notifyListeners();
+  }
 }

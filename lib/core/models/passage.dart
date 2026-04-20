@@ -13,13 +13,17 @@ class Passage {
   int get chapter => _chapter ?? 0;
   int get verse => _verse ?? 0;
 
-  set chapter(int? v) {
-    _chapter = v;
+  set chapter(int? value) {
+    _chapter = value;
     _verse = 0;
   }
 
-  set verse(int? v) {
-    _verse = v;
+  set verse(int? value) {
+    _verse = value;
+  }
+
+  set toVerse(int? value) {
+    _toVerse = value;
   }
 
   void setVerseOfTheDay((Book, int, int, int?) value) {

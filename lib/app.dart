@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/screens/screens.dart';
 import 'package:living_way/core/themes/app_theme.dart';
@@ -66,7 +65,7 @@ class LivingWayApp extends StatelessWidget {
                       '/donation': (context) => const DonationScreen()
                     })
               : MaterialApp(
-                  debugShowCheckedModeBanner: appFlavor != "prod",
+                  debugShowCheckedModeBanner: false,
                   home: SplashScreen(context));
         }));
   }
