@@ -8,7 +8,8 @@ import 'verse_of_the_day.dart';
 
 class UpdatesViewerExpanded extends StatefulWidget {
   final CachedNetworkImageProvider image;
-  const UpdatesViewerExpanded({super.key, required this.image});
+  final Widget? child;
+  const UpdatesViewerExpanded({super.key, required this.image, this.child});
 
   @override
   State<UpdatesViewerExpanded> createState() => _UpdatesViewerExpandedState();
@@ -54,16 +55,18 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
                 borderRadius: BorderRadius.circular(16),
                 child: Material(
                   type: MaterialType.transparency,
-                  child: Container(
-                      width: screenWidth,
-                      height: screenHeight,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              image: widget.image, fit: BoxFit.cover),
-                          gradient: AppTheme(brightness).backgroundGradient),
-                      child: VerseOfTheDay(
-                          updatesViewerExpandedKey: globalKey,
-                          isEnlarged: true)),
+                  child: widget.child ??
+                      Container(
+                          width: screenWidth,
+                          height: screenHeight,
+                          decoration: BoxDecoration(
+                              image: DecorationImage(
+                                  image: widget.image, fit: BoxFit.cover),
+                              gradient:
+                                  AppTheme(brightness).backgroundGradient),
+                          child: VerseOfTheDay(
+                              updatesViewerExpandedKey: globalKey,
+                              isEnlarged: true)),
                 ),
               )),
         ));

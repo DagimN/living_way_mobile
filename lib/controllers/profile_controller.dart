@@ -36,8 +36,9 @@ class ProfileController extends ChangeNotifier {
         .readData<bool>('willRemindPrayer', defaultValue: false);
     prayerTimes = (await CacheService.instance
             .readData<List<String>>('reminders', defaultValue: []))
-        .map((timeString) {
-      final time = timeString.split(":");
+        .map<List<TimeOfDay>>((timeString) {
+      //BUG: type '(dynamic) => TimeOfDay' is not a subtype of type '(String) => List<TimeOfDay>' of 'f'
+      final time = (timeString as String).split(":");
       final hour = int.parse(time[0]);
       final minute = int.parse(time[1]);
       return TimeOfDay(hour: hour, minute: minute);

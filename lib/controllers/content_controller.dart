@@ -105,12 +105,12 @@ class ContentController extends ChangeNotifier {
     viewedStories = await CacheService.instance
         .readData<List<String>>('viewedStories', defaultValue: []);
     images = await CacheService.instance
-        .readData<List<String>>('images', defaultValue: []);
+        .readData<List<String>>('images', defaultValue: [Urls.imageApiUrl]);
     final lastImagesFetched = DateTime.parse(await CacheService.instance
         .readData<String>('lastImagesFetched',
             defaultValue: DateTime.now().toString()));
 
-    if (images.isEmpty ||
+    if (images.length == 1 ||
         DateTime.now().difference(lastImagesFetched).inDays > 7) {
       images = await ImageService.fetchImages(page: Random(15).toString());
       await CacheService.instance.writeData<List<String>>('images', images);

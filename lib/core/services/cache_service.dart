@@ -5,22 +5,31 @@ class CacheService {
   static CacheService get instance => _instance;
   CacheService._internal();
 
-  Future<T> readData<T>(String key, {required T defaultValue}) async {
+  Future readData<T>(String key, {required T defaultValue}) async {
     final sharedPreferences = SharedPreferencesAsync();
+    dynamic data;
 
-    if (T is String) await sharedPreferences.getString(key);
-
-    if (T is bool) await sharedPreferences.getBool(key);
-
-    if (T is int) await sharedPreferences.getInt(key);
-
-    if (T is double) await sharedPreferences.getDouble(key);
-
-    if (T is List<String>) {
-      await sharedPreferences.getStringList(key);
+    if (T == String) {
+      data = await sharedPreferences.getString(key);
     }
 
-    return defaultValue;
+    if (T == bool) {
+      data = await sharedPreferences.getBool(key);
+    }
+
+    if (T == int) {
+      data = await sharedPreferences.getInt(key);
+    }
+
+    if (T == double) {
+      data = await sharedPreferences.getDouble(key);
+    }
+
+    if (T == List<String>) {
+      data = await sharedPreferences.getStringList(key);
+    }
+
+    return data ?? defaultValue;
   }
 
   Future<void> writeData<T>(String key, T value) async {

@@ -16,9 +16,13 @@ class DevotionScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final activityController = Provider.of<ActivityController>(context);
 
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
+    List<ActivityContent> updates = activityController.activityList
+        .where((activity) => activity.isOngoing && activity.banner != null)
+        .toList();
 
     return SingleChildScrollView(
         padding: const EdgeInsets.only(bottom: 100),
@@ -28,9 +32,9 @@ class DevotionScreen extends StatelessWidget {
                 : screenHeight * .7,
             child: SingleChildScrollView(
                 child: Column(mainAxisSize: MainAxisSize.min, children: [
-              const UpdatesViewer(),
+              UpdatesViewer(updates: updates),
               BaseAppBar(
-                  title: Text('Today',
+                  title: Text('Home',
                       style: TextStyle(
                           fontSize: 32,
                           color: AppTheme(themeController.brightness).iconColor,
