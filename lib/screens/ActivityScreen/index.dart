@@ -9,7 +9,6 @@ import 'widgets/event.dart';
 import 'widgets/external_link.dart';
 import 'widgets/gallery.dart';
 import 'widgets/poll.dart';
-import 'widgets/timeline_container.dart';
 
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({super.key});

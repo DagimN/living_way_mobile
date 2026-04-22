@@ -50,11 +50,13 @@ class _AvatarStackState extends State<AvatarStack> {
                     color: Colors.grey)),
           if (widget.participantCount != null)
             ...List.generate(count, (value) {
-              double index = (100 - (20 * value)) / 100;
+              double index = ((100 - (20 * value)) / 100);
+
               return Positioned(
                   left: 45 - (45 * index),
                   child: CircleAvatar(
-                      backgroundColor: Colors.grey.withOpacity(index),
+                      backgroundColor:
+                          Colors.grey.withAlpha((index * 255).toInt()),
                       radius: 14));
             }),
           if (widget.icon != null) widget.icon!

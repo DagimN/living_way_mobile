@@ -40,6 +40,8 @@ class TimelineContainer extends StatelessWidget {
           return Icons.photo;
         case ContentType.article:
           return Icons.article;
+        case ContentType.general:
+          return Icons.radio_button_checked;
         default:
           return Icons.calendar_month;
       }

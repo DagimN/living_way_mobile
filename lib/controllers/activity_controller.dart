@@ -12,6 +12,8 @@ class ActivityController extends ChangeNotifier {
   int pageIndex = 0;
   bool isFetching = false;
 
+  //TODO: Implement notification whenever an activity schedule is approaching
+
   ActivityController() {
     scrollController.addListener(() {
       if (scrollController.position.pixels >

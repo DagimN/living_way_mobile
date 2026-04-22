@@ -13,6 +13,7 @@ class ActivityContent {
   final String? externalLink;
   final String? locationUrl;
   final ContentBanner? banner;
+  final bool isRecurring; // TODO: Update model in the backend
 
   ActivityContent(
       {this.title,
@@ -26,6 +27,7 @@ class ActivityContent {
       this.banner,
       this.isOngoing = false,
       this.upcomingDate,
+      this.isRecurring = false,
       required this.id,
       required this.type,
       required this.timestamp}) {
@@ -39,7 +41,23 @@ class ActivityContent {
     }
   }
 
+  static DateTime _getNextOccurrence(int targetWeekday) {
+    DateTime now = DateTime.now();
+    int daysUntilNext = (targetWeekday - now.weekday + 7) % 7;
+
+    if (daysUntilNext == 0) daysUntilNext = 7;
+
+    return now.add(Duration(days: daysUntilNext));
+  }
+
   static ActivityContent fromJson(Map<String, dynamic> json) {
+    final isRecurring = json['isRecurring'] ?? false;
+    DateTime timestamp = DateTime.parse(json['timestamp'] ?? json['createdAt']);
+
+    if (isRecurring) {
+      timestamp = _getNextOccurrence(timestamp.weekday);
+    }
+
     return ActivityContent(
         id: json['_id'],
         title: json['title'],
@@ -58,8 +76,11 @@ class ActivityContent {
         locationUrl: json['locationUrl'],
         banner: ContentBanner.fromJson(json['banner']),
         isOngoing: json['isOngoing'] ?? false,
-        type: ContentType.fromString(json['type']),
-        timestamp: DateTime.parse(json['timestamp'] ?? json['createdAt']),
+        type: isRecurring
+            ? ContentType.general
+            : ContentType.fromString(json['type']),
+        timestamp: timestamp,
+        isRecurring: json['isRecurring'] ?? false,
         upcomingDate: json['upcomingDate'] != null
             ? DateTime.parse(json['upcomingDate'])
             : null);
@@ -112,9 +133,12 @@ class ActivityContent {
       map.addEntries([MapEntry('upcomingDate', upcomingDate)]);
     }
 
-    map.addEntries([MapEntry('isOngoing', isOngoing)]);
-    map.addEntries([MapEntry('type', type.name)]);
-    map.addEntries([MapEntry('timestamp', timestamp.toIso8601String())]);
+    map.addEntries([
+      MapEntry('isOngoing', isOngoing),
+      MapEntry('isRecurring', isRecurring),
+      MapEntry('type', type.name),
+      MapEntry('timestamp', timestamp.toIso8601String())
+    ]);
 
     return map;
   }
@@ -158,6 +182,7 @@ enum ContentType {
   article,
   external,
   event,
+  general,
   undefined;
 
   static ContentType fromString(value) {
@@ -172,6 +197,8 @@ enum ContentType {
         return ContentType.external;
       case "event":
         return ContentType.event;
+      case "general":
+        return ContentType.general;
       default:
         return ContentType.undefined;
     }
