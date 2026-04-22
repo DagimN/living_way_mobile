@@ -75,8 +75,6 @@ class StoryViewScreenState extends State<StoryViewScreen> {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
 
-    double screenHeight = MediaQuery.sizeOf(context).height;
-
     return SafeArea(
         child: Scaffold(
             backgroundColor:
@@ -91,52 +89,47 @@ class StoryViewScreenState extends State<StoryViewScreen> {
               type: MaterialType.transparency,
               child: Hero(
                   tag: 'videoPlayer - ${widget.id}',
-                  child: SingleChildScrollView(
-                    child: SizedBox(
-                      height: screenHeight * .955,
-                      child: Stack(children: [
-                        VideoPlayer(widget.controller),
-                        Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const SizedBox(),
-                              IconButton(
-                                  style: IconButton.styleFrom(
-                                      backgroundColor: Colors.white,
-                                      shape: const CircleBorder()),
-                                  onPressed: () async {
-                                    if (widget.controller.value.isPlaying) {
-                                      await widget.controller.pause();
-                                      setState(() {});
-                                      return;
-                                    }
+                  child: Stack(children: [
+                    VideoPlayer(widget.controller),
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const SizedBox(),
+                          IconButton(
+                              style: IconButton.styleFrom(
+                                  backgroundColor: Colors.white,
+                                  shape: const CircleBorder()),
+                              onPressed: () async {
+                                if (widget.controller.value.isPlaying) {
+                                  await widget.controller.pause();
+                                  setState(() {});
+                                  return;
+                                }
 
-                                    if (!widget.controller.value.isPlaying) {
-                                      await widget.controller.play();
-                                      setState(() {});
-                                      return;
-                                    }
-                                  },
-                                  icon: Icon(widget.controller.value.isPlaying
-                                      ? Icons.pause
-                                      : Icons.play_arrow)),
-                              SizedBox(
-                                  height: 50,
-                                  child: PlayerSlider(
-                                      end: widget.controller.value.duration
-                                          .inMilliseconds
-                                          .toDouble(),
-                                      value: currentSeek,
-                                      onChanged: (value) async {
-                                        await widget.controller.seekTo(Duration(
-                                            milliseconds: value.toInt()));
+                                if (!widget.controller.value.isPlaying) {
+                                  await widget.controller.play();
+                                  setState(() {});
+                                  return;
+                                }
+                              },
+                              icon: Icon(widget.controller.value.isPlaying
+                                  ? Icons.pause
+                                  : Icons.play_arrow)),
+                          SizedBox(
+                              height: 50,
+                              child: PlayerSlider(
+                                  end: widget
+                                      .controller.value.duration.inMilliseconds
+                                      .toDouble(),
+                                  value: currentSeek,
+                                  onChanged: (value) async {
+                                    await widget.controller.seekTo(
+                                        Duration(milliseconds: value.toInt()));
 
-                                        setState(() {});
-                                      }))
-                            ])
-                      ]),
-                    ),
-                  )),
+                                    setState(() {});
+                                  }))
+                        ])
+                  ])),
             )));
   }
 }
