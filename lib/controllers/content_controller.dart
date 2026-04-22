@@ -7,6 +7,7 @@ import 'package:flutter/widgets.dart';
 import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class ContentController extends ChangeNotifier {
   List<String> images = [Urls.imageApiUrl];
@@ -32,7 +33,7 @@ class ContentController extends ChangeNotifier {
             "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
         timestamnp: DateTime(2022)),
     Story(
-        id: "5",
+        id: "6",
         sourceUrl:
             "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
         timestamnp: DateTime(2021)),
@@ -166,7 +167,7 @@ class ContentController extends ChangeNotifier {
     }
   }
 
-  void fetchStories() async {
+  Future<void> fetchStories() async {
     //TODO: Implement endpoint for fetching stories from the API
     for (final item in stories.indexed) {
       final index = item.$1;
@@ -174,7 +175,13 @@ class ContentController extends ChangeNotifier {
 
       try {
         final tempDir = await getTemporaryDirectory();
-        final file = File('${tempDir.path}/${story.id}.mp4');
+        final Directory directory = Directory('${tempDir.path}/stories');
+
+        if (!directory.existsSync()) {
+          await directory.create(recursive: true);
+        }
+
+        final file = File('${tempDir.path}/stories/${story.id}.mp4');
 
         if (!file.existsSync()) {
           final response = await http.get(Uri.parse(story.sourceUrl));
@@ -195,6 +202,24 @@ class ContentController extends ChangeNotifier {
     stories.sort((_, storyB) => storyB.isViewed ? -1 : 1);
 
     notifyListeners();
+
+    cleanResources();
+  }
+
+  Future<void> cleanResources() async {
+    final Directory tempDir = await getTemporaryDirectory();
+    final List<FileSystemEntity> entities =
+        await Directory('${tempDir.path}/stories')
+            .list(recursive: false, followLinks: false)
+            .toList();
+
+    for (final entity in entities) {
+      if (entity is File &&
+          !stories.any(
+              (story) => story.id == basenameWithoutExtension(entity.path))) {
+        await entity.delete();
+      }
+    }
   }
 
   set setThreadFilter(SortOptions value) {
