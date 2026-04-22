@@ -1,13 +1,43 @@
+import 'dart:io';
 import 'dart:math';
 
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ContentController extends ChangeNotifier {
   List<String> images = [Urls.imageApiUrl];
-  List<String> stories = ['1', '2', '3', '4', '5', '6'];
+  List<Story> stories = [
+    Story(
+        id: '1',
+        sourceUrl:
+            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        timestamnp: DateTime(2025)),
+    Story(
+        id: '2',
+        sourceUrl:
+            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        timestamnp: DateTime(2024)),
+    Story(
+        id: '3',
+        sourceUrl:
+            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        timestamnp: DateTime(2023)),
+    Story(
+        id: '4',
+        sourceUrl:
+            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        timestamnp: DateTime(2022)),
+    Story(
+        id:
+            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        sourceUrl:
+            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        timestamnp: DateTime(2021)),
+  ];
   List<String> viewedStories = [];
   List<Staff> staffs = [
     Staff(
@@ -92,7 +122,7 @@ class ContentController extends ChangeNotifier {
   SortOptions threadActivityFilter = SortOptions.latest;
   List<ThreadData> threads = content.threads;
 
-  bool isFetchingStories = true; //FIXME: Revert back to original
+  bool isFetchingStories = false;
 
   ContentController() {
     _init();
@@ -102,6 +132,11 @@ class ContentController extends ChangeNotifier {
   }
 
   Future<void> _init() async {
+    await loadCache();
+    fetchStories();
+  }
+
+  Future<void> loadCache() async {
     viewedStories = await CacheService.instance
         .readData<List<String>>('viewedStories', defaultValue: []);
     images = await CacheService.instance
@@ -121,15 +156,45 @@ class ContentController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void viewStory(String storyId) {
+  void viewStory(String storyId) async {
     if (!viewedStories.contains(storyId)) {
       viewedStories.add(storyId);
 
-      CacheService.instance
+      await CacheService.instance
           .writeData<List<String>>('viewedStories', viewedStories);
 
       notifyListeners();
     }
+  }
+
+  void fetchStories() async {
+    for (final item in stories.indexed) {
+      final index = item.$1;
+      final story = item.$2;
+
+      try {
+        final tempDir = await getTemporaryDirectory();
+        final file = File('${tempDir.path}/${story.id}.mp4');
+
+        if (!file.existsSync()) {
+          final response = await http.get(Uri.parse(story.sourceUrl));
+          await file.writeAsBytes(response.bodyBytes);
+        }
+
+        stories[index].file = file;
+        stories[index].isViewed = viewedStories.contains(story.id);
+
+        notifyListeners();
+      } catch (error) {
+        logger.e('$error - on story item $index');
+      }
+    }
+
+    stories.sort(
+        (storyA, storyB) => storyB.timestamnp.compareTo(storyA.timestamnp));
+    stories.sort((_, storyB) => storyB.isViewed ? -1 : 1);
+
+    notifyListeners();
   }
 
   set setThreadFilter(SortOptions value) {

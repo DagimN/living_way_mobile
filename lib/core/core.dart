@@ -16,6 +16,7 @@ export 'models/media_metadata.dart';
 export 'models/profile.dart';
 export 'models/signup_progress.dart';
 export 'models/staff.dart';
+export 'models/story.dart';
 export 'models/thread.dart';
 export 'models/topic.dart';
 export 'models/translation.dart';

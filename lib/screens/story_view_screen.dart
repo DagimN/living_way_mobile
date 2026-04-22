@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
@@ -8,43 +9,59 @@ import 'MediaScreen/widgets/player_slider.dart';
 
 class StoryViewScreen extends StatefulWidget {
   final String id;
-  final String videoUrl;
-  const StoryViewScreen({super.key, required this.id, required this.videoUrl});
+  final VideoPlayerController controller;
+  const StoryViewScreen(
+      {super.key, required this.id, required this.controller});
 
   @override
   StoryViewScreenState createState() => StoryViewScreenState();
 }
 
 class StoryViewScreenState extends State<StoryViewScreen> {
-  late final controller =
-      VideoPlayerController.networkUrl(Uri.parse(widget.videoUrl));
   double currentSeek = 0;
-  bool isInitialized = false;
-  //TODO: Only portrait mode in this screen
+  bool isClosing = false;
+
   @override
   void initState() {
     super.initState();
-    controller.initialize().then((_) {
-      setState(() {
-        isInitialized = true;
-      });
-      controller.play();
+
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+
+    widget.controller.seekTo(const Duration(seconds: 0));
+    widget.controller.setVolume(1);
+    widget.controller.play();
+
+    Future.delayed(const Duration(milliseconds: 3000),
+        () => widget.controller.addListener(videoControllerListener));
+  }
+
+  void videoControllerListener() {
+    setState(() {
+      currentSeek = widget.controller.value.position.inMilliseconds.toDouble();
     });
 
-    controller.addListener(() {
+    if (widget.controller.value.position == widget.controller.value.duration &&
+        !isClosing) {
       setState(() {
-        currentSeek = controller.value.position.inMilliseconds.toDouble();
+        isClosing = true;
       });
-
-      if (controller.value.position == controller.value.duration) {
-        Navigator.pop(context);
-      }
-    });
+      Navigator.pop(context);
+    }
   }
 
   @override
   void dispose() {
-    controller.dispose();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+
+    widget.controller.removeListener(videoControllerListener);
+    widget.controller.setVolume(0);
     super.dispose();
   }
 
@@ -52,53 +69,65 @@ class StoryViewScreenState extends State<StoryViewScreen> {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
 
+    double screenHeight = MediaQuery.sizeOf(context).height;
+
     return SafeArea(
         child: Scaffold(
             backgroundColor:
                 AppTheme(themeController.brightness).backgroundColor,
+            extendBody: true,
+            extendBodyBehindAppBar: true,
+            appBar: AppBar(
+              foregroundColor: Colors.white,
+              backgroundColor: Colors.transparent,
+            ),
             body: Hero(
                 tag: 'videoPlayer - ${widget.id}',
-                child: Stack(children: [
-                  VideoPlayer(controller),
-                  Column(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        const SizedBox(),
-                        if (isInitialized)
-                          IconButton(
-                              style: IconButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: const CircleBorder()),
-                              onPressed: () async {
-                                if (controller.value.isPlaying) {
-                                  await controller.pause();
-                                  setState(() {});
-                                  return;
-                                }
-
-                                if (!controller.value.isPlaying) {
-                                  await controller.play();
-                                  setState(() {});
-                                  return;
-                                }
-                              },
-                              icon: Icon(controller.value.isPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow)),
-                        if (isInitialized)
-                          SizedBox(
-                              height: 50,
-                              child: PlayerSlider(
-                                  end: controller.value.duration.inMilliseconds
-                                      .toDouble(),
-                                  value: currentSeek,
-                                  onChanged: (value) async {
-                                    await controller.seekTo(
-                                        Duration(milliseconds: value.toInt()));
-
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    height: screenHeight * .955,
+                    child: Stack(children: [
+                      VideoPlayer(widget.controller),
+                      Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const SizedBox(),
+                            IconButton(
+                                style: IconButton.styleFrom(
+                                    backgroundColor: Colors.white,
+                                    shape: const CircleBorder()),
+                                onPressed: () async {
+                                  if (widget.controller.value.isPlaying) {
+                                    await widget.controller.pause();
                                     setState(() {});
-                                  }))
-                      ])
-                ]))));
+                                    return;
+                                  }
+
+                                  if (!widget.controller.value.isPlaying) {
+                                    await widget.controller.play();
+                                    setState(() {});
+                                    return;
+                                  }
+                                },
+                                icon: Icon(widget.controller.value.isPlaying
+                                    ? Icons.pause
+                                    : Icons.play_arrow)),
+                            SizedBox(
+                                height: 50,
+                                child: PlayerSlider(
+                                    end: widget.controller.value.duration
+                                        .inMilliseconds
+                                        .toDouble(),
+                                    value: currentSeek,
+                                    onChanged: (value) async {
+                                      await widget.controller.seekTo(Duration(
+                                          milliseconds: value.toInt()));
+
+                                      setState(() {});
+                                    }))
+                          ])
+                    ]),
+                  ),
+                ))));
   }
 }

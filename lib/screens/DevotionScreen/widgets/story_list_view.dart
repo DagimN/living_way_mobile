@@ -10,11 +10,10 @@ class StoryListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final devotionController = Provider.of<DevotionController>(context);
     final contentController = Provider.of<ContentController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final stories = contentController.stories;
-    //TODO: Sort stories which are not yet seen as priority as well as fetching from the api
+    final stories =
+        contentController.stories.where((story) => story.file != null).toList();
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -25,7 +24,7 @@ class StoryListView extends StatelessWidget {
         height: orientation == Orientation.portrait
             ? screenHeight * .30
             : screenWidth * .30,
-        child: !devotionController.isFetching || stories.isNotEmpty
+        child: !contentController.isFetchingStories
             ? stories.isNotEmpty
                 ? ListView.builder(
                     shrinkWrap: true,
@@ -34,13 +33,7 @@ class StoryListView extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final story = stories[index];
 
-                      return StoryCard(
-                          id: story,
-                          videoUrl:
-                              "https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4",
-                          isViewed:
-                              contentController.viewedStories.contains(story),
-                          isFirst: index == 0);
+                      return StoryCard(story: story, isFirst: index == 0);
                     })
                 : const Center(
                     child: Text('No stories yet. Come back later',

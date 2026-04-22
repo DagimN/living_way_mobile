@@ -34,6 +34,7 @@ class LivingWayApp extends StatelessWidget {
           final profileController = Provider.of<ProfileController>(context);
           final layoutController = Provider.of<LayoutController>(context);
           final themeController = Provider.of<ThemeController>(context);
+          Provider.of<ContentController>(context);
 
           Provider.of<NotificationController>(context);
 
