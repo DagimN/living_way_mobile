@@ -20,10 +20,8 @@ class _StoryCardState extends State<StoryCard> {
   VideoPlayerController? controller;
   bool isInitialized = false;
 
-  @override
-  void initState() {
-    super.initState();
-    if (widget.story.file != null) {
+  void initializeVideoController() {
+    if (widget.story.file != null && controller == null) {
       controller = VideoPlayerController.file(widget.story.file!);
       controller?.initialize().then((_) {
         setState(() {
@@ -52,43 +50,49 @@ class _StoryCardState extends State<StoryCard> {
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
 
-    return Hero(
-      tag: 'videoPlayer - ${widget.story.id}',
-      child: Container(
-          height: screenHeight * .3,
-          width: screenWidth * .35,
-          margin: const EdgeInsets.all(10),
-          decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
-          child: controller != null && isInitialized
-              ? TextButton(
-                  onPressed: () {
-                    contentController.viewStory(widget.story.id);
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => StoryViewScreen(
-                                id: widget.story.id, controller: controller!)));
-                  },
-                  style: TextButton.styleFrom(padding: EdgeInsets.zero),
-                  child: Opacity(
-                      opacity: widget.story.isViewed ? 0.5 : 1,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(20),
-                          child: VideoPlayer(controller!))))
-              : Shimmer.fromColors(
-                  direction: ShimmerDirection.rtl,
-                  baseColor:
-                      AppTheme(themeController.brightness).backgroundColor,
-                  highlightColor: AppTheme(themeController.brightness)
-                      .primaryColor
-                      .withAlpha(120),
-                  child: Container(
-                      height: screenHeight * .3,
-                      width: screenWidth * .35,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          color: AppTheme(themeController.brightness)
-                              .backgroundColor)))),
+    initializeVideoController();
+
+    return Material(
+      type: MaterialType.transparency,
+      child: Hero(
+        tag: 'videoPlayer - ${widget.story.id}',
+        child: Container(
+            height: screenHeight * .3,
+            width: screenWidth * .35,
+            margin: const EdgeInsets.all(10),
+            decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+            child: controller != null && isInitialized
+                ? TextButton(
+                    onPressed: () {
+                      contentController.viewStory(widget.story.id);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => StoryViewScreen(
+                                  id: widget.story.id,
+                                  controller: controller!)));
+                    },
+                    style: TextButton.styleFrom(padding: EdgeInsets.zero),
+                    child: Opacity(
+                        opacity: widget.story.isViewed ? 0.5 : 1,
+                        child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: VideoPlayer(controller!))))
+                : Shimmer.fromColors(
+                    direction: ShimmerDirection.rtl,
+                    baseColor:
+                        AppTheme(themeController.brightness).backgroundColor,
+                    highlightColor: AppTheme(themeController.brightness)
+                        .primaryColor
+                        .withAlpha(120),
+                    child: Container(
+                        height: screenHeight * .3,
+                        width: screenWidth * .35,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: AppTheme(themeController.brightness)
+                                .backgroundColor)))),
+      ),
     );
   }
 }

@@ -12,8 +12,7 @@ class StoryListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final stories =
-        contentController.stories.where((story) => story.file != null).toList();
+    final stories = contentController.stories;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;

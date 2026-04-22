@@ -19,25 +19,28 @@ class PlayerSlider extends StatelessWidget {
     final themeController = Provider.of<ThemeController>(context);
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Stack(children: [
-      Positioned(
-          top: -2,
-          left: 20,
-          child: Text(formatDuration((value ~/ 1000)),
-              style: const TextStyle(color: Colors.white, fontSize: 10))),
-      SizedBox(
-          width: screenWidth,
-          child: Slider(
-              min: 0,
-              max: end,
-              activeColor: AppTheme(themeController.brightness).primaryColor,
-              value: value,
-              onChanged: onChanged)),
-      Positioned(
-          top: -2,
-          right: 20,
-          child: Text(formatDuration(end ~/ 1000),
-              style: const TextStyle(color: Colors.white, fontSize: 10)))
-    ]);
+    return Material(
+      type: MaterialType.transparency,
+      child: Stack(children: [
+        Positioned(
+            top: -2,
+            left: 20,
+            child: Text(formatDuration((value ~/ 1000)),
+                style: const TextStyle(color: Colors.white, fontSize: 10))),
+        SizedBox(
+            width: screenWidth,
+            child: Slider(
+                min: 0,
+                max: end,
+                activeColor: AppTheme(themeController.brightness).primaryColor,
+                value: value,
+                onChanged: onChanged)),
+        Positioned(
+            top: -2,
+            right: 20,
+            child: Text(formatDuration(end ~/ 1000),
+                style: const TextStyle(color: Colors.white, fontSize: 10)))
+      ]),
+    );
   }
 }

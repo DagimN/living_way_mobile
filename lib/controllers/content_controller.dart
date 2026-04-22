@@ -32,8 +32,7 @@ class ContentController extends ChangeNotifier {
             "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
         timestamnp: DateTime(2022)),
     Story(
-        id:
-            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
+        id: "5",
         sourceUrl:
             "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
         timestamnp: DateTime(2021)),
@@ -168,6 +167,7 @@ class ContentController extends ChangeNotifier {
   }
 
   void fetchStories() async {
+    //TODO: Implement endpoint for fetching stories from the API
     for (final item in stories.indexed) {
       final index = item.$1;
       final story = item.$2;
