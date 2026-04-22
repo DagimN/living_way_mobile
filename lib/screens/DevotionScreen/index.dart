@@ -21,7 +21,10 @@ class DevotionScreen extends StatelessWidget {
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
     List<ActivityContent> updates = activityController.activityList
-        .where((activity) => activity.isOngoing && activity.banner != null)
+        .where((activity) =>
+            (activity.isOngoing ||
+                activity.timestamp.isAfter(DateTime.now())) &&
+            activity.banner != null)
         .toList();
 
     return SingleChildScrollView(
