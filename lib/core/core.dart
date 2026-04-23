@@ -8,7 +8,7 @@ export 'constants/urls.dart';
 
 export 'extensions/string.dart';
 
-export 'models/activity_content.dart';
+export 'models/activity.dart';
 export 'models/bible_quote.dart';
 export 'models/book.dart';
 export 'models/contacts.dart';

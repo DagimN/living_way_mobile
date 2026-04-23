@@ -9,7 +9,7 @@ import 'verse_of_the_day.dart';
 import 'updates_viewer_expanded.dart';
 
 class UpdatesViewer extends StatefulWidget {
-  final List<ActivityContent> updates;
+  final List<Activity> updates;
   const UpdatesViewer({super.key, required this.updates});
 
   @override

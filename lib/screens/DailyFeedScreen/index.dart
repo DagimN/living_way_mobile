@@ -18,14 +18,14 @@ class DailyFeedScreen extends StatelessWidget {
 
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
-    List<ActivityContent> upcomingActivities = activityController.activityList
+    List<Activity> upcomingActivities = activityController.activityList
         .where((activity) =>
             ((activity.upcomingDate ?? activity.timestamp).isAfter(
                     DateTime.now().subtract(const Duration(days: 1))) ||
                 activity.isRecurring) &&
             activity.type == ContentType.event)
         .toList();
-    List<ActivityContent> updates = activityController.activityList
+    List<Activity> updates = activityController.activityList
         .where((activity) =>
             (activity.isOngoing ||
                 activity.timestamp.isAfter(DateTime.now())) &&

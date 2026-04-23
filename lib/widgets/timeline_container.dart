@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/models/activity_content.dart';
+import 'package:living_way/core/models/activity.dart';
 import 'package:living_way/core/themes/app_theme.dart';
 import 'package:living_way/core/utils/format_time.dart';
 import 'package:living_way/widgets/avatar_stack.dart';

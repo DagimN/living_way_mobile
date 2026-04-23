@@ -52,7 +52,7 @@ class ActivityScreen extends StatelessWidget {
                         final content =
                             activityController.activityList.length > index
                                 ? activityController.activityList[index]
-                                : ActivityContent(
+                                : Activity(
                                     id: '',
                                     type: ContentType.undefined,
                                     timestamp: DateTime.now());

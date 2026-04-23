@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/core/models/activity_content.dart';
+import 'package:living_way/core/models/activity.dart';
 import 'package:living_way/core/services/logging_service.dart';
 
 class ActivityController extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
-  List<ActivityContent> activityList = [];
+  List<Activity> activityList = [];
   int pageIndex = 0;
   bool isFetching = false;
 
@@ -50,7 +50,7 @@ class ActivityController extends ChangeNotifier {
       if (!response.statusCode.isSuccess) return;
 
       final result = (response.data as List)
-          .map((json) => ActivityContent.fromJson(json))
+          .map((json) => Activity.fromJson(json))
           .toList();
 
       activityList.addAll(result);
@@ -66,7 +66,7 @@ class ActivityController extends ChangeNotifier {
     }
   }
 
-  Future<bool> updatePoll(ActivityContent poll) async {
+  Future<bool> updatePoll(Activity poll) async {
     final dio = Dio();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl

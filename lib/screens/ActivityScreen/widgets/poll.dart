@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'flutter_polls.dart';
 
 class Poll extends StatefulWidget {
-  final ActivityContent content;
+  final Activity content;
   final Profile? userProfile;
   const Poll({super.key, required this.content, this.userProfile});
 
@@ -15,7 +15,7 @@ class Poll extends StatefulWidget {
 }
 
 class _PollState extends State<Poll> {
-  late ActivityContent content = widget.content;
+  late Activity content = widget.content;
   String? selectedPollId;
 
   @override

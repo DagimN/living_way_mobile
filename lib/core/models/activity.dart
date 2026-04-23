@@ -1,4 +1,4 @@
-class ActivityContent {
+class Activity {
   final String id;
   final String? title;
   final String? body;
@@ -15,7 +15,7 @@ class ActivityContent {
   final ContentBanner? banner;
   final bool isRecurring; // TODO: Update model in the backend
 
-  ActivityContent(
+  Activity(
       {this.title,
       this.body,
       this.images = const [],
@@ -50,7 +50,7 @@ class ActivityContent {
     return now.add(Duration(days: daysUntilNext));
   }
 
-  static ActivityContent fromJson(Map<String, dynamic> json) {
+  static Activity fromJson(Map<String, dynamic> json) {
     final isRecurring = json['isRecurring'] ?? false;
     DateTime timestamp = DateTime.parse(json['timestamp'] ?? json['createdAt']);
 
@@ -58,7 +58,7 @@ class ActivityContent {
       timestamp = _getNextOccurrence(timestamp.weekday);
     }
 
-    return ActivityContent(
+    return Activity(
         id: json['_id'],
         title: json['title'],
         body: json['body'],
