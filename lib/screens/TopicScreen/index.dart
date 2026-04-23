@@ -5,7 +5,7 @@ import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
-import '../DevotionScreen/widgets/threads_list_view.dart';
+import '../DailyFeedScreen/widgets/threads_list_view.dart';
 
 class TopicScreen extends StatefulWidget {
   final Topic topic;

@@ -3,7 +3,7 @@ import "package:audioplayers/audioplayers.dart" as audioplayers;
 import "package:flutter/material.dart";
 import "package:living_way/controllers/controllers.dart";
 import "package:living_way/core/core.dart";
-import "package:living_way/screens/DevotionScreen/widgets/threads_list_view.dart";
+import "package:living_way/screens/DailyFeedScreen/widgets/threads_list_view.dart";
 import "package:provider/provider.dart";
 import "package:uuid/uuid.dart";
 import "package:youtube_player_iframe/youtube_player_iframe.dart";

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/screens/screens.dart';
 import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,8 +8,8 @@ import 'widgets/story_list_view.dart';
 import 'widgets/topics_listview.dart';
 import 'widgets/updates_viewer.dart';
 
-class DevotionScreen extends StatelessWidget {
-  const DevotionScreen({super.key});
+class DailyFeedScreen extends StatelessWidget {
+  const DailyFeedScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -52,28 +50,7 @@ class DevotionScreen extends StatelessWidget {
                           fontSize: 32,
                           color: AppTheme(themeController.brightness).iconColor,
                           fontWeight: FontWeight.w400)),
-                  actions: [
-                    Hero(
-                        tag: 'search',
-                        child: IconButton(
-                            style:
-                                IconButton.styleFrom(padding: EdgeInsets.zero),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  PageRouteBuilder(
-                                      transitionDuration:
-                                          const Duration(milliseconds: 500),
-                                      pageBuilder: (_, __, ___) =>
-                                          const SearchScreen()));
-                            },
-                            icon: SvgPicture.asset(AppIcons.search,
-                                height: 24,
-                                colorFilter: ColorFilter.mode(
-                                    AppTheme(themeController.brightness)
-                                        .iconColor,
-                                    BlendMode.srcIn))))
-                  ]),
+                  actions: const [SearchButton()]),
               ListView.builder(
                   shrinkWrap: true,
                   itemCount: upcomingActivities.length,

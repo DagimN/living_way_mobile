@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/screens/ActivityScreen/index.dart';
 import 'package:living_way/screens/BibleScreen/index.dart';
-import 'package:living_way/screens/DevotionScreen/index.dart';
+import 'package:living_way/screens/DailyFeedScreen/index.dart';
 import 'package:living_way/screens/more_screen.dart';
-import 'package:living_way/screens/testimonial_screen.dart';
+import 'package:living_way/screens/LibraryScreen/index.dart';
 
 enum HomePageNavigation {
-  devotion,
-  testimonial,
+  home,
+  library,
   bible,
   activity,
   other;
@@ -52,10 +52,10 @@ class LayoutController extends ChangeNotifier {
 
   Widget get selectedHomeScreen {
     switch (_selectedHomePageNavigation) {
-      case HomePageNavigation.devotion:
-        return const DevotionScreen();
-      case HomePageNavigation.testimonial:
-        return const TestimonialScreen();
+      case HomePageNavigation.home:
+        return const DailyFeedScreen();
+      case HomePageNavigation.library:
+        return const LibraryScreen();
       case HomePageNavigation.bible:
         return const BibleScreen();
       case HomePageNavigation.activity:

@@ -25,13 +25,6 @@ class HomeScreen extends StatelessWidget {
             toolbarHeight: 0,
             backgroundColor: Colors.transparent,
             systemOverlayStyle: SystemUiOverlayStyle.light),
-        floatingActionButton: layoutController.getSelectedHomePageNavigation ==
-                HomePageNavigation.testimonial
-            ? FloatingActionButton(
-                backgroundColor: AppTheme(brightness).primaryButtonColor,
-                onPressed: () {},
-                child: const Icon(Icons.file_upload_outlined, size: 28))
-            : null,
         body: appFlavor == "prod"
             ? Container(
                 width: screenWidth,

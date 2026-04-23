@@ -34,10 +34,10 @@ class BottomNavigation extends StatelessWidget {
                       children: [
                         BottomNavigationItem(
                             icon: AppIcons.home,
-                            homePageNavigation: HomePageNavigation.devotion),
+                            homePageNavigation: HomePageNavigation.home),
                         BottomNavigationItem(
                             icon: AppIcons.fire,
-                            homePageNavigation: HomePageNavigation.testimonial),
+                            homePageNavigation: HomePageNavigation.library),
                         SizedBox(width: 50),
                         BottomNavigationItem(
                             icon: AppIcons.calendar,

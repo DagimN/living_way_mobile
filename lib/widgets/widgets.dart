@@ -5,4 +5,5 @@ export 'bottom_navigation_item.dart';
 export 'bottom_navigation.dart';
 export 'dot_indicator.dart';
 export 'loader_animation.dart';
+export 'search_button.dart';
 export 'timeline_container.dart';

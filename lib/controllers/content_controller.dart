@@ -118,6 +118,7 @@ class ContentController extends ChangeNotifier {
         ],
         type: ContactType.social)
   ];
+  List libraryItems = [0.56, 1.0, 1.78, 0.8, 1.5, 0.66];
 
   SortOptions threadActivityFilter = SortOptions.latest;
   List<ThreadData> threads = content.threads;
