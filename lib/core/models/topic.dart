@@ -1,4 +1,4 @@
-import 'package:living_way/core/models/media_metadata.dart';
+import 'package:living_way/core/models/content.dart';
 import 'package:living_way/core/models/thread.dart';
 
 class Topic {
@@ -12,7 +12,7 @@ class Topic {
   final TopicType type;
   final List<ThreadData> threads;
   final String? backgroundImageUrl;
-  final List<MediaMetadata> playlist;
+  final List<Content> playlist;
 
   Topic(
       {required this.id,
@@ -45,7 +45,7 @@ class Topic {
             .map((e) => ThreadData.fromJson(e))
             .toList(),
         playlist: ((json['playlist'] as List?) ?? [])
-            .map((e) => MediaMetadata.fromJson(e))
+            .map((e) => Content.fromJson(e))
             .toList());
   }
 

@@ -12,7 +12,7 @@ export 'models/activity.dart';
 export 'models/bible_quote.dart';
 export 'models/book.dart';
 export 'models/contacts.dart';
-export 'models/media_metadata.dart';
+export 'models/content.dart';
 export 'models/profile.dart';
 export 'models/signup_progress.dart';
 export 'models/staff.dart';

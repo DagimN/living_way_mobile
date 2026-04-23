@@ -6,6 +6,7 @@ import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/continue_content_list_view.dart';
+import 'widgets/popular_content_card.dart';
 
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({super.key});
@@ -14,6 +15,7 @@ class LibraryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
+    final books = contentController.books;
     final libraryItems = contentController.libraryItems;
 
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -48,21 +50,17 @@ class LibraryScreen extends StatelessWidget {
                   width: screenWidth,
                   margin: const EdgeInsets.symmetric(vertical: 10),
                   child: CarouselView(
-                    itemExtent: orientation == Orientation.portrait
-                        ? screenWidth * .45
-                        : screenWidth * .3,
-                    shrinkExtent: orientation == Orientation.portrait
-                        ? screenWidth * .4
-                        : screenWidth * .25,
-                    backgroundColor: Colors.transparent,
-                    itemSnapping: true,
-                    children: List.generate(10, (int index) {
-                      return Container(
-                        color: Colors.amber,
-                        child: Center(child: Text('Update $index')),
-                      );
-                    }),
-                  ),
+                      itemExtent: orientation == Orientation.portrait
+                          ? screenWidth * .45
+                          : screenWidth * .3,
+                      shrinkExtent: orientation == Orientation.portrait
+                          ? screenWidth * .4
+                          : screenWidth * .25,
+                      backgroundColor: Colors.transparent,
+                      itemSnapping: true,
+                      children: books
+                          .map((book) => PopularContentCard(content: book))
+                          .toList()),
                 ),
                 const ContinueContentListView(),
                 MasonryGridView.count(

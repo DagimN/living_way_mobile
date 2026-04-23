@@ -119,9 +119,17 @@ class ContentController extends ChangeNotifier {
         type: ContactType.social)
   ];
   List libraryItems = [0.56, 1.0, 1.78, 0.8, 1.5, 0.66];
-  List<String> books = [
-    "https://www.operationezra.com/uploads/1/0/4/4/10446233/holy_spirit__his_ministry.pdf",
-    "https://www.operationezra.com/uploads/1/0/4/4/10446233/new_testament_key.pdf"
+  List<Content> books = [
+    Content(
+        title: 'የመንፈስ ቅዱስ ማንነቱና ዐገልግሎት',
+        presenter: "Dr. John F. Walvoord",
+        source:
+            "https://www.operationezra.com/uploads/1/0/4/4/10446233/holy_spirit__his_ministry.pdf"),
+    Content(
+        title: 'የኣዲስ ኪዳን መክፈቻ',
+        presenter: "Unkown",
+        source:
+            "https://www.operationezra.com/uploads/1/0/4/4/10446233/new_testament_key.pdf"),
   ];
 
   SortOptions threadActivityFilter = SortOptions.latest;
