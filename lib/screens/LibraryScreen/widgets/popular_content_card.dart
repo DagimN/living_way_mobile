@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
@@ -11,6 +12,16 @@ class PopularContentCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    DecorationImage? image;
+
+    if (content.thumbnail != null) {
+      image = DecorationImage(
+          image: CachedNetworkImageProvider(content.thumbnail!),
+          fit: BoxFit.cover);
+    } else if (content.thumbnailData != null) {
+      image = DecorationImage(
+          image: Image.memory(content.thumbnailData!).image, fit: BoxFit.cover);
+    }
 
     if (content.isFetching) {
       return Shimmer.fromColors(
@@ -25,12 +36,6 @@ class PopularContentCard extends StatelessWidget {
                       AppTheme(themeController.brightness).backgroundColor)));
     }
 
-    return Container(
-        decoration: BoxDecoration(
-            image: content.thumbnailData == null
-                ? null
-                : DecorationImage(
-                    image: Image.memory(content.thumbnailData!).image,
-                    fit: BoxFit.cover)));
+    return Container(decoration: BoxDecoration(image: image));
   }
 }
