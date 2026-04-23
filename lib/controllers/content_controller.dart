@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:math';
 
-import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/core/constants/content.dart' as content;
@@ -186,28 +185,7 @@ class ContentController extends ChangeNotifier {
       final index = item.$1;
       final story = item.$2;
 
-      try {
-        final tempDir = await getTemporaryDirectory();
-        final Directory directory = Directory('${tempDir.path}/stories');
-
-        if (!directory.existsSync()) {
-          await directory.create(recursive: true);
-        }
-
-        final file = File('${tempDir.path}/stories/${story.id}.mp4');
-
-        if (!file.existsSync()) {
-          final response = await http.get(Uri.parse(story.sourceUrl));
-          await file.writeAsBytes(response.bodyBytes);
-        }
-
-        stories[index].file = file;
-        stories[index].isViewed = viewedStories.contains(story.id);
-
-        notifyListeners();
-      } catch (error) {
-        logger.e('$error - on story item $index');
-      }
+      stories[index].isViewed = viewedStories.contains(story.id);
     }
 
     stories.sort(
