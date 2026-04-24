@@ -120,11 +120,13 @@ class ContentController extends ChangeNotifier {
   List libraryItems = [0.56, 1.0, 1.78, 0.8, 1.5, 0.66];
   List<Content> books = [
     Content(
-        title: 'የመንፈስ ቅዱስ ማንነቱና ዐገልግሎት',
-        presenter: "Dr. John F. Walvoord",
+        id: '5',
+        title: 'Fearless',
+        presenter: "Max Lucado",
         source:
-            "https://www.operationezra.com/uploads/1/0/4/4/10446233/holy_spirit__his_ministry.pdf"),
+            "https://mh.fullfocus.co/myresources/max-lucado-fearless-chapter-1.pdf"),
     Content(
+        id: '2',
         title: 'የኣዲስ ኪዳን መክፈቻ',
         presenter: "Unkown",
         source:
@@ -199,15 +201,27 @@ class ContentController extends ChangeNotifier {
 
   Future<void> cleanResources() async {
     final Directory tempDir = await getTemporaryDirectory();
-    final List<FileSystemEntity> entities =
+    final List<FileSystemEntity> storyFiles =
         await Directory('${tempDir.path}/stories')
             .list(recursive: false, followLinks: false)
             .toList();
+    final List<FileSystemEntity> contentFiles =
+        await Directory('${tempDir.path}/content')
+            .list(recursive: false, followLinks: false)
+            .toList();
 
-    for (final entity in entities) {
+    for (final entity in storyFiles) {
       if (entity is File &&
           !stories.any(
               (story) => story.id == basenameWithoutExtension(entity.path))) {
+        await entity.delete();
+      }
+    }
+
+    for (final entity in contentFiles) {
+      if (entity is File &&
+          !books.any((content) =>
+              content.id == basenameWithoutExtension(entity.path))) {
         await entity.delete();
       }
     }

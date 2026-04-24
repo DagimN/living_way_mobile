@@ -79,6 +79,12 @@ class AppTheme {
         : dark.primaryButtonColor;
   }
 
+  Color get secondaryButtonColor {
+    return brightness == Brightness.light
+        ? light.secondaryButtonColor
+        : dark.secondaryButtonColor; //TODO: Change the values
+  }
+
   Color get pendingColor {
     return brightness == Brightness.light
         ? light.pendingColor

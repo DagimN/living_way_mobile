@@ -6,6 +6,7 @@ import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/continue_content_list_view.dart';
+import 'widgets/pdf_viewer.dart';
 import 'widgets/popular_content_card.dart';
 
 class LibraryScreen extends StatelessWidget {
@@ -58,6 +59,13 @@ class LibraryScreen extends StatelessWidget {
                           : screenWidth * .25,
                       backgroundColor: Colors.transparent,
                       itemSnapping: true,
+                      onTap: (index) {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PdfViewer(content: books[index])));
+                      },
                       children: books
                           .map((book) => PopularContentCard(content: book))
                           .toList()),

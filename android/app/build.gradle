@@ -53,6 +53,12 @@ android {
         multiDexEnabled = true
     }
 
+    externalNativeBuild {
+        cmake {
+            version "4.1.2" 
+        }
+    }
+
     buildTypes {
         release {
             // TODO: Add your own signing config for the release build.

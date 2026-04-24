@@ -20,7 +20,10 @@ class PopularContentCard extends StatelessWidget {
           fit: BoxFit.cover);
     } else if (content.thumbnailData != null) {
       image = DecorationImage(
-          image: Image.memory(content.thumbnailData!).image, fit: BoxFit.cover);
+          image: Image.memory(content.thumbnailData!,
+                  width: double.infinity, height: double.infinity)
+              .image,
+          fit: BoxFit.cover);
     }
 
     if (content.isFetching) {

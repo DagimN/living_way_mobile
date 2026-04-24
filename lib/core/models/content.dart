@@ -1,24 +1,29 @@
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:http/http.dart' as http;
-import 'package:pdfx/pdfx.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:pdfrx/pdfrx.dart';
+import 'package:image/image.dart' as image;
 
 import '../enums.dart';
 import '../services/logging_service.dart';
 
 class Content {
   //TODO: Update name in the backend
+  String id;
   String title;
   String presenter;
   String source;
   String? thumbnail;
   Uint8List? thumbnailData;
-  Uint8List? data;
+  File? file;
   FileType? fileType;
   bool isFetching = true;
 
   Content(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.presenter,
       required this.source,
       this.thumbnail}) {
@@ -29,8 +34,21 @@ class Content {
 
   Future<void> _loadContent() async {
     try {
-      final response = await http.get(Uri.parse(source));
-      data = response.bodyBytes;
+      final tempDir = await getTemporaryDirectory();
+      final Directory directory = Directory('${tempDir.path}/content');
+
+      if (!directory.existsSync()) {
+        await directory.create(recursive: true);
+      }
+
+      final file = File('${tempDir.path}/content/$id.${fileType?.name}');
+
+      if (!file.existsSync()) {
+        final response = await http.get(Uri.parse(source));
+        await file.writeAsBytes(response.bodyBytes);
+      }
+
+      this.file = file;
     } catch (error) {
       logger.e(error);
     }
@@ -38,22 +56,25 @@ class Content {
 
   Future<void> _loadPdfThumbnail() async {
     try {
-      if ((data == null || thumbnail != null) && fileType != FileType.pdf) {
+      if ((file == null || thumbnail != null) && fileType != FileType.pdf) {
         return;
       }
 
-      final document = await PdfDocument.openData(data!);
-      final page = await document.getPage(1);
-      final pageImage = await page.render(
-        width: page.width / 2,
-        height: page.height / 2,
-        format: PdfPageImageFormat.png,
-      );
+      final document = await PdfDocument.openFile(file!.path);
+      final renderedPage = await document.pages[0].render();
 
-      await page.close();
-      await document.close();
+      if (renderedPage == null) return;
 
-      thumbnailData = pageImage?.bytes;
+      final pageImage = image.Image.fromBytes(
+          width: renderedPage.width,
+          height: renderedPage.height,
+          bytes: renderedPage.pixels.buffer,
+          order: image.ChannelOrder.bgra,
+          numChannels: 4);
+
+      thumbnailData = Uint8List.fromList(image.encodePng(pageImage));
+
+      await document.dispose();
     } catch (error) {
       logger.e(error);
     } finally {
@@ -63,6 +84,7 @@ class Content {
 
   static Content fromJson(json) {
     return Content(
+        id: json['id'],
         title: json['title'],
         presenter: json['presenter'],
         source: json['source'],

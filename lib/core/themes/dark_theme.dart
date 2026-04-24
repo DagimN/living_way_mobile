@@ -6,6 +6,7 @@ const backgroundColor = Color(0xFF3E392A);
 const primaryPaleColor = Color(0xFF847AA0);
 const primaryPanelColor = Color(0xFFF6F0FF);
 const primaryButtonColor = Color(0xFFB6915A);
+const secondaryButtonColor = Color(0xFFFFDDB3);
 const appBarColor = Color(0xFF7F8F99);
 const inactiveColor = Color(0xFF5C605E);
 const pendingColor = Color(0xFFACA295);
