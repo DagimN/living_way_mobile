@@ -15,13 +15,17 @@ class PdfViewer extends StatefulWidget {
 
 class _PdfViewerState extends State<PdfViewer> {
   final pdfController = pdfrx.PdfViewerController();
+  final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 
   pdfrx.PdfTextSearcher? searcher;
 
   bool isLoadingOutline = false;
   bool isOutlineLoaded = false;
   bool isPagedMode = true;
+  bool isTraversing = false;
   List<pdfrx.PdfOutlineNode> outline = [];
+  int blackTintOpacity = 0;
+  int currentPageIndex = 0;
 
   @override
   void initState() {
@@ -34,13 +38,15 @@ class _PdfViewerState extends State<PdfViewer> {
     pdfController.addListener(pdfControllerListener);
   }
 
-  void pdfControllerListener() async {
+  void initializeSearcher() {
     if (pdfController.isReady && searcher == null) {
       setState(() {
         searcher = pdfrx.PdfTextSearcher(pdfController);
       });
     }
+  }
 
+  void loadOutline() async {
     if (pdfController.isReady && !isOutlineLoaded) {
       setState(() {
         isLoadingOutline = true;
@@ -54,6 +60,22 @@ class _PdfViewerState extends State<PdfViewer> {
         isOutlineLoaded = true;
       });
     }
+  }
+
+  void updateCurrentPageIndex() {
+    final int newPage = pdfController.pageNumber ?? 0;
+
+    if (newPage != currentPageIndex && !isTraversing) {
+      setState(() {
+        currentPageIndex = newPage;
+      });
+    }
+  }
+
+  void pdfControllerListener() {
+    initializeSearcher();
+    loadOutline();
+    updateCurrentPageIndex();
   }
 
   @override
@@ -78,6 +100,7 @@ class _PdfViewerState extends State<PdfViewer> {
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return Scaffold(
+      key: _scaffoldKey,
       appBar: AppBar(
         title: searcher?.pattern != null
             ? TextField(
@@ -91,11 +114,12 @@ class _PdfViewerState extends State<PdfViewer> {
                   });
                 })
             : Text(widget.content.title, style: const TextStyle(fontSize: 16)),
+        leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              Navigator.of(context).pop();
+            }),
         actions: [
-          IconButton(
-            icon: Icon(isPagedMode ? Icons.import_contacts : Icons.list),
-            onPressed: () => setState(() => isPagedMode = !isPagedMode),
-          ),
           if (searcher?.pattern != null)
             IconButton(
                 icon: const Icon(Icons.close),
@@ -196,35 +220,20 @@ class _PdfViewerState extends State<PdfViewer> {
                       AppTheme(themeController.brightness).backgroundColor),
             ),
           ),
-          if (themeController.brightness == Brightness.dark)
-            IgnorePointer(
-              child: Container(
-                color: Colors.black
-                    .withAlpha(100), //TODO: Add a slider to change the values
-              ),
+          IgnorePointer(
+            child: Container(
+              color: Colors.black.withAlpha(blackTintOpacity),
             ),
+          ),
         ],
       ),
-      drawer: SafeArea(
-        child: Drawer(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                  icon: const Icon(Icons.arrow_back),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                  }),
-              SizedBox(height: screenHeight * .35),
-              if (isLoadingOutline)
-                const Center(child: CircularProgressIndicator()),
-              if (!isLoadingOutline && outline.isEmpty)
-                SizedBox(
-                  width: double.infinity,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
+      drawer: Drawer(
+        child: (isLoadingOutline)
+            ? const Center(child: CircularProgressIndicator())
+            : (!isLoadingOutline && outline.isEmpty)
+                ? Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
                         Icon(Icons.book_rounded,
                             size: 48,
                             color: AppTheme(themeController.brightness)
@@ -232,22 +241,104 @@ class _PdfViewerState extends State<PdfViewer> {
                         const SizedBox(
                             width: 200,
                             child: Text('Table of contents is not available',
-                                textAlign: TextAlign.center))
-                      ]),
-                ),
-              if (!isLoadingOutline && outline.isNotEmpty)
-                ListView(
-                  children: outline
-                      .map((node) => ListTile(
-                            title: Text(node.title),
-                            onTap: () => pdfController.goToDest(node.dest),
-                          ))
-                      .toList(),
-                )
-            ],
-          ),
-        ),
+                                textAlign: TextAlign.center)),
+                      ])
+                : ListView(
+                    children: outline
+                        .map((node) => ListTile(
+                              title: Text(node.title),
+                              onTap: () => pdfController.goToDest(node.dest),
+                            ))
+                        .toList(),
+                  ),
       ),
+      bottomNavigationBar: BottomAppBar(
+          child:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+        IconButton(
+            onPressed: () {
+              _scaffoldKey.currentState?.openDrawer();
+            },
+            icon: const Icon(Icons.view_list)),
+        TextButton(
+          onPressed: () {
+            showModalBottomSheet(
+                context: context,
+                elevation: 0,
+                barrierColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                builder: (context) =>
+                    StatefulBuilder(builder: (context, setModalState) {
+                      return Container(
+                        height: 50,
+                        margin:
+                            EdgeInsets.fromLTRB(20, 0, 20, screenHeight * .12),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: AppTheme(themeController.brightness)
+                                .secondaryButtonColor),
+                        child: Slider(
+                            value: currentPageIndex.toDouble(),
+                            min: 1,
+                            max: pdfController.pageCount.toDouble(),
+                            onChanged: (value) async {
+                              setState(() {
+                                isTraversing = true;
+                                currentPageIndex = value.toInt();
+                              });
+
+                              await pdfController.goToPage(
+                                  pageNumber: value.toInt());
+
+                              setState(() {
+                                isTraversing = false;
+                              });
+                              setModalState(() {});
+                            }),
+                      );
+                    }));
+          },
+          child: Text(pdfController.isReady
+              ? '$currentPageIndex/${pdfController.pageCount}'
+              : '0'),
+        ),
+        IconButton(
+          icon: Icon(isPagedMode ? Icons.import_contacts : Icons.list),
+          onPressed: () => setState(() => isPagedMode = !isPagedMode),
+        ),
+        IconButton(
+            icon: const Icon(Icons.remove_red_eye),
+            onPressed: () {
+              showModalBottomSheet(
+                  context: context,
+                  elevation: 0,
+                  barrierColor: Colors.transparent,
+                  backgroundColor: Colors.transparent,
+                  builder: (context) =>
+                      StatefulBuilder(builder: (context, setModalState) {
+                        return Container(
+                          height: 50,
+                          margin: EdgeInsets.fromLTRB(
+                              20, 0, 20, screenHeight * .12),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              color: AppTheme(themeController.brightness)
+                                  .secondaryButtonColor),
+                          child: Slider(
+                              value: blackTintOpacity.toDouble(),
+                              min: 0,
+                              max: 100,
+                              onChanged: (value) {
+                                setState(
+                                    () => blackTintOpacity = value.toInt());
+                                setModalState(() {});
+                              }),
+                        );
+                      }));
+            }),
+      ])),
     );
   }
 }
