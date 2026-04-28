@@ -7,6 +7,7 @@ export 'constants/content.dart';
 export 'constants/urls.dart';
 
 export 'extensions/string.dart';
+export 'extensions/list.dart';
 
 export 'models/activity.dart';
 export 'models/bible_quote.dart';

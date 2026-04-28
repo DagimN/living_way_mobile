@@ -1,20 +1,30 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/content_controller.dart';
+import 'package:provider/provider.dart';
+
+import 'pdf_viewer.dart';
 
 class ContinueContentListView extends StatelessWidget {
   const ContinueContentListView({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final contentController = Provider.of<ContentController>(context);
+    final pausedContent = contentController.pausedContents;
+
     Orientation orientation = MediaQuery.of(context).orientation;
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
+
+    if (pausedContent.isEmpty) return const SizedBox();
 
     return Padding(
       padding: const EdgeInsets.only(left: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Continue Reading',
+          const Text('Continue',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
           Container(
               height: orientation == Orientation.portrait
@@ -24,9 +34,24 @@ class ContinueContentListView extends StatelessWidget {
               margin: const EdgeInsets.symmetric(vertical: 10),
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: 10,
+                itemCount: pausedContent.length,
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
+                  final content = pausedContent[index];
+                  DecorationImage? image;
+
+                  if (content.thumbnail != null) {
+                    image = DecorationImage(
+                        image: CachedNetworkImageProvider(content.thumbnail!),
+                        fit: BoxFit.cover);
+                  } else if (content.thumbnailData != null) {
+                    image = DecorationImage(
+                        image: Image.memory(content.thumbnailData!,
+                                width: double.infinity, height: double.infinity)
+                            .image,
+                        fit: BoxFit.cover);
+                  }
+
                   return Container(
                     width: orientation == Orientation.portrait
                         ? screenWidth * .65
@@ -34,10 +59,57 @@ class ContinueContentListView extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(color: Colors.grey),
-                      color: Colors.blue,
                     ),
                     margin: const EdgeInsets.only(right: 10),
-                    child: Center(child: Text('Update $index')),
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                          padding: const EdgeInsets.all(5),
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20))),
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    PdfViewer(content: content)));
+                      },
+                      child: Row(spacing: 8, children: [
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(15),
+                          child: Container(
+                              height: double.infinity,
+                              width: orientation == Orientation.portrait
+                                  ? screenWidth * .15
+                                  : screenWidth * .1,
+                              decoration: BoxDecoration(image: image)),
+                        ),
+                        SizedBox(
+                          width: orientation == Orientation.portrait
+                              ? screenWidth * .4
+                              : screenWidth * .35,
+                          child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(content.title,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)),
+                                Text(content.presenter,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400)),
+                                Container(
+                                  margin: const EdgeInsets.only(top: 10),
+                                  child: LinearProgressIndicator(
+                                    value: content.contentRemaining ?? 0,
+                                  ),
+                                )
+                              ]),
+                        )
+                      ]),
+                    ),
                   );
                 },
               )),

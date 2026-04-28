@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -20,13 +21,17 @@ class Content {
   File? file;
   FileType? fileType;
   bool isFetching = true;
+  int? previouslyLeftOn;
+  double? contentRemaining;
 
   Content(
       {required this.id,
       required this.title,
       required this.presenter,
       required this.source,
-      this.thumbnail}) {
+      this.thumbnail,
+      this.previouslyLeftOn,
+      this.contentRemaining}) {
     fileType = FileType.fromString(source.split('.').last);
 
     _loadContent().then((value) => _loadPdfThumbnail());
@@ -83,15 +88,31 @@ class Content {
   }
 
   static Content fromJson(json) {
+    final map = jsonDecode(json);
+
     return Content(
-        id: json['id'],
-        title: json['title'],
-        presenter: json['presenter'],
-        source: json['source'],
-        thumbnail: json['thumbnail']);
+        id: map['id'],
+        title: map['title'],
+        presenter: map['presenter'],
+        source: map['source'],
+        thumbnail: map['thumbnail'],
+        previouslyLeftOn: map['previouslyLeftOn'],
+        contentRemaining: map['contentRemaining']);
   }
 
-  toJson() {
-    return {"title": title, "presenter": presenter, "source": source};
+  Map toJson() {
+    return {
+      "id": id,
+      "title": title,
+      "presenter": presenter,
+      "source": source,
+      "previouslyLeftOn": previouslyLeftOn,
+      "contentRemaining": contentRemaining
+    };
+  }
+
+  @override
+  String toString() {
+    return jsonEncode(toJson());
   }
 }

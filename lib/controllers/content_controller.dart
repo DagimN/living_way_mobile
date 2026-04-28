@@ -7,6 +7,7 @@ import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
+import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
   List<String> images = [Urls.imageApiUrl];
@@ -131,7 +132,15 @@ class ContentController extends ChangeNotifier {
         presenter: "Unkown",
         source:
             "https://www.operationezra.com/uploads/1/0/4/4/10446233/new_testament_key.pdf"),
+    Content(
+        id: '6',
+        title: 'Introduction to Algorithms',
+        presenter:
+            "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
+        source:
+            "https://www.cs.mcgill.ca/~akroit/math/compsci/Cormen%20Introduction%20to%20Algorithms.pdf"),
   ];
+  List<Content> pausedContents = [];
 
   SortOptions threadActivityFilter = SortOptions.latest;
   List<ThreadData> threads = content.threads;
@@ -155,6 +164,11 @@ class ContentController extends ChangeNotifier {
         .readData<List<String>>('viewedStories', defaultValue: []);
     images = await CacheService.instance
         .readData<List<String>>('images', defaultValue: [Urls.imageApiUrl]);
+    pausedContents = List.from(await CacheService.instance
+            .readData<List<String>>('pausedContents', defaultValue: []))
+        .map((content) => Content.fromJson(content))
+        .toList();
+
     final lastImagesFetched = DateTime.parse(await CacheService.instance
         .readData<String>('lastImagesFetched',
             defaultValue: DateTime.now().toString()));
@@ -225,6 +239,34 @@ class ContentController extends ChangeNotifier {
         await entity.delete();
       }
     }
+  }
+
+  void saveContentProgress(
+      Content pausedContent, PdfViewerController pdfController) {
+    final currentPageIndex = pdfController.pageNumber ?? 1;
+    final isContentStarted =
+        currentPageIndex != 1 && currentPageIndex != pdfController.pageCount;
+
+    if (isContentStarted) {
+      pausedContent.contentRemaining =
+          currentPageIndex / pdfController.pageCount;
+      pausedContent.previouslyLeftOn = currentPageIndex;
+
+      pausedContents.addOrReplace(
+          pausedContent, (content) => content.id == pausedContent.id);
+
+      CacheService.instance.writeData<List<String>>('pausedContents',
+          pausedContents.map((content) => content.toString()).toList());
+    }
+
+    if (!isContentStarted &&
+        pausedContents.any((content) => content.id == pausedContent.id)) {
+      pausedContents.removeWhere((content) => content.id == pausedContent.id);
+      CacheService.instance.writeData<List<String>>('pausedContents',
+          pausedContents.map((content) => content.toString()).toList());
+    }
+
+    notifyListeners();
   }
 
   set setThreadFilter(SortOptions value) {

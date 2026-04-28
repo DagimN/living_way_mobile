@@ -39,6 +39,9 @@ class PopularContentCard extends StatelessWidget {
                       AppTheme(themeController.brightness).backgroundColor)));
     }
 
-    return Container(decoration: BoxDecoration(image: image));
+    return Container(
+        decoration:
+            BoxDecoration(image: image)); //TODO: Implement download button
+    //TODO: Content should be loaded from the application directory instead of the temporary directory
   }
 }
