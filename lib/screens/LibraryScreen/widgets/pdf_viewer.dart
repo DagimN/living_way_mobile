@@ -109,8 +109,9 @@ class _PdfViewerState extends State<PdfViewer> {
               onPressed: () => showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('Search'),
                   content: TextField(
+                    textInputAction: TextInputAction.search,
+                    decoration: const InputDecoration(hintText: 'Search...'),
                     onSubmitted: (value) {
                       searcher?.startTextSearch(value, searchImmediately: true);
                       setState(() {});
@@ -195,7 +196,7 @@ class _PdfViewerState extends State<PdfViewer> {
                       AppTheme(themeController.brightness).backgroundColor),
             ),
           ),
-          if (themeController.brightness != Brightness.dark)
+          if (themeController.brightness == Brightness.dark)
             IgnorePointer(
               child: Container(
                 color: Colors.black
