@@ -135,6 +135,7 @@ class _PdfViewerState extends State<PdfViewer> {
                 Navigator.of(context).pop();
               }),
           actions: [
+            //TODO: Give option for saving non-paid content to the external storage
             if (searcher?.pattern != null)
               IconButton(
                   icon: const Icon(Icons.close),

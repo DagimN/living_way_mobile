@@ -45,6 +45,8 @@ class LibraryScreen extends StatelessWidget {
             child: Column(
               children: [
                 Container(
+                  //TODO: Hide carousel if there are no popular books
+                  //TODO: Implement paid content feature
                   height: orientation == Orientation.portrait
                       ? screenHeight * .3
                       : screenHeight * .7,
