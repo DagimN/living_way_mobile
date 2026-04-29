@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/content_controller.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 import 'pdf_viewer.dart';
@@ -11,7 +12,10 @@ class ContinueContentListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
-    final pausedContent = contentController.pausedContents;
+    final themeController = Provider.of<ThemeController>(context);
+    final pausedContent = contentController.library
+        .where((content) => content.contentRemaining != null)
+        .toList();
 
     Orientation orientation = MediaQuery.of(context).orientation;
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -38,79 +42,97 @@ class ContinueContentListView extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 itemBuilder: (context, index) {
                   final content = pausedContent[index];
-                  DecorationImage? image;
 
-                  if (content.thumbnail != null) {
-                    image = DecorationImage(
-                        image: CachedNetworkImageProvider(content.thumbnail!),
-                        fit: BoxFit.cover);
-                  } else if (content.thumbnailData != null) {
-                    image = DecorationImage(
-                        image: Image.memory(content.thumbnailData!,
-                                width: double.infinity, height: double.infinity)
-                            .image,
-                        fit: BoxFit.cover);
-                  }
+                  return ListenableBuilder(
+                      listenable: content,
+                      builder: (context, child) {
+                        DecorationImage? image;
 
-                  return Container(
-                    width: orientation == Orientation.portrait
-                        ? screenWidth * .65
-                        : screenWidth * .5,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.grey),
-                    ),
-                    margin: const EdgeInsets.only(right: 10),
-                    child: TextButton(
-                      style: TextButton.styleFrom(
-                          padding: const EdgeInsets.all(5),
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20))),
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    PdfViewer(content: content)));
-                      },
-                      child: Row(spacing: 8, children: [
-                        ClipRRect(
-                          borderRadius: BorderRadius.circular(15),
-                          child: Container(
-                              height: double.infinity,
-                              width: orientation == Orientation.portrait
-                                  ? screenWidth * .15
-                                  : screenWidth * .1,
-                              decoration: BoxDecoration(image: image)),
-                        ),
-                        SizedBox(
+                        if (content.thumbnail != null) {
+                          image = DecorationImage(
+                              image: CachedNetworkImageProvider(
+                                  content.thumbnail!),
+                              fit: BoxFit.cover);
+                        } else if (content.thumbnailData != null) {
+                          image = DecorationImage(
+                              image: Image.memory(content.thumbnailData!,
+                                      width: double.infinity,
+                                      height: double.infinity)
+                                  .image,
+                              fit: BoxFit.cover);
+                        }
+
+                        return Container(
                           width: orientation == Orientation.portrait
-                              ? screenWidth * .4
-                              : screenWidth * .35,
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(content.title,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w400)),
-                                Text(content.presenter,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400)),
-                                Container(
-                                  margin: const EdgeInsets.only(top: 10),
-                                  child: LinearProgressIndicator(
-                                    value: content.contentRemaining ?? 0,
-                                  ),
-                                )
-                              ]),
-                        )
-                      ]),
-                    ),
-                  );
+                              ? screenWidth * .65
+                              : screenWidth * .5,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            border: Border.all(color: Colors.grey),
+                          ),
+                          margin: const EdgeInsets.only(right: 10),
+                          child: TextButton(
+                            style: TextButton.styleFrom(
+                                padding: const EdgeInsets.all(5),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20))),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          PdfViewer(content: content)));
+                            },
+                            child: Row(spacing: 8, children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(15),
+                                child: Container(
+                                    height: double.infinity,
+                                    width: orientation == Orientation.portrait
+                                        ? screenWidth * .15
+                                        : screenWidth * .1,
+                                    decoration: BoxDecoration(
+                                        color:
+                                            AppTheme(themeController.brightness)
+                                                .primaryPanelColor,
+                                        image: image),
+                                    child: image == null
+                                        ? Icon(Icons.book,
+                                            color: AppTheme(
+                                                    themeController.brightness)
+                                                .primaryColor)
+                                        : null),
+                              ),
+                              SizedBox(
+                                width: orientation == Orientation.portrait
+                                    ? screenWidth * .4
+                                    : screenWidth * .35,
+                                child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(content.title,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w400)),
+                                      Text(content.presenter,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              fontWeight: FontWeight.w400)),
+                                      Container(
+                                        margin: const EdgeInsets.only(top: 10),
+                                        child: LinearProgressIndicator(
+                                          value: content.contentRemaining ?? 0,
+                                        ),
+                                      )
+                                    ]),
+                              )
+                            ]),
+                          ),
+                        );
+                      });
                 },
               )),
         ],

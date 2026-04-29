@@ -16,7 +16,7 @@ class LibraryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
-    final books = contentController.books;
+    final books = contentController.library;
     final libraryItems = contentController.libraryItems;
 
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -60,11 +60,19 @@ class LibraryScreen extends StatelessWidget {
                       backgroundColor: Colors.transparent,
                       itemSnapping: true,
                       onTap: (index) {
+                        final book = books[index];
+
+                        if (book.filePath == null) {
+                          book.downloadContent();
+                          contentController.saveLibrary(book);
+                          return;
+                        }
+
                         Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) =>
-                                    PdfViewer(content: books[index])));
+                                    PdfViewer(content: book)));
                       },
                       children: books
                           .map((book) => PopularContentCard(content: book))

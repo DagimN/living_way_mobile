@@ -72,6 +72,7 @@ dependencies:
   path: ^1.9.1
   pdfrx: ^2.2.24
   image: ^4.8.0
+  disk_space_2: ^1.0.12
 
 dev_dependencies:
   flutter_test:

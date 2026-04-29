@@ -110,7 +110,8 @@ class _PdfViewerState extends State<PdfViewer> {
 
     return PopScope(
       onPopInvokedWithResult: (didPop, result) {
-        contentController.saveContentProgress(widget.content, pdfController);
+        contentController.saveLibrary(widget.content,
+            pdfController: pdfController);
       },
       child: Scaffold(
         key: _scaffoldKey,

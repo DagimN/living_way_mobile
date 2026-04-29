@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
@@ -119,7 +120,7 @@ class ContentController extends ChangeNotifier {
         type: ContactType.social)
   ];
   List libraryItems = [0.56, 1.0, 1.78, 0.8, 1.5, 0.66];
-  List<Content> books = [
+  List<Content> library = [
     Content(
         id: '5',
         title: 'Fearless',
@@ -140,7 +141,6 @@ class ContentController extends ChangeNotifier {
         source:
             "https://www.cs.mcgill.ca/~akroit/math/compsci/Cormen%20Introduction%20to%20Algorithms.pdf"),
   ];
-  List<Content> pausedContents = [];
 
   SortOptions threadActivityFilter = SortOptions.latest;
   List<ThreadData> threads = content.threads;
@@ -156,7 +156,8 @@ class ContentController extends ChangeNotifier {
 
   Future<void> _init() async {
     await loadCache();
-    fetchStories();
+    await fetchStories();
+    cleanResources();
   }
 
   Future<void> loadCache() async {
@@ -164,10 +165,21 @@ class ContentController extends ChangeNotifier {
         .readData<List<String>>('viewedStories', defaultValue: []);
     images = await CacheService.instance
         .readData<List<String>>('images', defaultValue: [Urls.imageApiUrl]);
-    pausedContents = List.from(await CacheService.instance
-            .readData<List<String>>('pausedContents', defaultValue: []))
-        .map((content) => Content.fromJson(content))
-        .toList();
+
+    final cachedLibrary = List.from(await CacheService.instance
+        .readData<List<String>>('library', defaultValue: []));
+    for (final contentJson in cachedLibrary) {
+      final contentMap = jsonDecode(contentJson);
+
+      int contentIndex =
+          library.indexWhere((content) => content.id == contentMap['id']);
+
+      if (contentIndex == -1) {
+        library.add(Content.fromJson(contentJson));
+      } else {
+        library[contentIndex].updateFromJson(contentMap);
+      }
+    }
 
     final lastImagesFetched = DateTime.parse(await CacheService.instance
         .readData<String>('lastImagesFetched',
@@ -209,12 +221,11 @@ class ContentController extends ChangeNotifier {
     stories.sort((_, storyB) => storyB.isViewed ? -1 : 1);
 
     notifyListeners();
-
-    cleanResources();
   }
 
   Future<void> cleanResources() async {
     final Directory tempDir = await getTemporaryDirectory();
+    final Directory appDir = await getApplicationDocumentsDirectory();
     final List<FileSystemEntity> storyFiles =
         await Directory('${tempDir.path}/stories')
             .list(recursive: false, followLinks: false)
@@ -223,6 +234,9 @@ class ContentController extends ChangeNotifier {
         await Directory('${tempDir.path}/content')
             .list(recursive: false, followLinks: false)
             .toList();
+    final List<FileSystemEntity> libraryFiles = await Directory(appDir.path)
+        .list(recursive: false, followLinks: false)
+        .toList();
 
     for (final entity in storyFiles) {
       if (entity is File &&
@@ -234,37 +248,53 @@ class ContentController extends ChangeNotifier {
 
     for (final entity in contentFiles) {
       if (entity is File &&
-          !books.any((content) =>
-              content.id == basenameWithoutExtension(entity.path))) {
+          !library.any((content) =>
+              '${content.id}-pdf-thumbnail' ==
+              basenameWithoutExtension(entity.path))) {
+        await entity.delete();
+      }
+    }
+
+    for (final entity in libraryFiles) {
+      if (entity is File &&
+          !library.any((content) =>
+              content.title == basenameWithoutExtension(entity.path))) {
         await entity.delete();
       }
     }
   }
 
-  void saveContentProgress(
-      Content pausedContent, PdfViewerController pdfController) {
-    final currentPageIndex = pdfController.pageNumber ?? 1;
+  void saveLibrary(Content pausedContent,
+      {PdfViewerController? pdfController}) {
+    final currentPageIndex = pdfController?.pageNumber ?? 1;
     final isContentStarted =
-        currentPageIndex != 1 && currentPageIndex != pdfController.pageCount;
+        currentPageIndex != 1 && currentPageIndex != pdfController?.pageCount;
 
     if (isContentStarted) {
       pausedContent.contentRemaining =
-          currentPageIndex / pdfController.pageCount;
+          currentPageIndex / (pdfController?.pageCount ?? 1);
       pausedContent.previouslyLeftOn = currentPageIndex;
 
-      pausedContents.addOrReplace(
+      library.addOrReplace(
           pausedContent, (content) => content.id == pausedContent.id);
-
-      CacheService.instance.writeData<List<String>>('pausedContents',
-          pausedContents.map((content) => content.toString()).toList());
     }
 
-    if (!isContentStarted &&
-        pausedContents.any((content) => content.id == pausedContent.id)) {
-      pausedContents.removeWhere((content) => content.id == pausedContent.id);
-      CacheService.instance.writeData<List<String>>('pausedContents',
-          pausedContents.map((content) => content.toString()).toList());
+    if (!isContentStarted) {
+      final index =
+          library.indexWhere((content) => content.id == pausedContent.id);
+
+      if (index == -1) return;
+
+      library[index].contentRemaining = null;
+      library[index].previouslyLeftOn = null;
     }
+
+    CacheService.instance.writeData<List<String>>(
+        'library',
+        library
+            .where((content) => content.filePath != null)
+            .map((content) => content.toString())
+            .toList());
 
     notifyListeners();
   }
