@@ -132,7 +132,9 @@ class Content extends ChangeNotifier {
       final canDownload = await canSafelyDownload(int.parse(size ?? '0'));
 
       if (!canDownload) {
-        //TODO: Show error message for low storage
+        UIService.showSnackbar(
+            message: 'Low Storage. Clear up some files before continuing',
+            backgroundColor: Colors.redAccent);
         return;
       }
 
@@ -148,12 +150,16 @@ class Content extends ChangeNotifier {
       this.filePath = filePath;
       file = File(filePath);
 
-      //TODO: Show success message
+      UIService.showSnackbar(
+          message: '$title downloaded successfully',
+          backgroundColor: const Color(0xFF16A085)); //TODO: Store in app theme
     } on FileSystemException catch (e) {
       if (e.message.toLowerCase().contains("no space left")) {
         logger.e("Critical Error: Device Storage Full.");
 
-        //TODO: Show error message for low storage
+        UIService.showSnackbar(
+            message: 'Low Storage. Clear up some files before continuing',
+            backgroundColor: Colors.redAccent);
 
         final file = File(filePath);
 
@@ -191,6 +197,8 @@ class Content extends ChangeNotifier {
     previouslyLeftOn = map['previouslyLeftOn'];
     contentRemaining = map['contentRemaining'];
     filePath = map['filePath'];
+
+    _loadFile();
 
     notifyListeners();
   }

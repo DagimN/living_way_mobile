@@ -11,6 +11,7 @@ import 'package:hl_image_picker/hl_image_picker.dart';
 import 'package:living_way/core/config/env.dart';
 import 'package:living_way/core/constants/urls.dart';
 import 'package:living_way/core/services/logging_service.dart';
+import 'package:living_way/core/services/ui_service.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -118,32 +119,19 @@ abstract class ImageService {
       await file.delete();
 
       logger.i('Image successfully saved');
-      // Show Success Message
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Row(
-              children: [
-                Icon(Icons.check_circle, color: Colors.white),
-                SizedBox(width: 12),
-                Text('Saved to Living Way album'),
-              ],
-            ),
-            backgroundColor: const Color(0xFF16A085), // Your brand Teal
-            behavior: SnackBarBehavior.floating,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-            duration: const Duration(seconds: 2),
-          ),
-        );
-      }
+      UIService.showSnackbar(
+          backgroundColor: const Color(0xFF16A085), //TODO: Store in app theme
+          child: const Row(
+            children: [
+              Icon(Icons.check_circle, color: Colors.white),
+              SizedBox(width: 12),
+              Text('Saved to Living Way album'),
+            ],
+          ));
     } catch (e) {
       logger.e("Error capturing image: $e");
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to save image.')),
-        );
-      }
+      UIService.showSnackbar(
+          backgroundColor: Colors.redAccent, message: 'Failed to save image.');
     }
   }
 }

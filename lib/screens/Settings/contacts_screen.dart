@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:living_way/core/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/models/contacts.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -116,24 +113,16 @@ class ContactsScreen extends StatelessWidget {
                                         if (contact.type == ContactType.email) {
                                           final emailUri = Uri(
                                               scheme: 'mailto', path: address);
-                                          canLaunchUrl(
-                                                  emailUri)
-                                              .then((canLaunch) => canLaunch
-                                                  ? launchUrl(
-                                                      emailUri,
+                                          canLaunchUrl(emailUri).then(
+                                              (canLaunch) => canLaunch
+                                                  ? launchUrl(emailUri,
                                                       mode: LaunchMode
                                                           .externalApplication)
-                                                  : ScaffoldMessenger.of(
-                                                          context)
-                                                      .showSnackBar(
-                                                          const SnackBar(
-                                                              backgroundColor:
-                                                                  Colors.red,
-                                                              content: Row(
-                                                                  children: [
-                                                                    Text(
-                                                                        'Could not launch email address')
-                                                                  ]))));
+                                                  : UIService.showSnackbar(
+                                                      backgroundColor:
+                                                          Colors.redAccent,
+                                                      message:
+                                                          "Could not launch email address"));
                                           return;
                                         }
 
@@ -143,13 +132,10 @@ class ContactsScreen extends StatelessWidget {
                                               mode: LaunchMode
                                                   .externalApplication);
                                         } else {
-                                          ScaffoldMessenger.of(context)
-                                              .showSnackBar(SnackBar(
-                                                  backgroundColor: Colors.red,
-                                                  content: Row(children: [
-                                                    Text(
-                                                        'Could not launch ${contact.type.name} address')
-                                                  ])));
+                                          UIService.showSnackbar(
+                                              backgroundColor: Colors.redAccent,
+                                              message:
+                                                  'Could not launch ${contact.type.name} address');
                                         }
                                       },
                                       child: Row(children: [

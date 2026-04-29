@@ -64,6 +64,8 @@ class LibraryScreen extends StatelessWidget {
                       onTap: (index) {
                         final book = books[index];
 
+                        if (book.isDownloading) return;
+
                         if (book.filePath == null) {
                           book.downloadContent();
                           contentController.saveLibrary(book);

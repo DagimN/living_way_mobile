@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/screens.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class LivingWayApp extends StatelessWidget {
@@ -42,6 +42,8 @@ class LivingWayApp extends StatelessWidget {
 
           return !layoutController.showSplashScreen
               ? MaterialApp(
+                  navigatorKey: UIService.navigatorKey,
+                  scaffoldMessengerKey: UIService.messengerKey,
                   debugShowCheckedModeBanner: false,
                   title: 'Living Way',
                   theme: ThemeData(

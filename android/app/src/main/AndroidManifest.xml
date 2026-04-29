@@ -24,8 +24,7 @@
         android:icon="@mipmap/launcher_icon"
         android:requestLegacyExternalStorage="true"
         android:allowBackup="false"
-        android:fullBackupContent="false"
-        android:dataExtractionRules="@xml/data_extraction_rules">
+        android:fullBackupContent="false">
         <activity
             android:name=".MainActivity"
             android:exported="true"

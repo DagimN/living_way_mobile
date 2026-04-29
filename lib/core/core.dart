@@ -25,6 +25,7 @@ export 'models/translation.dart';
 export 'services/cache_service.dart';
 export 'services/image_service.dart';
 export 'services/logging_service.dart';
+export 'services/ui_service.dart';
 
 export 'themes/app_theme.dart';
 

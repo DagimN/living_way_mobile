@@ -197,7 +197,8 @@ class _PdfViewerState extends State<PdfViewer> {
               width: screenWidth,
               height: screenHeight,
               child: pdfrx.PdfViewer.file(
-                widget.content.file?.path ?? "",
+                widget.content.file?.path ??
+                    "", //TODO: Handle pdf crash gracefully
                 controller: pdfController,
                 params: pdfrx.PdfViewerParams(
                     layoutPages: (pages, params) {

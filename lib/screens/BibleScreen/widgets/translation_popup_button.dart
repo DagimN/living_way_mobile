@@ -36,13 +36,10 @@ class TranslationPopupButton extends StatelessWidget {
                   }
 
                   if (translation.status == TranslationStatus.pending) {
-                    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    UIService.showSnackbar(
                         backgroundColor:
                             AppTheme(themeController.brightness).pendingColor,
-                        content: const Row(children: [
-                          Text('Coming Soon'),
-                          //TODO: Add a notify me to get a push notification
-                        ])));
+                        message: 'Coming Soon');
                   }
 
                   if (translation.status == TranslationStatus.ready) {
