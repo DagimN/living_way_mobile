@@ -60,7 +60,7 @@ class LibraryScreen extends StatelessWidget {
               actions: const [SearchButton()]),
           SizedBox(
             height: orientation == Orientation.portrait
-                ? screenHeight * .76
+                ? screenHeight * .78
                 : screenHeight * .45,
             child: SingleChildScrollView(
               primary: true,

@@ -24,6 +24,7 @@ class BottomNavigation extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
+                      color: Colors.white, //TODO: Include in app theme
                       border: Border(
                           top: BorderSide(
                               color: AppTheme(themeController.brightness)
