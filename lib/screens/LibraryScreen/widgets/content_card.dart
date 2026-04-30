@@ -68,9 +68,22 @@ class ContentCard extends StatelessWidget {
                               .primaryPanelColor,
                           image: image),
                       child: image == null
-                          ? Icon(Icons.book,
-                              color: AppTheme(themeController.brightness)
-                                  .primaryColor)
+                          ? Column(
+                              spacing: 4,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.book,
+                                    color: AppTheme(themeController.brightness)
+                                        .primaryColor),
+                                Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    content.title,
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              ],
+                            )
                           : null),
                   if (content.file == null)
                     Positioned(
