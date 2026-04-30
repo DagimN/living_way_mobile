@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 
 import 'widgets/continue_content_list_view.dart';
 import 'widgets/pdf_viewer.dart';
-import 'widgets/popular_content_card.dart';
+import 'widgets/content_card.dart';
 
 class LibraryScreen extends StatelessWidget {
   const LibraryScreen({super.key});
@@ -16,13 +16,31 @@ class LibraryScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final contentController = Provider.of<ContentController>(context);
-    final books = contentController.library;
-    final libraryItems = contentController.libraryItems;
+    final popularBooks = contentController.library
+        .where((content) => content.isPopular)
+        .toList();
+    final otherContents = contentController.library
+        .where((content) => !content.isPopular)
+        .toList();
 
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
+    void onBookTap(Content book) {
+      if (book.isDownloading) return;
+
+      if (book.file == null) {
+        book.downloadContent();
+        contentController.saveLibrary(book);
+        return;
+      }
+
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => PdfViewer(content: book)));
+    }
+
+    //TODO: Implement refresh logic
     return Container(
       margin: const EdgeInsets.only(top: 30),
       child: Column(children: [
@@ -44,65 +62,51 @@ class LibraryScreen extends StatelessWidget {
             primary: true,
             child: Column(
               children: [
-                Container(
-                  //TODO: Hide carousel if there are no popular books
-                  //TODO: Implement paid content feature
-                  height: orientation == Orientation.portrait
-                      ? screenHeight * .3
-                      : screenHeight * .7,
-                  width: screenWidth,
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: CarouselView(
-                      itemExtent: orientation == Orientation.portrait
-                          ? screenWidth * .45
-                          : screenWidth * .3,
-                      shrinkExtent: orientation == Orientation.portrait
-                          ? screenWidth * .4
-                          : screenWidth * .25,
-                      backgroundColor: Colors.transparent,
-                      itemSnapping: true,
-                      onTap: (index) {
-                        final book = books[index];
+                if (popularBooks.isNotEmpty)
+                  Container(
+                    //TODO: Implement paid content feature
+                    height: orientation == Orientation.portrait
+                        ? screenHeight * .3
+                        : screenHeight * .7,
+                    width: screenWidth,
+                    margin: const EdgeInsets.symmetric(vertical: 10),
+                    child: CarouselView(
+                        itemExtent: orientation == Orientation.portrait
+                            ? screenWidth * .45
+                            : screenWidth * .3,
+                        shrinkExtent: orientation == Orientation.portrait
+                            ? screenWidth * .4
+                            : screenWidth * .25,
+                        backgroundColor: Colors.transparent,
+                        itemSnapping: true,
+                        onTap: (index) {
+                          final book = popularBooks[index];
 
-                        if (book.isDownloading) return;
-
-                        if (book.file == null) {
-                          book.downloadContent();
-                          contentController.saveLibrary(book);
-                          return;
-                        }
-
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    PdfViewer(content: book)));
-                      },
-                      children: books
-                          .map((book) => PopularContentCard(content: book))
-                          .toList()),
+                          onBookTap(book);
+                        },
+                        children: popularBooks
+                            .map((book) => ContentCard(content: book))
+                            .toList()),
+                  ),
+                const Padding(
+                  padding: EdgeInsets.all(8.0),
+                  child: Divider(),
                 ),
                 const ContinueContentListView(),
                 MasonryGridView.count(
+                  //TODO: Add placeholder image when library is empty
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
                   crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
                   mainAxisSpacing: 4,
                   crossAxisSpacing: 4,
-                  itemCount: libraryItems.length,
+                  itemCount: otherContents.length,
                   itemBuilder: (context, index) {
-                    final item = libraryItems[index];
+                    final content = otherContents[index];
 
-                    return AspectRatio(
-                      aspectRatio: item,
-                      child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey[300],
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20))),
-                          child: const Icon(Icons.article_rounded,
-                              color: Color(0xFFFFFBDC))),
+                    return ContentCard(
+                      content: content,
+                      onTap: () => onBookTap(content),
                     );
                   },
                 )

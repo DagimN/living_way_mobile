@@ -22,30 +22,34 @@ class Content extends ChangeNotifier {
   File? file;
   FileType? fileType;
   bool isFetching = true;
+  bool isPopular;
   int? previouslyLeftOn;
   double? contentRemaining;
   bool isDownloading = false;
   double? downloadProgress;
+  int? width;
+  int? height;
 
   Content(
       {required this.id,
       required this.title,
       required this.presenter,
       required this.source,
+      this.isPopular = false,
       this.filePath,
       this.thumbnail,
       this.previouslyLeftOn,
       this.contentRemaining}) {
     fileType = FileType.fromString((filePath ?? source).split('.').last);
 
-    _loadPdfThumbnail();
+    _loadPdfThumbnail().then((value) => _calculateThumbailSize());
 
     _loadFile();
   }
 
-  Future<Uint8List?> _loadContent() async {
+  Future<Uint8List?> _loadContent(String? url) async {
     try {
-      final response = await http.get(Uri.parse(source));
+      final response = await http.get(Uri.parse(url ?? source));
       return response.bodyBytes;
     } catch (error) {
       logger.e(error);
@@ -55,7 +59,7 @@ class Content extends ChangeNotifier {
 
   Future<void> _loadPdfThumbnail() async {
     try {
-      if (fileType != FileType.pdf || thumbnail != null) {
+      if (fileType != FileType.pdf) {
         return;
       }
 
@@ -73,35 +77,52 @@ class Content extends ChangeNotifier {
         await directory.create(recursive: true);
       }
 
-      final contentData = await _loadContent();
+      final contentData = await _loadContent(thumbnail);
 
       if (contentData == null) return;
 
-      final document = await PdfDocument.openData(contentData);
-      final renderedPage = await document.pages[0].render();
+      if (thumbnail == null) {
+        final document = await PdfDocument.openData(contentData);
+        final renderedPage = await document.pages[0].render();
 
-      if (renderedPage == null) return;
+        if (renderedPage == null) return;
 
-      final pageImage = image.Image.fromBytes(
-          width: renderedPage.width,
-          height: renderedPage.height,
-          bytes: renderedPage.pixels.buffer,
-          order: image.ChannelOrder.bgra,
-          numChannels: 4);
+        final pageImage = image.Image.fromBytes(
+            width: renderedPage.width,
+            height: renderedPage.height,
+            bytes: renderedPage.pixels.buffer,
+            order: image.ChannelOrder.bgra,
+            numChannels: 4);
 
-      final imageData =
-          Uint8List.fromList(image.encodeJpg(pageImage, quality: 70));
-
-      thumbnailFile.writeAsBytes(imageData, flush: true);
-      thumbnailData = imageData;
-
-      await document.dispose();
+        final imageData =
+            Uint8List.fromList(image.encodeJpg(pageImage, quality: 70));
+        thumbnailFile.writeAsBytes(imageData, flush: true);
+        thumbnailData = imageData;
+        await document.dispose();
+      } else {
+        thumbnailFile.writeAsBytes(contentData, flush: true);
+        thumbnailData = contentData;
+      }
     } catch (error) {
       logger.e(error);
     } finally {
       isFetching = false;
       notifyListeners();
     }
+  }
+
+  Future<void> _calculateThumbailSize() async {
+    if (thumbnailData == null) return;
+
+    Image image = Image.memory(thumbnailData!);
+    image.image.resolve(const ImageConfiguration()).addListener(
+      ImageStreamListener((ImageInfo info, bool synchronousCall) {
+        width = info.image.width;
+        height = info.image.height;
+
+        notifyListeners();
+      }),
+    );
   }
 
   void _loadFile() {
@@ -113,6 +134,8 @@ class Content extends ChangeNotifier {
       this.file = file;
     } else {
       filePath = null;
+      previouslyLeftOn = null;
+      contentRemaining = null;
     }
 
     notifyListeners();
@@ -190,7 +213,8 @@ class Content extends ChangeNotifier {
         thumbnail: map['thumbnail'],
         previouslyLeftOn: map['previouslyLeftOn'],
         contentRemaining: map['contentRemaining'],
-        filePath: map['filePath']);
+        filePath: map['filePath'],
+        isPopular: map['isPopular'] ?? false);
   }
 
   void updateFromJson(map) {

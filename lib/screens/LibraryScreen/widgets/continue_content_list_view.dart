@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
@@ -48,12 +47,7 @@ class ContinueContentListView extends StatelessWidget {
                       builder: (context, child) {
                         DecorationImage? image;
 
-                        if (content.thumbnail != null) {
-                          image = DecorationImage(
-                              image: CachedNetworkImageProvider(
-                                  content.thumbnail!),
-                              fit: BoxFit.cover);
-                        } else if (content.thumbnailData != null) {
+                        if (content.thumbnailData != null) {
                           image = DecorationImage(
                               image: Image.memory(content.thumbnailData!,
                                       width: double.infinity,

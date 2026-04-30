@@ -119,7 +119,6 @@ class ContentController extends ChangeNotifier {
         ],
         type: ContactType.social)
   ];
-  List libraryItems = [0.56, 1.0, 1.78, 0.8, 1.5, 0.66];
   List<Content> library = [
     Content(
         id: '5',
@@ -131,6 +130,7 @@ class ContentController extends ChangeNotifier {
         id: '2',
         title: 'የኣዲስ ኪዳን መክፈቻ',
         presenter: "Unkown",
+        isPopular: true,
         source:
             "https://www.operationezra.com/uploads/1/0/4/4/10446233/new_testament_key.pdf"),
     Content(
