@@ -40,81 +40,86 @@ class LibraryScreen extends StatelessWidget {
           MaterialPageRoute(builder: (context) => PdfViewer(content: book)));
     }
 
-    //TODO: Implement refresh logic
-    return Container(
-      margin: const EdgeInsets.only(top: 30),
-      child: Column(children: [
-        BaseAppBar(
-            title: Container(
-                margin: const EdgeInsets.all(10),
-                child: Text('Library',
-                    style: TextStyle(
-                        fontSize: 32,
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
-                        fontWeight: FontWeight.w300))),
-            actions: const [SearchButton()]),
-        SizedBox(
-          height: orientation == Orientation.portrait
-              ? screenHeight * .76
-              : screenHeight * .45,
-          child: SingleChildScrollView(
-            primary: true,
-            child: Column(
-              children: [
-                if (popularBooks.isNotEmpty)
-                  Container(
-                    //TODO: Implement paid content feature
-                    height: orientation == Orientation.portrait
-                        ? screenHeight * .3
-                        : screenHeight * .7,
-                    width: screenWidth,
-                    margin: const EdgeInsets.symmetric(vertical: 10),
-                    child: CarouselView(
-                        itemExtent: orientation == Orientation.portrait
-                            ? screenWidth * .45
-                            : screenWidth * .3,
-                        shrinkExtent: orientation == Orientation.portrait
-                            ? screenWidth * .4
-                            : screenWidth * .25,
-                        backgroundColor: Colors.transparent,
-                        itemSnapping: true,
-                        onTap: (index) {
-                          final book = popularBooks[index];
+    return RefreshIndicator(
+      onRefresh: () {
+        //TODO: Implement refresh logic
+        return Future.delayed(const Duration(seconds: 1));
+      },
+      child: Container(
+        margin: const EdgeInsets.only(top: 30),
+        child: Column(children: [
+          BaseAppBar(
+              title: Container(
+                  margin: const EdgeInsets.all(10),
+                  child: Text('Library',
+                      style: TextStyle(
+                          fontSize: 32,
+                          color:
+                              AppTheme(themeController.brightness).primaryColor,
+                          fontWeight: FontWeight.w300))),
+              actions: const [SearchButton()]),
+          SizedBox(
+            height: orientation == Orientation.portrait
+                ? screenHeight * .76
+                : screenHeight * .45,
+            child: SingleChildScrollView(
+              primary: true,
+              child: Column(
+                children: [
+                  if (popularBooks.isNotEmpty)
+                    Container(
+                      //TODO: Implement paid content feature
+                      height: orientation == Orientation.portrait
+                          ? screenHeight * .3
+                          : screenHeight * .7,
+                      width: screenWidth,
+                      margin: const EdgeInsets.symmetric(vertical: 10),
+                      child: CarouselView(
+                          itemExtent: orientation == Orientation.portrait
+                              ? screenWidth * .45
+                              : screenWidth * .3,
+                          shrinkExtent: orientation == Orientation.portrait
+                              ? screenWidth * .4
+                              : screenWidth * .25,
+                          backgroundColor: Colors.transparent,
+                          itemSnapping: true,
+                          onTap: (index) {
+                            final book = popularBooks[index];
 
-                          onBookTap(book);
-                        },
-                        children: popularBooks
-                            .map((book) => ContentCard(content: book))
-                            .toList()),
+                            onBookTap(book);
+                          },
+                          children: popularBooks
+                              .map((book) => ContentCard(content: book))
+                              .toList()),
+                    ),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Divider(),
                   ),
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Divider(),
-                ),
-                const ContinueContentListView(),
-                MasonryGridView.count(
-                  //TODO: Add placeholder image when library is empty
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                  mainAxisSpacing: 4,
-                  crossAxisSpacing: 4,
-                  itemCount: otherContents.length,
-                  itemBuilder: (context, index) {
-                    final content = otherContents[index];
+                  const ContinueContentListView(),
+                  MasonryGridView.count(
+                    //TODO: Add placeholder image when library is empty
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
+                    mainAxisSpacing: 4,
+                    crossAxisSpacing: 4,
+                    itemCount: otherContents.length,
+                    itemBuilder: (context, index) {
+                      final content = otherContents[index];
 
-                    return ContentCard(
-                      content: content,
-                      onTap: () => onBookTap(content),
-                    );
-                  },
-                )
-              ],
+                      return ContentCard(
+                        content: content,
+                        onTap: () => onBookTap(content),
+                      );
+                    },
+                  )
+                ],
+              ),
             ),
-          ),
-        )
-      ]),
+          )
+        ]),
+      ),
     );
   }
 }
