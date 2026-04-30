@@ -70,7 +70,7 @@ class PopularContentCard extends StatelessWidget {
                           color:
                               AppTheme(themeController.brightness).primaryColor)
                       : null),
-              if (content.filePath == null)
+              if (content.file == null)
                 Positioned(
                   bottom: 10,
                   right: 10,
