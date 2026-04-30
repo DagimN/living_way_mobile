@@ -24,7 +24,9 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
             toolbarHeight: 0,
             backgroundColor: Colors.transparent,
-            systemOverlayStyle: SystemUiOverlayStyle.light),
+            systemOverlayStyle: themeController.brightness == Brightness.light
+                ? SystemUiOverlayStyle.dark
+                : SystemUiOverlayStyle.light),
         body: appFlavor == "prod"
             ? Container(
                 width: screenWidth,
