@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/widgets.dart';
@@ -62,8 +63,11 @@ class LibraryScreen extends StatelessWidget {
             height: orientation == Orientation.portrait
                 ? screenHeight * .78
                 : screenHeight * .45,
+            width: screenWidth,
             child: SingleChildScrollView(
+              padding: const EdgeInsets.only(bottom: 50),
               primary: true,
+              physics: const AlwaysScrollableScrollPhysics(),
               child: Column(
                 children: [
                   if (popularBooks.isNotEmpty)
@@ -92,28 +96,63 @@ class LibraryScreen extends StatelessWidget {
                               .map((book) => ContentCard(content: book))
                               .toList()),
                     ),
-                  const Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Divider(),
-                  ),
+                  if (popularBooks.isNotEmpty || otherContents.isNotEmpty)
+                    const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Divider(),
+                    ),
                   const ContinueContentListView(),
-                  MasonryGridView.count(
-                    //TODO: Add placeholder image when library is empty
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    crossAxisCount: orientation == Orientation.portrait ? 2 : 3,
-                    mainAxisSpacing: 4,
-                    crossAxisSpacing: 4,
-                    itemCount: otherContents.length,
-                    itemBuilder: (context, index) {
-                      final content = otherContents[index];
+                  (otherContents.isEmpty)
+                      ? Container(
+                          width: orientation == Orientation.portrait
+                              ? screenWidth * .7
+                              : screenWidth * .3,
+                          margin: orientation == Orientation.portrait &&
+                                  popularBooks.isEmpty
+                              ? EdgeInsets.only(top: screenHeight * .15)
+                              : null,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              ColorFiltered(
+                                colorFilter: const ColorFilter.matrix(<double>[
+                                  0.35, 0.35, 0.35, 0,
+                                  0, // Red: 35% intensity, no offset
+                                  0.35, 0.35, 0.35, 0,
+                                  0, // Green: 35% intensity, no offset
+                                  0.35, 0.35, 0.35, 0,
+                                  0, // Blue: 35% intensity, no offset
+                                  0, 0, 0, 1, 0,
+                                ]),
+                                child: SvgPicture.asset(
+                                  AppImages.emptyLibrary,
+                                ),
+                              ),
+                              Text(
+                                'No books available at the moment. Come back later',
+                                style: TextStyle(color: Colors.grey[500]),
+                                textAlign: TextAlign.center,
+                              )
+                            ],
+                          ),
+                        )
+                      : MasonryGridView.count(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          crossAxisCount:
+                              orientation == Orientation.portrait ? 2 : 3,
+                          mainAxisSpacing: 4,
+                          crossAxisSpacing: 4,
+                          itemCount: otherContents.length,
+                          itemBuilder: (context, index) {
+                            final content = otherContents[index];
 
-                      return ContentCard(
-                        content: content,
-                        onTap: () => onBookTap(content),
-                      );
-                    },
-                  )
+                            return ContentCard(
+                              content: content,
+                              onTap: () => onBookTap(content),
+                            );
+                          },
+                        )
                 ],
               ),
             ),

@@ -21,10 +21,8 @@ abstract class AppImages {
   static const String signupFlow1 = 'assets/images/signup_flow_1.png';
   static const String signupFlow2 = 'assets/images/signup_flow_2.png';
   static const String signupFlow3 = 'assets/images/signup_flow_3.png';
-  static const String signupFlow4 =
-      'assets/images/signup_flow_4.png';
-  static const String signupFlow5 =
-      'assets/images/signup_flow_5.png';
+  static const String signupFlow4 = 'assets/images/signup_flow_4.png';
+  static const String signupFlow5 = 'assets/images/signup_flow_5.png';
   static const String topicBackground = 'assets/images/topic_background.png';
   static const String testimonyBackground =
       'assets/images/testimony_background.png';
@@ -33,4 +31,5 @@ abstract class AppImages {
   static const String aboutLogo = 'assets/images/about_logo.png';
   static const String loginBackground = 'assets/images/login_bg.jpg';
   static const String emptyContent = 'assets/images/empty_content.png';
+  static const String emptyLibrary = 'assets/svg/empty-library.svg';
 }
