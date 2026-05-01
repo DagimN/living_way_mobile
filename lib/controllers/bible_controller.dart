@@ -9,20 +9,30 @@ class BibleController extends ChangeNotifier {
   List<Book> bible = [];
   List<Translation> translations = [
     Translation(
-        name: "KJV",
+        name: "NKJV",
         status: TranslationStatus.available,
-        path: 'assets/data/en_kjv.json',
+        path: 'assets/data/en_nkjv.json',
         isDefault: true),
     Translation(
         name: "AM54",
         status: TranslationStatus.available,
-        path: 'assets/data/am_nasb.json',
+        path: 'assets/data/am_am54.json',
+        isDefault: true),
+    Translation(
+        name: "NASV",
+        status: TranslationStatus.available,
+        path: 'assets/data/am_nasv.json',
+        isDefault: true),
+    Translation(
+        name: "NIV",
+        status: TranslationStatus.available,
+        path: 'assets/data/en_niv.json',
         isDefault: true)
   ];
   Translation translation = Translation(
-      name: "KJV",
+      name: "NKJV",
       status: TranslationStatus.available,
-      path: 'assets/data/en_kjv.json',
+      path: 'assets/data/en_nkjv.json',
       isDefault: true);
 
   Passage passage = Passage(book: Book.empty());

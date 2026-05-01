@@ -26,8 +26,10 @@ class _ChapterPageState extends State<ChapterPage>
     final themeController = Provider.of<ThemeController>(context);
     final selectedPassage = bibleController.passage;
 
-    List<GlobalKey> verseKeys =
-        List.generate(selectedPassage.verses.length, (index) => GlobalKey());
+    List<GlobalKey> verseKeys = List.generate(
+        selectedPassage.verses.length,
+        (index) =>
+            GlobalKey()); //BUG: Multiple widgets used the same GlobalKey.
     layoutController.setVerseKeys = verseKeys;
     layoutController.setVerseAnimationController = verseHighlightController;
 
