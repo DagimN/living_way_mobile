@@ -11,13 +11,15 @@ class ActivityController extends ChangeNotifier {
   List<Activity> activityList = [];
   int pageIndex = 0;
   bool isFetching = false;
+  bool hasReachedEnd = false;
 
   //TODO: Implement notification whenever an activity schedule is approaching
 
   ActivityController() {
     scrollController.addListener(() {
       if (scrollController.position.pixels >
-          (scrollController.position.maxScrollExtent * .7)) {
+              (scrollController.position.maxScrollExtent * .7) &&
+          !hasReachedEnd) {
         //TODO: Add condition for stop fetching when there is no longer any items left
         fetchActivities();
       }
@@ -39,6 +41,7 @@ class ActivityController extends ChangeNotifier {
       isFetching = true;
       if (isRefreshing) {
         pageIndex = 0;
+        hasReachedEnd = false;
         activityList.clear();
       }
 
@@ -55,6 +58,7 @@ class ActivityController extends ChangeNotifier {
 
       activityList.addAll(result);
       pageIndex++;
+      hasReachedEnd = result.isEmpty;
     } catch (e) {
       logger.e(e);
     } finally {
