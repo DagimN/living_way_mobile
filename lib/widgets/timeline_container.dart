@@ -50,43 +50,54 @@ class TimelineContainer extends StatelessWidget {
     return Container(
         key: timelineKey,
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-        child: Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          AvatarStack(
-              containerKey: timelineKey,
-              icon: Icon(getIcon(),
-                  color: AppTheme(themeController.brightness).primaryColor),
-              isLast: isLast),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            SizedBox(
-                width: orientation == Orientation.portrait
-                    ? screenWidth * .75
-                    : screenWidth * .85,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                          width: screenWidth * .5,
-                          child: Text(title,
-                              maxLines: 5,
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.w400))),
-                      Tooltip(
-                          message: DateFormat("MMMM d, y 'at' h':'m a")
-                              .format(timestamp),
-                          triggerMode: TooltipTriggerMode.tap,
-                          child: Text(
-                              !isOngoing
-                                  ? formatDateTime(timestamp)
-                                  : 'Ongoing',
-                              style: TextStyle(
-                                  fontSize: 8,
-                                  fontStyle: FontStyle.italic,
-                                  fontWeight:
-                                      isOngoing ? FontWeight.bold : null)))
-                    ])),
-            const SizedBox(height: 12),
-            child
-          ])
-        ]));
+        child: Stack(
+          children: [
+            if (!isLast)
+              Positioned(
+                  top: 20,
+                  bottom: 0,
+                  left: 12,
+                  child: Container(width: 1, color: Colors.grey)),
+            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              AvatarStack(
+                  containerKey: timelineKey,
+                  icon: Icon(getIcon(),
+                      color: AppTheme(themeController.brightness).primaryColor),
+                  isLast: isLast),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                SizedBox(
+                    width: orientation == Orientation.portrait
+                        ? screenWidth * .75
+                        : screenWidth * .85,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                              width: screenWidth * .5,
+                              child: Text(title,
+                                  maxLines: 5,
+                                  style: const TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400))),
+                          Tooltip(
+                              message: DateFormat("MMMM d, y 'at' h':'m a")
+                                  .format(timestamp),
+                              triggerMode: TooltipTriggerMode.tap,
+                              child: Text(
+                                  !isOngoing
+                                      ? formatDateTime(timestamp)
+                                      : 'Ongoing',
+                                  style: TextStyle(
+                                      fontSize: 8,
+                                      fontStyle: FontStyle.italic,
+                                      fontWeight:
+                                          isOngoing ? FontWeight.bold : null)))
+                        ])),
+                const SizedBox(height: 12),
+                child
+              ])
+            ]),
+          ],
+        ));
   }
 }

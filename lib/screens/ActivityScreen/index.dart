@@ -46,7 +46,6 @@ class ActivityScreen extends StatelessWidget {
                   },
                   child: ListView.builder(
                       controller: activityController.scrollController,
-                      shrinkWrap: true,
                       itemCount: activityController.activityList.length + 1,
                       itemBuilder: (context, index) {
                         final content =

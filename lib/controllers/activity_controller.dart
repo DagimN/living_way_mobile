@@ -20,7 +20,6 @@ class ActivityController extends ChangeNotifier {
       if (scrollController.position.pixels >
               (scrollController.position.maxScrollExtent * .7) &&
           !hasReachedEnd) {
-        //TODO: Add condition for stop fetching when there is no longer any items left
         fetchActivities();
       }
     });
