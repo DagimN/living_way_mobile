@@ -18,13 +18,14 @@ class ActivityScreen extends StatelessWidget {
     final activityController = Provider.of<ActivityController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
+    final activityList = activityController.activityList;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    return SafeArea(
-        child: Column(children: [
+    return Column(children: [
+      SizedBox(height: screenHeight * .05),
       BaseAppBar(
           title: Container(
               margin: const EdgeInsets.all(10),
@@ -35,26 +36,25 @@ class ActivityScreen extends StatelessWidget {
                       fontWeight: FontWeight.w300)))),
       SizedBox(
           height: orientation == Orientation.portrait
-              ? screenHeight * .7
+              ? screenHeight * .8
               : screenWidth * .2,
-          child: !activityController.isFetching ||
-                  activityController.activityList.isNotEmpty
+          child: !activityController.isFetching || activityList.isNotEmpty
               ? RefreshIndicator(
                   onRefresh: () async {
                     return await activityController.fetchActivities(
                         isRefreshing: true);
                   },
                   child: ListView.builder(
+                      physics: const AlwaysScrollableScrollPhysics(),
                       controller: activityController.scrollController,
-                      itemCount: activityController.activityList.length + 1,
+                      itemCount: activityList.length + 1,
                       itemBuilder: (context, index) {
-                        final content =
-                            activityController.activityList.length > index
-                                ? activityController.activityList[index]
-                                : Activity(
-                                    id: '',
-                                    type: ContentType.undefined,
-                                    timestamp: DateTime.now());
+                        final content = activityList.length > index
+                            ? activityList[index]
+                            : Activity(
+                                id: '',
+                                type: ContentType.undefined,
+                                timestamp: DateTime.now());
                         final Widget childWidget;
 
                         switch (content.type) {
@@ -76,19 +76,18 @@ class ActivityScreen extends StatelessWidget {
                             childWidget = const SizedBox();
                         }
 
-                        return index < activityController.activityList.length
+                        return index < activityList.length
                             ? TimelineContainer(
                                 title: content.title ?? '',
                                 timestamp:
                                     content.upcomingDate ?? content.timestamp,
                                 isOngoing: content.isOngoing,
                                 type: content.type,
-                                isLast: index ==
-                                    activityController.activityList.length - 1,
+                                isLast: index == activityList.length - 1,
                                 child: childWidget)
                             : Container(
-                                height: activityController.activityList.isEmpty
-                                    ? screenHeight * .65
+                                height: activityList.isEmpty
+                                    ? screenHeight * .55
                                     : null,
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 24),
@@ -106,8 +105,7 @@ class ActivityScreen extends StatelessWidget {
                                                     AppImages.activitiesEnd)),
                                             //TODO: Add a cursive font
                                             Text(
-                                                activityController
-                                                        .activityList.isNotEmpty
+                                                activityList.isNotEmpty
                                                     ? 'It all started here'
                                                     : "Nothing to show yet.",
                                                 style: TextStyle(
@@ -116,8 +114,7 @@ class ActivityScreen extends StatelessWidget {
                                                             themeController
                                                                 .brightness)
                                                         .primaryColor)),
-                                            if (activityController
-                                                .activityList.isEmpty)
+                                            if (activityList.isEmpty)
                                               IconButton(
                                                   icon: Icon(Icons.refresh,
                                                       color: AppTheme(
@@ -140,6 +137,6 @@ class ActivityScreen extends StatelessWidget {
                   child: CircularProgressIndicator(
                       color:
                           AppTheme(themeController.brightness).primaryColor)))
-    ]));
+    ]);
   }
 }

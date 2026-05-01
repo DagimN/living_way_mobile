@@ -24,14 +24,14 @@ class Event extends StatelessWidget {
             ? screenWidth * .75
             : screenWidth * .85,
         child: Stack(children: [
-          GestureDetector(
+          InkWell(
               onTap: () => Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) =>
                           ImagesPreview(imageProvider: imageProvider))),
               child: Container(
-                  margin: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   //TODO: Refactor cached image into its own widget
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
@@ -64,7 +64,7 @@ class Event extends StatelessWidget {
           if (content.locationUrl != null)
             Positioned(
                 bottom: 0,
-                right: -15,
+                right: -10,
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
