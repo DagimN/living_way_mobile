@@ -26,10 +26,10 @@ class _ChapterPageState extends State<ChapterPage>
     final themeController = Provider.of<ThemeController>(context);
     final selectedPassage = bibleController.passage;
 
-    List<GlobalKey> verseKeys = List.generate(
+    List<GlobalObjectKey> verseKeys = List.generate(
         selectedPassage.verses.length,
-        (index) =>
-            GlobalKey()); //BUG: Multiple widgets used the same GlobalKey.
+        (index) => GlobalObjectKey(
+            '${selectedPassage.book.name} ${selectedPassage.chapter} ${index + 1}'));
     layoutController.setVerseKeys = verseKeys;
     layoutController.setVerseAnimationController = verseHighlightController;
 
@@ -68,8 +68,9 @@ class _ChapterPageState extends State<ChapterPage>
                                                           .brightness)
                                                       .primaryColor
                                                       .withAlpha(
-                                                          verseHighlightController
-                                                              .value
+                                                          (verseHighlightController
+                                                                      .value *
+                                                                  255)
                                                               .toInt()),
                                               fontSize: 80 *
                                                   themeController.textSize)),
@@ -82,9 +83,11 @@ class _ChapterPageState extends State<ChapterPage>
                                                   .selectedFont.name,
                                               color: isSelectedVerse
                                                   ? Colors.black
-                                                  : Colors.black.withOpacity(
-                                                      verseHighlightController
-                                                          .value)))
+                                                  : Colors.black.withAlpha(
+                                                      (verseHighlightController
+                                                                  .value *
+                                                              255)
+                                                          .toInt())))
                                     ])));
                           });
                     }).toList()))));
