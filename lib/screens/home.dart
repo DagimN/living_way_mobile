@@ -17,6 +17,8 @@ class HomeScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Brightness brightness = themeController.brightness;
+    HomePageNavigation homePageNavigation =
+        layoutController.getSelectedHomePageNavigation;
 
     return Scaffold(
         extendBodyBehindAppBar: true,
@@ -24,9 +26,11 @@ class HomeScreen extends StatelessWidget {
         appBar: AppBar(
             toolbarHeight: 0,
             backgroundColor: Colors.transparent,
-            systemOverlayStyle: themeController.brightness == Brightness.light
-                ? SystemUiOverlayStyle.dark
-                : SystemUiOverlayStyle.light),
+            systemOverlayStyle: homePageNavigation == HomePageNavigation.home
+                ? SystemUiOverlayStyle.light
+                : themeController.brightness == Brightness.light
+                    ? SystemUiOverlayStyle.dark
+                    : SystemUiOverlayStyle.light),
         body: appFlavor == "prod"
             ? Container(
                 width: screenWidth,
