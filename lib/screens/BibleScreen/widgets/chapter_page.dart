@@ -39,7 +39,7 @@ class _ChapterPageState extends State<ChapterPage>
         margin: const EdgeInsets.fromLTRB(20, 20, 20, 0),
         height: screenHeight * .8,
         child: SingleChildScrollView(
-            controller: layoutController.scrollController,
+            controller: layoutController.bibleScrollController,
             padding: const EdgeInsets.only(bottom: 120),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/screens/ActivityScreen/index.dart';
 import 'package:living_way/screens/BibleScreen/index.dart';
 import 'package:living_way/screens/DailyFeedScreen/index.dart';
@@ -28,16 +29,18 @@ class LayoutController extends ChangeNotifier {
     {'name': "Contact Us", 'route': '/contacts'},
     {'name': "About", 'route': '/about'}
   ];
-  final scrollController = ScrollController();
+  final bibleScrollController = ScrollController();
 
   AnimationController? verseHighlightController;
   AnimationController? bibleTraverseController;
+  BibleController? bibleController;
 
   LayoutController() {
-    scrollController.addListener(() {
+    bibleScrollController.addListener(() {
       if (verseHighlightController != null &&
           verseHighlightController?.value != 1) {
         verseHighlightController?.forward();
+        bibleController?.setVerse = 0;
       }
     });
 
@@ -66,7 +69,7 @@ class LayoutController extends ChangeNotifier {
   }
 
   void scrollToTop() {
-    scrollController.animateTo(0,
+    bibleScrollController.animateTo(0,
         curve: Curves.easeInOut, duration: const Duration(milliseconds: 500));
   }
 
@@ -76,6 +79,10 @@ class LayoutController extends ChangeNotifier {
           curve: Curves.easeInOut, duration: const Duration(milliseconds: 700));
       verseHighlightController?.reverse();
     }
+  }
+
+  set setBibleController(BibleController value) {
+    bibleController = value;
   }
 
   set setSelectedHomePageNavigation(HomePageNavigation value) {

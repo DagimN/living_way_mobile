@@ -34,11 +34,13 @@ class LivingWayApp extends StatelessWidget {
           final profileController = Provider.of<ProfileController>(context);
           final layoutController = Provider.of<LayoutController>(context);
           final themeController = Provider.of<ThemeController>(context);
-          Provider.of<ContentController>(context);
+          final bibleController = Provider.of<BibleController>(context);
 
+          Provider.of<ContentController>(context);
           Provider.of<NotificationController>(context);
 
           authController.setProfileController = profileController;
+          layoutController.setBibleController = bibleController;
 
           return !layoutController.showSplashScreen
               ? MaterialApp(

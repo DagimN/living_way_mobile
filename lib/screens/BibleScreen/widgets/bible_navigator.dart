@@ -4,7 +4,8 @@ import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class BibleNavigator extends StatelessWidget {
-  const BibleNavigator({super.key});
+  final Function() toggleBibleNavigator;
+  const BibleNavigator({super.key, required this.toggleBibleNavigator});
 
   @override
   Widget build(BuildContext context) {
@@ -81,6 +82,7 @@ class BibleNavigator extends StatelessWidget {
             layoutController
                 .scrollToVerse(layoutController.verseKeys[value ?? 0]);
             bibleController.setVerse = value;
+            toggleBibleNavigator();
           })
     ]);
   }

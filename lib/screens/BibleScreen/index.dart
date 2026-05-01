@@ -32,6 +32,16 @@ class _BibleScreenState extends State<BibleScreen>
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
+    void toggleBibleNavigator() {
+      isBibleNavigatorVisible
+          ? animationController.reverse()
+          : animationController.forward();
+
+      setState(() {
+        isBibleNavigatorVisible = !isBibleNavigatorVisible;
+      });
+    }
+
     return bibleController.bible.isNotEmpty
         ? SingleChildScrollView(
             physics: const NeverScrollableScrollPhysics(),
@@ -40,37 +50,25 @@ class _BibleScreenState extends State<BibleScreen>
               SizedBox(height: screenHeight * .05),
               BaseAppBar(
                   title: TextButton(
-                      onPressed: () {
-                        isBibleNavigatorVisible
-                            ? animationController.reverse()
-                            : animationController.forward();
-
-                        setState(() {
-                          isBibleNavigatorVisible = !isBibleNavigatorVisible;
-                        });
-                      },
-                      child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Container(
-                                constraints: BoxConstraints(
-                                    maxWidth:
-                                        orientation == Orientation.portrait
-                                            ? screenWidth * .35
-                                            : screenWidth * .25),
-                                child: Text(selectedPassage.label,
-                                    style: TextStyle(
-                                        color:
-                                            AppTheme(themeController.brightness)
-                                                .primaryColor,
-                                        fontSize: 20))),
-                            Icon(
-                                isBibleNavigatorVisible
-                                    ? Icons.arrow_drop_up_rounded
-                                    : Icons.arrow_drop_down_rounded,
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor)
-                          ])),
+                      onPressed: toggleBibleNavigator,
+                      child: Row(children: [
+                        Container(
+                            constraints: BoxConstraints(
+                                maxWidth: orientation == Orientation.portrait
+                                    ? screenWidth * .35
+                                    : screenWidth * .25),
+                            child: Text(selectedPassage.label.split(":")[0],
+                                style: TextStyle(
+                                    color: AppTheme(themeController.brightness)
+                                        .primaryColor,
+                                    fontSize: 20))),
+                        Icon(
+                            isBibleNavigatorVisible
+                                ? Icons.arrow_drop_up_rounded
+                                : Icons.arrow_drop_down_rounded,
+                            color: AppTheme(themeController.brightness)
+                                .primaryColor)
+                      ])),
                   actions: const [TranslationPopupButton()]),
               AnimatedBuilder(
                   animation: CurvedAnimation(
@@ -85,7 +83,9 @@ class _BibleScreenState extends State<BibleScreen>
                         color: AppTheme(themeController.brightness)
                             .primaryPanelColor,
                         padding: const EdgeInsets.all(10),
-                        child: const BibleNavigator());
+                        child: BibleNavigator(
+                          toggleBibleNavigator: toggleBibleNavigator,
+                        ));
                   }),
               ChapterPage(verses: (selectedPassage.verses))
             ]),
