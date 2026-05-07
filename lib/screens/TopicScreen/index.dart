@@ -102,7 +102,8 @@ class _TopicScreenState extends State<TopicScreen>
   void onSubmitted(
       DevotionController devotionController, Profile profile) async {
     if (commentController.text.isEmpty) {
-      //TODO: Warn user
+      UIService.showSnackbar(
+          backgroundColor: Colors.orangeAccent, message: 'Empty comment');
       return;
     }
 

@@ -41,8 +41,6 @@ class AuthController extends ChangeNotifier {
       bool success = await performLogin(account.email, isOAuth: true);
       isLoggedInViaGoogle = success;
 
-      //TODO: Report error
-
       if (success) {
         await CacheService.instance.writeData<bool>('isLoggedIn', true);
         await CacheService.instance
@@ -50,6 +48,9 @@ class AuthController extends ChangeNotifier {
 
         return true;
       }
+
+      UIService.showSnackbar(
+          backgroundColor: Colors.red, message: 'Could not login via Google');
     }
 
     await GoogleSignIn().signOut();
@@ -88,7 +89,8 @@ class AuthController extends ChangeNotifier {
 
       return response;
     } on DioException catch (error) {
-      //TODO: Report error
+      UIService.showSnackbar(
+          backgroundColor: Colors.red, message: 'Could not signup - $error');
       logger.e(error);
       return error.response ??
           Response(

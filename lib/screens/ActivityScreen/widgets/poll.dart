@@ -109,7 +109,9 @@ class _PollState extends State<Poll> {
                   return Future.value(success);
                 }
 
-                //TODO: Provide warning message
+                UIService.showSnackbar(
+                    backgroundColor: Colors.redAccent,
+                    message: 'Failed to save vote');
                 return Future.value(false);
               })
         ]));
