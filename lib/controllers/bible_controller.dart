@@ -60,11 +60,18 @@ class BibleController extends ChangeNotifier {
   Future<void> _initPersistence() async {
     final data = await CacheService.instance
         .readData<String>('translations', defaultValue: '[]');
+    final currentTranslation = await CacheService.instance.readData<String>(
+        'currentTranslation',
+        defaultValue: translation.toString());
+
     final list =
         (json.decode(data) as List).map((t) => Translation.fromMap(t)).toList();
     _populateTranslationList(list);
 
     fetchTranslations();
+
+    translation = Translation.fromMap(json.decode(currentTranslation));
+    loadTranslation(translation, isDefault: translation.isDefault);
   }
 
   void _populateTranslationList(List<Translation> incomingTranslations) {
@@ -167,7 +174,7 @@ class BibleController extends ChangeNotifier {
   set setTranslation(Translation v) {
     translation = v;
     loadTranslation(v, isDefault: v.isDefault);
-    //TODO: Save translation to cache
+    CacheService.instance.writeData<String>('currentTranslation', v.toString());
     notifyListeners();
   }
 

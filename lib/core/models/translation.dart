@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 class Translation {
   String name;
   TranslationStatus status;
@@ -14,11 +16,22 @@ class Translation {
     return Translation(
         name: json['name'],
         path: json['path'],
-        status: TranslationStatus.fromString(json['status']));
+        status: TranslationStatus.fromString(json['status']),
+        isDefault: json['isDefault'] ?? false);
   }
 
   Map<String, dynamic> toMap() {
-    return {"name": name, "path": path, "status": status.name};
+    return {
+      "name": name,
+      "path": path,
+      "status": status.name,
+      "isDefault": isDefault
+    };
+  }
+
+  @override
+  String toString() {
+    return jsonEncode(toMap());
   }
 }
 
