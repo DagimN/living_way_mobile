@@ -6,6 +6,7 @@ import 'package:living_way/core/models/activity.dart';
 import 'package:living_way/core/themes/app_theme.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class ExternalLink extends StatelessWidget {
@@ -98,30 +99,27 @@ class ExternalLink extends StatelessWidget {
                                     image: PrettyQrDecorationImage(
                                         image: AssetImage(
                                             AppImages.logoTransparent))))),
-                        InkWell(
-                            onTap: () {
-                              launchUrl(Uri.parse(content.externalLink ?? ""));
-                            },
-                            child: Text(content.externalLink ?? "",
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                    color: Colors.blue,
-                                    decoration: TextDecoration.underline))),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
+                              Expanded(
+                                child: InkWell(
+                                    onTap: () {
+                                      launchUrl(Uri.parse(
+                                          content.externalLink ?? ""));
+                                    },
+                                    child: Text(content.externalLink ?? "",
+                                        textAlign: TextAlign.start,
+                                        style: const TextStyle(
+                                            color: Colors.blue,
+                                            decoration:
+                                                TextDecoration.underline))),
+                              ),
                               IconButton(
                                   onPressed: () {
-                                    //TODO: Replace social_share with share_plus
-                                    // SocialShare.copyToClipboard(
-                                    //     text: content.externalLink ?? "");
-                                  },
-                                  icon: const Icon(Icons.copy)),
-                              IconButton(
-                                  onPressed: () {
-                                    //TODO: Replace social_share with share_plus
-                                    // SocialShare.shareOptions(
-                                    //     content.externalLink ?? "");
+                                    SharePlus.instance.share(ShareParams(
+                                        uri: Uri.tryParse(
+                                            content.externalLink ?? "")));
                                   },
                                   icon: const Icon(Icons.share))
                             ])
