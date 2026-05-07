@@ -15,6 +15,7 @@ class DevotionController extends ChangeNotifier {
   List<Topic> topicList = [];
   int pageIndex = 0;
   bool isFetching = false;
+  bool hasReachedEnd = false;
   SortOptions sortOption = SortOptions.latest;
   CategoryFilter categoryFilter = CategoryFilter.all;
   List<String> booksFiltered = [];
@@ -23,8 +24,8 @@ class DevotionController extends ChangeNotifier {
   DevotionController() {
     scrollController.addListener(() {
       if (scrollController.position.pixels >
-          (scrollController.position.maxScrollExtent * .7)) {
-        //TODO: Add condition for stop fetching when there is no longer any items left
+              (scrollController.position.maxScrollExtent * .7) &&
+          !hasReachedEnd) {
         fetchTopics();
       }
     });
@@ -45,6 +46,7 @@ class DevotionController extends ChangeNotifier {
       isFetching = true;
       if (isRefreshing) {
         pageIndex = 0;
+        hasReachedEnd = false;
         topicList.clear();
       }
       notifyListeners();
@@ -59,6 +61,7 @@ class DevotionController extends ChangeNotifier {
 
       topicList.addAll(result);
       pageIndex++;
+      hasReachedEnd = result.isEmpty;
     } catch (e) {
       logger.e(e);
     } finally {
