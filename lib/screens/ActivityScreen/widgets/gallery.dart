@@ -77,8 +77,12 @@ class Gallery extends StatelessWidget {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                ImagesPreview(images: images, initial: index)));
+                            builder: (context) => ImagesPreview(
+                                images: images
+                                    .map((image) =>
+                                        CachedNetworkImageProvider(image))
+                                    .toList(),
+                                initial: index)));
                   },
                   child: Stack(fit: StackFit.expand, children: [
                     Container(
@@ -103,7 +107,7 @@ class Gallery extends StatelessWidget {
                       Container(
                           margin: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                              color: Colors.black.withOpacity(0.2),
+                              color: Colors.black.withAlpha(51),
                               borderRadius: borderRadius),
                           child: Center(
                               child: Text('+$remaining',
