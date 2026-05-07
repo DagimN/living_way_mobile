@@ -5,6 +5,7 @@ import 'package:living_way/core/models/activity.dart';
 import 'package:living_way/screens/ActivityScreen/images_preview.dart';
 import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class Event extends StatelessWidget {
@@ -32,11 +33,9 @@ class Event extends StatelessWidget {
                           ImagesPreview(imageProvider: imageProvider))),
               child: Container(
                   padding: const EdgeInsets.all(5),
-                  //TODO: Refactor cached image into its own widget
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(20),
                       child: CachedNetworkImage(
-                          //TODO: Add a placeholder fetching animation if the image is not ready yet
                           imageUrl: content.banner?.url ?? "",
                           imageBuilder: (context, provider) {
                             imageProvider = provider;
@@ -51,16 +50,29 @@ class Event extends StatelessWidget {
                           errorWidget: (context, url, error) => Center(
                               child: Icon(Icons.broken_image,
                                   color: Colors.grey[300])),
+                          placeholder: (context, url) => Shimmer.fromColors(
+                              direction: ShimmerDirection.rtl,
+                              baseColor: AppTheme(themeController.brightness)
+                                  .backgroundColor,
+                              highlightColor: AppTheme(themeController.brightness)
+                                  .primaryColor
+                                  .withAlpha(120),
+                              child: Container(
+                                  height: orientation == Orientation.portrait
+                                      ? screenHeight * .35
+                                      : screenWidth * .35,
+                                  width: screenWidth,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(20),
+                                      color: AppTheme(themeController.brightness)
+                                          .backgroundColor))),
                           height: orientation == Orientation.portrait
                               ? screenHeight * .35
                               : screenWidth * .35,
                           memCacheHeight: orientation == Orientation.portrait
                               ? (screenHeight * .6).toInt()
                               : (screenWidth * .6).toInt(),
-                          maxHeightDiskCache:
-                              orientation == Orientation.portrait
-                                  ? (screenHeight * .6).toInt()
-                                  : (screenWidth * .6).toInt())))),
+                          maxHeightDiskCache: orientation == Orientation.portrait ? (screenHeight * .6).toInt() : (screenWidth * .6).toInt())))),
           if (content.locationUrl != null)
             Positioned(
                 bottom: 0,
