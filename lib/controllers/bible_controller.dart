@@ -72,6 +72,11 @@ class BibleController extends ChangeNotifier {
 
     translation = Translation.fromMap(json.decode(currentTranslation));
     loadTranslation(translation, isDefault: translation.isDefault);
+
+    cleanResources(
+        contentIds:
+            translations.map((translation) => translation.name).toList(),
+        path: '/translations');
   }
 
   void _populateTranslationList(List<Translation> incomingTranslations) {
@@ -133,7 +138,7 @@ class BibleController extends ChangeNotifier {
       final index =
           translations.indexWhere((translation) => translation.name == name);
       final filePath =
-          await writeFile('$name.json', json.encode(response.data));
+          await saveTranslationFile('$name.json', json.encode(response.data));
       final updatedTranslation = Translation(
           name: name, path: filePath, status: TranslationStatus.available);
 

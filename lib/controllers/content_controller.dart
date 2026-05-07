@@ -1,13 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:path/path.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
@@ -150,14 +147,23 @@ class ContentController extends ChangeNotifier {
   ContentController() {
     _init();
     //TODO: Fetch content from cache if can't access the server
-
-    //TODO: Clean up files which are not being used (translations)
   }
 
   Future<void> _init() async {
     await loadCache();
     await fetchStories();
-    cleanResources();
+
+    cleanResources(
+        contentIds: stories.map((story) => story.id).toList(),
+        path: '/stories',
+        isTemp: true);
+    cleanResources(
+        contentIds:
+            library.map((content) => '${content.id}-pdf-thumbnail').toList(),
+        path: '/content',
+        isTemp: true);
+    cleanResources(
+        contentIds: library.map((content) => content.title).toList());
   }
 
   Future<void> loadCache() async {
@@ -221,47 +227,6 @@ class ContentController extends ChangeNotifier {
     stories.sort((_, storyB) => storyB.isViewed ? -1 : 1);
 
     notifyListeners();
-  }
-
-  Future<void> cleanResources() async {
-    final Directory tempDir = await getTemporaryDirectory();
-    final Directory appDir = await getApplicationDocumentsDirectory();
-    final List<FileSystemEntity> storyFiles =
-        await Directory('${tempDir.path}/stories')
-            .list(recursive: false, followLinks: false)
-            .toList();
-    final List<FileSystemEntity> contentFiles =
-        await Directory('${tempDir.path}/content')
-            .list(recursive: false, followLinks: false)
-            .toList();
-    final List<FileSystemEntity> libraryFiles = await Directory(appDir.path)
-        .list(recursive: false, followLinks: false)
-        .toList();
-
-    for (final entity in storyFiles) {
-      if (entity is File &&
-          !stories.any(
-              (story) => story.id == basenameWithoutExtension(entity.path))) {
-        await entity.delete();
-      }
-    }
-
-    for (final entity in contentFiles) {
-      if (entity is File &&
-          !library.any((content) =>
-              '${content.id}-pdf-thumbnail' ==
-              basenameWithoutExtension(entity.path))) {
-        await entity.delete();
-      }
-    }
-
-    for (final entity in libraryFiles) {
-      if (entity is File &&
-          !library.any((content) =>
-              content.title == basenameWithoutExtension(entity.path))) {
-        await entity.delete();
-      }
-    }
   }
 
   void saveLibrary(Content pausedContent,
