@@ -10,7 +10,7 @@ class ProfileController extends ChangeNotifier {
   Profile? userProfile;
 
   bool isAnonymous = false;
-  List<TimeOfDay> prayerTimes = [const TimeOfDay(hour: 6, minute: 00)];
+  List<TimeOfDay> prayerTimes = [];
   bool willReceiveNotification = true;
   bool willRemindPrayer = false;
 
@@ -34,15 +34,16 @@ class ProfileController extends ChangeNotifier {
         .readData<bool>('willReceiveNotification', defaultValue: true);
     willRemindPrayer = await CacheService.instance
         .readData<bool>('willRemindPrayer', defaultValue: false);
-    prayerTimes = (await CacheService.instance
-            .readData<List<String>>('reminders', defaultValue: []))
-        .map<List<TimeOfDay>>((timeString) {
-      //BUG: type '(dynamic) => TimeOfDay' is not a subtype of type '(String) => List<TimeOfDay>' of 'f'
-      final time = (timeString as String).split(":");
+
+    final prayerTimes = (await CacheService.instance
+        .readData<List<String>>('reminders', defaultValue: ['6:00']));
+    for (final prayerTime in prayerTimes) {
+      final time = (prayerTime as String).split(":");
       final hour = int.parse(time[0]);
       final minute = int.parse(time[1]);
-      return TimeOfDay(hour: hour, minute: minute);
-    }).toList();
+
+      this.prayerTimes.add(TimeOfDay(hour: hour, minute: minute));
+    }
 
     notifyListeners();
   }
