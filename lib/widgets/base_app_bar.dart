@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/core/config/paths.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class BaseAppBar extends StatelessWidget {
@@ -35,7 +33,7 @@ class BaseAppBar extends StatelessWidget {
                     ? CircleAvatar(
                         backgroundColor: AppTheme(themeController.brightness)
                             .primaryColor
-                            .withOpacity(0.3),
+                            .withAlpha(76),
                         backgroundImage: CachedNetworkImageProvider(
                             profileController.userProfile?.profileImageUrl ??
                                 ""))

@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:living_way/app.dart';
+import 'package:living_way/core/core.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 void main() async {
@@ -20,6 +21,8 @@ void main() async {
     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
     return true;
   };
+
+  NotificationService.init();
 
   runApp(const LivingWayApp());
   //TODO: Create a widget that can work as a base screen

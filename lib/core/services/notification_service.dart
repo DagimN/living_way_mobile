@@ -1,0 +1,124 @@
+import 'dart:io';
+
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
+
+class NotificationService {
+  static final _plugin = FlutterLocalNotificationsPlugin();
+
+  static Future<void> init() async {
+    const android = AndroidInitializationSettings(
+        '@mipmap/ic_launcher'); //TODO: Set the app icon
+    const ios = DarwinInitializationSettings();
+    await _plugin
+        .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin>()
+        ?.requestNotificationsPermission();
+    await _plugin.initialize(
+      settings: const InitializationSettings(android: android, iOS: ios),
+      onDidReceiveNotificationResponse: _handleTap,
+    );
+  }
+
+  static Future<void> showNotification({
+    required int id,
+    required String title,
+    required String body,
+    String? payload,
+  }) async {
+    const androidDetails = AndroidNotificationDetails(
+      'basic_channel',
+      'Basic Alerts',
+      importance: Importance.max,
+      priority: Priority.high,
+    );
+
+    const notificationDetails = NotificationDetails(android: androidDetails);
+    await _plugin.show(
+        id: id,
+        title: title,
+        body: body,
+        notificationDetails: notificationDetails,
+        payload: payload);
+  }
+
+  static Future<void> showImageNotification({
+    required int id,
+    required String title,
+    required String body,
+    required String imageUrl,
+  }) async {
+    final String filePath =
+        await _downloadAndSaveFile(imageUrl, 'notification_img_$id.jpg');
+
+    final androidDetails = AndroidNotificationDetails(
+      'image_channel',
+      'Image Alerts',
+      importance: Importance.max,
+      priority: Priority.high,
+      styleInformation: BigPictureStyleInformation(
+        FilePathAndroidBitmap(filePath),
+      ),
+    );
+
+    final notificationDetails = NotificationDetails(android: androidDetails);
+    await _plugin.show(
+        id: id,
+        title: title,
+        body: body,
+        notificationDetails: notificationDetails);
+  }
+
+  static Future<String> _downloadAndSaveFile(
+      String url, String fileName) async {
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final String filePath = '${directory.path}/$fileName';
+    final http.Response response = await http.get(Uri.parse(url));
+    final File file = File(filePath);
+
+    await file.writeAsBytes(response.bodyBytes);
+
+    return filePath;
+  }
+
+  static void showProgressNotification(int id, int progress) {
+    _plugin.show(
+      id: id,
+      title: 'Downloading...',
+      body: '$progress%',
+      notificationDetails: NotificationDetails(
+        android: AndroidNotificationDetails(
+          'progress_id',
+          'Downloads',
+          channelDescription: 'Progress updates',
+          importance: Importance.low,
+          showProgress: true,
+          maxProgress: 100,
+          progress: progress,
+          onlyAlertOnce: true,
+        ),
+      ),
+    );
+  }
+
+  // Use Case 5: Media (Android only via StyleInformation) TODO: Improve layout
+  static void showMedia(int id, String title, String artist) {
+    _plugin.show(
+      id: id,
+      title: title,
+      body: artist,
+      notificationDetails: const NotificationDetails(
+        android: AndroidNotificationDetails(
+          'media_id', 'Music',
+          styleInformation:
+              MediaStyleInformation(), // Handles native media layout
+        ),
+      ),
+    );
+  }
+
+  static void _handleTap(NotificationResponse res) {
+    // Handle Case 4: Add to Calendar logic here
+  }
+}
