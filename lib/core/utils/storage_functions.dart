@@ -59,10 +59,12 @@ Future<void> cleanResources<T>(
   final parentDirectory = isTemp
       ? await getTemporaryDirectory()
       : await getApplicationDocumentsDirectory();
+  final filesDirectory = Directory('${parentDirectory.path}$filePath');
+
+  if (!await filesDirectory.exists()) return;
+
   final List<FileSystemEntity> files =
-      await Directory('${parentDirectory.path}$filePath')
-          .list(recursive: false, followLinks: false)
-          .toList();
+      await filesDirectory.list(recursive: false, followLinks: false).toList();
 
   for (final entity in files) {
     if (entity is File &&
