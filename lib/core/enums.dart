@@ -29,3 +29,24 @@ enum FileType {
     }
   }
 }
+
+enum NotificationCodes {
+  verseOfTheDay,
+  activity,
+  recurring;
+
+  int get value {
+    switch (this) {
+      case verseOfTheDay:
+        return 1;
+      case activity:
+        return 2;
+      case recurring:
+        return 3;
+    }
+  }
+
+  int extendedCode(int index) {
+    return int.parse('$value$index');
+  }
+}

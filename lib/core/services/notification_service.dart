@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
@@ -120,5 +121,54 @@ class NotificationService {
 
   static void _handleTap(NotificationResponse res) {
     // Handle Case 4: Add to Calendar logic here
+  }
+
+  static Future<void> scheduleNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime scheduledDate,
+  }) async {
+    await _plugin.zonedSchedule(
+        id: id,
+        title: title,
+        body: body,
+        scheduledDate:
+            _nextInstanceOfTime(scheduledDate.hour, scheduledDate.minute),
+        notificationDetails: const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'scheduled_channel',
+            'Scheduled Alerts',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+          iOS: DarwinNotificationDetails(),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+        matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);
+  }
+
+  static tz.TZDateTime _nextInstanceOfTime(int hour, int minute) {
+    final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
+    tz.TZDateTime scheduledDate = tz.TZDateTime(
+      tz.local,
+      now.year,
+      now.month,
+      now.day,
+      hour,
+      minute,
+    );
+    if (scheduledDate.isBefore(now)) {
+      scheduledDate = scheduledDate.add(const Duration(days: 1));
+    }
+    return scheduledDate;
+  }
+
+  static Future<void> cancelNotification(int id) async {
+    await _plugin.cancel(id: id);
+  }
+
+  static Future<void> cancelAllNotifications() async {
+    await _plugin.cancelAll();
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:math';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -41,16 +40,8 @@ class BibleController extends ChangeNotifier {
   BibleController() {
     loadTranslation(translations.first, isDefault: translations.first.isDefault)
         .then((value) {
-      final todaysDailyVerse = dailyVerses[Random()
-          .nextInt(dailyVerses.length - 1)]; //TODO: Send a push notification
+      scheduleVersesOfTheDay();
 
-      verseOfTheDay.setVerseOfTheDay((
-        bible[todaysDailyVerse.$1],
-        todaysDailyVerse.$2,
-        todaysDailyVerse.$3,
-        todaysDailyVerse.$4
-      ));
-      verseOfTheDay.translation = translation;
       notifyListeners();
     });
 
@@ -71,7 +62,8 @@ class BibleController extends ChangeNotifier {
     fetchTranslations();
 
     translation = Translation.fromMap(json.decode(currentTranslation));
-    loadTranslation(translation, isDefault: translation.isDefault);
+    loadTranslation(translation, isDefault: translation.isDefault)
+        .then((value) => scheduleVersesOfTheDay());
 
     cleanResources(
         contentIds:
@@ -176,9 +168,43 @@ class BibleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void scheduleVersesOfTheDay() {
+    //TODO: Improve randomization logic
+    for (int i = 0; i < 7; i++) {
+      final notificationId = NotificationCodes.verseOfTheDay.extendedCode(i);
+      NotificationService.cancelNotification(notificationId);
+
+      final currentDate = DateTime.now();
+      final scheduledDate = DateTime(
+          currentDate.year, currentDate.month, currentDate.day + 1, 8, 0);
+      final dailyVerse = dailyVerses[scheduledDate.day % dailyVerses.length];
+      final passage = Passage(book: bible[dailyVerse.$1])
+        ..chapter = dailyVerse.$2
+        ..verse = dailyVerse.$3
+        ..toVerse = dailyVerse.$4;
+
+      if (i == 0) {
+        verseOfTheDay.setVerseOfTheDay((
+          bible[dailyVerse.$1],
+          dailyVerse.$2,
+          dailyVerse.$3,
+          dailyVerse.$4
+        ));
+        verseOfTheDay.translation = translation;
+      }
+
+      NotificationService.scheduleNotification(
+          id: notificationId,
+          title: 'Verse of the Day',
+          body: passage.labelWithTranslation,
+          scheduledDate: scheduledDate);
+    }
+  }
+
   set setTranslation(Translation v) {
     translation = v;
-    loadTranslation(v, isDefault: v.isDefault);
+    loadTranslation(v, isDefault: v.isDefault)
+        .then((value) => scheduleVersesOfTheDay());
     CacheService.instance.writeData<String>('currentTranslation', v.toString());
     notifyListeners();
   }
