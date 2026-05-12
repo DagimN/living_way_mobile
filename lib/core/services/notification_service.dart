@@ -9,8 +9,7 @@ class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
 
   static Future<void> init() async {
-    const android = AndroidInitializationSettings(
-        '@mipmap/ic_launcher'); //TODO: Set the app icon
+    const android = AndroidInitializationSettings('@drawable/ic_notification');
     const ios = DarwinInitializationSettings();
     await _plugin
         .resolvePlatformSpecificImplementation<
