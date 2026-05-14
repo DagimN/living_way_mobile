@@ -7,9 +7,9 @@ import 'package:provider/provider.dart';
 import 'verse_of_the_day.dart';
 
 class UpdatesViewerExpanded extends StatefulWidget {
-  final CachedNetworkImageProvider image;
+  final CachedNetworkImageProvider? image;
   final Widget? child;
-  const UpdatesViewerExpanded({super.key, required this.image, this.child});
+  const UpdatesViewerExpanded({super.key, this.image, this.child});
 
   @override
   State<UpdatesViewerExpanded> createState() => _UpdatesViewerExpandedState();
@@ -22,6 +22,10 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final layoutController = Provider.of<LayoutController>(context);
+    final contentController = Provider.of<ContentController>(context);
+    final images = contentController.images;
+    final currentImage = widget.image ??
+        CachedNetworkImageProvider(images[DateTime.now().day % images.length]);
 
     Brightness brightness = themeController.brightness;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -61,7 +65,7 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
                           height: screenHeight,
                           decoration: BoxDecoration(
                               image: DecorationImage(
-                                  image: widget.image, fit: BoxFit.cover),
+                                  image: currentImage, fit: BoxFit.cover),
                               gradient:
                                   AppTheme(brightness).backgroundGradient),
                           child: VerseOfTheDay(

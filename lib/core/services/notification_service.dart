@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:living_way/core/core.dart';
+import 'package:living_way/screens/DailyFeedScreen/widgets/updates_viewer_expanded.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -118,22 +120,29 @@ class NotificationService {
     );
   }
 
-  static void _handleTap(NotificationResponse res) {
-    // Handle Case 4: Add to Calendar logic here
+  static void _handleTap(NotificationResponse response) {
+    final payload = response.payload;
+
+    if (payload == null) return;
+
+    if (payload == 'verseOfTheDay') {
+      UIService.push(const UpdatesViewerExpanded());
+    }
   }
 
-  static Future<void> scheduleNotification({
-    required int id,
-    required String title,
-    required String body,
-    required DateTime scheduledDate,
-  }) async {
+  static Future<void> scheduleNotification(
+      {required int id,
+      required String title,
+      required String body,
+      required DateTime scheduledDate,
+      String? payload}) async {
     await _plugin.zonedSchedule(
         id: id,
         title: title,
         body: body,
         scheduledDate:
             _nextInstanceOfTime(scheduledDate.hour, scheduledDate.minute),
+        payload: payload,
         notificationDetails: const NotificationDetails(
           android: AndroidNotificationDetails(
             'scheduled_channel',

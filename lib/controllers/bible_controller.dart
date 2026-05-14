@@ -193,7 +193,8 @@ class BibleController extends ChangeNotifier {
           id: notificationId,
           title: 'Verse of the Day',
           body: '${passage.text} ${passage.labelWithTranslation}',
-          scheduledDate: scheduledDate);
+          scheduledDate: scheduledDate,
+          payload: 'verseOfTheDay');
     }
   }
 

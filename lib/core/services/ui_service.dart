@@ -60,6 +60,11 @@ class UIService {
     );
   }
 
+  static void push<T>(Widget page) {
+    navigatorKey.currentState
+        ?.push(MaterialPageRoute(builder: (context) => page));
+  }
+
   static void pop<T>([T? result]) {
     if (navigatorKey.currentState?.canPop() ?? false) {
       navigatorKey.currentState?.pop(result);
