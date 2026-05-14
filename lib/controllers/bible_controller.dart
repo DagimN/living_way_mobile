@@ -176,27 +176,23 @@ class BibleController extends ChangeNotifier {
 
       final currentDate = DateTime.now();
       final scheduledDate = DateTime(
-          currentDate.year, currentDate.month, currentDate.day + 1, 8, 0);
-      final dailyVerse = dailyVerses[scheduledDate.day % dailyVerses.length];
+          currentDate.year, currentDate.month, currentDate.day + i, 8, 0);
+      final dailyVerse =
+          dailyVerses[(scheduledDate.day + i) % dailyVerses.length];
       final passage = Passage(book: bible[dailyVerse.$1])
         ..chapter = dailyVerse.$2
         ..verse = dailyVerse.$3
         ..toVerse = dailyVerse.$4;
+      passage.translation = translation;
 
       if (i == 0) {
-        verseOfTheDay.setVerseOfTheDay((
-          bible[dailyVerse.$1],
-          dailyVerse.$2,
-          dailyVerse.$3,
-          dailyVerse.$4
-        ));
-        verseOfTheDay.translation = translation;
+        verseOfTheDay = passage;
       }
 
       NotificationService.scheduleNotification(
           id: notificationId,
           title: 'Verse of the Day',
-          body: passage.labelWithTranslation,
+          body: '${passage.text} ${passage.labelWithTranslation}',
           scheduledDate: scheduledDate);
     }
   }
