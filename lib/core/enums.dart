@@ -33,7 +33,8 @@ enum FileType {
 enum NotificationCodes {
   verseOfTheDay,
   activity,
-  recurring;
+  recurring,
+  download;
 
   int get value {
     switch (this) {
@@ -43,6 +44,8 @@ enum NotificationCodes {
         return 2;
       case recurring:
         return 3;
+      case download:
+        return 4;
     }
   }
 

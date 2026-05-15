@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
@@ -84,10 +85,10 @@ class NotificationService {
     return filePath;
   }
 
-  static void showProgressNotification(int id, int progress) {
+  static void showProgressNotification(int id, String title, int progress) {
     _plugin.show(
       id: id,
-      title: 'Downloading...',
+      title: 'Downloading $title',
       body: '$progress%',
       notificationDetails: NotificationDetails(
         android: AndroidNotificationDetails(
@@ -191,5 +192,20 @@ class NotificationService {
 
   static Future<void> cancelAllNotifications() async {
     await _plugin.cancelAll();
+  }
+
+  static Future<int> getValidId({NotificationCodes? code}) async {
+    final activeNotifications = await _plugin.getActiveNotifications();
+    final ids = activeNotifications.map((notification) => notification.id);
+
+    while (true) {
+      final notificationId = code != null
+          ? code.extendedCode(Random().nextInt(100))
+          : Random().nextInt(100);
+
+      if (!ids.contains(notificationId)) {
+        return notificationId;
+      }
+    }
   }
 }

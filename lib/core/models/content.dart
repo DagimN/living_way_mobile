@@ -153,6 +153,8 @@ class Content extends ChangeNotifier {
       final response = await dio.head(source);
       final size = response.headers.value('content-length');
       final canDownload = await canSafelyDownload(int.parse(size ?? '0'));
+      final notificationId = await NotificationService.getValidId(
+          code: NotificationCodes.download);
 
       if (!canDownload) {
         UIService.showSnackbar(
@@ -165,13 +167,21 @@ class Content extends ChangeNotifier {
       notifyListeners();
 
       await dio.download(source, filePath,
-          onReceiveProgress: (received, total) {
+          onReceiveProgress: (received, total) async {
         downloadProgress = received / total;
+
+        NotificationService.showProgressNotification(
+          notificationId,
+          title,
+          (downloadProgress! * 100).toInt(),
+        );
         notifyListeners();
       });
 
       this.filePath = filePath;
       file = File(filePath);
+
+      NotificationService.cancelNotification(notificationId);
 
       UIService.showSnackbar(
           message: '$title downloaded successfully',
