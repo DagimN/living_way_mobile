@@ -168,11 +168,11 @@ class BibleController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void scheduleVersesOfTheDay() {
+  void scheduleVersesOfTheDay() async {
     //TODO: Improve randomization logic
     for (int i = 0; i < 7; i++) {
       final notificationId = NotificationCodes.verseOfTheDay.extendedCode(i);
-      NotificationService.cancelNotification(notificationId);
+      await NotificationService.cancelNotification(notificationId);
 
       final currentDate = DateTime.now();
       final scheduledDate = DateTime(
@@ -189,7 +189,7 @@ class BibleController extends ChangeNotifier {
         verseOfTheDay = passage;
       }
 
-      NotificationService.scheduleNotification(
+      await NotificationService.scheduleNotification(
           id: notificationId,
           title: 'Verse of the Day',
           body: '${passage.text} ${passage.labelWithTranslation}',

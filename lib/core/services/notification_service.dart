@@ -35,7 +35,7 @@ class NotificationService {
       importance: Importance.max,
       priority: Priority.high,
     );
-
+    //TODO: If app is on foreground, wait for an event a show the notification
     const notificationDetails = NotificationDetails(android: androidDetails);
     await _plugin.show(
         id: id,
@@ -74,7 +74,7 @@ class NotificationService {
 
   static Future<String> _downloadAndSaveFile(
       String url, String fileName) async {
-    final Directory directory = await getApplicationDocumentsDirectory();
+    final Directory directory = await getTemporaryDirectory();
     final String filePath = '${directory.path}/$fileName';
     final http.Response response = await http.get(Uri.parse(url));
     final File file = File(filePath);
@@ -132,10 +132,18 @@ class NotificationService {
 
   static Future<void> scheduleNotification(
       {required int id,
-      required String title,
-      required String body,
+      String? title,
+      String? body,
+      String? imageUrl,
       required DateTime scheduledDate,
       String? payload}) async {
+    String? filePath;
+
+    if (imageUrl != null) {
+      filePath =
+          await _downloadAndSaveFile(imageUrl, 'notification_img_$id.jpg');
+    }
+
     await _plugin.zonedSchedule(
         id: id,
         title: title,
@@ -143,14 +151,19 @@ class NotificationService {
         scheduledDate:
             _nextInstanceOfTime(scheduledDate.hour, scheduledDate.minute),
         payload: payload,
-        notificationDetails: const NotificationDetails(
+        notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             'scheduled_channel',
             'Scheduled Alerts',
             importance: Importance.max,
             priority: Priority.high,
+            styleInformation: filePath != null
+                ? BigPictureStyleInformation(
+                    FilePathAndroidBitmap(filePath),
+                  )
+                : null,
           ),
-          iOS: DarwinNotificationDetails(),
+          iOS: const DarwinNotificationDetails(),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
         matchDateTimeComponents: DateTimeComponents.dayOfWeekAndTime);

@@ -2,9 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
-import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/core/models/activity.dart';
-import 'package:living_way/core/services/logging_service.dart';
+import 'package:living_way/core/core.dart';
+import 'package:living_way/core/extensions/datetime.dart';
 
 class ActivityController extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -12,8 +11,6 @@ class ActivityController extends ChangeNotifier {
   int pageIndex = 0;
   bool isFetching = false;
   bool hasReachedEnd = false;
-
-  //TODO: Implement notification whenever an activity schedule is approaching
 
   ActivityController() {
     scrollController.addListener(() {
@@ -66,6 +63,8 @@ class ActivityController extends ChangeNotifier {
         isFetching = false;
         notifyListeners();
       });
+
+      _scheduleActivityNotifications();
     }
   }
 
@@ -87,6 +86,69 @@ class ActivityController extends ChangeNotifier {
       return false;
     } finally {
       dio.close();
+    }
+  }
+
+  void _scheduleActivityNotifications() async {
+    final events = activityList.where((activity) =>
+        activity.type == ContentType.event &&
+        (activity.upcomingDate ?? activity.timestamp).isAfter(DateTime.now()));
+
+    for (final activity in events) {
+      final upcomingDate = activity.upcomingDate;
+
+      if (upcomingDate != null) {
+        final scheduledDateInHours =
+            upcomingDate.subtract(const Duration(hours: 1));
+        final hourNotificationId = NotificationCodes.activity
+            .extendedCode(scheduledDateInHours.dateInNumbers);
+        final scheduledDateInDays =
+            upcomingDate.subtract(const Duration(days: 1));
+        final dayNotificationId = NotificationCodes.activity
+            .extendedCode(scheduledDateInDays.dateInNumbers);
+
+        //TODO: Add an option for sending notifications before event or turning off
+        await NotificationService.cancelNotification(hourNotificationId);
+        await NotificationService.cancelNotification(dayNotificationId);
+        await NotificationService.scheduleNotification(
+            id: hourNotificationId,
+            title: activity.title,
+            body: activity.body,
+            imageUrl: activity.banner?.url,
+            scheduledDate: scheduledDateInHours);
+        await NotificationService.scheduleNotification(
+            id: dayNotificationId,
+            title: activity.title,
+            body: activity.body,
+            imageUrl: activity.banner?.url,
+            scheduledDate: scheduledDateInDays);
+      }
+
+      if (activity.isRecurring) {
+        final scheduledDateInHours =
+            activity.timestamp.subtract(const Duration(hours: 1));
+        final hourNotificationId = NotificationCodes.activity
+            .extendedCode(scheduledDateInHours.dateInNumbers);
+        final scheduledDateInDays =
+            activity.timestamp.subtract(const Duration(days: 1));
+        final dayNotificationId = NotificationCodes.activity
+            .extendedCode(scheduledDateInDays.dateInNumbers);
+
+        await NotificationService.cancelNotification(hourNotificationId);
+        await NotificationService.cancelNotification(dayNotificationId);
+        await NotificationService.scheduleNotification(
+            id: hourNotificationId,
+            title: activity.title,
+            body: activity.body,
+            imageUrl: activity.banner?.url,
+            scheduledDate: scheduledDateInHours);
+        await NotificationService.scheduleNotification(
+            id: dayNotificationId,
+            title: activity.title,
+            body: activity.body,
+            imageUrl: activity.banner?.url,
+            scheduledDate: scheduledDateInDays);
+      }
     }
   }
 
