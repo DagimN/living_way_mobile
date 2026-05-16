@@ -58,7 +58,6 @@ dependencies:
   hl_image_picker: ^1.2.16
   permission_handler: ^11.3.1
   path_provider: ^2.1.4
-  onesignal_flutter: ^5.2.9
   firebase_crashlytics: ^4.1.0
   firebase_analytics: ^11.3.0
   firebase_core:
@@ -75,6 +74,7 @@ dependencies:
   disk_space_2: ^1.0.12
   flutter_local_notifications: ^21.0.0
   timezone: ^0.11.0
+  firebase_messaging: ^15.2.10
 
 dev_dependencies:
   flutter_test:

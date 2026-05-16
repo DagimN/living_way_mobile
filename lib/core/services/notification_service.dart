@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:math';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:living_way/core/core.dart';
@@ -10,18 +11,47 @@ import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
   static final _plugin = FlutterLocalNotificationsPlugin();
+  static const AndroidNotificationChannel broadcastChannel =
+      AndroidNotificationChannel(
+    'high_importance_channel',
+    'Broadcast Notifications',
+    description: 'This channel is used for global scripture broadcasts.',
+    importance: Importance.max,
+    playSound: true,
+    enableVibration: true,
+  );
 
-  static Future<void> init() async {
+  static Future<void> init({bool isForeground = true}) async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
     const android = AndroidInitializationSettings('@drawable/ic_notification');
     const ios = DarwinInitializationSettings();
-    await _plugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+
+    final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
+        AndroidFlutterLocalNotificationsPlugin>();
+
     await _plugin.initialize(
       settings: const InitializationSettings(android: android, iOS: ios),
       onDidReceiveNotificationResponse: _handleTap,
     );
+
+    if (androidPlugin != null) {
+      if (isForeground) {
+        await androidPlugin.requestNotificationsPermission();
+      }
+
+      await androidPlugin.createNotificationChannel(broadcastChannel);
+    }
+
+    if (isForeground) {
+      final notificationSettings = await messaging.requestPermission(
+          alert: true, badge: true, sound: true);
+
+      if (notificationSettings.authorizationStatus ==
+          AuthorizationStatus.authorized) {
+        await messaging.subscribeToTopic('general');
+      }
+    }
   }
 
   static Future<void> showNotification({
@@ -51,6 +81,7 @@ class NotificationService {
     required String title,
     required String body,
     required String imageUrl,
+    String? payload,
   }) async {
     final String filePath =
         await _downloadAndSaveFile(imageUrl, 'notification_img_$id.jpg');
@@ -70,7 +101,8 @@ class NotificationService {
         id: id,
         title: title,
         body: body,
-        notificationDetails: notificationDetails);
+        notificationDetails: notificationDetails,
+        payload: payload);
   }
 
   static Future<String> _downloadAndSaveFile(
@@ -129,6 +161,8 @@ class NotificationService {
     if (payload == 'verseOfTheDay') {
       UIService.push(const UpdatesViewerExpanded());
     }
+
+    //TODO: Hanlde event notifications for adding to calendar
   }
 
   static Future<void> scheduleNotification(

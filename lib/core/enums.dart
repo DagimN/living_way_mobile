@@ -34,7 +34,8 @@ enum NotificationCodes {
   verseOfTheDay,
   activity,
   recurring,
-  download;
+  download,
+  general;
 
   int get value {
     switch (this) {
@@ -46,6 +47,8 @@ enum NotificationCodes {
         return 3;
       case download:
         return 4;
+      case general:
+        return 5;
     }
   }
 

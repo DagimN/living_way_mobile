@@ -1,7 +1,5 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final oneSignalApiKey = dotenv.get('ONE_SIGNAL_API_KEY', fallback: '');
-
 final secretKey = dotenv.get('ENCRYPTION_SECRET_KEY', fallback: '');
 final secretIv = dotenv.get('ENCRYPTION_IV', fallback: '');
 

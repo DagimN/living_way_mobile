@@ -14,6 +14,7 @@ class ActivityController extends ChangeNotifier {
 
   ActivityController() {
     scrollController.addListener(() {
+      //TODO: Implement recurring events
       if (scrollController.position.pixels >
               (scrollController.position.maxScrollExtent * .7) &&
           !hasReachedEnd) {
