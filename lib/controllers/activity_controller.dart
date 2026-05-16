@@ -6,13 +6,15 @@ import 'package:living_way/core/core.dart';
 import 'package:living_way/core/extensions/datetime.dart';
 
 class ActivityController extends ChangeNotifier {
+  final Dio? _dio;
+
   final ScrollController scrollController = ScrollController();
   List<Activity> activityList = [];
   int pageIndex = 0;
   bool isFetching = false;
   bool hasReachedEnd = false;
 
-  ActivityController() {
+  ActivityController({Dio? dio, bool fetchOnInit = true}) : _dio = dio {
     scrollController.addListener(() {
       //TODO: Implement recurring events
       if (scrollController.position.pixels >
@@ -21,13 +23,19 @@ class ActivityController extends ChangeNotifier {
         fetchActivities();
       }
     });
-    fetchActivities();
+    if (fetchOnInit) {
+      fetchActivities();
+    }
   }
+
+  Dio _client() => _dio ?? Dio();
+
+  bool get _shouldCloseClient => _dio == null;
 
   Future<void> fetchActivities({bool isRefreshing = false}) async {
     if (isFetching) return;
 
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -44,7 +52,7 @@ class ActivityController extends ChangeNotifier {
 
       notifyListeners();
 
-      final response = await dio.get('$url/api/v1/content/activity',
+      final response = await client.get('$url/api/v1/content/activity',
           queryParameters: {"page": pageIndex});
 
       if (!response.statusCode.isSuccess) return;
@@ -59,7 +67,7 @@ class ActivityController extends ChangeNotifier {
     } catch (e) {
       logger.e(e);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
       Future.delayed(const Duration(seconds: 1), () {
         isFetching = false;
         notifyListeners();
@@ -70,7 +78,7 @@ class ActivityController extends ChangeNotifier {
   }
 
   Future<bool> updatePoll(Activity poll) async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -78,7 +86,7 @@ class ActivityController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.put('$url/api/v1/content/activity/edit',
+      final response = await client.put('$url/api/v1/content/activity/edit',
           data: {"id": poll.id, "data": poll.toMap()});
 
       return response.statusCode.isSuccess;
@@ -86,7 +94,7 @@ class ActivityController extends ChangeNotifier {
       logger.e(e);
       return false;
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 

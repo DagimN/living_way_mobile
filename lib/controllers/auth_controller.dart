@@ -9,15 +9,21 @@ import 'package:living_way/core/core.dart';
 import 'package:living_way/controllers/controllers.dart';
 
 class AuthController extends ChangeNotifier {
+  final Dio? _dio;
+
   bool isLoggedIn = false;
   bool isLoggedInViaGoogle = false;
   bool isLoggedInViaManual = false;
   SignupProgress signupProgress = SignupProgress();
   ProfileController? profileController;
 
-  AuthController() {
+  AuthController({Dio? dio}) : _dio = dio {
     init();
   }
+
+  Dio _client() => _dio ?? Dio();
+
+  bool get _shouldCloseClient => _dio == null;
 
   Future<void> init() async {
     isLoggedIn = await CacheService.instance
@@ -59,7 +65,7 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<Response> performSignup() async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -67,7 +73,7 @@ class AuthController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.post('$url/api/v1/auth/signup', data: {
+      final response = await client.post('$url/api/v1/auth/signup', data: {
         "firstName": signupProgress.firstName,
         "lastName": signupProgress.lastName,
         "email": signupProgress.email,
@@ -104,13 +110,13 @@ class AuthController extends ChangeNotifier {
           statusCode: 400,
           statusMessage: error.toString());
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 
   Future<bool> performLogin(String email,
       {String? password, bool? isOAuth = false}) async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -119,7 +125,7 @@ class AuthController extends ChangeNotifier {
 
     try {
       final response =
-          await dio.get('$url/api/v1/auth/login', queryParameters: {
+          await client.get('$url/api/v1/auth/login', queryParameters: {
         "em": email,
         "p": password != null ? encrypt(password) : null,
         "o": isOAuth,
@@ -137,7 +143,7 @@ class AuthController extends ChangeNotifier {
       logger.e(error);
       return false;
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 

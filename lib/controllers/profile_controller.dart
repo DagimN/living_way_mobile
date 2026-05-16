@@ -5,6 +5,8 @@ import "package:flutter/services.dart";
 import "package:living_way/core/core.dart";
 
 class ProfileController extends ChangeNotifier {
+  final Dio? _dio;
+
   final posts = [];
 
   Profile? userProfile;
@@ -14,7 +16,7 @@ class ProfileController extends ChangeNotifier {
   bool willReceiveNotification = true;
   bool willRemindPrayer = false;
 
-  ProfileController() {
+  ProfileController({Dio? dio}) : _dio = dio {
     //TODO: Implement stay logged in feature
 
     _init();
@@ -48,8 +50,12 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Dio _client() => _dio ?? Dio();
+
+  bool get _shouldCloseClient => _dio == null;
+
   Future<Profile?> syncProfile(Profile profile) async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -57,7 +63,7 @@ class ProfileController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.get('$url/api/v1/profile',
+      final response = await client.get('$url/api/v1/profile',
           queryParameters: {"id": profile.id, "tid": profile.tokenId});
 
       if (response.statusCode != 200) return null;
@@ -71,12 +77,12 @@ class ProfileController extends ChangeNotifier {
       logger.e(error);
       return null;
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 
   Future<void> editProfile(FormData formData) async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -85,7 +91,7 @@ class ProfileController extends ChangeNotifier {
 
     try {
       final response =
-          await dio.put('$url/api/v1/profile/edit', data: formData);
+          await client.put('$url/api/v1/profile/edit', data: formData);
 
       if (response.statusCode != 200) return;
 
@@ -94,12 +100,12 @@ class ProfileController extends ChangeNotifier {
     } catch (error) {
       logger.e(error);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 
   Future<void> deleteProfile() async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -107,14 +113,14 @@ class ProfileController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.delete('$url/api/v1/profile/delete',
+      final response = await client.delete('$url/api/v1/profile/delete',
           queryParameters: {"id": userProfile?.id});
 
       if (response.statusCode != 200) return;
     } catch (error) {
       logger.e(error);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 

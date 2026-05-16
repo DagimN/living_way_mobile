@@ -5,6 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:living_way/core/core.dart';
 
 class BibleController extends ChangeNotifier {
+  final Dio? _dio;
+
   List<Book> bible = [];
   List<Translation> translations = [
     Translation(
@@ -37,15 +39,17 @@ class BibleController extends ChangeNotifier {
   Passage passage = Passage(book: Book.empty());
   Passage verseOfTheDay = Passage(book: Book.empty());
 
-  BibleController() {
-    loadTranslation(translations.first, isDefault: translations.first.isDefault)
-        .then((value) {
-      scheduleVersesOfTheDay();
+  BibleController({Dio? dio, bool loadOnInit = true}) : _dio = dio {
+    if (loadOnInit) {
+      loadTranslation(translations.first, isDefault: translations.first.isDefault)
+          .then((value) {
+        scheduleVersesOfTheDay();
 
-      notifyListeners();
-    });
+        notifyListeners();
+      });
 
-    _initPersistence();
+      _initPersistence();
+    }
   }
 
   Future<void> _initPersistence() async {
@@ -74,7 +78,7 @@ class BibleController extends ChangeNotifier {
   void _populateTranslationList(List<Translation> incomingTranslations) {
     for (final translation in incomingTranslations) {
       final index = translations
-          .indexWhere((translation) => translation.name == translation.name);
+          .indexWhere((existing) => existing.name == translation.name);
 
       if (index != -1 &&
           translations[index].status != TranslationStatus.available) {
@@ -89,8 +93,12 @@ class BibleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Dio _client() => _dio ?? Dio();
+
+  bool get _shouldCloseClient => _dio == null;
+
   Future<void> fetchTranslations() async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -98,7 +106,7 @@ class BibleController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.get('$url/api/v1/content/bible');
+      final response = await client.get('$url/api/v1/content/bible');
       final list = (response.data['translations'] as List)
           .map((t) => Translation.fromMap(t))
           .toList();
@@ -112,12 +120,12 @@ class BibleController extends ChangeNotifier {
     } catch (e) {
       logger.e(e);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 
   Future<void> downloadTranslation(String name) async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -125,7 +133,7 @@ class BibleController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio
+      final response = await client
           .get('$url/api/v1/content/bible', queryParameters: {"name": name});
       final index =
           translations.indexWhere((translation) => translation.name == name);
@@ -148,7 +156,7 @@ class BibleController extends ChangeNotifier {
     } catch (e) {
       logger.e(e);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 

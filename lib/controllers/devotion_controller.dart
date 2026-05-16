@@ -8,6 +8,8 @@ import 'package:living_way/core/models/topic.dart';
 import 'package:living_way/core/services/logging_service.dart';
 
 class DevotionController extends ChangeNotifier {
+  final Dio? _dio;
+
   final ScrollController scrollController = ScrollController();
   final TextEditingController commentBoxTextEditingController =
       TextEditingController();
@@ -21,7 +23,7 @@ class DevotionController extends ChangeNotifier {
   List<String> booksFiltered = [];
   ValueNotifier<GlobalKey?> commentingThreadKeyNotifier = ValueNotifier(null);
 
-  DevotionController() {
+  DevotionController({Dio? dio, bool fetchOnInit = true}) : _dio = dio {
     scrollController.addListener(() {
       if (scrollController.position.pixels >
               (scrollController.position.maxScrollExtent * .7) &&
@@ -29,13 +31,19 @@ class DevotionController extends ChangeNotifier {
         fetchTopics();
       }
     });
-    fetchTopics();
+    if (fetchOnInit) {
+      fetchTopics();
+    }
   }
+
+  Dio _client() => _dio ?? Dio();
+
+  bool get _shouldCloseClient => _dio == null;
 
   Future<void> fetchTopics({bool isRefreshing = false}) async {
     if (isFetching) return;
 
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -51,7 +59,7 @@ class DevotionController extends ChangeNotifier {
       }
       notifyListeners();
 
-      final response = await dio.get('$url/api/v1/content/devotion',
+      final response = await client.get('$url/api/v1/content/devotion',
           queryParameters: populateQuery());
 
       if (!response.statusCode.isSuccess) return;
@@ -65,7 +73,7 @@ class DevotionController extends ChangeNotifier {
     } catch (e) {
       logger.e(e);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
       Future.delayed(const Duration(seconds: 1), () {
         isFetching = false;
         notifyListeners();
@@ -91,7 +99,7 @@ class DevotionController extends ChangeNotifier {
   }
 
   Future<void> updateTopic(Topic updatedTopic) async {
-    final dio = Dio();
+    final client = _client();
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -99,7 +107,7 @@ class DevotionController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.put('$url/api/v1/content/devotion/edit',
+      final response = await client.put('$url/api/v1/content/devotion/edit',
           data: {"id": updatedTopic.id, "data": updatedTopic.toJson()});
 
       if (!response.statusCode.isSuccess) return;
@@ -112,7 +120,7 @@ class DevotionController extends ChangeNotifier {
     } catch (e) {
       logger.e(e);
     } finally {
-      dio.close();
+      if (_shouldCloseClient) client.close();
     }
   }
 

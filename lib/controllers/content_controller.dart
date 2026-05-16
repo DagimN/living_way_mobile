@@ -144,8 +144,10 @@ class ContentController extends ChangeNotifier {
 
   bool isFetchingStories = false;
 
-  ContentController() {
-    _init();
+  ContentController({bool loadOnInit = true}) {
+    if (loadOnInit) {
+      _init();
+    }
     //TODO: Fetch content from cache if can't access the server
   }
 

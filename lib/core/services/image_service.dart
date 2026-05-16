@@ -50,10 +50,12 @@ abstract class ImageService {
 
   static Future<List<String>> fetchImages(
       {String page = '1',
-      List<String> categories = const ['wallpapers', 'nature']}) async {
+      List<String> categories = const ['wallpapers', 'nature'],
+      Dio? dio}) async {
+    final client = dio ?? Dio(BaseOptions(baseUrl: Urls.unsplashApiUrl));
+    final shouldClose = dio == null;
     try {
-      final dio = Dio(BaseOptions(baseUrl: Urls.unsplashApiUrl));
-      final response = await dio.get('/search/photos', queryParameters: {
+      final response = await client.get('/search/photos', queryParameters: {
         'query': categories.join(','),
         'client_id': unsplasAccessKey,
         'page': page,
@@ -82,6 +84,8 @@ abstract class ImageService {
     } catch (error) {
       logger.e(error);
       return [Urls.imageApiUrl];
+    } finally {
+      if (shouldClose) client.close();
     }
   }
 

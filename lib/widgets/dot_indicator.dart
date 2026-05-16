@@ -26,21 +26,22 @@ class DotIndicator extends StatefulWidget {
 
 class _DotIndicatorState extends State<DotIndicator>
     with TickerProviderStateMixin {
-  late final animationController =
-      AnimationController(vsync: this, duration: const Duration(seconds: 10));
+  AnimationController? animationController;
 
   @override
   void initState() {
     super.initState();
 
     if (widget.animate) {
-      animationController.repeat();
-      animationController.addListener(animationListener);
+      animationController = AnimationController(
+          vsync: this, duration: const Duration(seconds: 10));
+      animationController!.repeat();
+      animationController!.addListener(animationListener);
     }
   }
 
   void animationListener() {
-    bool isCompleted = animationController.value >= 0.995;
+    bool isCompleted = animationController!.value >= 0.995;
 
     if (isCompleted && widget.onAnimationEnd != null) {
       widget.onAnimationEnd!();
@@ -49,8 +50,8 @@ class _DotIndicatorState extends State<DotIndicator>
 
   @override
   void dispose() {
-    animationController.removeListener(animationListener);
-    animationController.dispose();
+    animationController?.removeListener(animationListener);
+    animationController?.dispose();
     super.dispose();
   }
 
@@ -82,9 +83,9 @@ class _DotIndicatorState extends State<DotIndicator>
                             borderRadius: isActive
                                 ? BorderRadius.circular(widget.dotRadius / 2)
                                 : null)),
-                    if (isActive && widget.animate)
+                    if (isActive && widget.animate && animationController != null)
                       AnimatedBuilder(
-                          animation: animationController,
+                          animation: animationController!,
                           builder: (context, child) {
                             return Positioned(
                               left: 0,
@@ -92,7 +93,7 @@ class _DotIndicatorState extends State<DotIndicator>
                               child: Container(
                                   height: widget.dotRadius,
                                   width: (widget.dotRadius * 3) *
-                                      animationController.value,
+                                      animationController!.value,
                                   margin: const EdgeInsets.all(3),
                                   decoration: BoxDecoration(
                                       color: widget.activeColor,
