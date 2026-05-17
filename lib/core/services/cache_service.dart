@@ -53,6 +53,4 @@ class CacheService {
 
     sharedPreferences.remove(key);
   }
-
-  //TODO: Implement Hive for complex data
 }

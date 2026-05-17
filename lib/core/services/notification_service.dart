@@ -66,7 +66,6 @@ class NotificationService {
       importance: Importance.max,
       priority: Priority.high,
     );
-    //TODO: If app is on foreground, wait for an event a show the notification
     const notificationDetails = NotificationDetails(android: androidDetails);
     await _plugin.show(
         id: id,

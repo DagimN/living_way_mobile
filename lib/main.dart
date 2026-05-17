@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:living_way/app.dart';
 import 'package:living_way/core/core.dart';
@@ -13,8 +13,6 @@ import 'package:timezone/timezone.dart' as tz;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-  //TODO: Save notification to Hive database
-
   if (message.data.isEmpty) return;
 
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,22 +22,38 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await NotificationService.init(isForeground: false);
   }
 
-  final imageUrl = (message.data['image'] as String);
+  await _handleIncomingNotification(message);
+}
+
+Future<void> _handleIncomingNotification(RemoteMessage message) async {
+  if (message.data.isEmpty) return;
+
+  final notificationId =
+      NotificationCodes.general.extendedCode(message.hashCode ~/ 10000);
+  final imageUrl = (message.data['image'] as String?) ?? "";
 
   imageUrl.isEmpty
       ? await NotificationService.showNotification(
-          id: NotificationCodes.general.extendedCode(message.hashCode ~/ 10000),
+          id: notificationId,
           title: message.data['title'],
           body: message.data['body'],
           payload: message.data['payload'],
         )
       : await NotificationService.showImageNotification(
-          id: NotificationCodes.general.extendedCode(message.hashCode ~/ 10000),
+          id: notificationId,
           title: message.data['title'],
           body: message.data['body'],
           imageUrl: imageUrl,
           payload: message.data['payload'],
         );
+
+  await NotificationCache().init();
+  await NotificationCache().save(Notification(
+      id: notificationId.toString(),
+      title: message.data['title'] ?? "",
+      body: message.data['body'] ?? "",
+      payload: message.data['payload'] ?? "",
+      imageUrl: imageUrl));
 }
 
 void main() async {
@@ -50,28 +64,7 @@ void main() async {
 
   await Firebase.initializeApp();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
-    final imageUrl = (message.data['image'] as String);
-
-    imageUrl.isEmpty
-        ? await NotificationService.showNotification(
-            id: NotificationCodes.general
-                .extendedCode(message.hashCode ~/ 10000),
-            title: message.data['title'],
-            body: message.data['body'],
-            payload: message.data['payload'],
-          )
-        : await NotificationService.showImageNotification(
-            id: NotificationCodes.general
-                .extendedCode(message.hashCode ~/ 10000),
-            title: message.data['title'],
-            body: message.data['body'],
-            imageUrl: imageUrl,
-            payload: message.data['payload'],
-          );
-
-    //TODO: Save notification to Hive database
-  });
+  FirebaseMessaging.onMessage.listen(_handleIncomingNotification);
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
