@@ -11,6 +11,7 @@ class BaseAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final notificationController = Provider.of<NotificationController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final themeController = Provider.of<ThemeController>(context);
 
@@ -21,10 +22,29 @@ class BaseAppBar extends StatelessWidget {
           title ?? const SizedBox(),
           Row(children: [
             ...actions,
-            IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.notifications_none_rounded,
-                    color: AppTheme(themeController.brightness).iconColor)),
+            Stack(
+              children: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/notifications');
+                    },
+                    icon: Icon(Icons.notifications_none_rounded,
+                        color: AppTheme(themeController.brightness).iconColor)),
+                if (notificationController.notifications
+                    .where((notification) => !notification.isRead)
+                    .isNotEmpty)
+                  Positioned(
+                    top: 14,
+                    right: 14,
+                    child: Container(
+                      height: 10,
+                      width: 10,
+                      decoration: const BoxDecoration(
+                          color: Colors.red, shape: BoxShape.circle),
+                    ),
+                  ),
+              ],
+            ),
             IconButton(
                 onPressed: () {
                   Navigator.pushNamed(context, "/profile");

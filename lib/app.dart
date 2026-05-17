@@ -68,7 +68,8 @@ class LivingWayApp extends StatelessWidget {
                       '/profile': (context) => const ProfileSettingsScreen(),
                       '/contacts': (context) => const ContactsScreen(),
                       '/about': (context) => const AboutScreen(),
-                      '/donation': (context) => const DonationScreen()
+                      '/donation': (context) => const DonationScreen(),
+                      '/notifications': (context) => const NotificationScreen()
                     })
               : MaterialApp(
                   debugShowCheckedModeBanner: false,
