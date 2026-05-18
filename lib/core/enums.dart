@@ -35,7 +35,8 @@ enum NotificationCodes {
   activity,
   recurring,
   download,
-  general;
+  general,
+  prayer;
 
   int get value {
     switch (this) {
@@ -49,6 +50,8 @@ enum NotificationCodes {
         return 4;
       case general:
         return 5;
+      case prayer:
+        return 6;
     }
   }
 

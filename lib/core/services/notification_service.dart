@@ -219,6 +219,30 @@ class NotificationService {
     return scheduledDate;
   }
 
+  static Future<void> periodicNotification(
+      {required int id,
+      String? title,
+      String? body,
+      String? imageUrl,
+      String? payload}) async {
+    await _plugin.periodicallyShow(
+        id: id,
+        title: title,
+        body: body,
+        payload: payload,
+        repeatInterval: RepeatInterval.daily,
+        notificationDetails: const NotificationDetails(
+          android: AndroidNotificationDetails(
+            'periodic_channel',
+            'Periodic Alerts',
+            importance: Importance.max,
+            priority: Priority.high,
+          ),
+          iOS: DarwinNotificationDetails(),
+        ),
+        androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle);
+  }
+
   static Future<void> cancelNotification(int id) async {
     await _plugin.cancel(id: id);
   }

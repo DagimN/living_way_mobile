@@ -3,8 +3,6 @@ import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/prayer_times_list_view.dart';
-
 class GeneralSettingsScreen extends StatelessWidget {
   const GeneralSettingsScreen({super.key});
 
@@ -170,7 +168,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                               themeController.setTextSize = value;
                             }),
                         const SizedBox(height: 16),
-                        Text("Reminders",
+                        Text("Notifications",
                             style: TextStyle(
                                 color: AppTheme(themeController.brightness)
                                     .primaryColor,
@@ -192,6 +190,10 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       activityController
                                           .scheduleActivityNotifications();
                                       bibleController.scheduleVersesOfTheDay();
+                                      NotificationService.periodicNotification(
+                                          id: NotificationCodes.prayer.value,
+                                          title: 'Prayer time',
+                                          body: 'Take a moment to pray.');
                                     } else {
                                       NotificationService
                                           .cancelAllNotifications();
@@ -215,7 +217,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                                         value;
                                   })
                             ]),
-                        if (willRemindPrayer) const PrayerTimesListView()
+                        // if (willRemindPrayer) const PrayerTimesListView()
                       ])))
             ])))));
   }

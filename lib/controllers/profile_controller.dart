@@ -10,7 +10,6 @@ class ProfileController extends ChangeNotifier {
   Profile? userProfile;
 
   bool isAnonymous = false;
-  List<TimeOfDay> prayerTimes = [];
   bool willReceiveNotification = true;
   bool willRemindPrayer = false;
 
@@ -34,16 +33,6 @@ class ProfileController extends ChangeNotifier {
         .readData<bool>('willReceiveNotification', defaultValue: true);
     willRemindPrayer = await CacheService.instance
         .readData<bool>('willRemindPrayer', defaultValue: false);
-
-    final prayerTimes = (await CacheService.instance
-        .readData<List<String>>('reminders', defaultValue: ['6:00']));
-    for (final prayerTime in prayerTimes) {
-      final time = (prayerTime as String).split(":");
-      final hour = int.parse(time[0]);
-      final minute = int.parse(time[1]);
-
-      this.prayerTimes.add(TimeOfDay(hour: hour, minute: minute));
-    }
 
     notifyListeners();
   }
@@ -116,28 +105,6 @@ class ProfileController extends ChangeNotifier {
     } finally {
       dio.close();
     }
-  }
-
-  void removePrayerTime(int index) {
-    prayerTimes.removeAt(index);
-    notifyListeners();
-    CacheService.instance.writeData<List<String>>('reminders',
-        prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
-  }
-
-  void addPrayerTime(TimeOfDay value) {
-    prayerTimes.add(value);
-    //TODO: Implement notifications for prayer times
-    notifyListeners();
-    CacheService.instance.writeData<List<String>>('reminders',
-        prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
-  }
-
-  void editPrayerTime(TimeOfDay value, int index) {
-    prayerTimes.replaceRange(index, index + 1, [value]);
-    notifyListeners();
-    CacheService.instance.writeData<List<String>>('reminders',
-        prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());
   }
 
   set setUserProfile(Profile value) {
