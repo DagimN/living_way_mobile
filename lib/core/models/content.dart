@@ -5,13 +5,14 @@ import 'dart:typed_data';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:image/image.dart' as image;
+import 'package:provider/provider.dart';
 
 class Content extends ChangeNotifier {
-  //TODO: Update name in the backend
   String id;
   String title;
   String presenter;
@@ -141,10 +142,12 @@ class Content extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> downloadContent() async {
+  Future<void> downloadContent(BuildContext context) async {
     isDownloading = true;
     notifyListeners();
 
+    final themeController =
+        Provider.of<ThemeController>(context, listen: false);
     final dio = Dio();
     final appDir = await getApplicationDocumentsDirectory();
     final filePath = '${appDir.path}/$title.${fileType?.name}';
@@ -159,7 +162,7 @@ class Content extends ChangeNotifier {
       if (!canDownload) {
         UIService.showSnackbar(
             message: 'Low Storage. Clear up some files before continuing',
-            backgroundColor: Colors.redAccent);
+            backgroundColor: AppTheme(themeController.brightness).failedColor);
         return;
       }
 
@@ -184,15 +187,16 @@ class Content extends ChangeNotifier {
       NotificationService.cancelNotification(notificationId);
 
       UIService.showSnackbar(
-          message: '$title downloaded successfully',
-          backgroundColor: const Color(0xFF16A085)); //TODO: Store in app theme
+        message: '$title downloaded successfully',
+        backgroundColor: AppTheme(themeController.brightness).successColor,
+      );
     } on FileSystemException catch (e) {
       if (e.message.toLowerCase().contains("no space left")) {
         logger.e("Critical Error: Device Storage Full.");
 
         UIService.showSnackbar(
             message: 'Low Storage. Clear up some files before continuing',
-            backgroundColor: Colors.redAccent);
+            backgroundColor: AppTheme(themeController.brightness).failedColor);
 
         final file = File(filePath);
 

@@ -119,8 +119,10 @@ class ContactsScreen extends StatelessWidget {
                                                       mode: LaunchMode
                                                           .externalApplication)
                                                   : UIService.showSnackbar(
-                                                      backgroundColor:
-                                                          Colors.redAccent,
+                                                      backgroundColor: AppTheme(
+                                                              themeController
+                                                                  .brightness)
+                                                          .failedColor,
                                                       message:
                                                           "Could not launch email address"));
                                           return;
@@ -133,7 +135,10 @@ class ContactsScreen extends StatelessWidget {
                                                   .externalApplication);
                                         } else {
                                           UIService.showSnackbar(
-                                              backgroundColor: Colors.redAccent,
+                                              backgroundColor: AppTheme(
+                                                      themeController
+                                                          .brightness)
+                                                  .failedColor,
                                               message:
                                                   'Could not launch ${contact.type.name} address');
                                         }

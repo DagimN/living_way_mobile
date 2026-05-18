@@ -8,12 +8,11 @@ import 'package:flutter/rendering.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:gal/gal.dart';
 import 'package:hl_image_picker/hl_image_picker.dart';
-import 'package:living_way/core/config/env.dart';
-import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/core/services/logging_service.dart';
-import 'package:living_way/core/services/ui_service.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:provider/provider.dart';
 
 abstract class ImageService {
   static Future<bool> checkPermission() async {
@@ -88,6 +87,7 @@ abstract class ImageService {
   static Future<void> captureAndSaveImage(
       BuildContext context, GlobalKey key) async {
     try {
+      final themeController = Provider.of<ThemeController>(context);
       final isGranted = await checkPermission();
 
       if (!isGranted) {
@@ -120,7 +120,7 @@ abstract class ImageService {
 
       logger.i('Image successfully saved');
       UIService.showSnackbar(
-          backgroundColor: const Color(0xFF16A085), //TODO: Store in app theme
+          backgroundColor: AppTheme(themeController.brightness).successColor,
           child: const Row(
             children: [
               Icon(Icons.check_circle, color: Colors.white),

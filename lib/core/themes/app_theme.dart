@@ -73,6 +73,14 @@ class AppTheme {
     return brightness == Brightness.light ? Colors.black : dark.appBarColor;
   }
 
+  Color get successColor {
+    return const Color(0xFF16A085);
+  }
+
+  Color get failedColor {
+    return Colors.redAccent;
+  }
+
   Color get primaryButtonColor {
     return brightness == Brightness.light
         ? light.primaryButtonColor

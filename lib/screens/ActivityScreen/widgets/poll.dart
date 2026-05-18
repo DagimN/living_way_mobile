@@ -110,7 +110,8 @@ class _PollState extends State<Poll> {
                 }
 
                 UIService.showSnackbar(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor:
+                        AppTheme(themeController.brightness).failedColor,
                     message: 'Failed to save vote');
                 return Future.value(false);
               })
