@@ -13,7 +13,7 @@ class Activity {
   final String? externalLink;
   final String? locationUrl;
   final ContentBanner? banner;
-  final bool isRecurring; // TODO: Update model in the backend
+  final bool isRecurring;
 
   Activity(
       {this.title,
@@ -41,6 +41,7 @@ class Activity {
     }
   }
 
+  //TODO: Test if it works
   static DateTime _getNextOccurrence(int targetWeekday) {
     DateTime now = DateTime.now();
     int daysUntilNext = (targetWeekday - now.weekday + 7) % 7;

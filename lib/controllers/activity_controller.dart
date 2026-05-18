@@ -14,7 +14,6 @@ class ActivityController extends ChangeNotifier {
 
   ActivityController() {
     scrollController.addListener(() {
-      //TODO: Implement recurring events
       if (scrollController.position.pixels >
               (scrollController.position.maxScrollExtent * .7) &&
           !hasReachedEnd) {
@@ -66,6 +65,7 @@ class ActivityController extends ChangeNotifier {
       });
 
       _scheduleActivityNotifications();
+      _sortActivities();
     }
   }
 
@@ -90,7 +90,7 @@ class ActivityController extends ChangeNotifier {
     }
   }
 
-  void _scheduleActivityNotifications() async {
+  Future<void> _scheduleActivityNotifications() async {
     final events = activityList.where((activity) =>
         activity.type == ContentType.event &&
         (activity.upcomingDate ?? activity.timestamp).isAfter(DateTime.now()));
@@ -151,6 +151,13 @@ class ActivityController extends ChangeNotifier {
             scheduledDate: scheduledDateInDays);
       }
     }
+  }
+
+  //TODO: Test if it works
+  void _sortActivities() {
+    activityList.sort((activityA, activityB) =>
+        (activityA.upcomingDate ?? activityA.timestamp)
+            .compareTo((activityB.upcomingDate ?? activityB.timestamp)));
   }
 
   @override
