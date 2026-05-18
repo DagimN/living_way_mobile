@@ -170,6 +170,7 @@ class BibleController extends ChangeNotifier {
 
   void scheduleVersesOfTheDay() async {
     //TODO: Improve randomization logic
+    //BUG: Multile passages are being displayed on the same day
     for (int i = 0; i < 7; i++) {
       final notificationId = NotificationCodes.verseOfTheDay.extendedCode(i);
       await NotificationService.cancelNotification(notificationId);

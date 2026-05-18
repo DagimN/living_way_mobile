@@ -12,6 +12,8 @@ class GeneralSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final profileController = Provider.of<ProfileController>(context);
+    final activityController = Provider.of<ActivityController>(context);
+    final bibleController = Provider.of<BibleController>(context);
     final appLocale = themeController.appLocale;
     final willRemindPrayer = profileController.willRemindPrayer;
 
@@ -185,9 +187,18 @@ class GeneralSettingsScreen extends StatelessWidget {
                                           .primaryColor,
                                   value:
                                       profileController.willReceiveNotification,
-                                  onChanged: (value) {
+                                  onChanged: (isActive) {
+                                    if (isActive) {
+                                      activityController
+                                          .scheduleActivityNotifications();
+                                      bibleController.scheduleVersesOfTheDay();
+                                    } else {
+                                      NotificationService
+                                          .cancelAllNotifications();
+                                    }
+
                                     profileController
-                                        .setWillReceiveNotification = value;
+                                        .setWillReceiveNotification = isActive;
                                   })
                             ]),
                         Row(

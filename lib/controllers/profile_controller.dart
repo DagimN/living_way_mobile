@@ -127,6 +127,7 @@ class ProfileController extends ChangeNotifier {
 
   void addPrayerTime(TimeOfDay value) {
     prayerTimes.add(value);
+    //TODO: Implement notifications for prayer times
     notifyListeners();
     CacheService.instance.writeData<List<String>>('reminders',
         prayerTimes.map((time) => '${time.hour}:${time.minute}').toList());

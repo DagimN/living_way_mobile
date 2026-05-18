@@ -64,7 +64,7 @@ class ActivityController extends ChangeNotifier {
         notifyListeners();
       });
 
-      _scheduleActivityNotifications();
+      scheduleActivityNotifications();
       _sortActivities();
     }
   }
@@ -90,7 +90,7 @@ class ActivityController extends ChangeNotifier {
     }
   }
 
-  Future<void> _scheduleActivityNotifications() async {
+  Future<void> scheduleActivityNotifications() async {
     final events = activityList.where((activity) =>
         activity.type == ContentType.event &&
         (activity.upcomingDate ?? activity.timestamp).isAfter(DateTime.now()));
@@ -108,7 +108,6 @@ class ActivityController extends ChangeNotifier {
         final dayNotificationId = NotificationCodes.activity
             .extendedCode(scheduledDateInDays.dateInNumbers);
 
-        //TODO: Add an option for sending notifications before event or turning off
         await NotificationService.cancelNotification(hourNotificationId);
         await NotificationService.cancelNotification(dayNotificationId);
         await NotificationService.scheduleNotification(
