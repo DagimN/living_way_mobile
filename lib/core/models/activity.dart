@@ -41,14 +41,14 @@ class Activity {
     }
   }
 
-  //TODO: Test if it works
-  static DateTime _getNextOccurrence(int targetWeekday) {
+  static DateTime _getNextOccurrence(DateTime timestamp) {
+    int targetWeekday = DateTime.now().weekday;
     DateTime now = DateTime.now();
     int daysUntilNext = (targetWeekday - now.weekday + 7) % 7;
 
     if (daysUntilNext == 0) daysUntilNext = 7;
 
-    return now.add(Duration(days: daysUntilNext));
+    return timestamp.add(Duration(days: daysUntilNext));
   }
 
   static Activity fromJson(Map<String, dynamic> json) {
@@ -56,7 +56,9 @@ class Activity {
     DateTime timestamp = DateTime.parse(json['timestamp'] ?? json['createdAt']);
 
     if (isRecurring) {
-      timestamp = _getNextOccurrence(timestamp.weekday);
+      timestamp = timestamp.isAfter(DateTime.now())
+          ? timestamp
+          : _getNextOccurrence(timestamp);
     }
 
     return Activity(
