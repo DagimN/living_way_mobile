@@ -49,40 +49,36 @@ class ActivityScreen extends StatelessWidget {
                       controller: activityController.scrollController,
                       itemCount: activityList.length + 1,
                       itemBuilder: (context, index) {
-                        final content = activityList.length > index
+                        final activity = activityList.length > index
                             ? activityList[index]
                             : Activity(
                                 id: '',
                                 type: ContentType.undefined,
                                 timestamp: DateTime.now());
-                        final Widget childWidget;
+                        final Widget? childWidget;
 
-                        switch (content.type) {
+                        switch (activity.type) {
                           case ContentType.gallery:
                             childWidget = Gallery(
-                                images: content.images,
+                                images: activity.images,
                                 minimumAllowedImagesForView:
-                                    content.minimumAllowedViewImages);
+                                    activity.minimumAllowedViewImages);
                           case ContentType.article:
-                            childWidget = Article(content: content);
+                            childWidget = Article(content: activity);
                           case ContentType.poll:
                             childWidget = Poll(
-                                content: content, userProfile: userProfile);
+                                content: activity, userProfile: userProfile);
                           case ContentType.external:
-                            childWidget = ExternalLink(content: content);
+                            childWidget = ExternalLink(content: activity);
                           case ContentType.event:
-                            childWidget = Event(content: content);
+                            childWidget = Event(content: activity);
                           default:
-                            childWidget = const SizedBox();
+                            childWidget = null;
                         }
 
                         return index < activityList.length
                             ? TimelineContainer(
-                                title: content.title ?? '',
-                                timestamp:
-                                    content.upcomingDate ?? content.timestamp,
-                                isOngoing: content.isOngoing,
-                                type: content.type,
+                                activity: activity,
                                 isLast: index == activityList.length - 1,
                                 child: childWidget)
                             : Container(

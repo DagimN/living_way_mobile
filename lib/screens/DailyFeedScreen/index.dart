@@ -57,15 +57,12 @@ class DailyFeedScreen extends StatelessWidget {
                   physics: const NeverScrollableScrollPhysics(),
                   padding: EdgeInsets.zero,
                   itemBuilder: (context, index) {
-                    final content = upcomingActivities[index];
+                    final activity = upcomingActivities[index];
 
                     return TimelineContainer(
-                        title: content.title ?? '',
-                        timestamp: content.upcomingDate ?? content.timestamp,
-                        isOngoing: content.isOngoing,
-                        type: content.type,
+                        activity: activity,
                         isLast: index == upcomingActivities.length - 1,
-                        child: Text(content.body ?? ''));
+                        child: Text(activity.body ?? ''));
                   }),
               const Padding(
                   padding: EdgeInsets.all(8.0), child: StoryListView()),

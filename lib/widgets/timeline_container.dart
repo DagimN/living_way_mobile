@@ -8,20 +8,11 @@ import 'package:living_way/widgets/avatar_stack.dart';
 import 'package:provider/provider.dart';
 
 class TimelineContainer extends StatelessWidget {
-  final String title;
-  final DateTime timestamp;
-  final Widget child;
-  final ContentType type;
-  final bool isOngoing;
+  final Activity activity;
+  final Widget? child;
   final bool isLast;
   const TimelineContainer(
-      {super.key,
-      required this.title,
-      required this.child,
-      required this.type,
-      required this.timestamp,
-      required this.isOngoing,
-      this.isLast = false});
+      {super.key, required this.activity, this.child, this.isLast = false});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +22,7 @@ class TimelineContainer extends StatelessWidget {
     final themeController = Provider.of<ThemeController>(context);
 
     IconData getIcon() {
-      switch (type) {
+      switch (activity.type) {
         case ContentType.external:
           return Icons.link;
         case ContentType.poll:
@@ -71,30 +62,53 @@ class TimelineContainer extends StatelessWidget {
                         : screenWidth * .85,
                     child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          SizedBox(
-                              width: screenWidth * .5,
-                              child: Text(title,
-                                  maxLines: 5,
-                                  style: const TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400))),
+                          (activity.title != null || activity.body != null)
+                              ? Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  spacing: 4,
+                                  children: [
+                                    if (activity.title != null)
+                                      SizedBox(
+                                          width: screenWidth * .5,
+                                          child: Text(activity.title ?? "",
+                                              maxLines: 5,
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight:
+                                                      FontWeight.w500))),
+                                    if (activity.body != null && child == null)
+                                      SizedBox(
+                                          width: screenWidth * .5,
+                                          child: Text(activity.body ?? "",
+                                              maxLines: 5,
+                                              style: const TextStyle(
+                                                  fontSize: 12,
+                                                  fontWeight:
+                                                      FontWeight.w400))),
+                                  ],
+                                )
+                              : const SizedBox(),
                           Tooltip(
                               message: DateFormat("MMMM d, y 'at' h':'m a")
-                                  .format(timestamp),
+                                  .format(activity.upcomingDate ??
+                                      activity.timestamp),
                               triggerMode: TooltipTriggerMode.tap,
                               child: Text(
-                                  !isOngoing
-                                      ? formatDateTime(timestamp)
+                                  !activity.isOngoing
+                                      ? formatDateTime(activity.upcomingDate ??
+                                          activity.timestamp)
                                       : 'Ongoing',
                                   style: TextStyle(
                                       fontSize: 8,
                                       fontStyle: FontStyle.italic,
-                                      fontWeight:
-                                          isOngoing ? FontWeight.bold : null)))
+                                      fontWeight: activity.isOngoing
+                                          ? FontWeight.bold
+                                          : null)))
                         ])),
                 const SizedBox(height: 12),
-                child
+                child ?? const SizedBox()
               ])
             ]),
           ],
