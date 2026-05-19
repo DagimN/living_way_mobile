@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:firebase_core/firebase_core.dart';
@@ -31,21 +32,37 @@ Future<void> _handleIncomingNotification(RemoteMessage message) async {
   final notificationId =
       NotificationCodes.general.extendedCode(message.hashCode ~/ 10000);
   final imageUrl = (message.data['image'] as String?) ?? "";
+  final payload = message.data['payload'] ?? "";
 
-  imageUrl.isEmpty
-      ? await NotificationService.showNotification(
-          id: notificationId,
-          title: message.data['title'],
-          body: message.data['body'],
-          payload: message.data['payload'],
-        )
-      : await NotificationService.showImageNotification(
-          id: notificationId,
-          title: message.data['title'],
-          body: message.data['body'],
-          imageUrl: imageUrl,
-          payload: message.data['payload'],
-        );
+  if (payload.isNotEmpty && payload.contains('event_start')) {
+    final event = jsonDecode(payload);
+    await NotificationService.showEventNotification(
+      id: notificationId,
+      title: message.data['title'],
+      body: message.data['body'],
+      imageUrl: imageUrl.isEmpty ? null : imageUrl,
+      location: event['location'],
+      eventStart: DateTime.tryParse(event['event_start']) ?? DateTime.now(),
+      eventEnd: event['event_end'] != null
+          ? DateTime.tryParse(event['event_end'] ?? "")
+          : null,
+    );
+  } else if (imageUrl.isNotEmpty) {
+    await NotificationService.showImageNotification(
+      id: notificationId,
+      title: message.data['title'],
+      body: message.data['body'],
+      imageUrl: imageUrl,
+      payload: message.data['payload'],
+    );
+  } else {
+    await NotificationService.showNotification(
+      id: notificationId,
+      title: message.data['title'],
+      body: message.data['body'],
+      payload: message.data['payload'],
+    );
+  }
 
   await NotificationCache().init();
   await NotificationCache().save(Notification(

@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
@@ -20,18 +22,37 @@ class NotificationService {
     playSound: true,
     enableVibration: true,
   );
+  static const AndroidNotificationAction addToCalendarAction =
+      AndroidNotificationAction(
+    'ADD_TO_CALENDAR',
+    'Add to Calendar',
+    showsUserInterface: true,
+    cancelNotification: true,
+  );
+  static final DarwinNotificationCategory eventCategory =
+      DarwinNotificationCategory(
+    'EVENT_CATEGORY',
+    actions: [
+      DarwinNotificationAction.plain(
+        'ADD_TO_CALENDAR',
+        'Add to Calendar',
+        options: {DarwinNotificationActionOption.foreground},
+      ),
+    ],
+  );
 
   static Future<void> init({bool isForeground = true}) async {
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     const android = AndroidInitializationSettings('@drawable/ic_notification');
-    const ios = DarwinInitializationSettings();
+    final ios =
+        DarwinInitializationSettings(notificationCategories: [eventCategory]);
 
     final androidPlugin = _plugin.resolvePlatformSpecificImplementation<
         AndroidFlutterLocalNotificationsPlugin>();
 
     await _plugin.initialize(
-      settings: const InitializationSettings(android: android, iOS: ios),
+      settings: InitializationSettings(android: android, iOS: ios),
       onDidReceiveNotificationResponse: _handleTap,
     );
 
@@ -161,7 +182,87 @@ class NotificationService {
       UIService.push(const UpdatesViewerExpanded());
     }
 
-    //TODO: Hanlde event notifications for adding to calendar
+    if (payload.contains('event_start')) {
+      _onCalendarEvent(payload);
+    }
+  }
+
+  static Future<void> showEventNotification({
+    required int id,
+    required String title,
+    required String body,
+    required DateTime eventStart,
+    String? imageUrl,
+    DateTime? eventEnd,
+    String location = '',
+  }) async {
+    String? filePath;
+
+    if (imageUrl != null) {
+      filePath =
+          await _downloadAndSaveFile(imageUrl, 'notification_img_$id.jpg');
+    }
+
+    final payload = jsonEncode({
+      'title': title,
+      'description': body,
+      'location': location,
+      'event_start': eventStart.toIso8601String(),
+      'event_end': (eventEnd ?? eventStart.add(const Duration(hours: 1)))
+          .toIso8601String(),
+      'all_day': false,
+    });
+
+    AndroidNotificationDetails androidDetails = AndroidNotificationDetails(
+      'event_channel',
+      'Event Notifications',
+      channelDescription: 'Notifications for upcoming events',
+      importance: Importance.high,
+      priority: Priority.high,
+      actions: [addToCalendarAction],
+      styleInformation: filePath != null
+          ? BigPictureStyleInformation(
+              FilePathAndroidBitmap(filePath),
+            )
+          : null,
+    );
+
+    const DarwinNotificationDetails iosDetails = DarwinNotificationDetails(
+      categoryIdentifier: 'EVENT_CATEGORY',
+    );
+
+    NotificationDetails notificationDetails = NotificationDetails(
+      android: androidDetails,
+      iOS: iosDetails,
+    );
+
+    await _plugin.show(
+      id: id,
+      title: title,
+      body: body,
+      notificationDetails: notificationDetails,
+      payload: payload,
+    );
+  }
+
+  static void _onCalendarEvent(String payload) {
+    final Map<String, dynamic> notificationPayload = jsonDecode(payload);
+    final DateTime eventStart =
+        DateTime.parse(notificationPayload['event_start']);
+    final DateTime eventEnd = notificationPayload['event_end'] != null
+        ? DateTime.parse(notificationPayload['event_end'])
+        : eventStart.add(const Duration(hours: 1));
+
+    final Event calendarEvent = Event(
+      title: notificationPayload['title'] ?? 'Event',
+      description: notificationPayload['description'] ?? '',
+      location: notificationPayload['location'] ?? '',
+      startDate: eventStart,
+      endDate: eventEnd,
+      allDay: notificationPayload['all_day'] == true,
+    );
+
+    Add2Calendar.addEvent2Cal(calendarEvent);
   }
 
   static Future<void> scheduleNotification(
