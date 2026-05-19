@@ -91,7 +91,7 @@ class TimelineContainer extends StatelessWidget {
                                 )
                               : const SizedBox(),
                           Tooltip(
-                              message: DateFormat("MMMM d, y 'at' h':'m a")
+                              message: DateFormat("MMMM d, y 'at' h':'mm a")
                                   .format(activity.upcomingDate ??
                                       activity.timestamp),
                               triggerMode: TooltipTriggerMode.tap,
