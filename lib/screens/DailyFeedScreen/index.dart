@@ -21,9 +21,10 @@ class DailyFeedScreen extends StatelessWidget {
     List<Activity> upcomingActivities = activityController.activityList
         .where((activity) =>
             ((activity.upcomingDate ?? activity.timestamp).isAfter(
-                    DateTime.now().subtract(const Duration(days: 1))) ||
-                activity.isRecurring) &&
-            activity.type == ContentType.event)
+                        DateTime.now().subtract(const Duration(days: 1))) ||
+                    activity.isRecurring) &&
+                activity.type == ContentType.event ||
+            activity.type == ContentType.general)
         .toList();
     List<Activity> updates = activityController.activityList
         .where((activity) =>
@@ -60,9 +61,9 @@ class DailyFeedScreen extends StatelessWidget {
                     final activity = upcomingActivities[index];
 
                     return TimelineContainer(
-                        activity: activity,
-                        isLast: index == upcomingActivities.length - 1,
-                        child: Text(activity.body ?? ''));
+                      activity: activity,
+                      isLast: index == upcomingActivities.length - 1,
+                    );
                   }),
               const Padding(
                   padding: EdgeInsets.all(8.0), child: StoryListView()),
