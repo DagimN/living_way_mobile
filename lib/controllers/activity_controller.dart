@@ -152,11 +152,10 @@ class ActivityController extends ChangeNotifier {
     }
   }
 
-  //TODO: Test if it works
   void _sortActivities() {
     activityList.sort((activityA, activityB) =>
-        (activityA.upcomingDate ?? activityA.timestamp)
-            .compareTo((activityB.upcomingDate ?? activityB.timestamp)));
+        (activityB.upcomingDate ?? activityB.timestamp)
+            .compareTo((activityA.upcomingDate ?? activityA.timestamp)));
   }
 
   @override
