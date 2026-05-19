@@ -47,20 +47,13 @@ Future<void> _handleIncomingNotification(RemoteMessage message) async {
           ? DateTime.tryParse(event['event_end'] ?? "")
           : null,
     );
-  } else if (imageUrl.isNotEmpty) {
-    await NotificationService.showImageNotification(
-      id: notificationId,
-      title: message.data['title'],
-      body: message.data['body'],
-      imageUrl: imageUrl,
-      payload: message.data['payload'],
-    );
   } else {
     await NotificationService.showNotification(
       id: notificationId,
       title: message.data['title'],
       body: message.data['body'],
       payload: message.data['payload'],
+      imageUrl: imageUrl.isEmpty ? null : imageUrl,
     );
   }
 

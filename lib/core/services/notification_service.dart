@@ -79,44 +79,25 @@ class NotificationService {
     required int id,
     required String title,
     required String body,
+    String? imageUrl,
     String? payload,
   }) async {
-    const androidDetails = AndroidNotificationDetails(
+    final filePath = imageUrl != null
+        ? await _downloadAndSaveFile(imageUrl, 'notification_img_$id.jpg')
+        : null;
+    final androidDetails = AndroidNotificationDetails(
       'basic_channel',
       'Basic Alerts',
       importance: Importance.max,
       priority: Priority.high,
+      styleInformation: filePath != null
+          ? BigPictureStyleInformation(
+              FilePathAndroidBitmap(filePath),
+            )
+          : null,
     );
-    const notificationDetails = NotificationDetails(android: androidDetails);
-    await _plugin.show(
-        id: id,
-        title: title,
-        body: body,
-        notificationDetails: notificationDetails,
-        payload: payload);
-  }
-
-  static Future<void> showImageNotification({
-    required int id,
-    required String title,
-    required String body,
-    required String imageUrl,
-    String? payload,
-  }) async {
-    final String filePath =
-        await _downloadAndSaveFile(imageUrl, 'notification_img_$id.jpg');
-
-    final androidDetails = AndroidNotificationDetails(
-      'image_channel',
-      'Image Alerts',
-      importance: Importance.max,
-      priority: Priority.high,
-      styleInformation: BigPictureStyleInformation(
-        FilePathAndroidBitmap(filePath),
-      ),
-    );
-
     final notificationDetails = NotificationDetails(android: androidDetails);
+
     await _plugin.show(
         id: id,
         title: title,
