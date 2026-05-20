@@ -70,7 +70,7 @@ class AppTheme {
   }
 
   Color get iconColor {
-    return brightness == Brightness.light ? Colors.black : dark.appBarColor;
+    return brightness == Brightness.light ? light.iconColor : dark.iconColor;
   }
 
   Color get successColor {
@@ -90,13 +90,19 @@ class AppTheme {
   Color get secondaryButtonColor {
     return brightness == Brightness.light
         ? light.secondaryButtonColor
-        : dark.secondaryButtonColor; //TODO: Change the values
+        : dark.secondaryButtonColor;
   }
 
   Color get pendingColor {
     return brightness == Brightness.light
         ? light.pendingColor
         : dark.pendingColor;
+  }
+
+  Color get appbarColor {
+    return brightness == Brightness.light
+        ? light.appbarColor
+        : dark.appBarColor;
   }
 
   LinearGradient get backgroundGradient {

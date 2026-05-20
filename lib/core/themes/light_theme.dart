@@ -11,6 +11,8 @@ const inactiveColor = Color(0xFF343635);
 const pendingColor = Color(0xFFACA295);
 const secondaryColor = Color(0xFFFFF479);
 const accentColor = Colors.black;
+const appbarColor = Color(0xFFFFFAC7);
+const iconColor = Colors.black;
 
 // Gradients
 const backgroundGradient = LinearGradient(

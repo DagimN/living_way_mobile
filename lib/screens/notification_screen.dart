@@ -112,8 +112,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           fontWeight: notification.isRead
                               ? FontWeight.normal
                               : FontWeight.w600)),
-                  if (notification.imageUrl?.isNotEmpty ??
-                      false) //TODO: Test if it works
+                  if (notification.imageUrl?.isNotEmpty ?? false)
                     ClipRRect(
                         borderRadius: BorderRadius.circular(20),
                         child: CachedNetworkImage(
@@ -141,9 +140,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          //TODO: Test if it works
           title: const Text('Notifications'),
-          backgroundColor: Colors.transparent,
+          backgroundColor: AppTheme(themeController.brightness).appbarColor,
           systemOverlayStyle: themeController.brightness == Brightness.light
               ? SystemUiOverlayStyle.dark
               : SystemUiOverlayStyle.light,
