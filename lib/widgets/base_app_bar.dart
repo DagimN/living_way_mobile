@@ -11,7 +11,7 @@ class BaseAppBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final notificationController = Provider.of<NotificationController>(context);
+    final notificationController = context.watch<NotificationController>();
     final profileController = Provider.of<ProfileController>(context);
     final themeController = Provider.of<ThemeController>(context);
 
