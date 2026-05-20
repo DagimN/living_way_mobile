@@ -188,7 +188,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               await profileController
                                                   .editProfile(formData);
                                             } else {
-                                              //TODO: Notify user
+                                              UIService.showSnackbar(
+                                                  backgroundColor: AppTheme(
+                                                          themeController
+                                                              .brightness)
+                                                      .failedColor,
+                                                  message: 'No image selected');
                                             }
 
                                             setState(() {
