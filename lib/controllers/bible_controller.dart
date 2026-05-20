@@ -170,7 +170,6 @@ class BibleController extends ChangeNotifier {
 
   void scheduleVersesOfTheDay() async {
     //TODO: Improve randomization logic
-    //BUG: Multile passages are being displayed on the same day
     for (int i = 0; i < 7; i++) {
       final notificationId = NotificationCodes.verseOfTheDay.extendedCode(i);
       await NotificationService.cancelNotification(notificationId);
@@ -178,8 +177,7 @@ class BibleController extends ChangeNotifier {
       final currentDate = DateTime.now();
       final scheduledDate = DateTime(
           currentDate.year, currentDate.month, currentDate.day + i, 8, 0);
-      final dailyVerse =
-          dailyVerses[(scheduledDate.day + i) % dailyVerses.length];
+      final dailyVerse = dailyVerses[scheduledDate.day % dailyVerses.length];
       final passage = Passage(book: bible[dailyVerse.$1])
         ..chapter = dailyVerse.$2
         ..verse = dailyVerse.$3
