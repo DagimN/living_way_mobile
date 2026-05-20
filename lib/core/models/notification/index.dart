@@ -35,10 +35,9 @@ class Notification extends HiveObject implements Cacheable {
     required this.body,
     this.payload,
     this.imageUrl,
+    this.isRead = false,
     DateTime? createdAt,
-    bool? isRead,
-  })  : createdAt = createdAt ?? DateTime.now(),
-        isRead = false;
+  }) : createdAt = createdAt ?? DateTime.now();
 
   @override
   String get cacheKey => id;

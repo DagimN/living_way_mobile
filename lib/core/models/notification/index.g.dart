@@ -22,8 +22,8 @@ class NotificationAdapter extends TypeAdapter<Notification> {
       body: fields[2] as String,
       payload: fields[3] as String?,
       imageUrl: fields[4] as String?,
+      isRead: fields[6] as bool,
       createdAt: fields[5] as DateTime?,
-      isRead: fields[6] as bool?,
     );
   }
 
