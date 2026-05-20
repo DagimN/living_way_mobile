@@ -24,6 +24,7 @@ class NotificationController extends ChangeNotifier {
     await _cache.init();
     _loadFromCache();
     _subscribeToCache();
+    _cache.purgeOlderThan(const Duration(days: 30));
   }
 
   Future<void> _loadFromCache() async {
