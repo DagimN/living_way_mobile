@@ -21,8 +21,10 @@ class _StoryCardState extends State<StoryCard> {
   bool isInitialized = false;
 
   void initializeVideoController() {
-    if (widget.story.file != null && controller == null) {
-      controller = VideoPlayerController.file(widget.story.file!);
+    if (controller == null) {
+      controller = widget.story.file != null
+          ? VideoPlayerController.file(widget.story.file!)
+          : VideoPlayerController.networkUrl(Uri.parse(widget.story.sourceUrl));
       controller?.initialize().then((_) {
         setState(() {
           isInitialized = true;
