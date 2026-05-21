@@ -15,6 +15,7 @@ class DailyFeedScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final activityController = Provider.of<ActivityController>(context);
+    final contentController = Provider.of<ContentController>(context);
 
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -42,33 +43,40 @@ class DailyFeedScreen extends StatelessWidget {
             height: orientation == Orientation.portrait
                 ? screenHeight * .9
                 : screenHeight * .7,
-            child: SingleChildScrollView(
-                child: Column(mainAxisSize: MainAxisSize.min, children: [
-              UpdatesViewer(updates: updates),
-              BaseAppBar(
-                  title: Text('Home',
-                      style: TextStyle(
-                          fontSize: 32,
-                          color: AppTheme(themeController.brightness).iconColor,
-                          fontWeight: FontWeight.w400)),
-                  actions: const [SearchButton()]),
-              ListView.builder(
-                  shrinkWrap: true,
-                  itemCount: upcomingActivities.length,
-                  physics: const NeverScrollableScrollPhysics(),
-                  padding: EdgeInsets.zero,
-                  itemBuilder: (context, index) {
-                    final activity = upcomingActivities[index];
+            child: RefreshIndicator(
+              onRefresh: () async {
+                await contentController.fetchStories(isRefreshing: true);
+                await activityController.fetchActivities(isRefreshing: true);
+              },
+              child: SingleChildScrollView(
+                  child: Column(mainAxisSize: MainAxisSize.min, children: [
+                UpdatesViewer(updates: updates),
+                BaseAppBar(
+                    title: Text('Home',
+                        style: TextStyle(
+                            fontSize: 32,
+                            color:
+                                AppTheme(themeController.brightness).iconColor,
+                            fontWeight: FontWeight.w400)),
+                    actions: const [SearchButton()]),
+                ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: upcomingActivities.length,
+                    physics: const NeverScrollableScrollPhysics(),
+                    padding: EdgeInsets.zero,
+                    itemBuilder: (context, index) {
+                      final activity = upcomingActivities[index];
 
-                    return TimelineContainer(
-                      activity: activity,
-                      isLast: index == upcomingActivities.length - 1,
-                    );
-                  }),
-              const Padding(
-                  padding: EdgeInsets.all(8.0), child: StoryListView()),
-              const TopicsListview(),
-              const SizedBox(height: 70)
-            ]))));
+                      return TimelineContainer(
+                        activity: activity,
+                        isLast: index == upcomingActivities.length - 1,
+                      );
+                    }),
+                const Padding(
+                    padding: EdgeInsets.all(8.0), child: StoryListView()),
+                const TopicsListview(),
+                const SizedBox(height: 70)
+              ])),
+            )));
   }
 }

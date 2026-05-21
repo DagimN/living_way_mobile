@@ -1,41 +1,18 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
   List<String> images = [Urls.imageApiUrl];
-  List<Story> stories = [
-    Story(
-        id: '1',
-        sourceUrl:
-            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
-        timestamnp: DateTime(2025)),
-    Story(
-        id: '2',
-        sourceUrl:
-            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
-        timestamnp: DateTime(2024)),
-    Story(
-        id: '3',
-        sourceUrl:
-            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
-        timestamnp: DateTime(2023)),
-    Story(
-        id: '4',
-        sourceUrl:
-            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
-        timestamnp: DateTime(2022)),
-    Story(
-        id: "6",
-        sourceUrl:
-            "https://raw.githubusercontent.com/RedEye-Developers/Test-Assets/main/videos/money-haist-status.mp4",
-        timestamnp: DateTime(2021)),
-  ];
+  List<Story> stories = [];
   List<String> viewedStories = [];
   List<Staff> staffs = [
     Staff(
@@ -213,8 +190,48 @@ class ContentController extends ChangeNotifier {
     }
   }
 
-  Future<void> fetchStories() async {
-    //TODO: Implement endpoint for fetching stories from the API
+  Future<void> fetchStories({bool isRefreshing = false}) async {
+    if (isFetchingStories) return;
+
+    final dio = Dio();
+    const url = appFlavor == "dev"
+        ? Urls.devApiUrl
+        : appFlavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    try {
+      isFetchingStories = true;
+      if (isRefreshing) {
+        stories.clear();
+      }
+
+      notifyListeners();
+
+      final response = await dio.get(
+        '$url/api/v1/content/story',
+      );
+
+      if (!response.statusCode.isSuccess) return;
+
+      final result =
+          (response.data as List).map((json) => Story.fromJson(json)).toList();
+
+      stories.addAll(result);
+    } catch (e) {
+      logger.e(e);
+    } finally {
+      dio.close();
+      Future.delayed(const Duration(seconds: 1), () {
+        isFetchingStories = false;
+        notifyListeners();
+      });
+
+      _sortStories();
+    }
+  }
+
+  Future<void> _sortStories() async {
     for (final item in stories.indexed) {
       final index = item.$1;
       final story = item.$2;

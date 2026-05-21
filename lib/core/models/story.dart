@@ -21,6 +21,13 @@ class Story {
     _loadStory();
   }
 
+  factory Story.fromJson(Map<String, dynamic> json) {
+    return Story(
+        id: json['_id'],
+        sourceUrl: json['sourceUrl'],
+        timestamnp: DateTime.parse(json['createdAt']));
+  }
+
   Future<void> _loadStory() async {
     try {
       final tempDir = await getTemporaryDirectory();
