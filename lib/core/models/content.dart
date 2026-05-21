@@ -38,14 +38,19 @@ class Content extends ChangeNotifier {
       required this.source,
       this.isPopular = false,
       this.filePath,
+      this.fileType,
       this.thumbnail,
       this.previouslyLeftOn,
       this.contentRemaining}) {
-    fileType = FileType.fromString((filePath ?? source).split('.').last);
+    fileType ??= FileType.fromString((filePath ?? source).split('.').last);
 
     _loadPdfThumbnail().then((value) => _calculateThumbailSize());
 
     _loadFile();
+  }
+
+  factory Content.empty() {
+    return Content(id: '', title: '', presenter: '', source: '');
   }
 
   Future<Uint8List?> _loadContent(String? url) async {
@@ -216,11 +221,9 @@ class Content extends ChangeNotifier {
     }
   }
 
-  static Content fromJson(json) {
-    final map = jsonDecode(json);
-
+  static Content fromJson(map) {
     return Content(
-        id: map['id'],
+        id: map['id'] ?? map['_id'],
         title: map['title'],
         presenter: map['presenter'],
         source: map['source'],
@@ -228,6 +231,10 @@ class Content extends ChangeNotifier {
         previouslyLeftOn: map['previouslyLeftOn'],
         contentRemaining: map['contentRemaining'],
         filePath: map['filePath'],
+        fileType: map['fileType'] != null
+            ? FileType.fromString(
+                (map['fileType'] as String).replaceAll('.', ""))
+            : null,
         isPopular: map['isPopular'] ?? false);
   }
 

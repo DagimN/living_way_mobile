@@ -27,7 +27,7 @@ class Topic {
       this.type = TopicType.discussion,
       this.playlist = const []});
 
-  static Topic fromJson(json) {
+  factory Topic.fromJson(json) {
     return Topic(
         id: json['_id'],
         title: json['title'],
@@ -47,6 +47,10 @@ class Topic {
         playlist: ((json['playlist'] as List?) ?? [])
             .map((e) => Content.fromJson(e))
             .toList());
+  }
+
+  factory Topic.empty() {
+    return Topic(id: '', title: '', viewCount: 0, likeCount: 0);
   }
 
   Map<String, dynamic> toJson() {

@@ -11,6 +11,8 @@ import 'package:living_way/core/core.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
+  final contentScrollController = ScrollController();
+
   List<String> images = [Urls.imageApiUrl];
   List<Story> stories = [];
   List<String> viewedStories = [];
@@ -93,42 +95,33 @@ class ContentController extends ChangeNotifier {
         ],
         type: ContactType.social)
   ];
-  List<Content> library = [
-    Content(
-        id: '5',
-        title: 'Fearless',
-        presenter: "Max Lucado",
-        source:
-            "https://mh.fullfocus.co/myresources/max-lucado-fearless-chapter-1.pdf"),
-    Content(
-        id: '2',
-        title: 'የኣዲስ ኪዳን መክፈቻ',
-        presenter: "Unkown",
-        isPopular: true,
-        source:
-            "https://www.operationezra.com/uploads/1/0/4/4/10446233/new_testament_key.pdf"),
-    Content(
-        id: '6',
-        title: 'Introduction to Algorithms',
-        presenter:
-            "Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, Clifford Stein",
-        source:
-            "https://www.cs.mcgill.ca/~akroit/math/compsci/Cormen%20Introduction%20to%20Algorithms.pdf"),
-  ];
+  List<Content> library = [];
 
   SortOptions threadActivityFilter = SortOptions.latest;
   List<ThreadData> threads = content.threads;
 
   bool isFetchingStories = false;
+  bool isFetchingContents = false;
+
+  int contentPageIndex = 1;
+  bool contentHasReachedEnd = false;
 
   ContentController() {
     _init();
+    contentScrollController.addListener(() {
+      if (contentScrollController.position.pixels >
+              (contentScrollController.position.maxScrollExtent * .7) &&
+          !contentHasReachedEnd) {
+        fetchContents();
+      }
+    });
     //TODO: Fetch content from cache if can't access the server
   }
 
   Future<void> _init() async {
     await loadCache();
     await fetchStories();
+    await fetchContents();
 
     cleanResources(
         contentIds: stories.map((story) => story.id).toList(),
@@ -158,7 +151,7 @@ class ContentController extends ChangeNotifier {
           library.indexWhere((content) => content.id == contentMap['id']);
 
       if (contentIndex == -1) {
-        library.add(Content.fromJson(contentJson));
+        library.add(Content.fromJson(jsonDecode(contentJson)));
       } else {
         library[contentIndex].updateFromJson(contentMap);
       }
@@ -228,6 +221,51 @@ class ContentController extends ChangeNotifier {
       });
 
       _sortStories();
+    }
+  }
+
+  Future<void> fetchContents({bool isRefreshing = false}) async {
+    if (isFetchingContents) return;
+
+    final dio = Dio();
+    const url = appFlavor == "dev"
+        ? Urls.devApiUrl
+        : appFlavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    try {
+      isFetchingContents = true;
+      if (isRefreshing) {
+        contentPageIndex = 1;
+        contentHasReachedEnd = false;
+        library.clear();
+      }
+
+      notifyListeners();
+
+      final response = await dio.get('$url/api/v1/content',
+          queryParameters: {"page": contentPageIndex});
+
+      if (!response.statusCode.isSuccess) return;
+
+      final result = (response.data as List)
+          .map((json) => Content.fromJson(json))
+          .toList();
+
+      library.addOrReplaceAll(result, (oldContent, newContent) {
+        return oldContent.id == newContent.id;
+      });
+      contentPageIndex++;
+      contentHasReachedEnd = result.isEmpty;
+    } catch (e) {
+      logger.e(e);
+    } finally {
+      dio.close();
+      Future.delayed(const Duration(seconds: 1), () {
+        isFetchingContents = false;
+        notifyListeners();
+      });
     }
   }
 

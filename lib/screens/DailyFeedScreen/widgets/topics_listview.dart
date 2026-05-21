@@ -74,11 +74,7 @@ class TopicsListview extends StatelessWidget {
                             final topic =
                                 devotionController.topicList.length > index
                                     ? topics[index]
-                                    : Topic(
-                                        id: '',
-                                        title: '',
-                                        viewCount: 0,
-                                        likeCount: 0);
+                                    : Topic.empty();
                             return topics.length > index
                                 ? TopicCard(topic: topic)
                                 : devotionController.isFetching

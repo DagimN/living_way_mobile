@@ -7,4 +7,16 @@ extension ListExtension<T> on List<T> {
       add(newItem);
     }
   }
+
+  void addOrReplaceAll(
+      Iterable<T> newItems, bool Function(T existing, T newItem) finder) {
+    for (final newItem in newItems) {
+      final index = indexWhere((element) => finder(element, newItem));
+      if (index != -1) {
+        this[index] = newItem;
+      } else {
+        add(newItem);
+      }
+    }
+  }
 }
