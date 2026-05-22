@@ -207,7 +207,9 @@ class ContentController extends ChangeNotifier {
       final result =
           (response.data as List).map((json) => Story.fromJson(json)).toList();
 
-      stories.addAll(result);
+      stories.addOrReplaceAll(result, (oldStory, newStory) {
+        return oldStory.id == newStory.id;
+      });
     } catch (e) {
       logger.e(e);
     } finally {

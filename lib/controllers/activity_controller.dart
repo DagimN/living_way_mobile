@@ -61,7 +61,9 @@ class ActivityController extends ChangeNotifier {
           .map((json) => Activity.fromJson(json))
           .toList();
 
-      activityList.addAll(result);
+      activityList.addOrReplaceAll(result, (oldActivity, newActivity) {
+        return oldActivity.id == newActivity.id;
+      });
       pageIndex++;
       hasReachedEnd = result.isEmpty;
     } catch (e) {
