@@ -35,7 +35,7 @@ class DevotionController extends ChangeNotifier {
   Future<void> fetchTopics({bool isRefreshing = false}) async {
     if (isFetching) return;
 
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -91,7 +91,7 @@ class DevotionController extends ChangeNotifier {
   }
 
   Future<void> updateTopic(Topic updatedTopic) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"

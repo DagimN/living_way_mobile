@@ -1,31 +1,46 @@
 import 'dart:io';
 
+import 'package:hive/hive.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
 
-import '../services/logging_service.dart';
+import '../../classes/cacheable.dart';
+import '../../services/logging_service.dart';
 
-class Story {
+part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
+
+@HiveType(typeId: 1)
+class Story extends HiveObject implements Cacheable {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String sourceUrl;
-  final DateTime timestamnp;
+
+  @HiveField(2)
+  final DateTime timestamp;
+
+  @HiveField(3)
   bool isViewed = false;
   File? file;
 
   Story({
     required this.id,
     required this.sourceUrl,
-    required this.timestamnp,
+    required this.timestamp,
     this.file,
   }) {
     _loadStory();
   }
 
+  @override
+  String get cacheKey => id;
+
   factory Story.fromJson(Map<String, dynamic> json) {
     return Story(
         id: json['_id'],
         sourceUrl: json['sourceUrl'],
-        timestamnp: DateTime.parse(json['createdAt']));
+        timestamp: DateTime.parse(json['createdAt']));
   }
 
   Future<void> _loadStory() async {

@@ -7,6 +7,7 @@ import 'package:living_way/core/extensions/datetime.dart';
 
 class ActivityController extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
+  final _activityCache = ActivityCache();
   List<Activity> activityList = [];
   int pageIndex = 0;
   bool isFetching = false;
@@ -20,13 +21,21 @@ class ActivityController extends ChangeNotifier {
         fetchActivities();
       }
     });
+
+    _init();
+  }
+
+  Future<void> _init() async {
+    await _activityCache.init();
+    activityList = _activityCache.getAllSorted();
+    _sortActivities();
     fetchActivities();
   }
 
   Future<void> fetchActivities({bool isRefreshing = false}) async {
     if (isFetching) return;
 
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -66,11 +75,14 @@ class ActivityController extends ChangeNotifier {
 
       scheduleActivityNotifications();
       _sortActivities();
+      for (final activity in activityList) {
+        await _activityCache.save(activity);
+      }
     }
   }
 
   Future<bool> updatePoll(Activity poll) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"

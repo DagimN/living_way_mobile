@@ -12,10 +12,10 @@ import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
   final contentScrollController = ScrollController();
+  final _storyCache = StoryCache();
 
   List<String> images = [Urls.imageApiUrl];
   List<Story> stories = [];
-  List<String> viewedStories = [];
   List<Staff> staffs = [
     Staff(
         name: 'Admas Getachew',
@@ -115,10 +115,11 @@ class ContentController extends ChangeNotifier {
         fetchContents();
       }
     });
-    //TODO: Fetch content from cache if can't access the server
+    //TODO: Fetch content from the youtube channel
   }
 
   Future<void> _init() async {
+    await _storyCache.init();
     await loadCache();
     await fetchStories();
     await fetchContents();
@@ -137,10 +138,9 @@ class ContentController extends ChangeNotifier {
   }
 
   Future<void> loadCache() async {
-    viewedStories = await CacheService.instance
-        .readData<List<String>>('viewedStories', defaultValue: []);
     images = await CacheService.instance
         .readData<List<String>>('images', defaultValue: [Urls.imageApiUrl]);
+    stories = _storyCache.getAllSorted();
 
     final cachedLibrary = List.from(await CacheService.instance
         .readData<List<String>>('library', defaultValue: []));
@@ -173,20 +173,17 @@ class ContentController extends ChangeNotifier {
   }
 
   void viewStory(String storyId) async {
-    if (!viewedStories.contains(storyId)) {
-      viewedStories.add(storyId);
+    final story = _storyCache.getByKey(storyId);
+    if (story == null || story.isViewed) return;
 
-      await CacheService.instance
-          .writeData<List<String>>('viewedStories', viewedStories);
-
-      notifyListeners();
-    }
+    story.isViewed = true;
+    await story.save();
   }
 
   Future<void> fetchStories({bool isRefreshing = false}) async {
     if (isFetchingStories) return;
 
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -221,13 +218,16 @@ class ContentController extends ChangeNotifier {
       });
 
       _sortStories();
+      for (final story in stories) {
+        await _storyCache.save(story);
+      }
     }
   }
 
   Future<void> fetchContents({bool isRefreshing = false}) async {
     if (isFetchingContents) return;
 
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -270,15 +270,8 @@ class ContentController extends ChangeNotifier {
   }
 
   Future<void> _sortStories() async {
-    for (final item in stories.indexed) {
-      final index = item.$1;
-      final story = item.$2;
-
-      stories[index].isViewed = viewedStories.contains(story.id);
-    }
-
-    stories.sort(
-        (storyA, storyB) => storyB.timestamnp.compareTo(storyA.timestamnp));
+    stories
+        .sort((storyA, storyB) => storyB.timestamp.compareTo(storyA.timestamp));
     stories.sort((_, storyB) => storyB.isViewed ? -1 : 1);
 
     notifyListeners();

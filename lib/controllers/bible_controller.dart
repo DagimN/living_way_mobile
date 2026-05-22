@@ -90,7 +90,7 @@ class BibleController extends ChangeNotifier {
   }
 
   Future<void> fetchTranslations() async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -117,7 +117,7 @@ class BibleController extends ChangeNotifier {
   }
 
   Future<void> downloadTranslation(String name) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"

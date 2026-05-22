@@ -1,18 +1,54 @@
-class Activity {
+import 'package:hive/hive.dart';
+
+import '../../classes/cacheable.dart';
+
+part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
+
+@HiveType(typeId: 2)
+class Activity extends HiveObject implements Cacheable {
+  @HiveField(0)
   final String id;
+
+  @HiveField(1)
   final String? title;
+
+  @HiveField(2)
   final String? body;
+
+  @HiveField(3)
   final List<String> images;
+
+  @HiveField(4)
   final List<String> content;
+
+  @HiveField(5)
   final int minimumAllowedViewImages;
+
+  @HiveField(6)
   final List<PollOptions> pollOptions;
+
+  @HiveField(7)
   final ContentType type;
+
+  @HiveField(8)
   final DateTime timestamp;
+
+  @HiveField(9)
   final DateTime? upcomingDate;
+
+  @HiveField(10)
   final bool isOngoing;
+
+  @HiveField(11)
   final String? externalLink;
+
+  @HiveField(12)
   final String? locationUrl;
+
+  @HiveField(13)
   final ContentBanner? banner;
+
+  @HiveField(14)
   final bool isRecurring;
 
   Activity(
@@ -40,6 +76,9 @@ class Activity {
           "A content with type external should not have the externalLink has null");
     }
   }
+
+  @override
+  String get cacheKey => id;
 
   static DateTime _getNextOccurrence(DateTime timestamp) {
     int targetWeekday = DateTime.now().weekday;
@@ -147,9 +186,15 @@ class Activity {
   }
 }
 
+@HiveType(typeId: 3)
 class ContentBanner {
+  @HiveField(0)
   String url;
+
+  @HiveField(1)
   String? thumbnail;
+
+  @HiveField(2)
   String position;
 
   ContentBanner({required this.position, this.thumbnail, required this.url});
@@ -161,8 +206,12 @@ class ContentBanner {
   }
 }
 
+@HiveType(typeId: 4)
 class PollOptions {
+  @HiveField(0)
   final String title;
+
+  @HiveField(1)
   final List<String> voters;
 
   PollOptions({required this.title, this.voters = const []});
@@ -179,13 +228,27 @@ class PollOptions {
   }
 }
 
+@HiveType(typeId: 5)
 enum ContentType {
+  @HiveField(0)
   gallery,
+
+  @HiveField(1)
   poll,
+
+  @HiveField(2)
   article,
+
+  @HiveField(3)
   external,
+
+  @HiveField(4)
   event,
+
+  @HiveField(5)
   general,
+
+  @HiveField(6)
   undefined;
 
   static ContentType fromString(value) {

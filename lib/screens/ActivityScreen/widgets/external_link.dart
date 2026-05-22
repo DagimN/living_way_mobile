@@ -2,7 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/models/activity.dart';
+import 'package:living_way/core/models/activity/index.dart';
 import 'package:living_way/core/themes/app_theme.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';

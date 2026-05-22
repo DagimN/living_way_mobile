@@ -18,12 +18,17 @@ class NotificationCache extends HiveService<Notification> {
     required DateTime end,
   }) {
     return getWhere(
-      (n) => !n.createdAt.isBefore(start) && !n.createdAt.isAfter(end),
-    )..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+      (notification) =>
+          !notification.createdAt.isBefore(start) &&
+          !notification.createdAt.isAfter(end),
+    )..sort((notificationA, notificationB) =>
+        notificationB.createdAt.compareTo(notificationA.createdAt));
   }
 
   List<Notification> getAllSorted() {
-    return getAll()..sort((a, b) => b.createdAt.compareTo(a.createdAt));
+    return getAll()
+      ..sort((notificationA, notificationB) =>
+          notificationB.createdAt.compareTo(notificationA.createdAt));
   }
 
   List<Notification> search(String query) {
@@ -37,9 +42,10 @@ class NotificationCache extends HiveService<Notification> {
 
   Future<int> purgeOlderThan(Duration age) async {
     final cutoff = DateTime.now().subtract(age);
-    final staleKeys = getWhere((n) => n.createdAt.isBefore(cutoff))
-        .map((n) => n.cacheKey)
-        .toList();
+    final staleKeys =
+        getWhere((notification) => notification.createdAt.isBefore(cutoff))
+            .map((n) => n.cacheKey)
+            .toList();
 
     if (staleKeys.isEmpty) return 0;
 

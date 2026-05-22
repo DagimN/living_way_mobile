@@ -153,7 +153,7 @@ class Content extends ChangeNotifier {
 
     final themeController =
         Provider.of<ThemeController>(context, listen: false);
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     final appDir = await getApplicationDocumentsDirectory();
     final filePath = '${appDir.path}/$title.${fileType?.name}';
 

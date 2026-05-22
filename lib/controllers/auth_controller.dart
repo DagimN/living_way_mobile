@@ -59,7 +59,7 @@ class AuthController extends ChangeNotifier {
   }
 
   Future<Response> performSignup() async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -110,7 +110,7 @@ class AuthController extends ChangeNotifier {
 
   Future<bool> performLogin(String email,
       {String? password, bool? isOAuth = false}) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"

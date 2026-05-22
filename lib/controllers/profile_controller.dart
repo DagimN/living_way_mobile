@@ -38,7 +38,7 @@ class ProfileController extends ChangeNotifier {
   }
 
   Future<Profile?> syncProfile(Profile profile) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -65,7 +65,7 @@ class ProfileController extends ChangeNotifier {
   }
 
   Future<void> editProfile(FormData formData) async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
@@ -88,7 +88,7 @@ class ProfileController extends ChangeNotifier {
   }
 
   Future<void> deleteProfile() async {
-    final dio = Dio();
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
         : appFlavor == "staging"
