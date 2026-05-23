@@ -4,25 +4,17 @@ import 'package:living_way/core/models/thread.dart';
 class Topic {
   final String id;
   final String title;
-  final int viewCount;
-  final List<String> viewers;
-  final int likeCount;
-  final List<String> likers;
-  final bool isFavorite;
   final TopicType type;
   final List<ThreadData> threads;
   final String? backgroundImageUrl;
   final List<Content> playlist;
+  final DateTime timestamp;
 
   Topic(
       {required this.id,
       required this.title,
-      required this.viewCount,
-      required this.likeCount,
+      required this.timestamp,
       this.backgroundImageUrl,
-      this.isFavorite = false,
-      this.likers = const [],
-      this.viewers = const [],
       this.threads = const [],
       this.type = TopicType.discussion,
       this.playlist = const []});
@@ -31,15 +23,8 @@ class Topic {
     return Topic(
         id: json['_id'],
         title: json['title'],
-        viewCount: json['viewCount'],
-        likers:
-            ((json['likers'] as List?) ?? []).map((e) => e.toString()).toList(),
-        viewers: ((json['viewers'] as List?) ?? [])
-            .map((e) => e.toString())
-            .toList(),
-        likeCount: json['likeCount'],
+        timestamp: DateTime.parse(json['createdAt']),
         backgroundImageUrl: json['backgroundImageUrl'],
-        isFavorite: json['isFavorite'] ?? false,
         type: TopicType.fromString(json['type'] ?? "discussion"),
         threads: ((json['threads'] as List?) ?? [])
             .map((e) => ThreadData.fromJson(e))
@@ -50,19 +35,17 @@ class Topic {
   }
 
   factory Topic.empty() {
-    return Topic(id: '', title: '', viewCount: 0, likeCount: 0);
+    return Topic(id: '', title: '', timestamp: DateTime.now());
   }
 
   Map<String, dynamic> toJson() {
     return {
       "title": title,
       "backgroundImageUrl": backgroundImageUrl,
-      "isFavorite": isFavorite,
       "type": type.name,
-      "likers": likers.map((liker) => liker.toString()).toList(),
-      "viewers": viewers.map((viewer) => viewer.toString()).toList(),
       "threads": threads.map((thread) => thread.toJson()).toList(),
-      "playlist": playlist.map((metadata) => metadata.toJson()).toList()
+      "playlist": playlist.map((metadata) => metadata.toJson()).toList(),
+      "timestamp": timestamp.toIso8601String()
     };
   }
 }

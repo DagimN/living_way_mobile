@@ -93,8 +93,6 @@ class _ThreadState extends State<Thread> {
                                     topic: Topic.fromJson({
                                       ...widget.topic.toJson(),
                                       "_id": widget.topic.id,
-                                      "viewCount": widget.topic.viewCount,
-                                      "likeCount": widget.topic.likeCount,
                                       "threads": widget.data.subThreads
                                           .map((thread) => thread.toJson())
                                           .toList()

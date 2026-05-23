@@ -8,6 +8,7 @@ const primaryPanelColor = Color(0xFFF6F0FF);
 const primaryButtonColor = Color(0xFFB6A3E7);
 const secondaryButtonColor = Color(0xFFFFDDB3);
 const inactiveColor = Color(0xFF343635);
+const inactiveIconColor = Color(0xFFBBB593);
 const pendingColor = Color(0xFFACA295);
 const secondaryColor = Color(0xFFFFF479);
 const accentColor = Colors.black;

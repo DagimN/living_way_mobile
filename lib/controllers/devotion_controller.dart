@@ -2,10 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
-import 'package:living_way/core/constants/urls.dart';
-import 'package:living_way/core/enums.dart';
-import 'package:living_way/core/models/topic.dart';
-import 'package:living_way/core/services/logging_service.dart';
+import 'package:living_way/core/core.dart';
 
 class DevotionController extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -53,6 +50,7 @@ class DevotionController extends ChangeNotifier {
 
       final response = await dio.get('$url/api/v1/content/devotion',
           queryParameters: populateQuery());
+      final youtubeResult = await YouTubeService().fetchAllChannelVideos();
 
       if (!response.statusCode.isSuccess) return;
 
@@ -60,6 +58,7 @@ class DevotionController extends ChangeNotifier {
           (response.data as List).map((json) => Topic.fromJson(json)).toList();
 
       topicList.addAll(result);
+      topicList.addAll(youtubeResult);
       pageIndex++;
       hasReachedEnd = result.isEmpty;
     } catch (e) {
@@ -70,6 +69,9 @@ class DevotionController extends ChangeNotifier {
         isFetching = false;
         notifyListeners();
       });
+
+      topicList.sort(
+          (topicA, topicB) => topicB.timestamp.compareTo(topicA.timestamp));
     }
   }
 

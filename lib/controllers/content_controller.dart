@@ -91,7 +91,7 @@ class ContentController extends ChangeNotifier {
           'https://twitter.com/livingwayethiop',
           "https://www.facebook.com/LivingWayChurch1",
           "https://www.instagram.com/livingway_church",
-          "https://www.youtube.com/channel/UC7QcE6EYm7PCQjN3fVlRoXg"
+          "https://www.youtube.com/channel/$youtubeChannelId"
         ],
         type: ContactType.social)
   ];

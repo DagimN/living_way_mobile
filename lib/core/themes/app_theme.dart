@@ -37,6 +37,12 @@ class AppTheme {
         : dark.inactiveColor;
   }
 
+  Color get inactiveIconColor {
+    return brightness == Brightness.light
+        ? light.inactiveIconColor
+        : dark.inactiveIconColor;
+  }
+
   Color get backgroundColor {
     return brightness == Brightness.light
         ? light.backgroundColor

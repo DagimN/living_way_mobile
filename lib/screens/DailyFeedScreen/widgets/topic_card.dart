@@ -12,15 +12,12 @@ class TopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final devotionController = Provider.of<DevotionController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final userProfile = Provider.of<ProfileController>(context).userProfile;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
     BorderRadius borderRadius = BorderRadius.circular(20);
-    const Color inactiveIconColor = Color(0xFFBBB593);
 
     return Container(
         width: orientation == Orientation.portrait
@@ -31,10 +28,6 @@ class TopicCard extends StatelessWidget {
             image: topic.backgroundImageUrl != null
                 ? DecorationImage(
                     fit: BoxFit.cover,
-                    colorFilter: ColorFilter.mode(
-                        AppTheme(themeController.brightness).inactiveColor,
-                        BlendMode.saturation),
-                    opacity: 0.3,
                     image: CachedNetworkImageProvider(
                         topic.backgroundImageUrl ?? ""))
                 : null,
@@ -45,12 +38,6 @@ class TopicCard extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(borderRadius: borderRadius)),
             onPressed: () {
-              if (userProfile != null &&
-                  !topic.viewers.contains(userProfile.id)) {
-                topic.viewers.add(userProfile.id);
-                devotionController.updateTopic(topic);
-              }
-
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 switch (topic.type) {
                   case TopicType.audio:
@@ -61,72 +48,36 @@ class TopicCard extends StatelessWidget {
                 }
               }));
             },
-            child: Stack(children: [
-              Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Container(
+            child: Stack(fit: StackFit.expand, children: [
+              Container(
+                  width: orientation == Orientation.portrait
+                      ? screenWidth * .5
+                      : screenHeight * .5,
+                  decoration: BoxDecoration(
+                    color: Colors.black.withAlpha(76),
+                    borderRadius: borderRadius,
+                  )),
+              Positioned(
+                bottom: 0,
+                child: Container(
                     width: orientation == Orientation.portrait
-                        ? screenWidth * .3
-                        : screenHeight * .3,
-                    margin: const EdgeInsets.only(top: 20, left: 16),
+                        ? screenWidth * .45
+                        : screenHeight * .45,
+                    margin: const EdgeInsets.only(left: 8),
                     child: Text(topic.title,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
                         style: TextStyle(
                             fontSize: 14,
                             color: topic.backgroundImageUrl != null
-                                ? inactiveIconColor
+                                ? AppTheme(themeController.brightness)
+                                    .inactiveIconColor
                                 : null))),
-                Container(
-                    decoration: const BoxDecoration(
-                        border: Border(
-                            left: BorderSide(
-                                width: 2, color: Color(0xFFFFFDF0)))),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(children: [
-                            const Icon(Icons.remove_red_eye_outlined,
-                                color: inactiveIconColor),
-                            Text(shortenNumber(topic.viewers.length),
-                                style: const TextStyle(
-                                    color: inactiveIconColor, fontSize: 10))
-                          ]),
-                          const SizedBox(height: 5),
-                          Column(children: [
-                            SizedBox(
-                                height: 24,
-                                child: IconButton(
-                                    style: IconButton.styleFrom(
-                                        padding: EdgeInsets.zero),
-                                    icon: Icon(
-                                        topic.likers.contains(userProfile?.id)
-                                            ? Icons.favorite
-                                            : Icons.favorite_border,
-                                        color: topic.likers
-                                                .contains(userProfile?.id)
-                                            ? Colors.red
-                                            : inactiveIconColor),
-                                    onPressed: () async {
-                                      if (userProfile != null) {
-                                        if (!topic.likers
-                                            .contains(userProfile.id)) {
-                                          topic.likers.add(userProfile.id);
-                                        } else {
-                                          topic.likers.remove(userProfile.id);
-                                        }
-
-                                        await devotionController
-                                            .updateTopic(topic);
-                                      }
-                                    })),
-                            if (topic.likers.isNotEmpty)
-                              Text(shortenNumber(topic.likers.length),
-                                  style: const TextStyle(
-                                      color: inactiveIconColor, fontSize: 10))
-                          ])
-                        ]))
-              ]),
+              ),
               if (topic.type != TopicType.discussion)
                 Positioned(
-                    bottom: 0,
+                    top: 0,
+                    right: 0,
                     child: Container(
                         height: orientation == Orientation.portrait
                             ? screenHeight * .03

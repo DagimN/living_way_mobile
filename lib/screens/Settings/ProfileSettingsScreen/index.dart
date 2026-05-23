@@ -303,11 +303,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       topic: Topic(
                                           id: '',
                                           title: 'Book of Daniel',
-                                          viewCount: 18000,
-                                          likeCount: 500,
-                                          isFavorite: true,
                                           backgroundImageUrl:
-                                              "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg"),
+                                              "https://cdn.pixabay.com/photo/2023/03/30/01/40/daniel-7886652_1280.jpg",
+                                          timestamp: DateTime.now()),
                                       isLast: true,
                                       data: ThreadData(
                                           timestamp: DateTime.now(),

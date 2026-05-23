@@ -223,7 +223,7 @@ class Content extends ChangeNotifier {
 
   static Content fromJson(map) {
     return Content(
-        id: map['id'] ?? map['_id'],
+        id: map['id'] ?? map['_id'] ?? "",
         title: map['title'],
         presenter: map['presenter'],
         source: map['source'],

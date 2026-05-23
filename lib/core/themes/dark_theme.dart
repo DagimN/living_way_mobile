@@ -9,6 +9,7 @@ const primaryButtonColor = Color(0xFFB6915A);
 const secondaryButtonColor = Color(0xFFD38A1D);
 const appBarColor = Color(0xFF6E5837);
 const inactiveColor = Color(0xFF5C605E);
+const inactiveIconColor = Color(0xFFBBB593);
 const pendingColor = Color(0xFFACA295);
 const secondaryColor = Color(0xFF297AA9);
 const accentColor = Color(0xFF7F8F99);
