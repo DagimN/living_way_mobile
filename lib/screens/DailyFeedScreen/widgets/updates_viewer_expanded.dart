@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
@@ -35,9 +36,18 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
         extendBodyBehindAppBar: true,
         extendBody: true,
         appBar: AppBar(
-          elevation: 0,
+          elevation: 10,
           backgroundColor: Colors.transparent,
-          foregroundColor: Colors.white,
+          foregroundColor: widget.child != null
+              ? brightness == Brightness.dark
+                  ? Colors.white
+                  : Colors.black
+              : Colors.white,
+          systemOverlayStyle: widget.child != null
+              ? brightness == Brightness.dark
+                  ? SystemUiOverlayStyle.light
+                  : SystemUiOverlayStyle.dark
+              : null,
           actions: [
             if (!layoutController.showVerseOfTheDayControls)
               Container(
