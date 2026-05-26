@@ -9,6 +9,7 @@
 #include <audioplayers_windows/audioplayers_windows_plugin.h>
 #include <disk_space_2/disk_space_2_plugin.h>
 #include <firebase_core/firebase_core_plugin_c_api.h>
+#include <flutter_inappwebview_windows/flutter_inappwebview_windows_plugin_c_api.h>
 #include <gal/gal_plugin_c_api.h>
 #include <permission_handler_windows/permission_handler_windows_plugin.h>
 #include <share_plus/share_plus_windows_plugin_c_api.h>
@@ -21,6 +22,8 @@ void RegisterPlugins(flutter::PluginRegistry* registry) {
       registry->GetRegistrarForPlugin("DiskSpace_2Plugin"));
   FirebaseCorePluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("FirebaseCorePluginCApi"));
+  FlutterInappwebviewWindowsPluginCApiRegisterWithRegistrar(
+      registry->GetRegistrarForPlugin("FlutterInappwebviewWindowsPluginCApi"));
   GalPluginCApiRegisterWithRegistrar(
       registry->GetRegistrarForPlugin("GalPluginCApi"));
   PermissionHandlerWindowsPluginRegisterWithRegistrar(

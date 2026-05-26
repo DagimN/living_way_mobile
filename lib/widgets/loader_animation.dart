@@ -12,11 +12,8 @@ class LoaderAnimation extends StatelessWidget {
       Container(
           height: screenHeight * .5,
           width: screenWidth,
-          color: Colors.black.withOpacity(0.3)),
-      Positioned(
-          top: screenHeight * .25,
-          left: screenWidth * .45,
-          child: const CircularProgressIndicator(color: Colors.white))
+          color: Colors.black.withAlpha(76)),
+      const Center(child: CircularProgressIndicator(color: Colors.white))
     ]);
   }
 }

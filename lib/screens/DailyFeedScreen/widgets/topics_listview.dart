@@ -15,6 +15,7 @@ class TopicsListview extends StatelessWidget {
     final devotionController = Provider.of<DevotionController>(context);
     final themeController = Provider.of<ThemeController>(context);
     final topics = devotionController.topicList;
+
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -71,10 +72,9 @@ class TopicsListview extends StatelessWidget {
                           scrollDirection: Axis.horizontal,
                           itemCount: topics.length + 1,
                           itemBuilder: (context, index) {
-                            final topic =
-                                devotionController.topicList.length > index
-                                    ? topics[index]
-                                    : Topic.empty();
+                            final topic = topics.length > index
+                                ? topics[index]
+                                : Topic.empty();
                             return topics.length > index
                                 ? TopicCard(topic: topic)
                                 : devotionController.isFetching

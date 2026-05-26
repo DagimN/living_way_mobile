@@ -115,7 +115,6 @@ class ContentController extends ChangeNotifier {
         fetchContents();
       }
     });
-    //TODO: Fetch content from the youtube channel
   }
 
   Future<void> _init() async {

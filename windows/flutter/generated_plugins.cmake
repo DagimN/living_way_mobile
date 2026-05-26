@@ -6,6 +6,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   disk_space_2
   firebase_core
+  flutter_inappwebview_windows
   gal
   permission_handler_windows
   share_plus

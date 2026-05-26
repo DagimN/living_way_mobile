@@ -24,7 +24,6 @@ class AudioMediaPlayer extends StatefulWidget {
 }
 
 class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
-  bool isPlaying = false;
   double currentSeek = 0;
   double end = 0;
 
@@ -64,7 +63,6 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
           widget.player.setSourceUrl(widget.audioUrl);
         }
         setState(() {
-          isPlaying = false;
           currentSeek = 0;
         });
       }
@@ -105,35 +103,23 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
               child: Container(
                   width: screenWidth,
                   height: screenHeight * .5,
-                  color: Colors.grey.withOpacity(0.5))),
+                  color: Colors.grey.withAlpha(128))),
           Positioned(
               top: screenHeight * .25,
               left: screenWidth * .45,
               child: IconButton(
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
                   onPressed: () {
-                    isPlaying ? widget.player.pause() : widget.player.resume();
-
-                    setState(() {
-                      isPlaying = !isPlaying;
-                    });
+                    widget.player.state == PlayerState.playing
+                        ? widget.player.pause()
+                        : widget.player.resume();
                   },
-                  icon: Icon(isPlaying ? Icons.pause : Icons.play_arrow,
+                  icon: Icon(
+                      widget.player.state == PlayerState.playing
+                          ? Icons.pause
+                          : Icons.play_arrow,
                       color:
                           AppTheme(themeController.brightness).primaryColor))),
-          Positioned(
-              top: 50,
-              left: 15,
-              child: IconButton(
-                  style: IconButton.styleFrom(
-                      padding: EdgeInsets.zero,
-                      backgroundColor:
-                          AppTheme(themeController.brightness).primaryColor,
-                      foregroundColor: Colors.white),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: const Icon(Icons.arrow_back))),
           Positioned(
               bottom: -10,
               child: PlayerSlider(
