@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
+import 'package:media_store_plus/media_store_plus.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:image/image.dart' as image;
@@ -147,15 +149,22 @@ class Content extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> downloadContent(BuildContext context) async {
+  Future<void> downloadContent(
+      {bool downloadToPublic = false, Directory? dir}) async {
     isDownloading = true;
     notifyListeners();
 
+    final context = UIService.navigatorKey.currentContext;
+
+    if (context == null) return;
+
+    final screenWidth = MediaQuery.of(context).size.width;
     final themeController =
         Provider.of<ThemeController>(context, listen: false);
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
-    final appDir = await getApplicationDocumentsDirectory();
-    final filePath = '${appDir.path}/$title.${fileType?.name}';
+    final appDir = dir ?? await getApplicationDocumentsDirectory();
+    final fileName = "$title.${fileType?.name}";
+    final filePath = '${appDir.path}/$fileName';
 
     try {
       final response = await dio.head(source);
@@ -189,12 +198,63 @@ class Content extends ChangeNotifier {
       this.filePath = filePath;
       file = File(filePath);
 
+      SaveInfo? saveInfo;
+
+      if (downloadToPublic) {
+        saveInfo = await MediaStore().saveFile(
+            tempFilePath: filePath,
+            dirType: DirType.download,
+            dirName: DirName.download,
+            relativePath: "Living Way");
+
+        if (file?.existsSync() ?? false) {
+          file?.deleteSync();
+
+          file = null;
+          this.filePath = null;
+        }
+      }
+
       NotificationService.cancelNotification(notificationId);
 
-      UIService.showSnackbar(
-        message: '$title downloaded successfully',
-        backgroundColor: AppTheme(themeController.brightness).successColor,
-      );
+      if (saveInfo == null) {
+        UIService.showSnackbar(
+          message: '$title downloaded successfully',
+          backgroundColor: AppTheme(themeController.brightness).successColor,
+        );
+      }
+
+      if (saveInfo != null) {
+        saveInfo.isSuccessful
+            ? UIService.showSnackbar(
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      SizedBox(
+                        width: screenWidth * .4,
+                        child: Text(
+                          '$title downloaded successfully',
+                          maxLines: 2,
+                        ),
+                      ),
+                      IconButton(
+                          onPressed: () async {
+                            final filePath =
+                                "/storage/emulated/0/Download/Living Way/$fileName";
+
+                            await OpenFilex.open(filePath);
+                          },
+                          icon: const Icon(Icons.arrow_forward,
+                              color: Colors.white))
+                    ]),
+                backgroundColor:
+                    AppTheme(themeController.brightness).successColor,
+              )
+            : UIService.showSnackbar(
+                backgroundColor:
+                    AppTheme(themeController.brightness).failedColor,
+                message: "Failed to download file.");
+      }
     } on FileSystemException catch (e) {
       if (e.message.toLowerCase().contains("no space left")) {
         logger.e("Critical Error: Device Storage Full.");

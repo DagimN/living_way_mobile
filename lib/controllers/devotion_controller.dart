@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/core.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 
 class DevotionController extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -54,7 +57,7 @@ class DevotionController extends ChangeNotifier {
 
       if (!response.statusCode.isSuccess) return;
 
-      final result =
+      List<Topic> result =
           (response.data as List).map((json) => Topic.fromJson(json)).toList();
 
       topicList.addAll(result);
@@ -72,6 +75,7 @@ class DevotionController extends ChangeNotifier {
 
       topicList.sort(
           (topicA, topicB) => topicB.timestamp.compareTo(topicA.timestamp));
+      fetchDownloadedFiles();
     }
   }
 
@@ -115,6 +119,31 @@ class DevotionController extends ChangeNotifier {
       logger.e(e);
     } finally {
       dio.close();
+    }
+  }
+
+  Future<void> fetchDownloadedFiles() async {
+    for (final topic
+        in topicList.where((topic) => topic.type == TopicType.audio)) {
+      for (final content in topic.playlist) {
+        final mediaStore = MediaStore();
+        final fileName = "${content.title}.${content.fileType?.name}";
+        final bool isRegistered = await mediaStore.isFileExist(
+          fileName: fileName,
+          dirType: DirType.download,
+          dirName: DirName.download,
+          relativePath: "Living Way",
+        );
+
+        if (!isRegistered) continue;
+
+        final String filePath =
+            "/storage/emulated/0/Download/Living Way/$fileName";
+
+        content.file = File(filePath);
+        content.filePath = filePath;
+        content.notify();
+      }
     }
   }
 

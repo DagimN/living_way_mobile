@@ -34,7 +34,7 @@ class LibraryScreen extends StatelessWidget {
       if (book.isDownloading) return;
 
       if (book.file == null) {
-        book.downloadContent(context);
+        book.downloadContent();
         contentController.saveLibrary(book);
         return;
       }

@@ -12,11 +12,11 @@ import 'player_slider.dart';
 class AudioMediaPlayer extends StatefulWidget {
   final AudioPlayer player;
   final String? backgroundImageUrl;
-  final String audioUrl;
+  final Content audio;
   const AudioMediaPlayer(
       {super.key,
       required this.player,
-      required this.audioUrl,
+      required this.audio,
       this.backgroundImageUrl});
 
   @override
@@ -34,10 +34,12 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
   @override
   void initState() {
     super.initState();
-    if (widget.audioUrl.contains("audio")) {
-      widget.player.setSourceAsset(widget.audioUrl);
+    if (widget.audio.file != null) {
+      widget.player.setSourceDeviceFile(widget.audio.file?.path ?? "");
+    } else if (widget.audio.source.contains("audio")) {
+      widget.player.setSourceAsset(widget.audio.source);
     } else {
-      widget.player.setSourceUrl(widget.audioUrl);
+      widget.player.setSourceUrl(widget.audio.source);
     }
 
     seekListener = widget.player.onPositionChanged.listen((duration) {
@@ -57,10 +59,12 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
 
     audioPlayerListener = widget.player.onPlayerStateChanged.listen((event) {
       if ((event == PlayerState.completed) && mounted) {
-        if (widget.audioUrl.contains("audio")) {
-          widget.player.setSourceAsset(widget.audioUrl);
+        if (widget.audio.file != null) {
+          widget.player.setSourceDeviceFile(widget.audio.file?.path ?? "");
+        } else if (widget.audio.source.contains("audio")) {
+          widget.player.setSourceAsset(widget.audio.source);
         } else {
-          widget.player.setSourceUrl(widget.audioUrl);
+          widget.player.setSourceUrl(widget.audio.source);
         }
         setState(() {
           currentSeek = 0;
