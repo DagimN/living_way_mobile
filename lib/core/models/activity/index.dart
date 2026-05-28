@@ -81,13 +81,12 @@ class Activity extends HiveObject implements Cacheable {
   String get cacheKey => id;
 
   static DateTime _getNextOccurrence(DateTime timestamp) {
-    int targetWeekday = DateTime.now().weekday;
+    int targetWeekday = timestamp.weekday;
     DateTime now = DateTime.now();
     int daysUntilNext = (targetWeekday - now.weekday + 7) % 7;
 
-    if (daysUntilNext == 0) daysUntilNext = 7;
-
-    return timestamp.add(Duration(days: daysUntilNext));
+    return DateTime(now.year, now.month, now.day + daysUntilNext,
+        timestamp.hour, timestamp.minute);
   }
 
   static Activity fromJson(Map<String, dynamic> json) {
