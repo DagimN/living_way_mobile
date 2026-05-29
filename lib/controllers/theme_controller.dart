@@ -4,7 +4,6 @@ import 'package:living_way/core/core.dart';
 
 class ThemeController extends ChangeNotifier {
   double textSize = 0.3;
-  AppLocale appLocale = AppLocale.en;
   Brightness brightness = Brightness.dark;
   Fonts selectedFont = Fonts.RobotoSlab;
 
@@ -15,8 +14,6 @@ class ThemeController extends ChangeNotifier {
   Future<void> _init() async {
     textSize = await CacheService.instance
         .readData<double>('textSize', defaultValue: 0.3);
-    appLocale = AppLocale.values[
-        await CacheService.instance.readData<int>('locale', defaultValue: 0)];
     brightness = Brightness.values[await CacheService.instance
         .readData<int>('brightness', defaultValue: 1)];
     selectedFont = Fonts.values[
@@ -35,17 +32,6 @@ class ThemeController extends ChangeNotifier {
     selectedFont = value;
     notifyListeners();
     CacheService.instance.writeData<int>('font', value.index);
-  }
-
-  void toggleAppLocale() {
-    if (appLocale == AppLocale.am) {
-      appLocale = AppLocale.en;
-    } else {
-      appLocale = AppLocale.am;
-    }
-
-    notifyListeners();
-    CacheService.instance.writeData<int>('locale', appLocale.index);
   }
 
   void toggleBrightness() {

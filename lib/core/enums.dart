@@ -1,8 +1,24 @@
+import 'package:flutter/material.dart';
+
 enum SortOptions { mostActive, mostLiked, mostViewed, latest }
 
 enum CategoryFilter { all, ot, nt }
 
-enum AppLocale { en, am }
+enum AppLocale {
+  en,
+  am;
+
+  static String shortLabel(Locale locale) {
+    switch (locale.languageCode) {
+      case 'en':
+        return 'EN';
+      case 'am':
+        return 'አማ';
+      default:
+        return 'EN';
+    }
+  }
+}
 
 // ignore: constant_identifier_names
 enum Fonts { Futura, Georgia, Helvetica, OpenSans, Quicksand, RobotoSlab }

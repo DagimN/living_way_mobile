@@ -4,6 +4,7 @@ export 'bible_controller.dart';
 export 'content_controller.dart';
 export 'devotion_controller.dart';
 export 'layout_controller.dart';
+export 'localization_controller.dart';
 export 'notification_controller.dart';
 export 'profile_controller.dart';
 export 'theme_controller.dart';

@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
@@ -9,10 +10,10 @@ class GeneralSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final localizationController = Provider.of<LocalizationController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final activityController = Provider.of<ActivityController>(context);
     final bibleController = Provider.of<BibleController>(context);
-    final appLocale = themeController.appLocale;
     final willRemindPrayer = profileController.willRemindPrayer;
 
     double screenHeight = MediaQuery.of(context).size.height;
@@ -99,11 +100,11 @@ class GeneralSettingsScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(20))),
                                   onPressed: () {
-                                    //TODO: Add language locale and make functional
-
-                                    themeController.toggleAppLocale();
+                                    localizationController
+                                        .toggleAppLocale(context);
                                   },
-                                  child: Text(appLocale.name.toUpperCase()))
+                                  child: Text(
+                                      AppLocale.shortLabel(context.locale)))
                             ]),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

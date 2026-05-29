@@ -1,5 +1,7 @@
 export 'classes/cache_exception.dart';
 export 'classes/cacheable.dart';
+export 'classes/remote_translation_loader.dart';
+export 'classes/translation.dart';
 
 export 'config/env.dart';
 export 'config/paths.dart';
@@ -18,6 +20,7 @@ export 'models/bible_quote.dart';
 export 'models/book.dart';
 export 'models/contacts.dart';
 export 'models/content.dart';
+export 'models/localization_cache.dart';
 export 'models/passage.dart';
 export 'models/profile.dart';
 export 'models/signup_progress.dart';

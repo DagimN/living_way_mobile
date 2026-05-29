@@ -16,9 +16,9 @@ class IntroScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final localizationController = Provider.of<LocalizationController>(context);
     int index = layoutController.initialIntroductionPageIndex;
-    AppLocale appLocale = themeController.appLocale;
+    AppLocale appLocale = localizationController.appLocale;
 
     //FIXME: On this flow the only permitted device orientation should be portrait
     List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
@@ -30,9 +30,7 @@ class IntroScreen extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20))),
                 onPressed: () {
-                  //TODO: Add language locale and make functional
-
-                  themeController.toggleAppLocale();
+                  localizationController.toggleAppLocale(context);
                 },
                 child: Text(appLocale.name.toUpperCase())),
             actions: [
