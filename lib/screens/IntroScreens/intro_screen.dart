@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
@@ -18,7 +19,6 @@ class IntroScreen extends StatelessWidget {
     final layoutController = Provider.of<LayoutController>(context);
     final localizationController = Provider.of<LocalizationController>(context);
     int index = layoutController.initialIntroductionPageIndex;
-    AppLocale appLocale = localizationController.appLocale;
 
     //FIXME: On this flow the only permitted device orientation should be portrait
     List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
@@ -32,7 +32,7 @@ class IntroScreen extends StatelessWidget {
                 onPressed: () {
                   localizationController.toggleAppLocale(context);
                 },
-                child: Text(appLocale.name.toUpperCase())),
+                child: Text(AppLocale.shortLabel(context.locale))),
             actions: [
               TextButton(
                   onPressed: () {
