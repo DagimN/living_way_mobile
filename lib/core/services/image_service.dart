@@ -87,7 +87,8 @@ abstract class ImageService {
   static Future<void> captureAndSaveImage(
       BuildContext context, GlobalKey key) async {
     try {
-      final themeController = Provider.of<ThemeController>(context);
+      final themeController =
+          Provider.of<ThemeController>(context, listen: false);
       final isGranted = await checkPermission();
 
       if (!isGranted) {
@@ -121,17 +122,18 @@ abstract class ImageService {
       logger.i('Image successfully saved');
       UIService.showSnackbar(
           backgroundColor: AppTheme(themeController.brightness).successColor,
-          child: const Row(
+          child: Row(
             children: [
-              Icon(Icons.check_circle, color: Colors.white),
-              SizedBox(width: 12),
-              Text('Saved to Living Way album'),
+              const Icon(Icons.check_circle, color: Colors.white),
+              const SizedBox(width: 12),
+              Text(Tr.t('settings.saveSuccess')),
             ],
           ));
     } catch (e) {
       logger.e("Error capturing image: $e");
       UIService.showSnackbar(
-          backgroundColor: Colors.redAccent, message: 'Failed to save image.');
+          backgroundColor: Colors.redAccent,
+          message: Tr.t('settings.saveError'));
     }
   }
 }

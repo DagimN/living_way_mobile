@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class EmailForm extends StatefulWidget {
@@ -28,31 +28,31 @@ class _EmailFormState extends State<EmailForm> {
         child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text("Nice name",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-          const Text(
-              "Please provide your email address to ensure your account security.",
-              style: TextStyle(fontSize: 14)),
+          Text(Tr.t("signup.step2Title"),
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+          Text(
+              Tr.t("signup.step2Subtitle"),
+              style: const TextStyle(fontSize: 14)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
               child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value == null) return "Empty Field";
+                    if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return "Empty Field";
+                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                     if (!RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)*$")
                         .hasMatch(value)) {
-                      return "Invalid Email";
+                      return Tr.t("auth.invalidEmailError");
                     }
 
                     return null;
                   },
                   controller: emailController,
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: "Email"))),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(), hintText: Tr.t("auth.email")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -70,7 +70,7 @@ class _EmailFormState extends State<EmailForm> {
 
                     widget.onProgress();
                   },
-                  child: const Text('Continue')))
+                  child: Text(Tr.t('common.continue'))))
         ])));
   }
 }

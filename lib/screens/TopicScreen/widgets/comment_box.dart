@@ -34,9 +34,9 @@ class CommentBox extends StatelessWidget {
                 controller: devotionController.commentBoxTextEditingController,
                 minLines: 3,
                 maxLines: 3,
-                decoration: const InputDecoration(
-                    contentPadding: EdgeInsets.all(10),
-                    hintText: "What's your opinion?",
+                decoration: InputDecoration(
+                    contentPadding: const EdgeInsets.all(10),
+                    hintText: Tr.t('topics.commentPlaceholder2'),
                     border: InputBorder.none)),
             Container(
                 margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -67,8 +67,8 @@ class CommentBox extends StatelessWidget {
                             onSubmit();
                             onClose();
                           },
-                          child: const Text('Submit',
-                              style: TextStyle(
+                          child: Text(Tr.t('common.submit'),
+                              style: const TextStyle(
                                   color: Colors.white, fontSize: 12))))
                 ]))
           ]),

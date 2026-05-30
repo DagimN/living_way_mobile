@@ -66,7 +66,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               icon: Icon(Icons.arrow_back,
                                   color: AppTheme(themeController.brightness)
                                       .primaryColor)),
-                          Text('Profile',
+                          Text(Tr.t('navigation.profile'),
                               style: TextStyle(
                                   fontSize: 32,
                                   color: AppTheme(themeController.brightness)
@@ -193,7 +193,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                           themeController
                                                               .brightness)
                                                       .failedColor,
-                                                  message: 'No image selected');
+                                                  message: Tr.t('profile.noImageSelected'));
                                             }
 
                                             setState(() {
@@ -229,7 +229,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               .primaryColor))
                             ]),
                         SettingOptionTile(
-                            title: 'Anonymous',
+                            title: Tr.t('profile.anonymous'),
                             isUpdating: isUpdatingAnonymous,
                             trailing: Checkbox(
                                 checkColor: Colors.white,
@@ -256,7 +256,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   });
                                 })),
                         SettingOptionTile(
-                            title: 'Change Password',
+                            title: Tr.t('profile.changePassword'),
                             onTap: () {
                               showDialog(
                                   context: context,
@@ -274,7 +274,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text("Your Threads",
+                              Text(Tr.t("profile.yourThreads"),
                                   style: TextStyle(
                                       color:
                                           AppTheme(themeController.brightness)
@@ -284,7 +284,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               posts.length > 3
                                   ? InkWell(
                                       onTap: () {},
-                                      child: Text('More',
+                                      child: Text(Tr.t('more'),
                                           style: TextStyle(
                                               color: AppTheme(themeController
                                                       .brightness)
@@ -319,8 +319,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 margin: const EdgeInsets.only(top: 24),
                                 child: Column(children: [
                                   Image.asset(AppImages.emptyContent),
-                                  const Text(
-                                      'You have not posted anything yet.',
+                                  Text(
+                                      Tr.t('profile.emptyThreads'),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w300))

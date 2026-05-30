@@ -23,11 +23,11 @@ class LayoutController extends ChangeNotifier {
   bool showVerseOfTheDayControls = true;
 
   final List<Map<String, String>> settingsNavigation = [
-    {'name': "General", 'route': '/settings'},
-    {'name': "Profile", 'route': '/profile'},
-    {'name': "Donations", 'route': '/donation'},
-    {'name': "Contact Us", 'route': '/contacts'},
-    {'name': "About", 'route': '/about'}
+    {'name': "settings.general", 'route': '/settings'},
+    {'name': "navigation.profile", 'route': '/profile'},
+    {'name': "settings.donations", 'route': '/donation'},
+    {'name': "settings.contacts", 'route': '/contacts'},
+    {'name': "settings.about", 'route': '/about'}
   ];
   final bibleScrollController = ScrollController();
 

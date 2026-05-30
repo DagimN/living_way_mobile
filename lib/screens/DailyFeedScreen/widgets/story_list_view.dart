@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 import 'story_card.dart';
@@ -34,9 +34,9 @@ class StoryListView extends StatelessWidget {
 
                       return StoryCard(story: story, isFirst: index == 0);
                     })
-                : const Center(
-                    child: Text('No stories yet. Come back later',
-                        style: TextStyle(color: Colors.grey)))
+                : Center(
+                    child: Text(Tr.t('home.noStoriesMessage'),
+                        style: const TextStyle(color: Colors.grey)))
             : Center(
                 child: CircularProgressIndicator(
                     color: AppTheme(themeController.brightness).primaryColor)));

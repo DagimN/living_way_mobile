@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class SignupComplete extends StatefulWidget {
@@ -63,7 +63,7 @@ class _SignupCompleteState extends State<SignupComplete> {
             margin: const EdgeInsets.all(16),
             child: CircularProgressIndicator(
                 color: AppTheme(themeController.brightness).primaryColor)),
-        const Text('Finalizing Profile')
+        Text(Tr.t('signup.step5Loading'))
       ]);
     }
 
@@ -72,7 +72,7 @@ class _SignupCompleteState extends State<SignupComplete> {
         Icon(Icons.check_circle,
             color: AppTheme(themeController.brightness).primaryColor,
             size: 128),
-        const Text('Signup Completed')
+        Text(Tr.t('signup.step5Success'))
       ]);
     }
 
@@ -84,7 +84,7 @@ class _SignupCompleteState extends State<SignupComplete> {
             child: Text(
                 response?.data['message'] ??
                     response?.statusMessage ??
-                    "Could not complete sign up process",
+                    Tr.t("signup.step5Error"),
                 textAlign: TextAlign.center)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(

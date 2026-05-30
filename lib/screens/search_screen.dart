@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class SearchScreen extends StatelessWidget {
@@ -24,7 +23,7 @@ class SearchScreen extends StatelessWidget {
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(35)),
-                      hintText: 'Search',
+                      hintText: Tr.t('common.search'),
                       suffixIcon: Hero(
                           tag: 'search',
                           child: IconButton(

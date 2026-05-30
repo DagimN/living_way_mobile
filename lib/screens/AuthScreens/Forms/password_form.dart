@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class PasswordForm extends StatefulWidget {
@@ -27,11 +27,11 @@ class _PasswordFormState extends State<PasswordForm> {
     return Form(
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text("Great",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-          const Text(
-              "Keep your personal information safe by creating a strong password for your account.",
-              style: TextStyle(fontSize: 14)),
+          Text(Tr.t("signup.step3Title"),
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+          Text(
+              Tr.t("signup.step3Subtitle"),
+              style: const TextStyle(fontSize: 14)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
               child: TextFormField(
@@ -39,23 +39,23 @@ class _PasswordFormState extends State<PasswordForm> {
                       isPasswordVisible ? TextInputType.visiblePassword : null,
                   obscureText: !isPasswordVisible,
                   validator: (value) {
-                    if (value == null) return "Empty Field";
+                    if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return "Empty Field";
+                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                     if (!RegExp(r"^(?=.*[a-zA-Z])(?=.*\d).*$")
                         .hasMatch(value)) {
-                      return "It should include letters and numbers";
+                      return Tr.t("auth.passwordRequirementsAlpha");
                     }
 
                     if (!RegExp(r"^.{8,}$").hasMatch(value)) {
-                      return "Password is not long enough. At least 8 characters";
+                      return Tr.t("auth.invalidPasswordError");
                     }
 
                     if (!RegExp(
                             r"^(?=.*[!@#$%^&*()_+\-=\[\]{};':\\|,.<>\/?]).*$")
                         .hasMatch(value)) {
-                      return "It should include symbols";
+                      return Tr.t("auth.passwordRequirementsSymbol");
                     }
 
                     return null;
@@ -63,7 +63,7 @@ class _PasswordFormState extends State<PasswordForm> {
                   controller: passwordController,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      hintText: "Password",
+                      hintText: Tr.t("auth.password"),
                       suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -81,13 +81,13 @@ class _PasswordFormState extends State<PasswordForm> {
                       : null,
                   obscureText: !isConfirmPasswordVisible,
                   validator: (value) {
-                    if (value == null) return "Empty Field";
+                    if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return "Empty Field";
+                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                     if (passwordController.text !=
                         confirmPasswordController.text) {
-                      return "Passwords does not match";
+                      return Tr.t("auth.passwordMismatchError");
                     }
 
                     return null;
@@ -105,7 +105,7 @@ class _PasswordFormState extends State<PasswordForm> {
                               ? Icons.visibility
                               : Icons.visibility_off)),
                       border: const OutlineInputBorder(),
-                      hintText: "Confirm Password"))),
+                      hintText: Tr.t("auth.confirmPassword")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -123,7 +123,7 @@ class _PasswordFormState extends State<PasswordForm> {
 
                     widget.onProgress();
                   },
-                  child: const Text('Continue')))
+                  child: Text(Tr.t('common.continue'))))
         ]));
   }
 }

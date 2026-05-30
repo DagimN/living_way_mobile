@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class NameForm extends StatefulWidget {
@@ -28,36 +28,36 @@ class _NameFormState extends State<NameForm> {
     return Form(
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const Text("Hi there!!",
-              style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-          const Text("Let's get to know you. What's your name?",
-              style: TextStyle(fontSize: 14)),
+          Text(Tr.t("signup.step1Title"),
+              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+          Text(Tr.t("signup.step1Subtitle"),
+              style: const TextStyle(fontSize: 14)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
               child: TextFormField(
                   controller: firstNameController,
                   validator: (value) {
-                    if (value == null) return "Empty Field";
+                    if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return "Empty Field";
+                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                     return null;
                   },
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: "First Name"))),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(), hintText: Tr.t("signup.firstNamePlaceholder")))),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
               child: TextFormField(
                   controller: lastNameController,
                   validator: (value) {
-                    if (value == null) return "Empty Field";
+                    if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return "Empty Field";
+                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                     return null;
                   },
-                  decoration: const InputDecoration(
-                      border: OutlineInputBorder(), hintText: "Last Name"))),
+                  decoration: InputDecoration(
+                      border: const OutlineInputBorder(), hintText: Tr.t("signup.lastNamePlaceholder")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -77,7 +77,7 @@ class _NameFormState extends State<NameForm> {
 
                     widget.onProgress();
                   },
-                  child: const Text('Continue')))
+                  child: Text(Tr.t('common.continue'))))
         ]));
   }
 }

@@ -1,9 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/core/config/paths.dart';
-import 'package:living_way/controllers/content_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 
@@ -66,10 +64,10 @@ class AboutScreen extends StatelessWidget {
                     DefaultTabController(
                         length: 3,
                         child: Column(children: [
-                          const TabBar(tabs: [
-                            Tab(child: Text("Who We Are")),
-                            Tab(child: Text("Our Beliefs")),
-                            Tab(child: Text("Staff"))
+                          TabBar(tabs: [
+                            Tab(child: Text(Tr.t("settings.whoWeAre"))),
+                            Tab(child: Text(Tr.t("settings.ourBeliefs"))),
+                            Tab(child: Text(Tr.t("settings.staff")))
                           ]),
                           SizedBox(
                               width: screenWidth,
@@ -84,15 +82,14 @@ class AboutScreen extends StatelessWidget {
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                          const Text(
-                                              'We are a community of believers aspiring to be an authentic Christian community that glorifies Christ in both proclamation and lifestyle. Though we are not a gathering of perfect people, yet as a community, we believe that we are in the process of sanctification. This is why we strive to devote ourselves to studying Scripture, prayer, fellowship and the sharing of resources.'),
+                                          Text(Tr.t(
+                                              'aboutPage.whoWeAreDescription1')),
                                           const SizedBox(height: 16),
-                                          const Text(
-                                              'It is our conviction that the church is the steward of the message of the Good News, the only message of hope for fallen humanity. It is through this message that people can gain salvation and have access to a personal relationship with God. It is thus our mission to spread this Good News in every way possible and make peoples disciples of Christ.'),
+                                          Text(Tr.t(
+                                              'aboutPage.whoWeAreDescription2')),
                                           const SizedBox(height: 32),
-                                          const Text(
-                                              'We aspire to be a church that is: ',
-                                              style: TextStyle(
+                                          Text(Tr.t('aboutPage.aspireTitle'),
+                                              style: const TextStyle(
                                                   fontSize: 24,
                                                   fontWeight: FontWeight.w400)),
                                           ListView.builder(
@@ -115,8 +112,8 @@ class AboutScreen extends StatelessWidget {
                                         ]))),
                                 Container(
                                     margin: const EdgeInsets.all(24),
-                                    child: const Text(
-                                        'In reprehenderit ea dolor in cillum est veniam aliqua esse cillum labore. Ut Lorem duis esse magna incididunt ea sunt dolor proident magna incididunt in. Cillum cupidatat aute occaecat non ad adipisicing minim nisi cupidatat aliquip nostrud pariatur dolor esse. Do nulla nulla duis amet mollit exercitation est laborum. Ut aliqua aliquip ea pariatur nulla reprehenderit culpa in. Excepteur nulla pariatur culpa non amet quis nulla. Quis dolore id enim voluptate laboris consequat cupidatat cupidatat anim Lorem. Enim labore laboris nulla ipsum culpa incididunt aliqua sit id pariatur non esse. Ad id magna elit esse irure laborum laboris do ex aute minim tempor. Aliquip veniam proident qui nulla. Sit voluptate culpa cillum reprehenderit do elit eiusmod reprehenderit ut qui in pariatur reprehenderit. Minim aliquip esse nostrud est commodo deserunt. Culpa duis sit sunt fugiat. Ullamco amet et tempor ut id.')),
+                                    child: Text(Tr.t(
+                                        'aboutPage.ourBeliefsDescription'))),
                                 GridView.builder(
                                     padding: const EdgeInsets.only(bottom: 200),
                                     itemCount: contentController.staffs.length,

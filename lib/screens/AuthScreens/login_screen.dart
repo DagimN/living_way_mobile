@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/home.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -58,33 +57,35 @@ class _LoginScreenState extends State<LoginScreen> {
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: TextFormField(
                                     validator: (value) {
-                                      if (value == null) return "Empty Field";
+                                      if (value == null)
+                                        return Tr.t('auth.emptyFieldError');
 
                                       if (value.trim().isEmpty) {
-                                        return "Empty Field";
+                                        return Tr.t('auth.emptyFieldError');
                                       }
 
                                       if (!RegExp(
                                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)*$")
                                           .hasMatch(value)) {
-                                        return "Invalid Email";
+                                        return Tr.t('auth.invalidEmailError');
                                       }
 
                                       return null;
                                     },
-                                    decoration: const InputDecoration(
+                                    decoration: InputDecoration(
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.always,
-                                        hintText: "peterrock@gmail.com",
-                                        labelText: 'Email'))),
+                                        hintText: Tr.t('auth.emailPlaceholder'),
+                                        labelText: Tr.t('auth.email')))),
                             Container(
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: TextFormField(
                                     validator: (value) {
-                                      if (value == null) return "Empty Field";
+                                      if (value == null)
+                                        return Tr.t('auth.emptyFieldError');
 
                                       if (value.trim().isEmpty) {
-                                        return "Empty Field";
+                                        return Tr.t('auth.emptyFieldError');
                                       }
 
                                       return null;
@@ -103,8 +104,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                             }),
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.always,
-                                        hintText: "*****",
-                                        labelText: 'Password'))),
+                                        hintText:
+                                            Tr.t('auth.passwordPlaceholder'),
+                                        labelText: Tr.t('auth.password')))),
                             Container(
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 24),
@@ -115,8 +117,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             //TODO: Implement forgot password
                                           }
                                         : null,
-                                    child: const Text('Forgot Password',
-                                        style: TextStyle(
+                                    child: Text(Tr.t('auth.forgotPassword'),
+                                        style: const TextStyle(
                                             decoration:
                                                 TextDecoration.underline)))),
                             //FIXME: Refactor for maintainability
@@ -181,7 +183,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 // });
                                               }
                                             : null,
-                                        child: const Text('Login')))
+                                        child: Text(Tr.t('auth.login'))))
                                 : SizedBox(
                                     width: 25,
                                     height: 25,
@@ -237,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const Text("Don't have an account?"),
+                                      Text(Tr.t('auth.dontHaveAccount')),
                                       const SizedBox(width: 10),
                                       InkWell(
                                           onTap: !isPerformingAction
@@ -246,7 +248,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       context, '/signup');
                                                 }
                                               : null,
-                                          child: Text('Sign Up',
+                                          child: Text(Tr.t('auth.signUp'),
                                               style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/core/config/paths.dart';
+import 'package:living_way/core/core.dart';
 
 class Page5 extends StatelessWidget {
   const Page5({super.key});
@@ -14,14 +14,16 @@ class Page5 extends StatelessWidget {
       Container(
           height: screenHeight * .35,
           margin: const EdgeInsets.all(14),
-          child: const Column(children: [
-            Text('Becoming More Like Christ, One Day at a Time',
+          child: Column(children: [
+            Text(Tr.t("intro.page5Title"),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
-            SizedBox(height: 14),
-            Text("Let's strive for holiness together.",
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
+            const SizedBox(height: 14),
+            Text(Tr.t("intro.page5Subtitle"),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200))
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w200))
           ])),
     ]);
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../classes/translation.dart';
 import 'logging_service.dart';
 
 class UIService {
@@ -21,7 +22,7 @@ class UIService {
     messengerKey.currentState?.hideCurrentSnackBar();
     messengerKey.currentState?.showSnackBar(
       SnackBar(
-        content: child ?? Text(message ?? ""),
+        content: child ?? Text(Tr.t(message ?? "")),
         behavior: SnackBarBehavior.floating,
         backgroundColor: backgroundColor,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),

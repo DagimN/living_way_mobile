@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/models/activity/index.dart';
-import 'package:living_way/core/themes/app_theme.dart';
-import 'package:living_way/core/utils/format_time.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 import 'package:provider/provider.dart';
 
@@ -99,7 +97,7 @@ class TimelineContainer extends StatelessWidget {
                                   !activity.isOngoing
                                       ? formatDateTime(activity.upcomingDate ??
                                           activity.timestamp)
-                                      : 'Ongoing',
+                                      : Tr.t('messages.ongoing'),
                                   style: TextStyle(
                                       fontSize: 8,
                                       fontStyle: FontStyle.italic,

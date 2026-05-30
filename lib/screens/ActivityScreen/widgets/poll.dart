@@ -46,6 +46,7 @@ class _PollState extends State<Poll> {
         child: Column(children: [
           FlutterPolls(
               pollId: widget.content.id,
+              votesText: Tr.t('common.votes'),
               votedProgressColor: AppTheme(themeController.brightness)
                   .primaryColor
                   .withAlpha(76),
@@ -112,7 +113,7 @@ class _PollState extends State<Poll> {
                 UIService.showSnackbar(
                     backgroundColor:
                         AppTheme(themeController.brightness).failedColor,
-                    message: 'Failed to save vote');
+                    message: Tr.t('activity.voteError'));
                 return Future.value(false);
               })
         ]));

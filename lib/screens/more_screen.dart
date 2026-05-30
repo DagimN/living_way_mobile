@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/layout_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -27,7 +26,7 @@ class MoreScreen extends StatelessWidget {
                   BaseAppBar(
                       title: Container(
                           margin: const EdgeInsets.all(10),
-                          child: Text('More',
+                          child: Text(Tr.t('navigation.more'),
                               style: TextStyle(
                                   fontSize: 32,
                                   color: AppTheme(themeController.brightness)
@@ -44,7 +43,7 @@ class MoreScreen extends StatelessWidget {
                             return ListTile(
                                 onTap: () => Navigator.pushNamed(
                                     context, navigationItem['route'] ?? ''),
-                                title: Text(navigationItem['name'] ?? ''),
+                                title: Text(Tr.t(navigationItem['name'] ?? '')),
                                 trailing: const Icon(
                                     Icons.arrow_forward_ios_rounded,
                                     size: 14));

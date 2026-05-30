@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/core/config/paths.dart';
+import 'package:living_way/core/core.dart';
 
 class Page2 extends StatelessWidget {
   const Page2({super.key});
@@ -12,15 +13,16 @@ class Page2 extends StatelessWidget {
       Container(
           height: screenHeight * .5,
           margin: const EdgeInsets.all(14),
-          child: const Column(children: [
-            Text('A Community of Believers',
+          child: Column(children: [
+            Text(Tr.t('intro.page2Title'),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
-            SizedBox(height: 14),
-            Text(
-                "Join us as we journey together towards a deeper understanding of God's Word and a closer walk with Christ. We are a community dedicated to spiritual growth and mutual support.",
+                style:
+                    const TextStyle(fontSize: 28, fontWeight: FontWeight.w400)),
+            const SizedBox(height: 14),
+            Text(Tr.t('intro.page2Subtitle'),
                 textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w200))
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w200))
           ])),
       Image.asset(AppImages.signupFlow1,
           height: screenHeight * .27, fit: BoxFit.cover)

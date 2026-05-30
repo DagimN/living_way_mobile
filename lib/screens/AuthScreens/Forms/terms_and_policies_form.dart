@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/core/constants/urls.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -25,11 +25,11 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
     //FIXME: On this flow the only permitted device orientation should be portrait
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      const Text("Almost there",
-          style: TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-      const Text(
-          "By reviewing our terms and privacy policy, you can start enjoying our app today.",
-          style: TextStyle(fontSize: 14)),
+      Text(Tr.t("signup.step4Title"),
+          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+      Text(
+          Tr.t("signup.step4Subtitle"),
+          style: const TextStyle(fontSize: 14)),
       Container(
           height: screenHeight * .5,
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -42,7 +42,7 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
                       AppTheme(themeController.brightness).primaryColor,
                   foregroundColor: Colors.white),
               onPressed: widget.onProgress,
-              child: const Text('Agree')))
+              child: Text(Tr.t('common.agree'))))
     ]);
   }
 }

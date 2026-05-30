@@ -1,9 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
-import 'package:living_way/core/utils/security_functions.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class PasswordUpdateDialog extends StatefulWidget {
@@ -31,7 +29,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
     final themeController = Provider.of<ThemeController>(context);
 
     return AlertDialog(
-        title: const Text('Change password'),
+        title: Text(Tr.t('profile.changePassword')),
         content: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -67,7 +65,8 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                                         ? Icons.visibility
                                         : Icons.visibility_off)),
                                 border: const OutlineInputBorder(),
-                                hintText: "Old Password"))),
+                                hintText:
+                                    Tr.t('profile.oldPasswordPlaceholder')))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: TextFormField(
@@ -95,7 +94,8 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
                               border: const OutlineInputBorder(),
-                              hintText: "New Password"))),
+                              hintText:
+                                  Tr.t('profile.newPasswordPlaceholder')))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
                       child: TextFormField(
@@ -111,7 +111,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
 
                             if (newPasswordController.text !=
                                 confirmPasswordController.text) {
-                              return "Passwords does not match";
+                              return Tr.t('auth.passwordMismatchError');
                             }
 
                             return null;
@@ -128,7 +128,8 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
                               border: const OutlineInputBorder(),
-                              hintText: "Confirm Password")))
+                              hintText:
+                                  Tr.t('auth.confirmPasswordPlaceholder'))))
                 ]))),
         actions: !isUpdating
             ? [
@@ -136,8 +137,8 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Cancel',
-                        style: TextStyle(color: Colors.red))),
+                    child: Text(Tr.t('common.cancel'),
+                        style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () async {
                       final isValid = formKey.currentState?.validate() ?? false;
@@ -168,7 +169,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                         Navigator.pop(context);
                       });
                     },
-                    child: Text('Update',
+                    child: Text(Tr.t('common.update'),
                         style: TextStyle(
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)))

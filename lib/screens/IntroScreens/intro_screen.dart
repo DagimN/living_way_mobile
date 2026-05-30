@@ -39,7 +39,7 @@ class IntroScreen extends StatelessWidget {
                     Navigator.pushNamedAndRemoveUntil(
                         context, '/login', (route) => false);
                   },
-                  child: const Text('Skip'))
+                  child: Text(Tr.t('common.skip')))
             ]),
         body: pages[index],
         bottomSheet: Padding(
@@ -52,7 +52,7 @@ class IntroScreen extends StatelessWidget {
                           onPressed: () {
                             layoutController.setIntroPageIndex = index - 1;
                           },
-                          child: const Text('Back'))
+                          child: Text(Tr.t('common.back')))
                       : const SizedBox(width: 65),
                   Expanded(
                       child: DotIndicator(
@@ -62,13 +62,13 @@ class IntroScreen extends StatelessWidget {
                           onPressed: () {
                             layoutController.setIntroPageIndex = index + 1;
                           },
-                          child: const Text('Next'))
+                          child: Text(Tr.t('common.next')))
                       : TextButton(
                           onPressed: () {
                             Navigator.pushNamedAndRemoveUntil(
                                 context, '/login', (route) => false);
                           },
-                          child: const Text('Done'))
+                          child: Text(Tr.t('common.done')))
                 ])));
   }
 }

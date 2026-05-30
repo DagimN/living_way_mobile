@@ -233,7 +233,7 @@ class Content extends ChangeNotifier {
                       SizedBox(
                         width: screenWidth * .4,
                         child: Text(
-                          '$title downloaded successfully',
+                          Tr.arg('content.downloaded', title),
                           maxLines: 2,
                         ),
                       ),
@@ -253,14 +253,14 @@ class Content extends ChangeNotifier {
             : UIService.showSnackbar(
                 backgroundColor:
                     AppTheme(themeController.brightness).failedColor,
-                message: "Failed to download file.");
+                message: Tr.t('content.failedDownload'));
       }
     } on FileSystemException catch (e) {
       if (e.message.toLowerCase().contains("no space left")) {
         logger.e("Critical Error: Device Storage Full.");
 
         UIService.showSnackbar(
-            message: 'Low Storage. Clear up some files before continuing',
+            message: Tr.t('content.lowStorageError'),
             backgroundColor: AppTheme(themeController.brightness).failedColor);
 
         final file = File(filePath);

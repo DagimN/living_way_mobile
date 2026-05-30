@@ -29,7 +29,7 @@ class ActivityScreen extends StatelessWidget {
       BaseAppBar(
           title: Container(
               margin: const EdgeInsets.all(10),
-              child: Text('Activities',
+              child: Text(Tr.t('navigation.activities'),
                   style: TextStyle(
                       fontSize: 32,
                       color: AppTheme(themeController.brightness).primaryColor,

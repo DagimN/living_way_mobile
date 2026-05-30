@@ -25,7 +25,7 @@ class TopicsListview extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text('Topics',
+            Text(Tr.t('home.topics'),
                 style: TextStyle(
                     fontSize: 16,
                     color: AppTheme(themeController.brightness).iconColor)),
@@ -90,9 +90,9 @@ class TopicsListview extends StatelessWidget {
                                                 .primaryColor))
                                     : const SizedBox();
                           })
-                      : const Center(
-                          child: Text('No topics yet. Come back later',
-                              style: TextStyle(color: Colors.grey)))
+                      : Center(
+                          child: Text(Tr.t('home.noTopicsMessage'),
+                              style: const TextStyle(color: Colors.grey)))
                   : Center(
                       child: CircularProgressIndicator(
                           color: AppTheme(themeController.brightness)

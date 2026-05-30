@@ -1,8 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class NameUpdateDialog extends StatefulWidget {
@@ -28,7 +27,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
     final themeController = Provider.of<ThemeController>(context);
 
     return AlertDialog(
-        title: const Text('Change name'),
+        title: Text(Tr.t('profile.changeName')),
         content: Form(
             key: formKey,
             child: Column(
@@ -40,29 +39,29 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                       child: TextFormField(
                           controller: firstNameController,
                           validator: (value) {
-                            if (value == null) return "Empty Field";
+                            if (value == null) return Tr.t("auth.emptyFieldError");
 
-                            if (value.trim().isEmpty) return "Empty Field";
+                            if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                             return null;
                           },
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: "First Name"))),
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              hintText: Tr.t("signup.firstNamePlaceholder")))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
                       child: TextFormField(
                           controller: lastNameController,
                           validator: (value) {
-                            if (value == null) return "Empty Field";
+                            if (value == null) return Tr.t("auth.emptyFieldError");
 
-                            if (value.trim().isEmpty) return "Empty Field";
+                            if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
 
                             return null;
                           },
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              hintText: "Last Name")))
+                          decoration: InputDecoration(
+                              border: const OutlineInputBorder(),
+                              hintText: Tr.t("signup.lastNamePlaceholder"))))
                 ])),
         actions: !isUpdating
             ? [
@@ -70,8 +69,8 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Cancel',
-                        style: TextStyle(color: Colors.red))),
+                    child: Text(Tr.t('common.cancel'),
+                        style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () async {
                       final isValid = formKey.currentState?.validate() ?? false;
@@ -96,7 +95,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                         Navigator.pop(context);
                       });
                     },
-                    child: Text('Update',
+                    child: Text(Tr.t('common.update'),
                         style: TextStyle(
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)))

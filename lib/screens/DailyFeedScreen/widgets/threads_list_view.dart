@@ -48,22 +48,23 @@ class ThreadsListView extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Threads',
+                    Text(Tr.t('home.threads'),
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)),
                     DropdownButton<SortOptions>(
-                        items: const [
+                        items: [
                           DropdownMenuItem(
-                              value: SortOptions.latest, child: Text('Latest')),
+                              value: SortOptions.latest,
+                              child: Text(Tr.t('home.sortLatest'))),
                           DropdownMenuItem(
                               value: SortOptions.mostActive,
-                              child: Text('Most Active')),
+                              child: Text(Tr.t('home.sortMostActive'))),
                           DropdownMenuItem(
                               value: SortOptions.mostLiked,
-                              child: Text('Most Liked'))
+                              child: Text(Tr.t('home.sortMostLiked')))
                         ],
                         underline: Container(
                             height: 1.0,

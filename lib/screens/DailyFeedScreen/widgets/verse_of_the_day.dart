@@ -47,7 +47,7 @@ class VerseOfTheDay extends StatelessWidget {
                         children: [
                           const SizedBox(height: 36),
                           FittedBox(
-                            child: Text('Verse of the day',
+                            child: Text(Tr.t('home.verseOfTheDay'),
                                 style: TextStyle(
                                     color: Colors.white,
                                     fontSize: isEnlarged ? 20 : 16)),
@@ -84,7 +84,7 @@ class VerseOfTheDay extends StatelessWidget {
                               SharePlus.instance.share(ShareParams(
                                 text:
                                     '${verseOfTheDay.text}\n\n${verseOfTheDay.labelWithTranslation}',
-                                subject: 'Bible Verse of the Day',
+                                subject: Tr.t('home.verseOfTheDay'),
                                 title: verseOfTheDay.labelWithTranslation,
                               ));
                             },

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/auth_controller.dart';
-import 'package:living_way/controllers/profile_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/controllers/controllers.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class PromptDeleteProfileDialog extends StatefulWidget {
@@ -23,8 +21,8 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
     final authController = Provider.of<AuthController>(context);
 
     return AlertDialog(
-        title: const Text('Delete Account'),
-        content: const Text('Are you sure you want to delete your account?'),
+        title: Text(Tr.t('profile.deleteAccount')),
+        content: Text(Tr.t('profile.deleteAccountMessage')),
         actions: !isDeleting
             ? [
                 TextButton(
@@ -45,13 +43,13 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
                             context, '/login', (route) => false);
                       });
                     },
-                    child: const Text('Delete',
-                        style: TextStyle(color: Colors.red))),
+                    child: Text(Tr.t('common.delete'),
+                        style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: const Text('Cancel'))
+                    child: Text(Tr.t('common.cancel')))
               ]
             : [
                 Center(

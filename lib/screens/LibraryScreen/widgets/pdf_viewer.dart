@@ -151,7 +151,8 @@ class _PdfViewerState extends State<PdfViewer> {
                   builder: (context) => AlertDialog(
                     content: TextField(
                       textInputAction: TextInputAction.search,
-                      decoration: const InputDecoration(hintText: 'Search...'),
+                      decoration:
+                          InputDecoration(hintText: Tr.t('library.search')),
                       onSubmitted: (value) {
                         searcher?.startTextSearch(value,
                             searchImmediately: true);
@@ -256,9 +257,10 @@ class _PdfViewerState extends State<PdfViewer> {
                               size: 48,
                               color: AppTheme(themeController.brightness)
                                   .primaryColor),
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
-                              child: Text('Table of contents is not available',
+                              child: Text(
+                                  Tr.t('library.tableOfContentsUnavailable'),
                                   textAlign: TextAlign.center)),
                         ])
                   : ListView(

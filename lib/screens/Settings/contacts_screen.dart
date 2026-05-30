@@ -68,7 +68,7 @@ class ContactsScreen extends StatelessWidget {
                         icon: Icon(Icons.arrow_back,
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)),
-                    Text('Contact Us',
+                    Text(Tr.t('settings.contacts'),
                         style: TextStyle(
                             fontSize: 32,
                             color: AppTheme(themeController.brightness)
@@ -96,7 +96,7 @@ class ContactsScreen extends StatelessWidget {
                                 Container(
                                     margin: const EdgeInsets.symmetric(
                                         horizontal: 12),
-                                    child: Text(contact.title,
+                                    child: Text(Tr.t(contact.title),
                                         style: TextStyle(
                                             fontSize: 14,
                                             color: AppTheme(

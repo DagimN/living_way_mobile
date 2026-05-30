@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/screens/AuthScreens/Forms/email_form.dart';
-import 'package:living_way/screens/AuthScreens/Forms/name_form.dart';
-import 'package:living_way/screens/AuthScreens/Forms/password_form.dart';
-import 'package:living_way/screens/AuthScreens/Forms/signup_complete.dart';
-import 'package:living_way/screens/AuthScreens/Forms/terms_and_policies_form.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
+
+import 'Forms/email_form.dart';
+import 'Forms/name_form.dart';
+import 'Forms/password_form.dart';
+import 'Forms/signup_complete.dart';
+import 'Forms/terms_and_policies_form.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});
@@ -29,7 +30,7 @@ class _SignupScreenState extends State<SignupScreen> {
 
     return PopScope(
         canPop: signupFlowIndex == 0,
-        onPopInvoked: (isPopped) {
+        onPopInvokedWithResult: (isPopped, _) {
           if (signupFlowIndex > 0 && signupFlowIndex < maxSignUpFlow) {
             setState(() {
               signupFlowIndex -= 1;
@@ -42,8 +43,8 @@ class _SignupScreenState extends State<SignupScreen> {
                     backgroundColor:
                         AppTheme(themeController.brightness).primaryColor,
                     foregroundColor: Colors.white,
-                    title:
-                        const Text('Welcome', style: TextStyle(fontSize: 24)))
+                    title: Text(Tr.t('auth.signupTitle'),
+                        style: const TextStyle(fontSize: 24)))
                 : AppBar(
                     backgroundColor: Colors.white, leading: const SizedBox()),
             body: SingleChildScrollView(

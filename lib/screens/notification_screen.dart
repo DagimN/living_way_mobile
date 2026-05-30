@@ -135,12 +135,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
 
     if (notificationController.isEmpty) {
-      body = const Center(child: Text('No notifications'));
+      body = Center(child: Text(Tr.t('notifications.empty')));
     }
 
     return Scaffold(
         appBar: AppBar(
-          title: const Text('Notifications'),
+          title: Text(Tr.t('navigation.notifications')),
           backgroundColor: AppTheme(themeController.brightness).appbarColor,
           systemOverlayStyle: themeController.brightness == Brightness.light
               ? SystemUiOverlayStyle.dark

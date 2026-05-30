@@ -53,7 +53,7 @@ class LibraryScreen extends StatelessWidget {
           BaseAppBar(
               title: Container(
                   margin: const EdgeInsets.all(10),
-                  child: Text('Library',
+                  child: Text(Tr.t('navigation.library'),
                       style: TextStyle(
                           fontSize: 32,
                           color:

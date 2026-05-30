@@ -27,7 +27,7 @@ class ContinueContentListView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Continue',
+          Text(Tr.t('library.continueReading'),
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
           Container(
               height: orientation == Orientation.portrait

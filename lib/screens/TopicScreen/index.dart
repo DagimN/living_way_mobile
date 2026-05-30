@@ -95,7 +95,7 @@ class _TopicScreenState extends State<TopicScreen>
                                     const EdgeInsets.symmetric(horizontal: 14),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(24)),
-                                hintText: "What's on your mind?"))))
+                                hintText: Tr.t('topics.commentPlaceholder')))))
             ])));
   }
 
@@ -103,7 +103,8 @@ class _TopicScreenState extends State<TopicScreen>
       DevotionController devotionController, Profile profile) async {
     if (commentController.text.isEmpty) {
       UIService.showSnackbar(
-          backgroundColor: Colors.orangeAccent, message: 'Empty comment');
+          backgroundColor: Colors.orangeAccent,
+          message: Tr.t('topics.emptyCommentError'));
       return;
     }
 
