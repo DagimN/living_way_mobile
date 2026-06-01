@@ -11,6 +11,7 @@ class GeneralSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final localizationController = Provider.of<LocalizationController>(context);
+    final layoutController = Provider.of<LayoutController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final activityController = Provider.of<ActivityController>(context);
     final bibleController = Provider.of<BibleController>(context);
@@ -102,6 +103,9 @@ class GeneralSettingsScreen extends StatelessWidget {
                                   onPressed: () {
                                     localizationController
                                         .toggleAppLocale(context);
+                                    layoutController
+                                            .setSelectedHomePageNavigation =
+                                        HomePageNavigation.other;
                                   },
                                   onLongPress: () {
                                     localizationController
