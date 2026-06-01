@@ -16,10 +16,11 @@ class LocalizationController extends ChangeNotifier {
 
   AppLocale appLocale = AppLocale.en;
   Locale _locale = const Locale('en', 'US');
-  List<Locale> supportedLocales = const [
-    Locale('en', 'US'),
-    Locale('am', 'ET')
+  List<Locale> supportedLocales = [
+    const Locale('en', 'US'),
+    const Locale('am', 'ET')
   ];
+  bool isInitialized = false;
 
   Locale get locale => _locale;
   RemoteTranslationsLoader get loader => _loader;
@@ -27,12 +28,15 @@ class LocalizationController extends ChangeNotifier {
   Future<void> init() async {
     final appLocaleIndex = await CacheService.instance
         .readData<int>('locale', defaultValue: AppLocale.en.index);
+    await fetchFromRemote(null);
+
     appLocale = AppLocale.values[appLocaleIndex];
+    isInitialized = true;
     notifyListeners();
 
-    _locale = appLocale == AppLocale.en
-        ? const Locale('en', 'US')
-        : const Locale('am', "ET");
+    _locale = appLocale == AppLocale.am
+        ? const Locale('am', 'ET')
+        : const Locale('en', "US");
     await _cache.init();
 
     preloadAll(supportedLocales);
@@ -45,7 +49,7 @@ class LocalizationController extends ChangeNotifier {
       final cached = _cache.getStrings(locale.languageCode);
 
       if (cached == null) {
-        return await _fetchFromRemote(locale.languageCode);
+        return await fetchFromRemote(locale);
       }
 
       return cached;
@@ -66,7 +70,7 @@ class LocalizationController extends ChangeNotifier {
     }
   }
 
-  Future<Map<String, dynamic>> _fetchFromRemote(String locale) async {
+  Future<Map<String, dynamic>> fetchFromRemote(Locale? locale) async {
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
@@ -74,26 +78,38 @@ class LocalizationController extends ChangeNotifier {
             ? Urls.stagingApiUrl
             : Urls.prodApiUrl;
 
-    final response = await dio.get(
-      '$url/api/v1/locales/$locale',
-    );
+    try {
+      final response = await dio.get('$url/api/v1/locales',
+          queryParameters: locale != null ? {'q': locale} : null);
 
-    final strings = Map<String, dynamic>.from(
-      response.data['strings'] as Map,
-    );
+      if (locale == null) {
+        supportedLocales = List.from(response.data["locales"]).map((item) {
+          final locale = item.split('_');
 
-    await _cache.save(locale, strings);
-    return strings;
+          return Locale(locale[0], locale[1]);
+        }).toList();
+
+        notifyListeners();
+        return {};
+      }
+
+      final strings = Map<String, dynamic>.from(response.data);
+
+      await _cache.save(locale.languageCode, strings);
+      return strings;
+    } catch (e) {
+      logger.e('Failed to fetch translations: $e');
+      return locale == null ? {} : await _loadBundledFallback(locale);
+    }
   }
 
   void toggleAppLocale(BuildContext context) async {
-    if (appLocale == AppLocale.am) {
-      appLocale = AppLocale.en;
-      _locale = const Locale('en', 'US');
-    } else {
-      appLocale = AppLocale.am;
-      _locale = const Locale('am', 'ET');
-    }
+    final currentIndex = supportedLocales.indexOf(_locale);
+    final newLocale =
+        supportedLocales[(currentIndex + 1) % supportedLocales.length];
+
+    appLocale = AppLocale.fromLocale(newLocale);
+    _locale = appLocale.locale;
 
     await context.setLocale(_locale);
 
@@ -106,7 +122,7 @@ class LocalizationController extends ChangeNotifier {
     await context.setLocale(_locale);
 
     await _cache.clear(_locale.languageCode);
-    await _fetchFromRemote(_locale.languageCode);
+    await fetchFromRemote(_locale);
 
     notifyListeners();
   }
@@ -114,7 +130,7 @@ class LocalizationController extends ChangeNotifier {
   Future<void> preloadAll(List<Locale> locales) async {
     for (final locale in locales) {
       try {
-        await _fetchFromRemote(locale.languageCode);
+        await fetchFromRemote(locale);
       } catch (e) {
         logger.e('Failed to preload ${locale.languageCode}: $e');
       }

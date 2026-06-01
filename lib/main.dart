@@ -8,11 +8,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart' hide Notification;
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:living_way/app.dart';
-import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:media_store_plus/media_store_plus.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'package:provider/provider.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
@@ -95,11 +93,7 @@ void main() async {
   MediaStore.appFolder = "Living Way";
 
   await EasyLocalization.ensureInitialized();
-  // Init the provider eagerly so cache is ready before first build
-  final localizationController = LocalizationController();
-  await localizationController.init();
 
-  runApp(ChangeNotifierProvider.value(
-      value: localizationController, child: const LivingWayApp()));
+  runApp(const LivingWayApp());
   //TODO: Create a widget that can work as a base screen
 }

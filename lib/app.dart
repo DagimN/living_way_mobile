@@ -35,63 +35,74 @@ class LivingWayApp extends StatelessWidget {
       ],
       child: Consumer<LocalizationController>(
           builder: (context, localizationController, _) {
-        return EasyLocalization(
-          supportedLocales: localizationController.supportedLocales,
-          path: 'assets/translations',
-          fallbackLocale: localizationController.supportedLocales.first,
-          assetLoader: localizationController.loader,
-          child:
-              Consumer<AuthController>(builder: (context, authController, _) {
-            final profileController = Provider.of<ProfileController>(context);
-            final layoutController = Provider.of<LayoutController>(context);
-            final themeController = Provider.of<ThemeController>(context);
-            final bibleController = Provider.of<BibleController>(context);
+        return FutureBuilder(
+            future: localizationController.isInitialized
+                ? null
+                : localizationController.init(),
+            builder: (context, asyncSnapshot) {
+              return EasyLocalization(
+                supportedLocales: localizationController.supportedLocales,
+                path: 'assets/translations',
+                fallbackLocale: localizationController.supportedLocales.first,
+                assetLoader: localizationController.loader,
+                child: Consumer<AuthController>(
+                    builder: (context, authController, _) {
+                  final profileController =
+                      Provider.of<ProfileController>(context);
+                  final layoutController =
+                      Provider.of<LayoutController>(context);
+                  final themeController = Provider.of<ThemeController>(context);
+                  final bibleController = Provider.of<BibleController>(context);
 
-            Provider.of<ContentController>(context);
-            Provider.of<NotificationController>(context);
-            Provider.of<ActivityController>(context);
-            Provider.of<DevotionController>(context);
+                  Provider.of<ContentController>(context);
+                  Provider.of<NotificationController>(context);
+                  Provider.of<ActivityController>(context);
+                  Provider.of<DevotionController>(context);
 
-            authController.setProfileController = profileController;
-            layoutController.setBibleController = bibleController;
+                  authController.setProfileController = profileController;
+                  layoutController.setBibleController = bibleController;
 
-            return !layoutController.showSplashScreen
-                ? MaterialApp(
-                    navigatorKey: UIService.navigatorKey,
-                    scaffoldMessengerKey: UIService.messengerKey,
-                    debugShowCheckedModeBanner: false,
-                    title: 'Living Way',
-                    localizationsDelegates: context.localizationDelegates,
-                    supportedLocales: context.supportedLocales,
-                    locale: context.locale,
-                    theme: ThemeData(
-                        colorScheme: ColorScheme.fromSeed(
-                            seedColor: AppTheme(themeController.brightness)
-                                .primaryColor),
-                        useMaterial3: true),
-                    home: const HomeScreen(),
-                    // authController.isLoggedIn FIXME: Prioritize anonymous login
-                    //     ? const HomeScreen()
-                    //     : const IntroScreen(),
-                    routes: {
-                        '/intro': (context) => const IntroScreen(),
-                        '/login': (context) => const LoginScreen(),
-                        '/signup': (context) => const SignupScreen(),
-                        '/home': (context) => const HomeScreen(),
-                        '/search': (context) => const SearchScreen(),
-                        '/settings': (context) => const GeneralSettingsScreen(),
-                        '/profile': (context) => const ProfileSettingsScreen(),
-                        '/contacts': (context) => const ContactsScreen(),
-                        '/about': (context) => const AboutScreen(),
-                        '/donation': (context) => const DonationScreen(),
-                        '/notifications': (context) =>
-                            const NotificationScreen()
-                      })
-                : MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    home: SplashScreen(context));
-          }),
-        );
+                  return !layoutController.showSplashScreen
+                      ? MaterialApp(
+                          navigatorKey: UIService.navigatorKey,
+                          scaffoldMessengerKey: UIService.messengerKey,
+                          debugShowCheckedModeBanner: false,
+                          title: 'Living Way',
+                          localizationsDelegates: context.localizationDelegates,
+                          supportedLocales: context.supportedLocales,
+                          locale: context.locale,
+                          theme: ThemeData(
+                              colorScheme: ColorScheme.fromSeed(
+                                  seedColor:
+                                      AppTheme(themeController.brightness)
+                                          .primaryColor),
+                              useMaterial3: true),
+                          home: const HomeScreen(),
+                          // authController.isLoggedIn FIXME: Prioritize anonymous login
+                          //     ? const HomeScreen()
+                          //     : const IntroScreen(),
+                          routes: {
+                              '/intro': (context) => const IntroScreen(),
+                              '/login': (context) => const LoginScreen(),
+                              '/signup': (context) => const SignupScreen(),
+                              '/home': (context) => const HomeScreen(),
+                              '/search': (context) => const SearchScreen(),
+                              '/settings': (context) =>
+                                  const GeneralSettingsScreen(),
+                              '/profile': (context) =>
+                                  const ProfileSettingsScreen(),
+                              '/contacts': (context) => const ContactsScreen(),
+                              '/about': (context) => const AboutScreen(),
+                              '/donation': (context) => const DonationScreen(),
+                              '/notifications': (context) =>
+                                  const NotificationScreen()
+                            })
+                      : MaterialApp(
+                          debugShowCheckedModeBanner: false,
+                          home: SplashScreen(context));
+                }),
+              );
+            });
       }),
     );
   }

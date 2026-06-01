@@ -5,18 +5,33 @@ enum SortOptions { mostActive, mostLiked, mostViewed, latest }
 enum CategoryFilter { all, ot, nt }
 
 enum AppLocale {
-  en,
-  am;
+  en('en', 'US', 'EN'),
+  am('am', 'ET', 'አማ'),
+  om('om', 'ET', 'ORM'),
+  ti('ti', 'ET', 'TIG'),
+  so('so', 'ET', 'SOM'),
+  sid('sid', 'ET', 'SID'),
+  wal('wal', 'ET', 'WOL'),
+  afar('afar', 'ET', 'AFAR'),
+  gur('gur', 'ET', 'GUR');
+
+  final String languageCode;
+  final String countryCode;
+  final String label;
+
+  const AppLocale(this.languageCode, this.countryCode, this.label);
+
+  Locale get locale => Locale(languageCode, countryCode);
+
+  static AppLocale fromLocale(Locale locale) {
+    return values.firstWhere(
+      (e) => e.languageCode == locale.languageCode,
+      orElse: () => AppLocale.en,
+    );
+  }
 
   static String shortLabel(Locale locale) {
-    switch (locale.languageCode) {
-      case 'en':
-        return 'EN';
-      case 'am':
-        return 'አማ';
-      default:
-        return 'EN';
-    }
+    return fromLocale(locale).label;
   }
 }
 

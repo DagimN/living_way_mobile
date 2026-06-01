@@ -103,6 +103,10 @@ class GeneralSettingsScreen extends StatelessWidget {
                                     localizationController
                                         .toggleAppLocale(context);
                                   },
+                                  onLongPress: () {
+                                    localizationController
+                                        .fetchFromRemote(null);
+                                  },
                                   child: Text(
                                       AppLocale.shortLabel(context.locale)))
                             ]),
@@ -194,7 +198,8 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       NotificationService.periodicNotification(
                                           id: NotificationCodes.prayer.value,
                                           title: Tr.t('settings.prayerTime'),
-                                          body: Tr.t('settings.prayerReminder'));
+                                          body:
+                                              Tr.t('settings.prayerReminder'));
                                     } else {
                                       NotificationService
                                           .cancelAllNotifications();
