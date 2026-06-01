@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:living_way/core/core.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/screens/ActivityScreen/index.dart';
 import 'package:living_way/screens/BibleScreen/index.dart';
@@ -93,6 +94,8 @@ class LayoutController extends ChangeNotifier {
     }
 
     _selectedHomePageNavigation = value;
+    AnalyticsService.logEvent('navigation_tab_selected',
+        parameters: {'tab': value.name});
 
     notifyListeners();
   }

@@ -83,30 +83,31 @@ class _UpdatesViewerState extends State<UpdatesViewer> {
     ];
 
     return InkWell(
-        onTap: () => Navigator.push(
+        onTap: () async {
+          AnalyticsService.logEvent('updates_viewer_opened');
+          Navigator.push(
             context,
             PageRouteBuilder(
                 transitionDuration: const Duration(milliseconds: 1000),
-                pageBuilder: (_, __, ___) {
-                  updates[_currentIndex];
-                  return UpdatesViewerExpanded(
-                      image: currentImage,
-                      child: _currentIndex == 0
-                          ? null
-                          : Container(
-                              width: screenWidth,
-                              height: screenHeight,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      image: CachedNetworkImageProvider(widget
-                                              .updates[_currentIndex - 1]
-                                              .banner
-                                              ?.url ??
-                                          ""),
-                                      fit: BoxFit.contain),
-                                  gradient: AppTheme(brightness)
-                                      .backgroundGradient)));
-                })),
+                pageBuilder: (_, __, ___) => UpdatesViewerExpanded(
+                    image: currentImage,
+                    child: _currentIndex == 0
+                        ? null
+                        : Container(
+                            width: screenWidth,
+                            height: screenHeight,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: CachedNetworkImageProvider(widget
+                                            .updates[_currentIndex - 1]
+                                            .banner
+                                            ?.url ??
+                                        ""),
+                                    fit: BoxFit.contain),
+                                gradient:
+                                    AppTheme(brightness).backgroundGradient)))),
+          );
+        },
         child: Hero(
             tag: 'updates',
             child: Material(

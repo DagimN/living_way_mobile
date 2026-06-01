@@ -113,10 +113,14 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
               left: screenWidth * .45,
               child: IconButton(
                   style: IconButton.styleFrom(backgroundColor: Colors.white),
-                  onPressed: () {
-                    widget.player.state == PlayerState.playing
-                        ? widget.player.pause()
-                        : widget.player.resume();
+                  onPressed: () async {
+                    if (widget.player.state == PlayerState.playing) {
+                      widget.player.pause();
+                      AnalyticsService.logEvent('audio_paused');
+                    } else {
+                      widget.player.resume();
+                      AnalyticsService.logEvent('audio_played');
+                    }
                   },
                   icon: Icon(
                       widget.player.state == PlayerState.playing
@@ -129,11 +133,12 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
               child: PlayerSlider(
                   end: end,
                   value: currentSeek,
-                  onChanged: (value) {
+                  onChanged: (value) async {
                     widget.player.seek(Duration(milliseconds: value.toInt()));
                     setState(() {
                       currentSeek = value;
                     });
+                    AnalyticsService.logEvent('audio_seeked');
                   }))
         ]));
   }

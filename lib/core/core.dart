@@ -35,6 +35,7 @@ export 'services/cache_service.dart';
 export 'services/hive_service.dart';
 export 'services/image_service.dart';
 export 'services/logging_service.dart';
+export 'services/analytics_service.dart';
 export 'services/notification_service.dart';
 export 'services/ui_service.dart';
 export 'services/youtube_service.dart';

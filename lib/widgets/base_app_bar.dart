@@ -25,7 +25,8 @@ class BaseAppBar extends StatelessWidget {
             Stack(
               children: [
                 IconButton(
-                    onPressed: () {
+                    onPressed: () async {
+                      AnalyticsService.logEvent('notification_opened');
                       Navigator.pushNamed(context, '/notifications');
                     },
                     icon: Icon(Icons.notifications_none_rounded,
@@ -46,7 +47,8 @@ class BaseAppBar extends StatelessWidget {
               ],
             ),
             IconButton(
-                onPressed: () {
+                onPressed: () async {
+                  AnalyticsService.logEvent('profile_opened');
                   Navigator.pushNamed(context, "/profile");
                 },
                 icon: profileController.userProfile?.profileImageUrl != null

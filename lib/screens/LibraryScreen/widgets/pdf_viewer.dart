@@ -120,8 +120,12 @@ class _PdfViewerState extends State<PdfViewer> {
               ? TextField(
                   controller:
                       TextEditingController(text: searcher?.pattern.toString()),
-                  onSubmitted: (value) {
+                  onSubmitted: (value) async {
                     searcher?.startTextSearch(value);
+                    AnalyticsService.logEvent('pdf_text_search', parameters: {
+                      'content_id': widget.content.id,
+                      'search_pattern': value,
+                    });
 
                     Future.delayed(const Duration(milliseconds: 500), () {
                       setState(() {});
@@ -153,9 +157,14 @@ class _PdfViewerState extends State<PdfViewer> {
                       textInputAction: TextInputAction.search,
                       decoration:
                           InputDecoration(hintText: Tr.t('library.search')),
-                      onSubmitted: (value) {
+                      onSubmitted: (value) async {
                         searcher?.startTextSearch(value,
                             searchImmediately: true);
+                        AnalyticsService.logEvent('pdf_text_search',
+                            parameters: {
+                              'content_id': widget.content.id,
+                              'search_pattern': value,
+                            });
                         setState(() {});
                         Navigator.pop(context);
                       },

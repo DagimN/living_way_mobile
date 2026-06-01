@@ -94,7 +94,8 @@ class ActivityController extends ChangeNotifier {
     try {
       final response = await dio.put('$url/api/v1/content/activity/edit',
           data: {"id": poll.id, "data": poll.toMap()});
-
+      AnalyticsService.logEvent('poll_updated',
+          parameters: {'poll_id': poll.id});
       return response.statusCode.isSuccess;
     } catch (e) {
       logger.e(e);

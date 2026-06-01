@@ -38,13 +38,19 @@ class TopicCard extends StatelessWidget {
             style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(borderRadius: borderRadius)),
-            onPressed: () {
+            onPressed: () async {
               if (topic.type == TopicType.video) {
+                AnalyticsService.logEvent('topic_video_launched',
+                    parameters: {'topic_id': topic.id});
                 launchUrl(Uri.parse(
                     "https://www.youtube.com/watch?v=${topic.playlist.first.source}"));
                 return;
               }
 
+              AnalyticsService.logEvent('topic_opened', parameters: {
+                'topic_id': topic.id,
+                'topic_type': topic.type.name
+              });
               Navigator.push(context, MaterialPageRoute(builder: (context) {
                 switch (topic.type) {
                   case TopicType.audio:

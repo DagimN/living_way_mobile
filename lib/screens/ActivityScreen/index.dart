@@ -41,6 +41,7 @@ class ActivityScreen extends StatelessWidget {
           child: !activityController.isFetching || activityList.isNotEmpty
               ? RefreshIndicator(
                   onRefresh: () async {
+                    AnalyticsService.logEvent('activity_pull_to_refresh');
                     return await activityController.fetchActivities(
                         isRefreshing: true);
                   },
@@ -117,10 +118,13 @@ class ActivityScreen extends StatelessWidget {
                                                               themeController
                                                                   .brightness)
                                                           .primaryColor),
-                                                  onPressed: () {
+                                                  onPressed: () async {
                                                     activityController
                                                         .fetchActivities(
                                                             isRefreshing: true);
+                                                    await AnalyticsService
+                                                        .logEvent(
+                                                            'activity_refresh');
                                                   })
                                           ])
                                     : Center(

@@ -29,9 +29,9 @@ class _EmailFormState extends State<EmailForm> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(Tr.t("signup.step2Title"),
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-          Text(
-              Tr.t("signup.step2Subtitle"),
+              style:
+                  const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+          Text(Tr.t("signup.step2Subtitle"),
               style: const TextStyle(fontSize: 14)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
@@ -40,7 +40,9 @@ class _EmailFormState extends State<EmailForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                    if (value.trim().isEmpty) {
+                      return Tr.t("auth.emptyFieldError");
+                    }
 
                     if (!RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)*$")
@@ -52,7 +54,8 @@ class _EmailFormState extends State<EmailForm> {
                   },
                   controller: emailController,
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(), hintText: Tr.t("auth.email")))),
+                      border: const OutlineInputBorder(),
+                      hintText: Tr.t("auth.email")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -60,15 +63,16 @@ class _EmailFormState extends State<EmailForm> {
                       backgroundColor:
                           AppTheme(themeController.brightness).primaryColor,
                       foregroundColor: Colors.white),
-                  onPressed: () {
+                  onPressed: () async {
                     final isValid = formKey.currentState?.validate() ?? false;
 
                     if (!isValid) return;
 
                     widget.authController.signupProgress.email =
                         emailController.text;
-
                     widget.onProgress();
+                    AnalyticsService.logEvent('signup_step_completed',
+                        parameters: {'step': 'email'});
                   },
                   child: Text(Tr.t('common.continue'))))
         ])));

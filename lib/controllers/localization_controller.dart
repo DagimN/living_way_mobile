@@ -108,10 +108,12 @@ class LocalizationController extends ChangeNotifier {
     final newLocale =
         supportedLocales[(currentIndex + 1) % supportedLocales.length];
 
+    final fromLocale = _locale.languageCode;
     appLocale = AppLocale.fromLocale(newLocale);
     _locale = appLocale.locale;
 
     await context.setLocale(_locale);
+    await AnalyticsService.logLanguageChanged(fromLocale, _locale.languageCode);
 
     notifyListeners();
     CacheService.instance.writeData<int>('locale', appLocale.index);

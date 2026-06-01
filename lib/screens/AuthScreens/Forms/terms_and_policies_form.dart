@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/core/constants/urls.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
@@ -27,9 +26,7 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(Tr.t("signup.step4Title"),
           style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-      Text(
-          Tr.t("signup.step4Subtitle"),
-          style: const TextStyle(fontSize: 14)),
+      Text(Tr.t("signup.step4Subtitle"), style: const TextStyle(fontSize: 14)),
       Container(
           height: screenHeight * .5,
           margin: const EdgeInsets.symmetric(vertical: 10),
@@ -41,7 +38,11 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
                   backgroundColor:
                       AppTheme(themeController.brightness).primaryColor,
                   foregroundColor: Colors.white),
-              onPressed: widget.onProgress,
+              onPressed: () async {
+                widget.onProgress();
+                AnalyticsService.logEvent('signup_step_completed',
+                    parameters: {'step': 'terms'});
+              },
               child: Text(Tr.t('common.agree'))))
     ]);
   }

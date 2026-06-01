@@ -29,9 +29,11 @@ class TranslationPopupButton extends StatelessWidget {
                         fontSize: 10)))),
         itemBuilder: (context) => bibleController.translations
             .map<PopupMenuItem<Translation>>((translation) => PopupMenuItem(
-                onTap: () {
+                onTap: () async {
                   if (translation.status == TranslationStatus.available) {
                     bibleController.setTranslation = translation;
+                    AnalyticsService.logEvent('translation_selected',
+                        parameters: {'translation': translation.name});
                     return;
                   }
 
@@ -44,6 +46,8 @@ class TranslationPopupButton extends StatelessWidget {
 
                   if (translation.status == TranslationStatus.ready) {
                     bibleController.downloadTranslation(translation.name);
+                    AnalyticsService.logEvent('translation_download_started',
+                        parameters: {'translation': translation.name});
                   }
                 },
                 child: Row(

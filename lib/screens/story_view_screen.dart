@@ -102,12 +102,14 @@ class StoryViewScreenState extends State<StoryViewScreen> {
                               onPressed: () async {
                                 if (widget.controller.value.isPlaying) {
                                   await widget.controller.pause();
+                                  AnalyticsService.logEvent('story_paused');
                                   setState(() {});
                                   return;
                                 }
 
                                 if (!widget.controller.value.isPlaying) {
                                   await widget.controller.play();
+                                  AnalyticsService.logEvent('story_played');
                                   setState(() {});
                                   return;
                                 }
@@ -123,6 +125,8 @@ class StoryViewScreenState extends State<StoryViewScreen> {
                                       .toDouble(),
                                   value: currentSeek,
                                   onChanged: (value) async {
+                                    AnalyticsService.logEvent('video_seeked',
+                                        parameters: {"value": value});
                                     await widget.controller.seekTo(
                                         Duration(milliseconds: value.toInt()));
 

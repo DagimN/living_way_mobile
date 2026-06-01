@@ -93,7 +93,12 @@ class _MediaScreenState extends State<MediaScreen>
               IconButton(
                   icon:
                       const Icon(FontAwesomeIcons.youtube, color: Colors.white),
-                  onPressed: () {
+                  onPressed: () async {
+                    AnalyticsService.logEvent('youtube_link_opened',
+                        parameters: {
+                          'topic_id': widget.topic.id,
+                          'video_id': widget.topic.playlist.first.source
+                        });
                     launchUrl(Uri.parse(
                         "'https://www.youtube.com/watch?v=${widget.topic.playlist.first.source}'"));
                   })
@@ -162,7 +167,13 @@ class _MediaScreenState extends State<MediaScreen>
                                                           onPressed: () async {
                                                             final tempDir =
                                                                 await getTemporaryDirectory();
-
+                                                            AnalyticsService
+                                                                .logEvent(
+                                                                    'audio_download_started',
+                                                                    parameters: {
+                                                                  'content_id':
+                                                                      content.id
+                                                                });
                                                             content
                                                                 .downloadContent(
                                                               dir: tempDir,

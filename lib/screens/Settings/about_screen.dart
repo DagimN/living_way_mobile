@@ -64,11 +64,16 @@ class AboutScreen extends StatelessWidget {
                     DefaultTabController(
                         length: 3,
                         child: Column(children: [
-                          TabBar(tabs: [
-                            Tab(child: Text(Tr.t("settings.whoWeAre"))),
-                            Tab(child: Text(Tr.t("settings.ourBeliefs"))),
-                            Tab(child: Text(Tr.t("settings.staff")))
-                          ]),
+                          TabBar(
+                              onTap: (index) async {
+                                AnalyticsService.logEvent('about_tab_selected',
+                                    parameters: {'index': index.toString()});
+                              },
+                              tabs: [
+                                Tab(child: Text(Tr.t("settings.whoWeAre"))),
+                                Tab(child: Text(Tr.t("settings.ourBeliefs"))),
+                                Tab(child: Text(Tr.t("settings.staff")))
+                              ]),
                           SizedBox(
                               width: screenWidth,
                               height: orientation == Orientation.portrait

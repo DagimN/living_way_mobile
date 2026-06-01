@@ -28,7 +28,8 @@ class ContinueContentListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(Tr.t('library.continueReading'),
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
+              style:
+                  const TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
           Container(
               height: orientation == Orientation.portrait
                   ? screenHeight * .1
@@ -70,7 +71,14 @@ class ContinueContentListView extends StatelessWidget {
                                 padding: const EdgeInsets.all(5),
                                 shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20))),
-                            onPressed: () {
+                            onPressed: () async {
+                              AnalyticsService.logEvent('library_item_tapped',
+                                  parameters: {
+                                    'content_id': content.id,
+                                    'title': content.title,
+                                    'downloaded':
+                                        content.file != null ? 'true' : 'false'
+                                  });
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(

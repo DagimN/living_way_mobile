@@ -80,7 +80,9 @@ class VerseOfTheDay extends StatelessWidget {
                 : Row(children: [
                     Expanded(
                         child: IconButton(
-                            onPressed: () {
+                            onPressed: () async {
+                              AnalyticsService.logEvent(
+                                  'verse_of_the_day_shared');
                               SharePlus.instance.share(ShareParams(
                                 text:
                                     '${verseOfTheDay.text}\n\n${verseOfTheDay.labelWithTranslation}',
@@ -99,6 +101,8 @@ class VerseOfTheDay extends StatelessWidget {
 
                                 await ImageService.captureAndSaveImage(
                                     context, updatesViewerExpandedKey!);
+                                AnalyticsService.logEvent(
+                                    'verse_of_the_day_downloaded');
 
                                 layoutController.setShowVerseOfTheDayControls =
                                     true;
@@ -118,6 +122,8 @@ class VerseOfTheDay extends StatelessWidget {
                               layoutController.setSelectedHomePageNavigation =
                                   HomePageNavigation.bible;
                               bibleController.setPassage = todaysVerse;
+                              AnalyticsService.logEvent(
+                                  'verse_of_the_day_navigated');
 
                               Future.delayed(
                                   const Duration(seconds: 2),

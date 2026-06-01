@@ -55,6 +55,10 @@ class BibleNavigator extends StatelessWidget {
                 value: index, child: Text((index + 1).toString()));
           }).toList(),
           onChanged: (value) {
+            if (value != null) {
+              AnalyticsService.logChapterOpened(
+                  selectedPassage.book.name, value + 1);
+            }
             bibleController.setChapter = value;
             bibleController.setVerse = null;
             layoutController.scrollToTop();

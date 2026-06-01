@@ -52,7 +52,8 @@ class TopicsListview extends StatelessWidget {
                           BlendMode.srcIn))),
               IconButton(
                   style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () {
+                  onPressed: () async {
+                    AnalyticsService.logEvent('topics_refresh');
                     devotionController.fetchTopics(isRefreshing: true);
                   },
                   icon: Icon(Icons.refresh,

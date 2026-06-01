@@ -75,7 +75,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         ]),
                         Row(children: [
                           IconButton(
-                              onPressed: () {
+                              onPressed: () async {
+                                AnalyticsService.logEvent('logout_initiated');
                                 (authController.isLoggedInViaGoogle
                                         ? authController.logoutViaGoogle()
                                         : authController.logoutViaManual())
@@ -90,6 +91,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       .primaryColor)),
                           IconButton(
                               onPressed: () async {
+                                AnalyticsService.logEvent(
+                                    'profile_delete_prompt');
                                 showDialog(
                                     context: context,
                                     barrierDismissible: false,
@@ -164,6 +167,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               elevation: 5,
                                               shadowColor: Colors.black),
                                           onPressed: () async {
+                                            AnalyticsService.logEvent(
+                                                'profile_image_update_started');
                                             setState(() {
                                               isUpdatingProfileImage = true;
                                             });
@@ -193,7 +198,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                           themeController
                                                               .brightness)
                                                       .failedColor,
-                                                  message: Tr.t('profile.noImageSelected'));
+                                                  message: Tr.t(
+                                                      'profile.noImageSelected'));
                                             }
 
                                             setState(() {
@@ -238,6 +244,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         .primaryColor,
                                 value: profile.isAnonymous,
                                 onChanged: (value) async {
+                                  AnalyticsService.logEvent('anonymous_toggle',
+                                      parameters: {
+                                        'enabled': (value ?? false).toString()
+                                      });
                                   setState(() {
                                     isUpdatingAnonymous = true;
                                   });
@@ -257,7 +267,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 })),
                         SettingOptionTile(
                             title: Tr.t('profile.changePassword'),
-                            onTap: () {
+                            onTap: () async {
+                              AnalyticsService.logEvent(
+                                  'profile_change_password_opened');
                               showDialog(
                                   context: context,
                                   builder: (context) => PasswordUpdateDialog(
@@ -283,7 +295,10 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       fontWeight: FontWeight.w500)),
                               posts.length > 3
                                   ? InkWell(
-                                      onTap: () {},
+                                      onTap: () async {
+                                        AnalyticsService.logEvent(
+                                            'profile_threads_more_clicked');
+                                      },
                                       child: Text(Tr.t('more'),
                                           style: TextStyle(
                                               color: AppTheme(themeController
@@ -319,8 +334,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 margin: const EdgeInsets.only(top: 24),
                                 child: Column(children: [
                                   Image.asset(AppImages.emptyContent),
-                                  Text(
-                                      Tr.t('profile.emptyThreads'),
+                                  Text(Tr.t('profile.emptyThreads'),
                                       style: TextStyle(
                                           color: Colors.grey,
                                           fontWeight: FontWeight.w300))

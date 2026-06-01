@@ -76,7 +76,13 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       foregroundColor:
                                           AppTheme(themeController.brightness)
                                               .primaryColor),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    AnalyticsService.logEvent(
+                                        'theme_toggle_requested',
+                                        parameters: {
+                                          'previous_theme':
+                                              themeController.brightness.name
+                                        });
                                     themeController.toggleBrightness();
                                   },
                                   icon: Icon(themeController.brightness ==
@@ -100,7 +106,9 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20))),
-                                  onPressed: () {
+                                  onPressed: () async {
+                                    AnalyticsService.logEvent(
+                                        'language_toggle_requested');
                                     localizationController
                                         .toggleAppLocale(context);
                                     layoutController
@@ -140,9 +148,14 @@ class GeneralSettingsScreen extends StatelessWidget {
                                               style: TextStyle(
                                                   fontFamily: font.name))))
                                       .toList(),
-                                  onChanged: (value) {
-                                    themeController.setFont =
+                                  onChanged: (value) async {
+                                    final selectedFont =
                                         value ?? Fonts.RobotoSlab;
+                                    AnalyticsService.logEvent('font_changed',
+                                        parameters: {
+                                          'font': selectedFont.name
+                                        });
+                                    themeController.setFont = selectedFont;
                                   })
                             ]),
                         const SizedBox(height: 10),
@@ -173,7 +186,11 @@ class GeneralSettingsScreen extends StatelessWidget {
                             divisions: 9,
                             activeColor: AppTheme(themeController.brightness)
                                 .primaryColor,
-                            onChanged: (value) {
+                            onChanged: (value) async {
+                              AnalyticsService.logEvent('text_size_changed',
+                                  parameters: {
+                                    'size': value.toStringAsFixed(2)
+                                  });
                               themeController.setTextSize = value;
                             }),
                         const SizedBox(height: 16),
@@ -194,7 +211,12 @@ class GeneralSettingsScreen extends StatelessWidget {
                                           .primaryColor,
                                   value:
                                       profileController.willReceiveNotification,
-                                  onChanged: (isActive) {
+                                  onChanged: (isActive) async {
+                                    AnalyticsService.logEvent(
+                                        'receive_notifications_toggled',
+                                        parameters: {
+                                          'enabled': isActive.toString()
+                                        });
                                     if (isActive) {
                                       activityController
                                           .scheduleActivityNotifications();
@@ -222,7 +244,12 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       AppTheme(themeController.brightness)
                                           .primaryColor,
                                   value: willRemindPrayer,
-                                  onChanged: (value) {
+                                  onChanged: (value) async {
+                                    AnalyticsService.logEvent(
+                                        'prayer_reminder_toggled',
+                                        parameters: {
+                                          'enabled': value.toString()
+                                        });
                                     profileController.setWillRemindPrayer =
                                         value;
                                   })

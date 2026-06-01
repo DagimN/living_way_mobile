@@ -78,13 +78,15 @@ class _VideoPlayerState extends State<VideoPlayer> {
     });
   }
 
-  void _seekBy(int seconds) {
+  void _seekBy(int seconds) async {
     final target = Duration(
       seconds: (_currentPosition.inSeconds + seconds)
           .clamp(0, _totalDuration.inSeconds),
     );
     _controller.seekTo(target);
     _keepControlsVisible();
+    AnalyticsService.logEvent('video_seeked',
+        parameters: {'direction': seconds > 0 ? 'forward' : 'backward'});
   }
 
   String _formatDuration(Duration d) {
@@ -208,7 +210,13 @@ class _VideoPlayerState extends State<VideoPlayer> {
                 color: Colors.white,
               ),
               onPressed: () {
-                _isPlaying ? _controller.pause() : _controller.play();
+                if (_isPlaying) {
+                  _controller.pause();
+                  AnalyticsService.logEvent('video_paused');
+                } else {
+                  _controller.play();
+                  AnalyticsService.logEvent('video_played');
+                }
                 _keepControlsVisible();
               },
             ),

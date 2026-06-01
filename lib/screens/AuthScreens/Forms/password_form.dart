@@ -28,9 +28,9 @@ class _PasswordFormState extends State<PasswordForm> {
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(Tr.t("signup.step3Title"),
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-          Text(
-              Tr.t("signup.step3Subtitle"),
+              style:
+                  const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+          Text(Tr.t("signup.step3Subtitle"),
               style: const TextStyle(fontSize: 14)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
@@ -41,7 +41,9 @@ class _PasswordFormState extends State<PasswordForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                    if (value.trim().isEmpty) {
+                      return Tr.t("auth.emptyFieldError");
+                    }
 
                     if (!RegExp(r"^(?=.*[a-zA-Z])(?=.*\d).*$")
                         .hasMatch(value)) {
@@ -83,7 +85,9 @@ class _PasswordFormState extends State<PasswordForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                    if (value.trim().isEmpty) {
+                      return Tr.t("auth.emptyFieldError");
+                    }
 
                     if (passwordController.text !=
                         confirmPasswordController.text) {
@@ -113,14 +117,15 @@ class _PasswordFormState extends State<PasswordForm> {
                       backgroundColor:
                           AppTheme(themeController.brightness).primaryColor,
                       foregroundColor: Colors.white),
-                  onPressed: () {
+                  onPressed: () async {
                     final isValid = formKey.currentState?.validate() ?? false;
 
                     if (!isValid) return;
 
                     authController.signupProgress.password =
                         passwordController.text;
-
+                    AnalyticsService.logEvent('signup_step_completed',
+                        parameters: {'step': 'password'});
                     widget.onProgress();
                   },
                   child: Text(Tr.t('common.continue'))))

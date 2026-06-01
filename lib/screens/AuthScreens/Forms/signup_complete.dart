@@ -27,7 +27,7 @@ class _SignupCompleteState extends State<SignupComplete> {
   }
 
   void onSignup() {
-    widget.authController.performSignup().then((response) {
+    widget.authController.performSignup().then((response) async {
       final isSuccess = response.statusCode == 201;
 
       setState(() {
@@ -41,6 +41,8 @@ class _SignupCompleteState extends State<SignupComplete> {
             const Duration(seconds: 3),
             () => Navigator.pushNamedAndRemoveUntil(
                 context, '/home', (route) => false));
+        AnalyticsService.logEvent('signup_completed',
+            parameters: {'status': 'success'});
       }
     });
   }
@@ -88,8 +90,9 @@ class _SignupCompleteState extends State<SignupComplete> {
                 textAlign: TextAlign.center)),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 widget.onReset();
+                AnalyticsService.logEvent('signup_retry');
               },
               child: const Icon(Icons.arrow_back)),
           const SizedBox(width: 25),

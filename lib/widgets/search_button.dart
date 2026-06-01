@@ -16,7 +16,8 @@ class SearchButton extends StatelessWidget {
         tag: 'search',
         child: IconButton(
             style: IconButton.styleFrom(padding: EdgeInsets.zero),
-            onPressed: () {
+            onPressed: () async {
+              AnalyticsService.logEvent('search_opened');
               Navigator.push(
                   context,
                   PageRouteBuilder(

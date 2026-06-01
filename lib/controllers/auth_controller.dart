@@ -42,6 +42,7 @@ class AuthController extends ChangeNotifier {
       isLoggedInViaGoogle = success;
 
       if (success) {
+        await AnalyticsService.logLogin('google');
         await CacheService.instance.writeData<bool>('isLoggedIn', true);
         await CacheService.instance
             .writeData<bool>('isLoggedInViaGoogle', true);
@@ -84,6 +85,7 @@ class AuthController extends ChangeNotifier {
 
       await CacheService.instance
           .writeData<String>('profile', json.encode(data));
+      await AnalyticsService.logSignUp('manual');
       await CacheService.instance.writeData<bool>('isLoggedIn', true);
       await CacheService.instance.writeData<bool>('isLoggedInViaManual', true);
 
@@ -132,6 +134,7 @@ class AuthController extends ChangeNotifier {
       await CacheService.instance
           .writeData<String>('profile', json.encode(data));
 
+      await AnalyticsService.logLogin(isOAuth == true ? 'google' : 'manual');
       return true;
     } catch (error) {
       logger.e(error);

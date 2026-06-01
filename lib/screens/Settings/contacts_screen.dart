@@ -106,6 +106,9 @@ class ContactsScreen extends StatelessWidget {
                                   return TextButton(
                                       onPressed: () async {
                                         if (contact.type == ContactType.phone) {
+                                          AnalyticsService.logEvent(
+                                              'phone_number_tapped',
+                                              parameters: {'number': address});
                                           launchUrlString("tel://$address");
                                           return;
                                         }
@@ -113,6 +116,9 @@ class ContactsScreen extends StatelessWidget {
                                         if (contact.type == ContactType.email) {
                                           final emailUri = Uri(
                                               scheme: 'mailto', path: address);
+                                          AnalyticsService.logEvent(
+                                              'email_address_tapped',
+                                              parameters: {'email': address});
                                           canLaunchUrl(emailUri).then(
                                               (canLaunch) => canLaunch
                                                   ? launchUrl(emailUri,
@@ -130,6 +136,9 @@ class ContactsScreen extends StatelessWidget {
 
                                         final uri = Uri.tryParse(address);
                                         if (uri != null) {
+                                          AnalyticsService.logEvent(
+                                              'contact_link_tapped',
+                                              parameters: {'url': address});
                                           launchUrl(uri,
                                               mode: LaunchMode
                                                   .externalApplication);

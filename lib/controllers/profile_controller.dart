@@ -80,6 +80,8 @@ class ProfileController extends ChangeNotifier {
 
       userProfile = Profile.fromJson(response.data['result']['data']);
       notifyListeners();
+      AnalyticsService.logEvent('profile_updated',
+          parameters: {'id': userProfile?.id ?? ''});
     } catch (error) {
       logger.e(error);
     } finally {
@@ -100,6 +102,8 @@ class ProfileController extends ChangeNotifier {
           queryParameters: {"id": userProfile?.id});
 
       if (response.statusCode != 200) return;
+      AnalyticsService.logEvent('profile_deleted',
+          parameters: {'id': userProfile?.id ?? ''});
     } catch (error) {
       logger.e(error);
     } finally {
@@ -116,11 +120,15 @@ class ProfileController extends ChangeNotifier {
     willReceiveNotification = value;
     notifyListeners();
     CacheService.instance.writeData<bool>('willReceiveNotification', value);
+    AnalyticsService.logEvent('notification_preference_changed',
+        parameters: {'enabled': value.toString()});
   }
 
   set setWillRemindPrayer(bool value) {
     willRemindPrayer = value;
     notifyListeners();
     CacheService.instance.writeData<bool>('willRemindPrayer', value);
+    AnalyticsService.logEvent('prayer_reminder_changed',
+        parameters: {'enabled': value.toString()});
   }
 }

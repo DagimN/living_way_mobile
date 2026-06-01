@@ -57,10 +57,16 @@ class _BibleTraverserState extends State<BibleTraverser>
                                 child: IconButton(
                                     style: IconButton.styleFrom(
                                         padding: EdgeInsets.zero),
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (!isFirst) {
                                         bibleController.setChapter =
                                             selectedPassage.chapter - 1;
+                                        AnalyticsService.logEvent(
+                                            'chapter_navigated_back',
+                                            parameters: {
+                                              'book': selectedPassage.book.name,
+                                              'chapter': selectedPassage.chapter
+                                            });
                                       }
                                     },
                                     icon: Icon(Icons.arrow_back_ios_rounded,
@@ -87,10 +93,18 @@ class _BibleTraverserState extends State<BibleTraverser>
                                   child: IconButton(
                                       style: IconButton.styleFrom(
                                           padding: EdgeInsets.zero),
-                                      onPressed: () {
+                                      onPressed: () async {
                                         if (!isLast) {
                                           bibleController.setChapter =
                                               selectedPassage.chapter + 1;
+                                          AnalyticsService.logEvent(
+                                              'chapter_navigated_forward',
+                                              parameters: {
+                                                'book':
+                                                    selectedPassage.book.name,
+                                                'chapter':
+                                                    selectedPassage.chapter + 2
+                                              });
                                         }
                                       },
                                       icon: Icon(

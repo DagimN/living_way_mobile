@@ -41,8 +41,14 @@ class MoreScreen extends StatelessWidget {
                           itemBuilder: (context, index) {
                             final navigationItem = settingsNavigation[index];
                             return ListTile(
-                                onTap: () => Navigator.pushNamed(
-                                    context, navigationItem['route'] ?? ''),
+                                onTap: () async {
+                                  AnalyticsService.logEvent('more_navigation',
+                                      parameters: {
+                                        'route': navigationItem['route'] ?? ''
+                                      });
+                                  Navigator.pushNamed(
+                                      context, navigationItem['route'] ?? '');
+                                },
                                 title: Text(Tr.t(navigationItem['name'] ?? '')),
                                 trailing: const Icon(
                                     Icons.arrow_forward_ios_rounded,

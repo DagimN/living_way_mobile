@@ -45,6 +45,7 @@ class DailyFeedScreen extends StatelessWidget {
                 : screenHeight * .7,
             child: RefreshIndicator(
               onRefresh: () async {
+                AnalyticsService.logEvent('daily_feed_refreshed');
                 await contentController.fetchStories(isRefreshing: true);
                 await activityController.fetchActivities(isRefreshing: true);
               },

@@ -1,4 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
+import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
@@ -65,6 +66,10 @@ class LivingWayApp extends StatelessWidget {
                   return !layoutController.showSplashScreen
                       ? MaterialApp(
                           navigatorKey: UIService.navigatorKey,
+                          navigatorObservers: [
+                            FirebaseAnalyticsObserver(
+                                analytics: FirebaseAnalytics.instance)
+                          ],
                           scaffoldMessengerKey: UIService.messengerKey,
                           debugShowCheckedModeBanner: false,
                           title: 'Living Way',
@@ -82,23 +87,27 @@ class LivingWayApp extends StatelessWidget {
                           //     ? const HomeScreen()
                           //     : const IntroScreen(),
                           routes: {
-                              '/intro': (context) => const IntroScreen(),
-                              '/login': (context) => const LoginScreen(),
-                              '/signup': (context) => const SignupScreen(),
-                              '/home': (context) => const HomeScreen(),
-                              '/search': (context) => const SearchScreen(),
-                              '/settings': (context) =>
-                                  const GeneralSettingsScreen(),
-                              '/profile': (context) =>
-                                  const ProfileSettingsScreen(),
-                              '/contacts': (context) => const ContactsScreen(),
-                              '/about': (context) => const AboutScreen(),
-                              '/donation': (context) => const DonationScreen(),
-                              '/notifications': (context) =>
-                                  const NotificationScreen()
-                            })
+                            '/intro': (context) => const IntroScreen(),
+                            '/login': (context) => const LoginScreen(),
+                            '/signup': (context) => const SignupScreen(),
+                            '/home': (context) => const HomeScreen(),
+                            '/search': (context) => const SearchScreen(),
+                            '/settings': (context) =>
+                                const GeneralSettingsScreen(),
+                            '/profile': (context) =>
+                                const ProfileSettingsScreen(),
+                            '/contacts': (context) => const ContactsScreen(),
+                            '/about': (context) => const AboutScreen(),
+                            '/donation': (context) => const DonationScreen(),
+                            '/notifications': (context) =>
+                                const NotificationScreen()
+                          })
                       : MaterialApp(
                           debugShowCheckedModeBanner: false,
+                          navigatorObservers: [
+                            FirebaseAnalyticsObserver(
+                                analytics: FirebaseAnalytics.instance)
+                          ],
                           home: SplashScreen(context));
                 }),
               );

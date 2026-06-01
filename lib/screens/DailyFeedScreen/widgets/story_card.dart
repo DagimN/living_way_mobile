@@ -65,8 +65,10 @@ class _StoryCardState extends State<StoryCard> {
             decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
             child: controller != null && isInitialized
                 ? TextButton(
-                    onPressed: () {
+                    onPressed: () async {
                       contentController.viewStory(widget.story.id);
+                      AnalyticsService.logEvent('story_clicked',
+                          parameters: {'story_id': widget.story.id});
                       Navigator.push(
                           context,
                           MaterialPageRoute(

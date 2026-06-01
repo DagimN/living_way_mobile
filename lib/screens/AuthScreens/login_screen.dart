@@ -137,6 +137,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                                     BorderRadius.circular(10))),
                                         onPressed: !isPerformingAction
                                             ? () async {
+                                                AnalyticsService.logEvent(
+                                                    'login_attempt',
+                                                    parameters: {
+                                                      'method': 'manual'
+                                                    });
                                                 final isValid = formKey
                                                         .currentState
                                                         ?.validate() ??
@@ -213,6 +218,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                         height: 25, width: 25),
                                 onPressed: !isPerformingAction
                                     ? () async {
+                                        AnalyticsService.logEvent(
+                                            'login_attempt',
+                                            parameters: {'method': 'google'});
                                         setState(() {
                                           isLoggingInViaGoogle = true;
                                         });

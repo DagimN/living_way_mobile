@@ -29,13 +29,15 @@ class IntroScreen extends StatelessWidget {
                 style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(20))),
-                onPressed: () {
+                onPressed: () async {
+                  AnalyticsService.logEvent('intro_locale_toggled');
                   localizationController.toggleAppLocale(context);
                 },
                 child: Text(AppLocale.shortLabel(context.locale))),
             actions: [
               TextButton(
-                  onPressed: () {
+                  onPressed: () async {
+                    AnalyticsService.logEvent('intro_skipped');
                     Navigator.pushNamedAndRemoveUntil(
                         context, '/login', (route) => false);
                   },
@@ -49,7 +51,9 @@ class IntroScreen extends StatelessWidget {
                 children: [
                   index > 0
                       ? TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            AnalyticsService.logEvent('intro_back',
+                                parameters: {'from_page': index.toString()});
                             layoutController.setIntroPageIndex = index - 1;
                           },
                           child: Text(Tr.t('common.back')))
@@ -59,12 +63,15 @@ class IntroScreen extends StatelessWidget {
                           currentIndex: index, dotRadius: 7, pages: pages)),
                   (index < pages.length - 1)
                       ? TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            AnalyticsService.logEvent('intro_next',
+                                parameters: {'from_page': index.toString()});
                             layoutController.setIntroPageIndex = index + 1;
                           },
                           child: Text(Tr.t('common.next')))
                       : TextButton(
-                          onPressed: () {
+                          onPressed: () async {
+                            AnalyticsService.logEvent('intro_completed');
                             Navigator.pushNamedAndRemoveUntil(
                                 context, '/login', (route) => false);
                           },

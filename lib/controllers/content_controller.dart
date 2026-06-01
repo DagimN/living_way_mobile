@@ -175,6 +175,9 @@ class ContentController extends ChangeNotifier {
     final story = _storyCache.getByKey(storyId);
     if (story == null || story.isViewed) return;
 
+    AnalyticsService.logEvent('story_opened',
+        parameters: {'story_id': storyId});
+
     story.isViewed = true;
     await story.save();
   }

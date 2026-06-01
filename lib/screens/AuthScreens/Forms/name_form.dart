@@ -29,7 +29,8 @@ class _NameFormState extends State<NameForm> {
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(Tr.t("signup.step1Title"),
-              style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+              style:
+                  const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
           Text(Tr.t("signup.step1Subtitle"),
               style: const TextStyle(fontSize: 14)),
           Container(
@@ -39,12 +40,14 @@ class _NameFormState extends State<NameForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                    if (value.trim().isEmpty)
+                      return Tr.t("auth.emptyFieldError");
 
                     return null;
                   },
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(), hintText: Tr.t("signup.firstNamePlaceholder")))),
+                      border: const OutlineInputBorder(),
+                      hintText: Tr.t("signup.firstNamePlaceholder")))),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
               child: TextFormField(
@@ -52,12 +55,14 @@ class _NameFormState extends State<NameForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                    if (value.trim().isEmpty)
+                      return Tr.t("auth.emptyFieldError");
 
                     return null;
                   },
                   decoration: InputDecoration(
-                      border: const OutlineInputBorder(), hintText: Tr.t("signup.lastNamePlaceholder")))),
+                      border: const OutlineInputBorder(),
+                      hintText: Tr.t("signup.lastNamePlaceholder")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -65,7 +70,7 @@ class _NameFormState extends State<NameForm> {
                       backgroundColor:
                           AppTheme(themeController.brightness).primaryColor,
                       foregroundColor: Colors.white),
-                  onPressed: () {
+                  onPressed: () async {
                     final isValid = formKey.currentState?.validate() ?? false;
 
                     if (!isValid) return;
@@ -75,6 +80,8 @@ class _NameFormState extends State<NameForm> {
                     widget.authController.signupProgress.lastName =
                         lastNameController.text;
 
+                    AnalyticsService.logEvent('signup_step_completed',
+                        parameters: {'step': 'name'});
                     widget.onProgress();
                   },
                   child: Text(Tr.t('common.continue'))))

@@ -30,10 +30,18 @@ class LibraryScreen extends StatelessWidget {
     double screenWidth = MediaQuery.sizeOf(context).width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    void onBookTap(Content book) {
+    void onBookTap(Content book) async {
       if (book.isDownloading) return;
 
+      AnalyticsService.logEvent('library_item_tapped', parameters: {
+        'content_id': book.id,
+        'title': book.title,
+        'downloaded': book.file != null ? 'true' : 'false'
+      });
+
       if (book.file == null) {
+        AnalyticsService.logEvent('library_download_started',
+            parameters: {'content_id': book.id});
         book.downloadContent();
         contentController.saveLibrary(book);
         return;
