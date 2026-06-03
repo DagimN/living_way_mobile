@@ -169,7 +169,8 @@ class BibleController extends ChangeNotifier {
   }
 
   void scheduleVersesOfTheDay() async {
-    //TODO: Improve randomization logic
+    dailyVerses.shuffle();
+
     for (int i = 0; i < 7; i++) {
       final notificationId = NotificationCodes.verseOfTheDay.extendedCode(i);
       await NotificationService.cancelNotification(notificationId);
