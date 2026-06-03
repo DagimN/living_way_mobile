@@ -26,6 +26,7 @@ class Content extends ChangeNotifier {
   FileType? fileType;
   bool isFetching = true;
   bool isPopular;
+  bool isPaidContent;
   int? previouslyLeftOn;
   double? contentRemaining;
   bool isDownloading = false;
@@ -39,6 +40,7 @@ class Content extends ChangeNotifier {
       required this.presenter,
       required this.source,
       this.isPopular = false,
+      this.isPaidContent = false,
       this.filePath,
       this.fileType,
       this.thumbnail,
@@ -295,7 +297,8 @@ class Content extends ChangeNotifier {
             ? FileType.fromString(
                 (map['fileType'] as String).replaceAll('.', ""))
             : null,
-        isPopular: map['isPopular'] ?? false);
+        isPopular: map['isPopular'] ?? false,
+        isPaidContent: map['isPaidContent'] ?? false);
   }
 
   void updateFromJson(map) {
@@ -316,7 +319,8 @@ class Content extends ChangeNotifier {
       "source": source,
       "previouslyLeftOn": previouslyLeftOn,
       "contentRemaining": contentRemaining,
-      "filePath": filePath
+      "filePath": filePath,
+      "isPaidContent": isPaidContent
     };
   }
 

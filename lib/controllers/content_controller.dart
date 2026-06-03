@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 
 import 'package:dio/dio.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
+import 'package:media_store_plus/media_store_plus.dart';
 import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
@@ -270,6 +272,30 @@ class ContentController extends ChangeNotifier {
         isFetchingContents = false;
         notifyListeners();
       });
+
+      fetchDownloadedFiles();
+    }
+  }
+
+  Future<void> fetchDownloadedFiles() async {
+    for (final book in library) {
+      final mediaStore = MediaStore();
+      final fileName = "${book.title}.${book.fileType?.name}";
+      final bool isRegistered = await mediaStore.isFileExist(
+        fileName: fileName,
+        dirType: DirType.download,
+        dirName: DirName.download,
+        relativePath: "Living Way",
+      );
+
+      if (!isRegistered) continue;
+
+      final String filePath =
+          "/storage/emulated/0/Download/Living Way/$fileName";
+
+      book.file = File(filePath);
+      book.filePath = filePath;
+      book.notify();
     }
   }
 
