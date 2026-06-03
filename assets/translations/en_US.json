@@ -137,6 +137,7 @@
     "oldPasswordPlaceholder": "Old Password",
     "newPassword": "New Password",
     "newPasswordPlaceholder": "New Password",
+    "passwordIncorrect": "The password is incorrect.",
     "changeName": "Change name",
     "anonymous": "Anonymous",
     "settings": "Settings",

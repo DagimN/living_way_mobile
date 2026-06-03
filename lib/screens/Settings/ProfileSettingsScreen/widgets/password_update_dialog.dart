@@ -165,8 +165,13 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                         setState(() {
                           isUpdating = false;
                         });
-                        //TODO: Warn user if password is incorrect
-                        Navigator.pop(context);
+
+                        UIService.showSnackbar(
+                            message: Tr.t('profile.passwordIncorrect'),
+                            backgroundColor:
+                                AppTheme(themeController.brightness)
+                                    .failedColor);
+                        UIService.pop();
                       });
                     },
                     child: Text(Tr.t('common.update'),

@@ -137,6 +137,7 @@
     "oldPasswordPlaceholder": "ድሮ ይለፍ ቃል",
     "newPassword": "አዲስ ይለፍ ቃል",
     "newPasswordPlaceholder": "አዲስ ይለፍ ቃል",
+    "passwordIncorrect": "የይለፍ ቃሉ ትክክል አይደለም።",
     "changeName": "ስም ይለወጡ",
     "anonymous": "ስም የለሽ",
     "settings": "ቅንብሮች",
