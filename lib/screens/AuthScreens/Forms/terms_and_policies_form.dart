@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
@@ -17,11 +18,28 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
     ..loadRequest(Uri.parse(Urls.termsUrl));
 
   @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     double screenHeight = MediaQuery.sizeOf(context).height;
-
-    //FIXME: On this flow the only permitted device orientation should be portrait
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(Tr.t("signup.step4Title"),

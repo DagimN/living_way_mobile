@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/widgets.dart';
@@ -11,8 +12,32 @@ import 'pages/page3.dart';
 import 'pages/page4.dart';
 import 'pages/page5.dart';
 
-class IntroScreen extends StatelessWidget {
+class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
+
+  @override
+  State<IntroScreen> createState() => _IntroScreenState();
+}
+
+class _IntroScreenState extends State<IntroScreen> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+  }
+
+  @override
+  void dispose() {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+      DeviceOrientation.landscapeLeft,
+      DeviceOrientation.landscapeRight,
+    ]);
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +45,6 @@ class IntroScreen extends StatelessWidget {
     final localizationController = Provider.of<LocalizationController>(context);
     int index = layoutController.initialIntroductionPageIndex;
 
-    //FIXME: On this flow the only permitted device orientation should be portrait
     List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
 
     return Scaffold(
