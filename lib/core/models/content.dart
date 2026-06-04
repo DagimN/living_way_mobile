@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:media_store_plus/media_store_plus.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:image/image.dart' as image;
@@ -182,29 +181,31 @@ class Content extends ChangeNotifier {
         return;
       }
 
-      downloadProgress = 0;
-      notifyListeners();
-
-      await dio.download(source, filePath,
-          onReceiveProgress: (received, total) async {
-        downloadProgress = received / total;
-
-        NotificationService.showProgressNotification(
-          notificationId,
-          title,
-          (downloadProgress! * 100).toInt(),
-        );
+      if (file == null) {
+        downloadProgress = 0;
         notifyListeners();
-      });
 
-      this.filePath = filePath;
-      file = File(filePath);
+        await dio.download(source, filePath,
+            onReceiveProgress: (received, total) async {
+          downloadProgress = received / total;
+
+          NotificationService.showProgressNotification(
+            notificationId,
+            title,
+            (downloadProgress! * 100).toInt(),
+          );
+          notifyListeners();
+        });
+
+        this.filePath = filePath;
+        file = File(filePath);
+      }
 
       SaveInfo? saveInfo;
 
       if (downloadToPublic) {
         saveInfo = await MediaStore().saveFile(
-            tempFilePath: filePath,
+            tempFilePath: file?.path ?? filePath,
             dirType: DirType.download,
             dirName: DirName.download,
             relativePath: "Living Way");
@@ -212,8 +213,10 @@ class Content extends ChangeNotifier {
         if (file?.existsSync() ?? false) {
           file?.deleteSync();
 
-          file = null;
-          this.filePath = null;
+          file = (saveInfo?.isSuccessful ?? false)
+              ? File("/storage/emulated/0/Download/Living Way/$fileName")
+              : null;
+          this.filePath = (saveInfo?.isSuccessful ?? false) ? file?.path : null;
         }
       }
 
@@ -229,25 +232,23 @@ class Content extends ChangeNotifier {
       if (saveInfo != null) {
         saveInfo.isSuccessful
             ? UIService.showSnackbar(
-                child: Row(
+                child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       SizedBox(
-                        width: screenWidth * .4,
+                        width: screenWidth * .8,
                         child: Text(
                           Tr.arg('content.downloaded', title),
                           maxLines: 2,
                         ),
                       ),
-                      IconButton(
-                          onPressed: () async {
-                            final filePath =
-                                "/storage/emulated/0/Download/Living Way/$fileName";
-
-                            await OpenFilex.open(filePath);
-                          },
-                          icon: const Icon(Icons.arrow_forward,
-                              color: Colors.white))
+                      SizedBox(
+                        width: screenWidth * .8,
+                        child: Text(
+                          file?.path ?? '',
+                          maxLines: 2,
+                        ),
+                      ),
                     ]),
                 backgroundColor:
                     AppTheme(themeController.brightness).successColor,

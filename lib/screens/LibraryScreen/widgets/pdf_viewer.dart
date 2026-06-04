@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:pdfrx/pdfrx.dart' as pdfrx;
 import 'package:provider/provider.dart';
 
@@ -140,32 +139,38 @@ class _PdfViewerState extends State<PdfViewer> {
                 Navigator.of(context).pop();
               }),
           actions: [
-            if (widget.content.file == null &&
-                !widget.content.isPaidContent) //TODO: Test feature
-              widget.content.isDownloading
-                  ? SizedBox(
-                      width: 30,
-                      height: 30,
-                      child: CircularProgressIndicator(
-                        value: widget.content.downloadProgress,
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
-                        backgroundColor: AppTheme(themeController.brightness)
-                            .backgroundColor,
-                        strokeCap: StrokeCap.round,
-                      ),
-                    )
-                  : IconButton(
-                      onPressed: () async {
-                        final tempDir = await getTemporaryDirectory();
-                        AnalyticsService.logEvent('pdf_download_started',
-                            parameters: {'content_id': widget.content.id});
-                        widget.content.downloadContent(
-                          dir: tempDir,
-                          downloadToPublic: true,
-                        );
-                      },
-                      icon: const Icon(Icons.drive_folder_upload_rounded)),
+            if (!(widget.content.file?.path.contains('storage') ?? false) &&
+                !widget.content.isPaidContent)
+              ListenableBuilder(
+                  listenable: widget.content,
+                  builder: (context, child) {
+                    return widget.content.isDownloading
+                        ? SizedBox(
+                            width: 30,
+                            height: 30,
+                            child: CircularProgressIndicator(
+                              value: widget.content.downloadProgress,
+                              color: AppTheme(themeController.brightness)
+                                  .primaryColor,
+                              backgroundColor:
+                                  AppTheme(themeController.brightness)
+                                      .backgroundColor,
+                              strokeCap: StrokeCap.round,
+                            ),
+                          )
+                        : IconButton(
+                            onPressed: () async {
+                              AnalyticsService.logEvent('pdf_download_started',
+                                  parameters: {
+                                    'content_id': widget.content.id
+                                  });
+                              widget.content.downloadContent(
+                                downloadToPublic: true,
+                              );
+                            },
+                            icon:
+                                const Icon(Icons.drive_folder_upload_outlined));
+                  }),
             if (searcher?.pattern != null)
               IconButton(
                   icon: const Icon(Icons.close),
