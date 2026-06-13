@@ -100,7 +100,6 @@ class ActivityScreen extends StatelessWidget {
                                                         vertical: 16),
                                                 child: Image.asset(
                                                     AppImages.activitiesEnd)),
-                                            //TODO: Add a cursive font
                                             Text(
                                                 activityList.isNotEmpty
                                                     ? 'It all started here'

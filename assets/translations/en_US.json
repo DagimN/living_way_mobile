@@ -30,7 +30,10 @@
     "empty": "Empty",
     "yes": "Yes",
     "no": "No",
-    "votes": "Votes"
+    "votes": "Votes",
+    "save": "Save",
+    "logout": "Logout",
+    "deleteAccount": "Delete Account"
   },
   "time": {
     "ago": "ago",
@@ -61,7 +64,11 @@
     "invalidPasswordError": "Password must be at least 8 characters",
     "passwordMismatchError": "Passwords do not match",
     "passwordRequirementsAlpha": "It should include letters and numbers",
-    "passwordRequirementsSymbol": "It should include symbols"
+    "passwordRequirementsSymbol": "It should include symbols",
+    "forgotPasswordTitle": "Forgot Password",
+    "forgotPasswordSubtitle": "Enter your email to receive a reset password link to your inbox.",
+    "forgotPasswordSuccess": "Reset link sent successfully",
+    "forgotPasswordError": "Could not send reset link"
   },
   "signup": {
     "step1Title": "Hi there!!",
@@ -132,6 +139,7 @@
     "more": "More",
     "deleteAccount": "Delete Account",
     "deleteAccountMessage": "Are you sure you want to delete your account?",
+    "logoutMessage": "Are your sure you want to logout?",
     "changePassword": "Change password",
     "oldPassword": "Old Password",
     "oldPasswordPlaceholder": "Old Password",
@@ -142,7 +150,14 @@
     "anonymous": "Anonymous",
     "settings": "Settings",
     "noImageSelected": "No image selected",
-    "emptyThreads": "You have not posted anything yet."
+    "emptyThreads": "You have not posted anything yet.",
+    "verifyEmail": "Verify your email",
+    "verifyEmailMessage": "Please verify your email address to access all features.\nCheck your inbox for the verification message {}.",
+    "verificationPending": "Verification Pending",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "updateSuccess": "Profile updated successfully",
+    "updateFailed": "Failed to update profile"
   },
   "settings": {
     "general": "General",
@@ -207,6 +222,8 @@
     "error": "Error",
     "validation": "Validation Error",
     "tryAgain": "Try Again",
-    "close": "Close"
+    "close": "Close",
+    "failedGoogleLogin": "Could not login via Google",
+    "failedSignup": "Could not signup. Please try again."
   }
 }

@@ -49,7 +49,13 @@ class BaseAppBar extends StatelessWidget {
             IconButton(
                 onPressed: () async {
                   AnalyticsService.logEvent('profile_opened');
-                  Navigator.pushNamed(context, "/profile");
+                  profileController.syncProfile();
+
+                  Navigator.pushNamed(
+                      context,
+                      profileController.userProfile != null
+                          ? "/profile"
+                          : "/login");
                 },
                 icon: profileController.userProfile?.profileImageUrl != null
                     ? CircleAvatar(

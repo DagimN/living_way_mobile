@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/controllers/auth_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/core.dart';
@@ -26,25 +27,22 @@ class _SignupCompleteState extends State<SignupComplete> {
     onSignup();
   }
 
-  void onSignup() {
-    widget.authController.performSignup().then((response) async {
-      final isSuccess = response.statusCode == 201;
+  Future<void> onSignup() async {
+    final response = await widget.authController.register();
+    final isSuccess = response.statusCode.isSuccess;
 
-      setState(() {
-        this.response = response;
-        isSigningUp = false;
-        isSignupSuccessful = isSuccess;
-      });
-
-      if (isSuccess) {
-        Future.delayed(
-            const Duration(seconds: 3),
-            () => Navigator.pushNamedAndRemoveUntil(
-                context, '/home', (route) => false));
-        AnalyticsService.logEvent('signup_completed',
-            parameters: {'status': 'success'});
-      }
+    setState(() {
+      this.response = response;
+      isSigningUp = false;
+      isSignupSuccessful = isSuccess;
     });
+
+    if (isSuccess) {
+      Future.delayed(const Duration(seconds: 3),
+          () => UIService.pushNamedAndRemoveUntil('/home', (route) => false));
+      AnalyticsService.logEvent('signup_completed',
+          parameters: {'status': 'success'});
+    }
   }
 
   @override

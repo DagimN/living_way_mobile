@@ -2,6 +2,7 @@ import "dart:convert";
 import "package:dio/dio.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:functional_status_codes/functional_status_codes.dart";
 import "package:living_way/core/core.dart";
 
 class ProfileController extends ChangeNotifier {
@@ -14,8 +15,6 @@ class ProfileController extends ChangeNotifier {
   bool willRemindPrayer = false;
 
   ProfileController() {
-    //TODO: Implement stay logged in feature
-
     _init();
   }
 
@@ -24,9 +23,8 @@ class ProfileController extends ChangeNotifier {
         .readData<String>('profile', defaultValue: '{}');
 
     if (profileCache != "{}") {
-      final profile = Profile.fromJson(json.decode(profileCache));
-
-      userProfile = await syncProfile(profile) ?? profile;
+      userProfile = Profile.fromJson(json.decode(profileCache));
+      await syncProfile();
     }
 
     willReceiveNotification = await CacheService.instance
@@ -37,7 +35,9 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<Profile?> syncProfile(Profile profile) async {
+  Future<void> syncProfile() async {
+    if (userProfile == null) return;
+
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
@@ -46,25 +46,26 @@ class ProfileController extends ChangeNotifier {
             : Urls.prodApiUrl;
 
     try {
-      final response = await dio.get('$url/api/v1/profile',
-          queryParameters: {"id": profile.id, "tid": profile.tokenId});
+      final response = await dio
+          .get('$url/api/v1/profile', queryParameters: {"id": userProfile?.id});
 
-      if (response.statusCode != 200) return null;
+      if (response.statusCode != 200) return;
 
       final data = response.data['data'];
       await CacheService.instance
           .writeData<String>('profile', json.encode(data));
 
-      return Profile.fromJson(data);
+      userProfile = Profile.fromJson(data);
     } catch (error) {
       logger.e(error);
-      return null;
+      return;
     } finally {
       dio.close();
+      notifyListeners();
     }
   }
 
-  Future<void> editProfile(FormData formData) async {
+  Future<bool> editProfile(FormData formData) async {
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     const url = appFlavor == "dev"
         ? Urls.devApiUrl
@@ -76,14 +77,16 @@ class ProfileController extends ChangeNotifier {
       final response =
           await dio.put('$url/api/v1/profile/edit', data: formData);
 
-      if (response.statusCode != 200) return;
+      if (!response.statusCode.isSuccess) return false;
 
       userProfile = Profile.fromJson(response.data['result']['data']);
       notifyListeners();
       AnalyticsService.logEvent('profile_updated',
           parameters: {'id': userProfile?.id ?? ''});
+      return true;
     } catch (error) {
       logger.e(error);
+      return false;
     } finally {
       dio.close();
     }
@@ -104,14 +107,13 @@ class ProfileController extends ChangeNotifier {
       if (response.statusCode != 200) return;
       AnalyticsService.logEvent('profile_deleted',
           parameters: {'id': userProfile?.id ?? ''});
+      clearValues();
     } catch (error) {
       logger.e(error);
-    } finally {
-      dio.close();
     }
   }
 
-  set setUserProfile(Profile value) {
+  set setUserProfile(Profile? value) {
     userProfile = value;
     notifyListeners();
   }
@@ -130,5 +132,16 @@ class ProfileController extends ChangeNotifier {
     CacheService.instance.writeData<bool>('willRemindPrayer', value);
     AnalyticsService.logEvent('prayer_reminder_changed',
         parameters: {'enabled': value.toString()});
+  }
+
+  void clearValues() {
+    userProfile = null;
+    isAnonymous = false;
+    willReceiveNotification = true;
+    willRemindPrayer = false;
+    CacheService.instance.deleteData('profile');
+    CacheService.instance.writeData('willReceiveNotification', true);
+    CacheService.instance.writeData('willRemindPrayer', false);
+    notifyListeners();
   }
 }

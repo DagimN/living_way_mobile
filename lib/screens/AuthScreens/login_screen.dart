@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/controllers/auth_controller.dart';
-import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
-import 'package:living_way/screens/home.dart';
 import 'package:provider/provider.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -14,11 +12,53 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+
   bool obscurePassword = true;
   bool isLoggingInViaGoogle = false;
   bool isLoggingInViaManual = false;
-  final emailController = TextEditingController();
-  final passwordController = TextEditingController();
+
+  void performManualLogin(AuthController controller) async {
+    AnalyticsService.logEvent('login_attempt',
+        parameters: {'method': 'manual'});
+    final isValid = formKey.currentState?.validate() ?? false;
+
+    if (!isValid) return;
+
+    setState(() {
+      isLoggingInViaManual = true;
+    });
+
+    final isSuccessful = await controller.loginViaManual(
+        emailController.text, passwordController.text);
+
+    setState(() {
+      isLoggingInViaManual = false;
+    });
+
+    if (isSuccessful) {
+      UIService.pushNamedAndRemoveUntil('/home', (route) => false);
+    }
+  }
+
+  void performGoogleLogin(AuthController controller) async {
+    AnalyticsService.logEvent('login_attempt',
+        parameters: {'method': 'google'});
+    setState(() {
+      isLoggingInViaGoogle = true;
+    });
+
+    final isSuccess = await controller.loginViaGoogle();
+
+    setState(() {
+      isLoggingInViaGoogle = false;
+    });
+
+    if (isSuccess) {
+      UIService.pushNamedAndRemoveUntil('/home', (route) => false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +96,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: TextFormField(
+                                    controller: emailController,
                                     validator: (value) {
-                                      if (value == null)
+                                      if (value == null) {
                                         return Tr.t('auth.emptyFieldError');
+                                      }
 
                                       if (value.trim().isEmpty) {
                                         return Tr.t('auth.emptyFieldError');
@@ -80,9 +122,11 @@ class _LoginScreenState extends State<LoginScreen> {
                             Container(
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: TextFormField(
+                                    controller: passwordController,
                                     validator: (value) {
-                                      if (value == null)
+                                      if (value == null) {
                                         return Tr.t('auth.emptyFieldError');
+                                      }
 
                                       if (value.trim().isEmpty) {
                                         return Tr.t('auth.emptyFieldError');
@@ -114,14 +158,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: InkWell(
                                     onTap: !isPerformingAction
                                         ? () {
-                                            //TODO: Implement forgot password
+                                            Navigator.pushNamed(
+                                                context, '/forgot-password');
                                           }
                                         : null,
                                     child: Text(Tr.t('auth.forgotPassword'),
                                         style: const TextStyle(
                                             decoration:
                                                 TextDecoration.underline)))),
-                            //FIXME: Refactor for maintainability
                             !isLoggingInViaManual
                                 ? SizedBox(
                                     width: screenWidth * .7,
@@ -136,57 +180,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 borderRadius:
                                                     BorderRadius.circular(10))),
                                         onPressed: !isPerformingAction
-                                            ? () async {
-                                                AnalyticsService.logEvent(
-                                                    'login_attempt',
-                                                    parameters: {
-                                                      'method': 'manual'
-                                                    });
-                                                final isValid = formKey
-                                                        .currentState
-                                                        ?.validate() ??
-                                                    false;
-
-                                                if (!isValid) return;
-
-                                                setState(() {
-                                                  isLoggingInViaManual = true;
-                                                });
-
-                                                Future.delayed(const Duration(
-                                                        seconds: 3))
-                                                    .then((value) {
-                                                  setState(() {
-                                                    isLoggingInViaManual =
-                                                        false;
-                                                  });
-                                                  Navigator
-                                                      .pushNamedAndRemoveUntil(
-                                                          context,
-                                                          '/home',
-                                                          (route) => false);
-                                                });
-
-                                                //FIXME: Revert to original
-                                                // authController
-                                                //     .performLogin(
-                                                //         emailController.text,
-                                                //         password:
-                                                //             passwordController
-                                                //                 .text)
-                                                //     .then((value) {
-                                                //   setState(() {
-                                                //     isLoggingInViaManual =
-                                                //         false;
-                                                //   });
-                                                // Navigator.pushAndRemoveUntil(
-                                                //     context,
-                                                //     MaterialPageRoute(
-                                                //         builder: (context) =>
-                                                //             const HomeScreen()),
-                                                //     (route) => false);
-                                                // });
-                                              }
+                                            ? () => performManualLogin(
+                                                authController)
                                             : null,
                                         child: Text(Tr.t('auth.login'))))
                                 : SizedBox(
@@ -217,30 +212,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : Image.asset(AppIcons.google,
                                         height: 25, width: 25),
                                 onPressed: !isPerformingAction
-                                    ? () async {
-                                        AnalyticsService.logEvent(
-                                            'login_attempt',
-                                            parameters: {'method': 'google'});
-                                        setState(() {
-                                          isLoggingInViaGoogle = true;
-                                        });
-
-                                        authController
-                                            .loginViaGoogle()
-                                            .then((isSuccess) {
-                                          setState(() {
-                                            isLoggingInViaGoogle = false;
-                                          });
-                                          if (isSuccess) {
-                                            Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        const HomeScreen()),
-                                                (route) => false);
-                                          }
-                                        });
-                                      }
+                                    ? () => performGoogleLogin(authController)
                                     : null),
                             Container(
                                 margin: const EdgeInsets.all(10),
@@ -253,7 +225,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                           onTap: !isPerformingAction
                                               ? () {
                                                   Navigator.pushNamed(
-                                                      context, '/signup');
+                                                      context, '/intro');
                                                 }
                                               : null,
                                           child: Text(Tr.t('auth.signUp'),

@@ -5,8 +5,7 @@ import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class PasswordUpdateDialog extends StatefulWidget {
-  final bool passwordExists;
-  const PasswordUpdateDialog({super.key, required this.passwordExists});
+  const PasswordUpdateDialog({super.key});
 
   @override
   PasswordUpdateDialogState createState() => PasswordUpdateDialogState();
@@ -37,36 +36,35 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                  if (widget.passwordExists)
-                    Container(
-                        margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
-                        child: TextFormField(
-                            keyboardType: isOldPasswordVisible
-                                ? TextInputType.visiblePassword
-                                : null,
-                            obscureText: !isOldPasswordVisible,
-                            controller: oldPasswordController,
-                            validator: (value) {
-                              if (value == null) return "Empty Field";
+                  Container(
+                      margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
+                      child: TextFormField(
+                          keyboardType: isOldPasswordVisible
+                              ? TextInputType.visiblePassword
+                              : null,
+                          obscureText: !isOldPasswordVisible,
+                          controller: oldPasswordController,
+                          validator: (value) {
+                            if (value == null) return "Empty Field";
 
-                              if (value.trim().isEmpty) return "Empty Field";
+                            if (value.trim().isEmpty) return "Empty Field";
 
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                                suffixIcon: IconButton(
-                                    onPressed: () {
-                                      setState(() {
-                                        isOldPasswordVisible =
-                                            !isOldPasswordVisible;
-                                      });
-                                    },
-                                    icon: Icon(!isOldPasswordVisible
-                                        ? Icons.visibility
-                                        : Icons.visibility_off)),
-                                border: const OutlineInputBorder(),
-                                hintText:
-                                    Tr.t('profile.oldPasswordPlaceholder')))),
+                            return null;
+                          },
+                          decoration: InputDecoration(
+                              suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      isOldPasswordVisible =
+                                          !isOldPasswordVisible;
+                                    });
+                                  },
+                                  icon: Icon(!isOldPasswordVisible
+                                      ? Icons.visibility
+                                      : Icons.visibility_off)),
+                              border: const OutlineInputBorder(),
+                              hintText:
+                                  Tr.t('profile.oldPasswordPlaceholder')))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: TextFormField(
@@ -137,8 +135,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(Tr.t('common.cancel'),
-                        style: const TextStyle(color: Colors.red))),
+                    child: Text(Tr.t('common.cancel'))),
                 TextButton(
                     onPressed: () async {
                       final isValid = formKey.currentState?.validate() ?? false;
@@ -153,26 +150,33 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                       formData.fields.addAll([
                         MapEntry('id', profileController.userProfile?.id ?? ""),
                         MapEntry(
-                            'newPassword', encrypt(newPasswordController.text))
+                            'newPassword', hash(newPasswordController.text))
                       ]);
 
-                      if (widget.passwordExists) {
-                        formData.fields.add(MapEntry('oldPassword',
-                            encrypt(oldPasswordController.text)));
-                      }
+                      formData.fields.add(
+                          MapEntry('oldPassword', oldPasswordController.text));
 
-                      profileController.editProfile(formData).then((value) {
-                        setState(() {
-                          isUpdating = false;
-                        });
+                      final isSuccess =
+                          await profileController.editProfile(formData);
 
+                      setState(() {
+                        isUpdating = false;
+                      });
+
+                      if (isSuccess) {
+                        UIService.showSnackbar(
+                            message: Tr.t('profile.updateSuccess'),
+                            backgroundColor:
+                                AppTheme(themeController.brightness)
+                                    .successColor);
+                        UIService.pop();
+                      } else {
                         UIService.showSnackbar(
                             message: Tr.t('profile.passwordIncorrect'),
                             backgroundColor:
                                 AppTheme(themeController.brightness)
                                     .failedColor);
-                        UIService.pop();
-                      });
+                      }
                     },
                     child: Text(Tr.t('common.update'),
                         style: TextStyle(

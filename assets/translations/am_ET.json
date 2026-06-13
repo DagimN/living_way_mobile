@@ -30,7 +30,10 @@
     "empty": "ባዶ",
     "yes": "አዎ",
     "no": "አይ",
-    "votes": "ድምጾች"
+    "votes": "ድምጾች",
+    "save": "አስቀምጥ",
+    "logout": "ይውጡ",
+    "deleteAccount": "መለያ ሰርዝ"
   },
   "time": {
     "ago": "በፊት",
@@ -61,7 +64,11 @@
     "invalidPasswordError": "የይለፍ ቃል ቢያንስ 8 ጀምሮ ባህሪዎች መሆን አለበት",
     "passwordMismatchError": "የይለፍ ቃላት አይዛመዱም",
     "passwordRequirementsAlpha": "ፊደሎችን እና ቁጥሮችን ማካተት አለበት",
-    "passwordRequirementsSymbol": "ምልክቶችን ማካተት አለበት"
+    "passwordRequirementsSymbol": "ምልክቶችን ማካተት አለበት",
+    "forgotPasswordTitle": "መክፈቻ ቁልፉን ረሳኽው",
+    "forgotPasswordSubtitle": "ዳግም ማስጀመሪያ የይለፍ ቃል አገናኝ ወደ የገቢ መልእክት ሳጥንዎ ለመቀበል ኢሜልዎን ያስገቡ።",
+    "forgotPasswordSuccess": "ዳግም አስጀምር አገናኝ በተሳካ ሁኔታ ተልኳል",
+    "forgotPasswordError": "ዳግም ማስጀመሪያ አገናኝ መላክ አልተቻለም"
   },
   "signup": {
     "step1Title": "ሰላም!!",
@@ -132,6 +139,7 @@
     "more": "ተጨማሪ",
     "deleteAccount": "መለያ ሰርዝ",
     "deleteAccountMessage": "እርግጠኛ ነህ መለያህን መሰረዝ ትፈልጋለህ?",
+    "logoutMessage": "እርግጠኛ ነዎት መውጣት ይፈልጋሉ?",
     "changePassword": "የይለፍ ቃል ይለወጡ",
     "oldPassword": "ድሮ ይለፍ ቃል",
     "oldPasswordPlaceholder": "ድሮ ይለፍ ቃል",
@@ -142,7 +150,14 @@
     "anonymous": "ስም የለሽ",
     "settings": "ቅንብሮች",
     "noImageSelected": "ምንም ምስል አልተመረጠም",
-    "emptyThreads": "እስካሁን ምንም የለጠፉት ነገር የለም።"
+    "emptyThreads": "እስካሁን ምንም የለጠፉት ነገር የለም።",
+    "verifyEmail": "ኢሜልዎን ያረጋግጡ",
+    "verifyEmailMessage": "ሁሉንም ባህሪያት ለመድረስ እባክዎ የኢሜይል አድራሻዎን ያረጋግጡ.\nየማረጋገጫ መልእክት ለማግኘት የገቢ መልእክት ሳጥንዎን ያረጋግጡ። {}",
+    "verificationPending": "ማረጋገጫ በመጠባበቅ ላይ",
+    "firstName": "ስም",
+    "lastName": "የአባት ሥም",
+    "updateSuccess": "መገለጫ በተሳካ ሁኔታ ተዘምኗል",
+    "updateFailed": "መገለጫ ማዘመን አልተሳካም"
   },
   "settings": {
     "general": "አጠቃላይ",
@@ -207,6 +222,8 @@
     "error": "ስህተት",
     "validation": "የማረጋገጫ ስህተት",
     "tryAgain": "እንደገና ይሞክሩ",
-    "close": "ዝጋ"
+    "close": "ዝጋ",
+    "failedGoogleLogin": "በ Google በኩል መግባት አልተቻለም",
+    "failedSignup": "መመዝገብ አልተቻለም። እባክዎ ዳግም ይሞክሩ"
   }
 }

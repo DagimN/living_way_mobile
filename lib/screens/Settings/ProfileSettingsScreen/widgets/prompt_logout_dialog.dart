@@ -3,16 +3,15 @@ import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
-class PromptDeleteProfileDialog extends StatefulWidget {
-  const PromptDeleteProfileDialog({super.key});
+class PromptLogoutDialog extends StatefulWidget {
+  const PromptLogoutDialog({super.key});
 
   @override
-  State<PromptDeleteProfileDialog> createState() =>
-      _PromptDeleteProfileDialogState();
+  State<PromptLogoutDialog> createState() => _PromptLogoutDialogState();
 }
 
-class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
-  bool isDeleting = false;
+class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
+  bool isLoggingOut = false;
 
   @override
   Widget build(BuildContext context) {
@@ -21,28 +20,28 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
     final authController = Provider.of<AuthController>(context);
 
     return AlertDialog(
-        title: Text(Tr.t('profile.deleteAccount')),
-        content: Text(Tr.t('profile.deleteAccountMessage')),
-        actions: !isDeleting
+        title: Text(Tr.t('common.logout')),
+        content: Text(Tr.t('profile.logoutMessage')),
+        actions: !isLoggingOut
             ? [
                 TextButton(
                     onPressed: () async {
                       setState(() {
-                        isDeleting = true;
+                        isLoggingOut = true;
                       });
-                      await profileController.deleteProfile();
+                      profileController.clearValues();
                       (authController.isLoggedInViaGoogle
                               ? authController.logoutViaGoogle()
                               : authController.logoutViaManual())
                           .then((value) {
                         setState(() {
-                          isDeleting = false;
+                          isLoggingOut = false;
                         });
                         UIService.pushNamedAndRemoveUntil(
                             '/home', (route) => false);
                       });
                     },
-                    child: Text(Tr.t('common.delete'),
+                    child: Text(Tr.t('common.logout'),
                         style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () {

@@ -94,7 +94,6 @@ class Article extends StatelessWidget {
                 padding: EdgeInsets.zero,
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(radius))),
-            //TODO: Implement dynamic banner positioning
             child: Row(children: [
               SizedBox(
                   width: screenWidth * .3,

@@ -3,6 +3,7 @@ import 'package:firebase_analytics/firebase_analytics.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
+import 'package:living_way/screens/AuthScreens/Forms/forgot_password_form.dart';
 import 'package:living_way/screens/screens.dart';
 import 'package:provider/provider.dart';
 
@@ -46,6 +47,7 @@ class LivingWayApp extends StatelessWidget {
                 path: 'assets/translations',
                 fallbackLocale: localizationController.supportedLocales.first,
                 assetLoader: localizationController.loader,
+                saveLocale: false,
                 child: Consumer<AuthController>(
                     builder: (context, authController, _) {
                   final profileController =
@@ -83,9 +85,6 @@ class LivingWayApp extends StatelessWidget {
                                           .primaryColor),
                               useMaterial3: true),
                           home: const HomeScreen(),
-                          // authController.isLoggedIn FIXME: Prioritize anonymous login
-                          //     ? const HomeScreen()
-                          //     : const IntroScreen(),
                           routes: {
                             '/intro': (context) => const IntroScreen(),
                             '/login': (context) => const LoginScreen(),
@@ -100,7 +99,9 @@ class LivingWayApp extends StatelessWidget {
                             '/about': (context) => const AboutScreen(),
                             '/donation': (context) => const DonationScreen(),
                             '/notifications': (context) =>
-                                const NotificationScreen()
+                                const NotificationScreen(),
+                            '/forgot-password': (context) =>
+                                const ForgotPasswordForm(),
                           })
                       : MaterialApp(
                           debugShowCheckedModeBanner: false,

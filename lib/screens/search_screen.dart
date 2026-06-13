@@ -30,7 +30,7 @@ class SearchScreen extends StatelessWidget {
                               icon:
                                   SvgPicture.asset(AppIcons.search, height: 24),
                               onPressed: () {
-                                Navigator.pop(context);
+                                Navigator.pop(context); //TODO: Implement search
                               })))))
         ])));
   }

@@ -9,3 +9,5 @@ final unsplasAccessKey = dotenv.get('UNSPLASH_ACCESS_KEY', fallback: '');
 
 final youtubeApiKey = dotenv.get('YOUTUBE_API_KEY', fallback: '');
 final youtubeChannelId = dotenv.get('YOUTUBE_CHANNEL_ID', fallback: '');
+
+final googleClientId = dotenv.get('GOOGLE_CLIENT_ID', fallback: '');

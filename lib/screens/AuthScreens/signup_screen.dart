@@ -29,7 +29,6 @@ class _SignupScreenState extends State<SignupScreen> {
     final themeController = Provider.of<ThemeController>(context);
 
     return PopScope(
-        canPop: signupFlowIndex == 0,
         onPopInvokedWithResult: (isPopped, _) {
           if (signupFlowIndex > 0 && signupFlowIndex < maxSignUpFlow) {
             setState(() {
@@ -45,8 +44,7 @@ class _SignupScreenState extends State<SignupScreen> {
                     foregroundColor: Colors.white,
                     title: Text(Tr.t('auth.signupTitle'),
                         style: const TextStyle(fontSize: 24)))
-                : AppBar(
-                    backgroundColor: Colors.white, leading: const SizedBox()),
+                : AppBar(backgroundColor: Colors.white),
             body: SingleChildScrollView(
                 child: Container(
                     height: orientation == Orientation.portrait
@@ -57,7 +55,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       currentForm(() => setState(() {
                             signupFlowIndex += 1;
                           })),
-                      const Spacer(), //TODO: Add animation
+                      const Spacer(),
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: LinearProgressIndicator(

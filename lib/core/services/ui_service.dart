@@ -66,6 +66,11 @@ class UIService {
         ?.push(MaterialPageRoute(builder: (context) => page));
   }
 
+  static void pushNamedAndRemoveUntil<T>(
+      String namedPage, bool Function(Route<dynamic>) predicate) {
+    navigatorKey.currentState?.pushNamedAndRemoveUntil(namedPage, predicate);
+  }
+
   static void pop<T>([T? result]) {
     if (navigatorKey.currentState?.canPop() ?? false) {
       navigatorKey.currentState?.pop(result);

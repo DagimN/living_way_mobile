@@ -63,7 +63,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   onPressed: () async {
                     AnalyticsService.logEvent('intro_skipped');
                     Navigator.pushNamedAndRemoveUntil(
-                        context, '/login', (route) => false);
+                        context, '/signup', (route) => false);
                   },
                   child: Text(Tr.t('common.skip')))
             ]),
@@ -97,7 +97,9 @@ class _IntroScreenState extends State<IntroScreen> {
                           onPressed: () async {
                             AnalyticsService.logEvent('intro_completed');
                             Navigator.pushNamedAndRemoveUntil(
-                                context, '/login', (route) => false);
+                                context,
+                                '/signup',
+                                (route) => route.settings.name == '/login');
                           },
                           child: Text(Tr.t('common.done')))
                 ])));

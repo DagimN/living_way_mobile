@@ -51,6 +51,7 @@ Future<void> _handleIncomingNotification(RemoteMessage message) async {
     );
   } else {
     await NotificationService.showNotification(
+      //FIXME: Notification text is just showing max 2 lines of text
       id: notificationId,
       title: message.data['title'],
       body: message.data['body'],
@@ -70,11 +71,12 @@ Future<void> _handleIncomingNotification(RemoteMessage message) async {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await dotenv.load();
-
+  await EasyLocalization.ensureInitialized();
   await pdfrxFlutterInitialize();
-
   await Firebase.initializeApp();
+
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   FirebaseMessaging.onMessage.listen(_handleIncomingNotification);
 
@@ -91,8 +93,6 @@ void main() async {
 
   await MediaStore.ensureInitialized();
   MediaStore.appFolder = "Living Way";
-
-  await EasyLocalization.ensureInitialized();
 
   runApp(const LivingWayApp());
   //TODO: Create a widget that can work as a base screen

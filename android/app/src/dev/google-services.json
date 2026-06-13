@@ -9,10 +9,15 @@
       "client_info": {
         "mobilesdk_app_id": "1:836583958038:android:58f2786922a27b3b35b737",
         "android_client_info": {
-          "package_name": "com.livingway.app.dev"
+          "package_name": "com.livingway.app"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAggkJrRrNHzIRBYKYYTbxhfofQY3r_HBY"
@@ -20,7 +25,63 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836583958038-ip3iir68lsogp4fm5tps7m058escjd2k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.livingway.app"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836583958038:android:a4514443e7d138b135b737",
+        "android_client_info": {
+          "package_name": "com.livingway.app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836583958038-erqtf3t9f3o7d701b692sv2pvd2nf51d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livingway.app.dev",
+            "certificate_hash": "3645248c765455075fd9fd7955e9567b64d3e7eb"
+          }
+        },
+        {
+          "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAggkJrRrNHzIRBYKYYTbxhfofQY3r_HBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836583958038-ip3iir68lsogp4fm5tps7m058escjd2k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.livingway.app"
+              }
+            }
+          ]
         }
       }
     }

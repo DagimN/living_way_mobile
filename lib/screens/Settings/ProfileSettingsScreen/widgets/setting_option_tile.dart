@@ -28,10 +28,9 @@ class SettingOptionTile extends StatelessWidget {
             Text(title),
             !isUpdating
                 ? trailing
-                : Container(
+                : SizedBox(
                     height: 14,
                     width: 14,
-                    margin: const EdgeInsets.all(16),
                     child: CircularProgressIndicator(
                         color:
                             AppTheme(themeController.brightness).primaryColor,
