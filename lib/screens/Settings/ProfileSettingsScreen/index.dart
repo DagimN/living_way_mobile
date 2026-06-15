@@ -172,13 +172,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                           elevation: 5,
                                           shadowColor: Colors.black),
                                       onPressed: () async {
-                                        UIService.showSnackbar(
-                                            backgroundColor:
-                                                Colors.orangeAccent,
-                                            message:
-                                                'Feature under development.');
-                                        return; //TODO: Implement upload image feature in the backend
-
                                         AnalyticsService.logEvent(
                                             'profile_image_update_started');
                                         setState(() {
