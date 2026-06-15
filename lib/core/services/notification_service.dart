@@ -94,7 +94,7 @@ class NotificationService {
           ? BigPictureStyleInformation(
               FilePathAndroidBitmap(filePath),
             )
-          : null,
+          : BigTextStyleInformation(body),
     );
     final notificationDetails = NotificationDetails(android: androidDetails);
 
@@ -138,7 +138,7 @@ class NotificationService {
     );
   }
 
-  // Use Case 5: Media (Android only via StyleInformation) TODO: Improve layout
+  // Use Case 5: Media (Android only via StyleInformation) //TODO: Improve layout
   static void showMedia(int id, String title, String artist) {
     _plugin.show(
       id: id,
@@ -273,10 +273,9 @@ class NotificationService {
             importance: Importance.max,
             priority: Priority.high,
             styleInformation: filePath != null
-                ? BigPictureStyleInformation(
-                    FilePathAndroidBitmap(filePath),
-                  )
-                : null,
+                ? BigPictureStyleInformation(FilePathAndroidBitmap(filePath),
+                    summaryText: body)
+                : BigTextStyleInformation(body ?? ''),
           ),
           iOS: const DarwinNotificationDetails(),
         ),
@@ -296,14 +295,15 @@ class NotificationService {
         body: body,
         payload: payload,
         repeatInterval: RepeatInterval.daily,
-        notificationDetails: const NotificationDetails(
+        notificationDetails: NotificationDetails(
           android: AndroidNotificationDetails(
             'periodic_channel',
             'Periodic Alerts',
             importance: Importance.max,
             priority: Priority.high,
+            styleInformation: BigTextStyleInformation(body ?? ""),
           ),
-          iOS: DarwinNotificationDetails(),
+          iOS: const DarwinNotificationDetails(),
         ),
         androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle);
   }

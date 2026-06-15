@@ -51,7 +51,6 @@ Future<void> _handleIncomingNotification(RemoteMessage message) async {
     );
   } else {
     await NotificationService.showNotification(
-      //FIXME: Notification text is just showing max 2 lines of text
       id: notificationId,
       title: message.data['title'],
       body: message.data['body'],
