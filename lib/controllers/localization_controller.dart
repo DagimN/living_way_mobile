@@ -14,8 +14,7 @@ class LocalizationController extends ChangeNotifier {
     _loader = RemoteTranslationsLoader(getStrings: getStrings);
   }
 
-  AppLocale appLocale =
-      AppLocale.en; //BUG: Toogle Option is not being loaded from the cache
+  AppLocale appLocale = AppLocale.en;
   Locale _locale = const Locale('en', 'US');
   List<Locale> supportedLocales = [
     const Locale('en', 'US'),
@@ -41,6 +40,15 @@ class LocalizationController extends ChangeNotifier {
     await _cache.init();
 
     preloadAll(supportedLocales);
+
+    Future.delayed(const Duration(seconds: 3), () {
+      final context = UIService.navigatorKey.currentContext;
+
+      if (context != null) {
+        // ignore: use_build_context_synchronously
+        context.setLocale(_locale);
+      }
+    });
   }
 
   /// Main entry point — returns translation strings for [locale].
