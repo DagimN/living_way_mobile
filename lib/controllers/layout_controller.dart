@@ -48,6 +48,10 @@ class LayoutController extends ChangeNotifier {
       showSplashScreen = false;
       notifyListeners();
     });
+
+    Future.delayed(const Duration(seconds: 5), () {
+      VersionCheckService.checkForUpdate();
+    });
   }
 
   HomePageNavigation get getSelectedHomePageNavigation =>

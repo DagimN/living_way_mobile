@@ -33,7 +33,9 @@
     "votes": "ድምጾች",
     "save": "አስቀምጥ",
     "logout": "ይውጡ",
-    "deleteAccount": "መለያ ሰርዝ"
+    "deleteAccount": "መለያ ሰርዝ",
+    "later": "በኋላ",
+    "notNow": "አሁን አይሆንም"
   },
   "time": {
     "ago": "በፊት",
@@ -184,7 +186,11 @@
     "phoneNumbers": "ስልክ ቁጥሮች",
     "emailAddresses": "የኢሜል አድራሻዎች",
     "address": "አድራሻ",
-    "socialMedia": "ማህበራዊ ሚዲያ"
+    "socialMedia": "ማህበራዊ ሚዲያ",
+    "updateAvailable": "ማዘመን አለ።",
+    "updateNow": "አሁን አዘምን",
+    "newUpdate": "አዲስ ዝመና v{}",
+    "updateRequired": "ማዘመን ያስፈልጋል"
   },
   "aboutPage": {
     "whoWeAreDescription1": "በአዋጅም ሆነ በአኗኗራችን ክርስቶስን የሚያከብር እውነተኛ የክርስቲያን ማህበረሰብ ለመሆን የምንመኝ አማኞች ነን። እኛ የፍጹም ሰዎች ስብስብ ባንሆንም እንደ ማህበረሰብ ግን በመቀደስ ሂደት ላይ እንዳለን እናምናለን። ቅዱሳት መጻሕፍትን፣ ጸሎትን፣ ኅብረትን እና ሀብትን ለመካፈል ራሳችንን ለማጥናት የምንጥረው ለዚህ ነው።",

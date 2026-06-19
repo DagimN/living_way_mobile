@@ -33,7 +33,9 @@
     "votes": "Votes",
     "save": "Save",
     "logout": "Logout",
-    "deleteAccount": "Delete Account"
+    "deleteAccount": "Delete Account",
+    "later": "Later",
+    "notNow": "Not Now"
   },
   "time": {
     "ago": "ago",
@@ -184,7 +186,11 @@
     "phoneNumbers": "Phone Numbers",
     "emailAddresses": "Email Addresses",
     "address": "Address",
-    "socialMedia": "Social Media"
+    "socialMedia": "Social Media",
+    "updateAvailable": "Update Available",
+    "updateNow": "Update Now",
+    "newUpdate": "New Update: v{}",
+    "updateRequired": "Update Required"
   },
   "aboutPage": {
     "whoWeAreDescription1": "We are a community of believers aspiring to be an authentic Christian community that glorifies Christ in both proclamation and lifestyle. Though we are not a gathering of perfect people, yet as a community, we believe that we are in the process of sanctification. This is why we strive to devote ourselves to studying Scripture, prayer, fellowship and the sharing of resources.",

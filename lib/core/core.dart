@@ -38,6 +38,7 @@ export 'services/logging_service.dart';
 export 'services/analytics_service.dart';
 export 'services/notification_service.dart';
 export 'services/ui_service.dart';
+export 'services/version_update_service.dart';
 export 'services/youtube_service.dart';
 
 export 'themes/app_theme.dart';
