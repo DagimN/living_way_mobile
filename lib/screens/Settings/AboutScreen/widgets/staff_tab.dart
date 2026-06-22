@@ -10,43 +10,45 @@ class StaffTab extends StatelessWidget {
   static List<Staff> staffs = [
     Staff(
         name: 'Admas Getachew',
-        position: 'Pastor',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FAdmas_9d5634fa95.jpg&w=1920&q=100"),
+        position: 'aboutPage.pastor',
+        image: "https://livingwaytest.netlify.app/image/Elders/Admas.webp"),
     Staff(
         name: 'Keneaa Zekarias',
-        position: 'Pastor',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2F08_j1_9b017be72c.jpg&w=1920&q=100"),
+        position: 'aboutPage.pastor',
+        image: "https://livingwaytest.netlify.app/image/Elders/Keneaa.webp"),
     Staff(
         name: 'Henock Bekele',
-        position: 'Pastor',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fhenock_01_be02bb6828.jpg&w=1920&q=100"),
+        position: 'aboutPage.pastor',
+        image: "https://livingwaytest.netlify.app/image/Elders/Henock.webp"),
     Staff(
-        name: 'Elias Seyoum',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Felias_seyoum_01_9b2c436491.jpg&w=1920&q=100"),
-    Staff(
-        name: 'Herani Sahlu',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FHerani_ac8d4aa110.jpg&w=1920&q=100"),
+      name: 'Misikir Genene',
+      image: "https://livingwaytest.netlify.app/image/Elders/Misikir.webp",
+      position: 'aboutPage.churchElder',
+    ),
     Staff(
         name: 'Burakie Sahle',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FBurakae_7ad25f53fa.jpg&w=1920&q=100"),
+        image: "https://livingwaytest.netlify.app/image/Elders/Burakie.webp",
+        position: 'aboutPage.churchElder'),
     Staff(
-        name: 'Halleluya Fikre',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FHalle_ce5a7ff718.jpg&w=1920&q=100"),
+        name: 'Esisha Mengistu',
+        image: "https://livingwaytest.netlify.app/image/Elders/Esisha.webp",
+        position: 'aboutPage.churchElder'),
     Staff(
-        name: 'Misikir Genene',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2FMesikir_068861e0d3.jpg&w=1920&q=100"),
+        name: 'Fasil Negash',
+        image: "https://livingwaytest.netlify.app/image/Elders/Fasil.webp",
+        position: 'aboutPage.churchElder'),
     Staff(
-        name: 'Henock Mesfin',
-        image:
-            "https://www.livingwayethiopia.org/_next/image?url=https%3A%2F%2Fcms.livingwayethiopia.org%2Fuploads%2Fhenock_misfin_01_37108eac59.jpg&w=1920&q=100")
+        name: 'Yared Donis',
+        image: "https://livingwaytest.netlify.app/image/Elders/Yared.webp",
+        position: 'aboutPage.churchElder'),
+    Staff(
+        name: 'Minase Eliyas',
+        image: "https://livingwaytest.netlify.app/image/Elders/Minase.webp",
+        position: 'aboutPage.churchElder'),
+    Staff(
+        name: 'Dagem Daniel',
+        image: "https://livingwaytest.netlify.app/image/Elders/Dagim.webp",
+        position: 'aboutPage.churchElder'),
   ];
 
   @override
@@ -75,18 +77,21 @@ class StaffTab extends StatelessWidget {
                     height: orientation == Orientation.portrait
                         ? screenHeight * .15
                         : screenHeight * .25,
+                    width: double.infinity,
                     child: ClipRRect(
                         borderRadius: BorderRadius.circular(7),
                         child: CachedNetworkImage(
-                            imageUrl: staff.image,
-                            memCacheHeight: orientation == Orientation.portrait
-                                ? (screenHeight * .4).toInt()
-                                : (screenWidth * .4).toInt(),
-                            maxHeightDiskCache:
-                                orientation == Orientation.portrait
-                                    ? (screenHeight * .4).toInt()
-                                    : (screenWidth * .4).toInt(),
-                            fit: BoxFit.cover))),
+                          imageUrl: staff.image,
+                          memCacheHeight: orientation == Orientation.portrait
+                              ? (screenHeight * .4).toInt()
+                              : (screenWidth * .4).toInt(),
+                          maxHeightDiskCache:
+                              orientation == Orientation.portrait
+                                  ? (screenHeight * .4).toInt()
+                                  : (screenWidth * .4).toInt(),
+                          fit: BoxFit.cover,
+                          alignment: Alignment.topCenter,
+                        ))),
                 const SizedBox(height: 10),
                 Text(staff.name,
                     style: TextStyle(
@@ -95,7 +100,7 @@ class StaffTab extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                         fontSize: 14)),
                 if (staff.position != null)
-                  Text(staff.position!,
+                  Text(Tr.t(staff.position ?? ""),
                       style: TextStyle(
                           color:
                               AppTheme(themeController.brightness).primaryColor,
