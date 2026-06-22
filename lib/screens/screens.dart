@@ -13,7 +13,7 @@ export 'LibraryScreen/index.dart';
 
 export 'MediaScreen/index.dart';
 
-export 'Settings/about_screen.dart';
+export 'Settings/AboutScreen/index.dart';
 export 'Settings/contacts_screen.dart';
 export 'Settings/donation_screen.dart';
 export 'Settings/ProfileSettingsScreen/index.dart';

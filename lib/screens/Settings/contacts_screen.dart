@@ -9,6 +9,35 @@ import 'package:url_launcher/url_launcher_string.dart';
 class ContactsScreen extends StatelessWidget {
   const ContactsScreen({super.key});
 
+  static List<Contacts> contacts = [
+    Contacts(
+        title: 'settings.phoneNumbers',
+        addressList: ['+251901777774', '+251901777775'],
+        type: ContactType.phone),
+    Contacts(
+        title: 'settings.emailAddresses',
+        addressList: [
+          'Info@livingwayethiopia.org',
+          'livingwayethiopia@gmail.com'
+        ],
+        type: ContactType.email),
+    Contacts(
+        title: 'settings.address',
+        addressList: [
+          "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu"
+        ],
+        type: ContactType.location),
+    Contacts(
+        title: 'settings.socialMedia',
+        addressList: [
+          'https://twitter.com/livingwayethiop',
+          "https://www.facebook.com/LivingWayChurch1",
+          "https://www.instagram.com/livingway_church",
+          "https://www.youtube.com/channel/$youtubeChannelId"
+        ],
+        type: ContactType.social)
+  ];
+
   IconData getLeadingIcon(ContactType type, {String? address}) {
     switch (type) {
       case ContactType.phone:
@@ -43,7 +72,6 @@ class ContactsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
-    final contentController = Provider.of<ContentController>(context);
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -81,7 +109,7 @@ class ContactsScreen extends StatelessWidget {
                       : screenHeight * .73,
                   child: SingleChildScrollView(
                       child: Column(children: [
-                    ...contentController.contacts.map((contact) {
+                    ...contacts.map((contact) {
                       final addresses = contact.addressList;
                       return Container(
                           padding: const EdgeInsets.all(10),
