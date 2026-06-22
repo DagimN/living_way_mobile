@@ -40,8 +40,9 @@ class _NameFormState extends State<NameForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty)
+                    if (value.trim().isEmpty) {
                       return Tr.t("auth.emptyFieldError");
+                    }
 
                     return null;
                   },
@@ -55,8 +56,9 @@ class _NameFormState extends State<NameForm> {
                   validator: (value) {
                     if (value == null) return Tr.t("auth.emptyFieldError");
 
-                    if (value.trim().isEmpty)
+                    if (value.trim().isEmpty) {
                       return Tr.t("auth.emptyFieldError");
+                    }
 
                     return null;
                   },

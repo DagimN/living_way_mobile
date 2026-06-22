@@ -83,6 +83,8 @@ dependencies:
   flutter_secure_storage: ^10.3.1
   crypto: ^3.0.7
   shorebird_code_push: ^2.0.6
+  flutter_hooks: ^0.20.5
+  percent_indicator: ^4.2.5
 
 dev_dependencies:
   flutter_test:

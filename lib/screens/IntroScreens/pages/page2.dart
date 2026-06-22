@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/core/core.dart';
 
 class Page2 extends StatelessWidget {

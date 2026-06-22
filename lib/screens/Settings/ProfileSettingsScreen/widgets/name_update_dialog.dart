@@ -39,9 +39,13 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                       child: TextFormField(
                           controller: firstNameController,
                           validator: (value) {
-                            if (value == null) return Tr.t("auth.emptyFieldError");
+                            if (value == null) {
+                              return Tr.t("auth.emptyFieldError");
+                            }
 
-                            if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                            if (value.trim().isEmpty) {
+                              return Tr.t("auth.emptyFieldError");
+                            }
 
                             return null;
                           },
@@ -53,9 +57,13 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                       child: TextFormField(
                           controller: lastNameController,
                           validator: (value) {
-                            if (value == null) return Tr.t("auth.emptyFieldError");
+                            if (value == null) {
+                              return Tr.t("auth.emptyFieldError");
+                            }
 
-                            if (value.trim().isEmpty) return Tr.t("auth.emptyFieldError");
+                            if (value.trim().isEmpty) {
+                              return Tr.t("auth.emptyFieldError");
+                            }
 
                             return null;
                           },
@@ -92,7 +100,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                         setState(() {
                           isUpdating = false;
                         });
-                        Navigator.pop(context);
+                        UIService.pop();
                       });
                     },
                     child: Text(Tr.t('common.update'),

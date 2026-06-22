@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:living_way/controllers/profile_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:living_way/core/core.dart';
 // import 'package:living_way/core/utils/format_time.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,10 @@ class PrayerTimesListView extends StatelessWidget {
             // profileController
             //     .addPrayerTime(const TimeOfDay(hour: 23, minute: 0));
           },
-          child: Row(children: [const Icon(Icons.add), Text(Tr.t('settings.addTime'))])),
+          child: Row(children: [
+            const Icon(Icons.add),
+            Text(Tr.t('settings.addTime'))
+          ])),
       // ...prayerTimes.map((time) =>
       //     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       //       TextButton(
