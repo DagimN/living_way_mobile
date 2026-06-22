@@ -21,7 +21,6 @@ class GeneralSettingsScreen extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    double textSize = themeController.textSize;
     Fonts selectedFont = themeController.selectedFont;
 
     return Scaffold(
@@ -125,10 +124,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.font'),
-                                  style: TextStyle(
-                                      fontFamily: selectedFont.name,
-                                      fontSize: 47 * textSize)),
+                              Text(Tr.t('settings.font')),
                               DropdownButton(
                                   value: themeController.selectedFont,
                                   underline: const SizedBox(),
@@ -139,8 +135,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       color:
                                           AppTheme(themeController.brightness)
                                               .primaryColor,
-                                      fontFamily: selectedFont.name,
-                                      fontSize: 47 * textSize),
+                                      fontFamily: selectedFont.name),
                                   items: Fonts.values
                                       .map((font) => DropdownMenuItem(
                                           value: font,
@@ -163,9 +158,8 @@ class GeneralSettingsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(Tr.t('settings.textSize'),
-                                  style: TextStyle(
-                                      fontSize: 47 * textSize,
-                                      fontFamily: selectedFont.name)),
+                                  style:
+                                      TextStyle(fontFamily: selectedFont.name)),
                               Container(
                                   margin: const EdgeInsets.only(right: 10),
                                   child: Text(
@@ -173,8 +167,6 @@ class GeneralSettingsScreen extends StatelessWidget {
                                           .toInt()
                                           .toString(),
                                       style: TextStyle(
-                                          fontFamily: selectedFont.name,
-                                          fontSize: 47 * textSize,
                                           color: AppTheme(
                                                   themeController.brightness)
                                               .primaryColor)))
