@@ -180,6 +180,7 @@
     "version": "v",
     "contacts": "Contact Us",
     "donations": "Donations",
+    "give": "Give",
     "comingSoon": "Coming Soon",
     "saveSuccess": "Saved to Living Way album",
     "saveError": "Failed to save image.",
@@ -269,6 +270,7 @@
     "tryAgain": "Try Again",
     "close": "Close",
     "failedGoogleLogin": "Could not login via Google",
-    "failedSignup": "Could not signup. Please try again."
+    "failedSignup": "Could not signup. Please try again.",
+    "failedAppLaunch": "Could not open {}"
   }
 }

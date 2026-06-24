@@ -94,6 +94,7 @@ class StaffTab extends StatelessWidget {
                         ))),
                 const SizedBox(height: 10),
                 Text(staff.name,
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                         color:
                             AppTheme(themeController.brightness).primaryColor,
@@ -101,6 +102,7 @@ class StaffTab extends StatelessWidget {
                         fontSize: 14)),
                 if (staff.position != null)
                   Text(Tr.t(staff.position ?? ""),
+                      textAlign: TextAlign.center,
                       style: TextStyle(
                           color:
                               AppTheme(themeController.brightness).primaryColor,

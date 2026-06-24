@@ -180,6 +180,7 @@
     "version": "v",
     "contacts": "ያግኙን",
     "donations": "ልገሳ",
+    "give": "ስጦታ",
     "comingSoon": "በቅርብ ቀን",
     "saveSuccess": "ወደ ህያው መንገድ አልበም ተቀምጧል",
     "saveError": "ምስሉን ማስቀመጥ አልተቻለም",
@@ -269,6 +270,7 @@
     "tryAgain": "እንደገና ይሞክሩ",
     "close": "ዝጋ",
     "failedGoogleLogin": "በ Google በኩል መግባት አልተቻለም",
-    "failedSignup": "መመዝገብ አልተቻለም። እባክዎ ዳግም ይሞክሩ"
+    "failedSignup": "መመዝገብ አልተቻለም። እባክዎ ዳግም ይሞክሩ",
+    "failedAppLaunch": "{} ሊከፈት አልተቻለም"
   }
 }

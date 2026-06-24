@@ -86,7 +86,6 @@ class LibraryScreen extends StatelessWidget {
                       children: [
                         if (popularBooks.isNotEmpty)
                           Container(
-                            //TODO: Implement paid content feature
                             height: orientation == Orientation.portrait
                                 ? screenHeight * .3
                                 : screenHeight * .7,

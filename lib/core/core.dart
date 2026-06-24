@@ -16,6 +16,7 @@ export 'models/notification/cache.dart';
 export 'models/notification/index.dart';
 export 'models/activity/cache.dart';
 export 'models/activity/index.dart';
+export 'models/bank_account.dart';
 export 'models/bible_quote.dart';
 export 'models/book.dart';
 export 'models/contacts.dart';

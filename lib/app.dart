@@ -34,6 +34,9 @@ class LivingWayApp extends StatelessWidget {
             create: (_) => DevotionController()),
         ChangeNotifierProvider<BibleController>(
             create: (_) => BibleController()),
+        ChangeNotifierProvider<TransactionController>(
+          create: (_) => TransactionController(),
+        )
       ],
       child: Consumer<LocalizationController>(
           builder: (context, localizationController, _) {
@@ -97,7 +100,7 @@ class LivingWayApp extends StatelessWidget {
                                 const ProfileSettingsScreen(),
                             '/contacts': (context) => const ContactsScreen(),
                             '/about': (context) => const AboutScreen(),
-                            '/donation': (context) => const DonationScreen(),
+                            '/donation': (context) => const GiveScreen(),
                             '/notifications': (context) =>
                                 const NotificationScreen(),
                             '/forgot-password': (context) =>

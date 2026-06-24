@@ -8,3 +8,4 @@ export 'localization_controller.dart';
 export 'notification_controller.dart';
 export 'profile_controller.dart';
 export 'theme_controller.dart';
+export 'transaction_controller.dart';

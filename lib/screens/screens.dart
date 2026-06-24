@@ -15,7 +15,7 @@ export 'MediaScreen/index.dart';
 
 export 'Settings/AboutScreen/index.dart';
 export 'Settings/contacts_screen.dart';
-export 'Settings/donation_screen.dart';
+export 'Settings/give_screen.dart';
 export 'Settings/ProfileSettingsScreen/index.dart';
 export 'Settings/GeneralSettingsScreen/index.dart';
 
