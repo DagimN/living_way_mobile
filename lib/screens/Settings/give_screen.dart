@@ -105,7 +105,14 @@ class GiveScreen extends StatelessWidget {
                                                 message: Tr.arg(
                                                     'failedAppLaunch',
                                                     bank.name));
+                                            return;
                                           }
+
+                                          AnalyticsService.logEvent(
+                                              'bank_app_launched',
+                                              parameters: {
+                                                "bank": bank.name,
+                                              });
                                         },
                                       )
                                     ],
@@ -150,6 +157,11 @@ class GiveScreen extends StatelessWidget {
                                             await Clipboard.setData(
                                                 ClipboardData(
                                                     text: bank.account));
+                                            AnalyticsService.logEvent(
+                                                'bank_account_copied',
+                                                parameters: {
+                                                  "bank": bank.name,
+                                                });
                                           },
                                           child: Row(
                                             mainAxisAlignment:
