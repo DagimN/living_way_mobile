@@ -25,10 +25,11 @@ class AnalyticsService {
   }
 
   // ── Bible ─────────────────────────────────────────────
-  static Future<void> logChapterOpened(String book, int chapter) async {
+  static Future<void> logChapterOpened(String book, int chapter,
+      {Map? params}) async {
     await _analytics.logEvent(
       name: 'chapter_opened',
-      parameters: {'book': book, 'chapter': chapter},
+      parameters: {'book': book, 'chapter': chapter, ...params ?? {}},
     );
   }
 
