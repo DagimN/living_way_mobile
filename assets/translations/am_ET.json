@@ -116,7 +116,7 @@
     "screenTitle": "ተግባሮች",
     "emptyState": "ምንም ተግባር የለም",
     "gallery": "+",
-    "voteError": "ድምጽ ማስቀመጥ አልተሳካም።",
+    "voteError": "ድምጽ ማስቀመጥ አልተሳካም። ወደ መለያዎ መግባት አለብዎት።",
     "pollOptions": "ምርጫ አማራጮች",
     "article": "ጽሑፍ",
     "event": "ክስተት",

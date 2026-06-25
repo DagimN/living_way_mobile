@@ -116,7 +116,7 @@
     "screenTitle": "Activities",
     "emptyState": "No activities",
     "gallery": "+",
-    "voteError": "Failed to save vote",
+    "voteError": "Failed to save vote. You need to get logged in first.",
     "pollOptions": "Poll Options",
     "article": "Article",
     "event": "Event",

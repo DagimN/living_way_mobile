@@ -32,6 +32,7 @@ class _PollState extends State<Poll> {
   Widget build(BuildContext context) {
     final activityController = Provider.of<ActivityController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -47,16 +48,15 @@ class _PollState extends State<Poll> {
           FlutterPolls(
               pollId: widget.content.id,
               votesText: Tr.t('common.votes'),
-              votedProgressColor: AppTheme(themeController.brightness)
-                  .primaryColor
-                  .withAlpha(76),
+              votedProgressColor: theme.primaryColor.withAlpha(76),
+              votedBackgroundColor: theme.backgroundColor,
+              votedPercentageTextStyle: TextStyle(color: theme.accentColor),
+              votesTextStyle: TextStyle(color: theme.accentColor),
               hasVoted: (selectedPollId != null ||
                   content.pollOptions.any(
                       (poll) => poll.voters.contains(widget.userProfile?.id))),
               pollEnded: hasEnded,
-              leadingVotedProgessColor: AppTheme(themeController.brightness)
-                  .primaryColor
-                  .withAlpha(178),
+              leadingVotedProgessColor: theme.primaryColor.withAlpha(178),
               userVotedOptionId: selectedPollId,
               pollTitle: selectedPollId != null && !hasEnded
                   ? Align(
@@ -85,7 +85,8 @@ class _PollState extends State<Poll> {
               pollOptions: content.pollOptions
                   .map((option) => PollOption(
                       id: option.title,
-                      title: Text(option.title),
+                      title: Text(option.title,
+                          style: TextStyle(color: theme.accentColor)),
                       votes: option.voters.length))
                   .toList(),
               onVoted: (pollOption, newTotalVotes) async {
@@ -111,8 +112,7 @@ class _PollState extends State<Poll> {
                 }
 
                 UIService.showSnackbar(
-                    backgroundColor:
-                        AppTheme(themeController.brightness).failedColor,
+                    backgroundColor: theme.failedColor,
                     message: Tr.t('activity.voteError'));
                 return Future.value(false);
               })

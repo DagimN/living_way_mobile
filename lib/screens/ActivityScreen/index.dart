@@ -19,6 +19,7 @@ class ActivityScreen extends StatelessWidget {
     final themeController = Provider.of<ThemeController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
     final activityList = activityController.activityList;
+    final theme = AppTheme(themeController.brightness);
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -32,7 +33,7 @@ class ActivityScreen extends StatelessWidget {
               child: Text(Tr.t('navigation.activities'),
                   style: TextStyle(
                       fontSize: 32,
-                      color: AppTheme(themeController.brightness).primaryColor,
+                      color: theme.primaryColor,
                       fontWeight: FontWeight.w300)))),
       SizedBox(
           height: orientation == Orientation.portrait
@@ -106,17 +107,12 @@ class ActivityScreen extends StatelessWidget {
                                                     : "Nothing to show yet.",
                                                 style: TextStyle(
                                                     fontSize: 16,
-                                                    color: AppTheme(
-                                                            themeController
-                                                                .brightness)
-                                                        .primaryColor)),
+                                                    color: theme.primaryColor)),
                                             if (activityList.isEmpty)
                                               IconButton(
                                                   icon: Icon(Icons.refresh,
-                                                      color: AppTheme(
-                                                              themeController
-                                                                  .brightness)
-                                                          .primaryColor),
+                                                      color:
+                                                          theme.primaryColor),
                                                   onPressed: () async {
                                                     activityController
                                                         .fetchActivities(
@@ -128,14 +124,10 @@ class ActivityScreen extends StatelessWidget {
                                           ])
                                     : Center(
                                         child: CircularProgressIndicator(
-                                            color: AppTheme(
-                                                    themeController.brightness)
-                                                .primaryColor)));
+                                            color: theme.primaryColor)));
                       }))
               : Center(
-                  child: CircularProgressIndicator(
-                      color:
-                          AppTheme(themeController.brightness).primaryColor)))
+                  child: CircularProgressIndicator(color: theme.primaryColor)))
     ]);
   }
 }

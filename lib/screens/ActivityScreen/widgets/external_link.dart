@@ -21,6 +21,7 @@ class ExternalLink extends StatelessWidget {
 
     final borderRadius = BorderRadius.circular(15);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     return Container(
         width: orientation == Orientation.portrait
@@ -39,8 +40,7 @@ class ExternalLink extends StatelessWidget {
                     BoxShadow(
                         offset: const Offset(0, 5),
                         blurRadius: 36,
-                        color: AppTheme(themeController.brightness)
-                            .secondaryColor),
+                        color: theme.secondaryColor),
                     BoxShadow(
                         offset: Offset(
                             orientation == Orientation.portrait
@@ -48,8 +48,7 @@ class ExternalLink extends StatelessWidget {
                                 : screenWidth * .78,
                             24),
                         blurRadius: 36,
-                        color:
-                            AppTheme(themeController.brightness).primaryColor)
+                        color: theme.primaryColor)
                   ])),
               ClipRRect(
                   borderRadius: borderRadius,
@@ -67,7 +66,8 @@ class ExternalLink extends StatelessWidget {
                       children: [
                         SizedBox(
                             width: screenWidth * .45,
-                            child: Text(content.body ?? "")),
+                            child: Text(content.body ?? "",
+                                style: TextStyle(color: theme.accentColor))),
                         Icon(Icons.arrow_circle_right_outlined,
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)
@@ -76,18 +76,23 @@ class ExternalLink extends StatelessWidget {
             onPressed: () {
               showModalBottomSheet(
                   context: context,
+                  backgroundColor: theme.backgroundColor,
                   builder: (context) => Container(
                       width: screenWidth,
                       margin: const EdgeInsets.all(24),
                       child: SingleChildScrollView(
                           child: Column(children: [
                         Text(content.title ?? "",
-                            style: const TextStyle(
-                                fontSize: 14, fontWeight: FontWeight.w500)),
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                color: theme.accentColor)),
                         Text(content.body ?? "",
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 12, fontWeight: FontWeight.w300)),
+                            style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.w300,
+                                color: theme.accentColor)),
                         Container(
                             height: screenHeight * .28,
                             width: screenHeight * .28,
@@ -121,7 +126,8 @@ class ExternalLink extends StatelessWidget {
                                         uri: Uri.tryParse(
                                             content.externalLink ?? "")));
                                   },
-                                  icon: const Icon(Icons.share))
+                                  icon: Icon(Icons.share,
+                                      color: theme.accentColor))
                             ])
                       ]))));
             }));

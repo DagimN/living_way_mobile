@@ -17,7 +17,9 @@ class TimelineContainer extends StatelessWidget {
     GlobalKey timelineKey = GlobalKey();
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
+
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     IconData getIcon() {
       switch (activity.type) {
@@ -50,8 +52,7 @@ class TimelineContainer extends StatelessWidget {
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               AvatarStack(
                   containerKey: timelineKey,
-                  icon: Icon(getIcon(),
-                      color: AppTheme(themeController.brightness).primaryColor),
+                  icon: Icon(getIcon(), color: theme.primaryColor),
                   isLast: isLast),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 SizedBox(
@@ -72,19 +73,21 @@ class TimelineContainer extends StatelessWidget {
                                           width: screenWidth * .5,
                                           child: Text(activity.title ?? "",
                                               maxLines: 5,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 16,
-                                                  fontWeight:
-                                                      FontWeight.w500))),
+                                                  fontWeight: FontWeight.w500,
+                                                  color: theme.primaryColor))),
                                     if (activity.body != null && child == null)
                                       SizedBox(
                                           width: screenWidth * .5,
                                           child: Text(activity.body ?? "",
                                               maxLines: 5,
-                                              style: const TextStyle(
+                                              style: TextStyle(
                                                   fontSize: 12,
-                                                  fontWeight:
-                                                      FontWeight.w400))),
+                                                  fontWeight: FontWeight.w400,
+                                                  color: child == null
+                                                      ? theme.accentColor
+                                                      : theme.primaryColor))),
                                   ],
                                 )
                               : const SizedBox(),
@@ -101,6 +104,7 @@ class TimelineContainer extends StatelessWidget {
                                   style: TextStyle(
                                       fontSize: 8,
                                       fontStyle: FontStyle.italic,
+                                      color: theme.primaryColor,
                                       fontWeight: activity.isOngoing
                                           ? FontWeight.bold
                                           : null)))

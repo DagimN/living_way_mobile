@@ -12,6 +12,8 @@ class Article extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
+
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -117,7 +119,9 @@ class Article extends StatelessWidget {
                   width: screenWidth * .4,
                   margin: const EdgeInsets.all(5),
                   child: Text(content.body ?? "",
-                      overflow: TextOverflow.ellipsis, maxLines: 5))
+                      overflow: TextOverflow.ellipsis,
+                      maxLines: 5,
+                      style: TextStyle(color: theme.accentColor)))
             ])));
   }
 }
