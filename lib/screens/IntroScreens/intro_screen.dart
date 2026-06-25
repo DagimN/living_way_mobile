@@ -20,6 +20,32 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  double _dragOffset = 0;
+  double _dragStartX = 0;
+  static const double _swipeThreshold = 80;
+
+  void _changePage(int newIndex, {required int currentIndex}) {
+    final layoutController =
+        Provider.of<LayoutController>(context, listen: false);
+
+    if (newIndex < 0 || newIndex >= 5) {
+      return;
+    }
+
+    if (newIndex > currentIndex) {
+      AnalyticsService.logEvent('intro_next',
+          parameters: {'from_page': currentIndex.toString()});
+    } else if (newIndex < currentIndex) {
+      AnalyticsService.logEvent('intro_back',
+          parameters: {'from_page': currentIndex.toString()});
+    }
+
+    layoutController.setIntroPageIndex = newIndex;
+    setState(() {
+      _dragOffset = 0;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -43,7 +69,9 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
     final localizationController = Provider.of<LocalizationController>(context);
+
     int index = layoutController.initialIntroductionPageIndex;
+    double screenWidth = MediaQuery.of(context).size.width;
 
     List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
 
@@ -62,12 +90,85 @@ class _IntroScreenState extends State<IntroScreen> {
               TextButton(
                   onPressed: () async {
                     AnalyticsService.logEvent('intro_skipped');
-                    Navigator.pushNamedAndRemoveUntil(
-                        context, '/signup', (route) => false);
+                    Navigator.pushNamed(context, '/signup');
                   },
                   child: Text(Tr.t('common.skip')))
             ]),
-        body: pages[index],
+        body: GestureDetector(
+          onHorizontalDragStart: (details) {
+            _dragStartX = details.globalPosition.dx;
+          },
+          onHorizontalDragUpdate: (details) {
+            setState(() {
+              _dragOffset = details.globalPosition.dx - _dragStartX;
+            });
+          },
+          onHorizontalDragEnd: (details) {
+            final dragDistance = details.primaryVelocity ?? 0;
+            final dragOffset = _dragOffset;
+
+            if (dragOffset.abs() > _swipeThreshold ||
+                dragDistance.abs() > 800) {
+              if (dragOffset < 0 || dragDistance < 0) {
+                if (index < pages.length - 1) {
+                  _changePage(index + 1, currentIndex: index);
+                } else {
+                  setState(() {
+                    _dragOffset = 0;
+                  });
+                }
+              } else if (dragOffset > 0 || dragDistance > 0) {
+                if (index > 0) {
+                  _changePage(index - 1, currentIndex: index);
+                } else {
+                  setState(() {
+                    _dragOffset = 0;
+                  });
+                }
+              }
+            } else {
+              setState(() {
+                _dragOffset = 0;
+              });
+            }
+          },
+          child: Stack(
+            children: [
+              if (index > 0 && _dragOffset != 0)
+                Transform.translate(
+                  offset: Offset(-screenWidth * 0.95 + _dragOffset * 0.35, 0),
+                  child: Opacity(
+                    opacity: 0.35 +
+                        (1 - _dragOffset.abs() / screenWidth).clamp(0.0, 0.35),
+                    child: Transform.scale(
+                      scale: 0.9,
+                      child: pages[index - 1],
+                    ),
+                  ),
+                ),
+              Transform.translate(
+                offset: Offset(_dragOffset, 0),
+                child: Transform.scale(
+                  scale: 1 -
+                      (_dragOffset.abs() / screenWidth * 0.04).clamp(0.0, 0.04),
+                  child: pages[index],
+                ),
+              ),
+              if (index < pages.length - 1 && _dragOffset != 0)
+                Transform.translate(
+                  offset: Offset(screenWidth * 0.95 + _dragOffset * 0.35, 0),
+                  child: Opacity(
+                    opacity: 0.35 +
+                        (1 - _dragOffset.abs() / screenWidth).clamp(0.0, 0.35),
+                    child: Transform.scale(
+                      scale: 0.9,
+                      child: pages[index + 1],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
         bottomSheet: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
@@ -76,9 +177,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   index > 0
                       ? TextButton(
                           onPressed: () async {
-                            AnalyticsService.logEvent('intro_back',
-                                parameters: {'from_page': index.toString()});
-                            layoutController.setIntroPageIndex = index - 1;
+                            _changePage(index - 1, currentIndex: index);
                           },
                           child: Text(Tr.t('common.back')))
                       : const SizedBox(width: 65),
@@ -88,9 +187,7 @@ class _IntroScreenState extends State<IntroScreen> {
                   (index < pages.length - 1)
                       ? TextButton(
                           onPressed: () async {
-                            AnalyticsService.logEvent('intro_next',
-                                parameters: {'from_page': index.toString()});
-                            layoutController.setIntroPageIndex = index + 1;
+                            _changePage(index + 1, currentIndex: index);
                           },
                           child: Text(Tr.t('common.next')))
                       : TextButton(
