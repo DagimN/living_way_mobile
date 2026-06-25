@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/core.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -12,8 +14,10 @@ class TransactionController extends ChangeNotifier {
   TransactionController() {
     CacheService.instance
         .readData<List<String>>('bankAccounts', defaultValue: []).then((data) {
-      bankAccounts =
-          (data as List).map((item) => BankAccount.fromMap(item)).toList();
+      bankAccounts = (data as List).map((item) {
+        final map = jsonDecode(item);
+        return BankAccount.fromMap(map);
+      }).toList();
       sortAccounts();
       notifyListeners();
     });
@@ -33,16 +37,20 @@ class TransactionController extends ChangeNotifier {
           connectTimeout: const Duration(seconds: 15)));
 
       final res = await dio.get('/');
+
+      if (!res.statusCode.isSuccess) return;
+
       final data = res.data['bankDetails'];
 
       bankAccounts =
           List.from(data).map((item) => BankAccount.fromMap(item)).toList();
       notifyListeners();
+
+      await CacheService.instance.writeData<List<String>>('bankAccounts',
+          bankAccounts.map((account) => account.toString()).toList());
     } catch (error) {
       logger.e(error);
     } finally {
-      await CacheService.instance.writeData<List<String>>('bankAccounts',
-          bankAccounts.map((account) => account.toString()).toList());
       sortAccounts();
     }
   }

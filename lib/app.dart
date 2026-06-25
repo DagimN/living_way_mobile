@@ -64,6 +64,7 @@ class LivingWayApp extends StatelessWidget {
                   Provider.of<NotificationController>(context);
                   Provider.of<ActivityController>(context);
                   Provider.of<DevotionController>(context);
+                  Provider.of<TransactionController>(context);
 
                   authController.setProfileController = profileController;
                   layoutController.setBibleController = bibleController;
