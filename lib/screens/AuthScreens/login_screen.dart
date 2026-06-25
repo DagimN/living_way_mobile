@@ -74,7 +74,8 @@ class _LoginScreenState extends State<LoginScreen> {
         resizeToAvoidBottomInset: true,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
-            foregroundColor: Colors.white, backgroundColor: Colors.transparent),
+            foregroundColor: Colors.white,
+            backgroundColor: const Color(0x80000000)),
         body: SingleChildScrollView(
             child: Form(
                 key: formKey,

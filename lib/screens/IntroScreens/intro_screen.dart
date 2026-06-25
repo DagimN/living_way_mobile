@@ -180,7 +180,11 @@ class _IntroScreenState extends State<IntroScreen> {
                             _changePage(index - 1, currentIndex: index);
                           },
                           child: Text(Tr.t('common.back')))
-                      : const SizedBox(width: 65),
+                      : IconButton(
+                          onPressed: () async {
+                            Navigator.pop(context);
+                          },
+                          icon: const Icon(Icons.arrow_back)),
                   Expanded(
                       child: DotIndicator(
                           currentIndex: index, dotRadius: 7, pages: pages)),
