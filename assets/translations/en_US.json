@@ -110,7 +110,8 @@
     "screenTitle": "Library",
     "search": "Search...",
     "tableOfContentsUnavailable": "Table of contents is not available",
-    "continueReading": "Continue"
+    "continueReading": "Continue",
+    "noBooks": "No books available at the moment. Come back later"
   },
   "activity": {
     "screenTitle": "Activities",

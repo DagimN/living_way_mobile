@@ -17,6 +17,7 @@ class LibraryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final contentController = Provider.of<ContentController>(context);
     final isFetching = contentController.isFetchingContents;
     final popularBooks = contentController.library
@@ -64,8 +65,7 @@ class LibraryScreen extends StatelessWidget {
                   child: Text(Tr.t('navigation.library'),
                       style: TextStyle(
                           fontSize: 32,
-                          color:
-                              AppTheme(themeController.brightness).primaryColor,
+                          color: theme.primaryColor,
                           fontWeight: FontWeight.w300))),
               actions: const [SearchButton()]),
           SizedBox(
@@ -75,9 +75,7 @@ class LibraryScreen extends StatelessWidget {
             width: screenWidth,
             child: isFetching && contentController.library.isEmpty
                 ? Center(
-                    child: CircularProgressIndicator(
-                        color:
-                            AppTheme(themeController.brightness).primaryColor))
+                    child: CircularProgressIndicator(color: theme.primaryColor))
                 : SingleChildScrollView(
                     padding: const EdgeInsets.only(bottom: 50),
                     physics: const AlwaysScrollableScrollPhysics(),
@@ -144,7 +142,7 @@ class LibraryScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      'No books available at the moment. Come back later',
+                                      Tr.t('library.noBooks'),
                                       style: TextStyle(color: Colors.grey[500]),
                                       textAlign: TextAlign.center,
                                     )
@@ -178,19 +176,18 @@ class LibraryScreen extends StatelessWidget {
                                                   direction:
                                                       ShimmerDirection.rtl,
                                                   baseColor:
-                                                      AppTheme(themeController.brightness)
-                                                          .backgroundColor,
-                                                  highlightColor:
-                                                      AppTheme(themeController.brightness)
-                                                          .primaryColor
-                                                          .withAlpha(120),
+                                                      theme.backgroundColor,
+                                                  highlightColor: theme
+                                                      .primaryColor
+                                                      .withAlpha(120),
                                                   child: Container(
                                                       decoration: BoxDecoration(
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(20),
                                                           color: AppTheme(
-                                                                  themeController.brightness)
+                                                                  themeController
+                                                                      .brightness)
                                                               .backgroundColor))),
                                             )
                                           : const SizedBox();

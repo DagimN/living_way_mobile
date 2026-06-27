@@ -65,6 +65,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     final notificationController = Provider.of<NotificationController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -90,6 +91,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   Text(notification.title,
                       style: TextStyle(
+                          color: theme.accentColor,
                           fontWeight: notification.isRead
                               ? FontWeight.normal
                               : FontWeight.w600)),
@@ -109,6 +111,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   Text(notification.body,
                       style: TextStyle(
+                          color: theme.accentColor,
                           fontWeight: notification.isRead
                               ? FontWeight.normal
                               : FontWeight.w600)),
@@ -135,13 +138,18 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
 
     if (notificationController.isEmpty) {
-      body = Center(child: Text(Tr.t('notifications.empty')));
+      body = Center(
+          child: Text(
+        Tr.t('notifications.empty'),
+        style: TextStyle(color: theme.accentColor),
+      ));
     }
 
     return Scaffold(
         appBar: AppBar(
           title: Text(Tr.t('navigation.notifications')),
-          backgroundColor: AppTheme(themeController.brightness).appbarColor,
+          backgroundColor: theme.appbarColor,
+          foregroundColor: theme.primaryColor,
           systemOverlayStyle: themeController.brightness == Brightness.light
               ? SystemUiOverlayStyle.dark
               : SystemUiOverlayStyle.light,
@@ -149,9 +157,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: BoxDecoration(
-                gradient:
-                    AppTheme(themeController.brightness).backgroundGradient),
+            decoration: BoxDecoration(gradient: theme.backgroundGradient),
             child: body));
   }
 }

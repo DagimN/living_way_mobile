@@ -110,7 +110,8 @@
     "screenTitle": "መጻሕፍት",
     "search": "ፈልግ...",
     "tableOfContentsUnavailable": "ማውጫ አይገኝም",
-    "continueReading": "ቀጥል"
+    "continueReading": "ቀጥል",
+    "noBooks": "በአሁኑ ጊዜ ምንም መጻሕፍት የሉም። በኋላ ይመለሱ"
   },
   "activity": {
     "screenTitle": "ተግባሮች",
