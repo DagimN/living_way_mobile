@@ -11,20 +11,21 @@ class TranslationPopupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     return PopupMenuButton<Translation>(
         initialValue: bibleController.translation,
+        color: theme.chipColor,
         child: Container(
             width: 50,
             padding: const EdgeInsets.all(5),
             decoration: BoxDecoration(
-                color: const Color(0xFFD9D9D9),
+                color: theme.chipColor,
                 borderRadius: BorderRadius.circular(20)),
             child: Center(
                 child: Text(bibleController.translation.name,
                     style: TextStyle(
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
+                        color: theme.primaryColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 10)))),
         itemBuilder: (context) => bibleController.translations
@@ -57,21 +58,15 @@ class TranslationPopupButton extends StatelessWidget {
                           style: TextStyle(
                               color: translation.status ==
                                       TranslationStatus.pending
-                                  ? AppTheme(themeController.brightness)
-                                      .pendingColor
-                                  : AppTheme(themeController.brightness)
-                                      .primaryColor)),
+                                  ? theme.pendingColor
+                                  : theme.primaryColor)),
                       if (translation.status == TranslationStatus.ready)
-                        Icon(Icons.download_rounded,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor),
+                        Icon(Icons.download_rounded, color: theme.primaryColor),
                       if (translation.status == TranslationStatus.pending)
                         SvgPicture.asset(AppIcons.pending,
                             height: 16,
                             colorFilter: ColorFilter.mode(
-                                AppTheme(themeController.brightness)
-                                    .pendingColor,
-                                BlendMode.srcIn))
+                                theme.pendingColor, BlendMode.srcIn))
                     ])))
             .toList());
   }

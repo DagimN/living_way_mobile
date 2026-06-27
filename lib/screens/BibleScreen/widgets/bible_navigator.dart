@@ -12,6 +12,7 @@ class BibleNavigator extends StatelessWidget {
     final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final selectedPassage = bibleController.passage;
 
     double fontSize = 16.0;
@@ -20,14 +21,14 @@ class BibleNavigator extends StatelessWidget {
       Container(
           margin: const EdgeInsets.only(right: 10),
           decoration: BoxDecoration(
-              color: const Color(0xFF7562AA),
+              color: theme.primaryColor,
               borderRadius: BorderRadius.circular(5)),
           child: DropdownButton(
               underline: const SizedBox(),
               icon: const SizedBox(),
               value: selectedPassage.book,
               style: const TextStyle(color: Colors.white),
-              dropdownColor: const Color(0xFF7562AA),
+              dropdownColor: theme.primaryColor,
               padding: const EdgeInsets.symmetric(horizontal: 10),
               items: bibleController.bible
                   .map((book) =>
@@ -43,12 +44,10 @@ class BibleNavigator extends StatelessWidget {
               })),
       DropdownButton(
           underline: const SizedBox(),
-          iconEnabledColor: AppTheme(themeController.brightness).primaryColor,
+          iconEnabledColor: theme.primaryColor,
           value: selectedPassage.chapter,
-          style: TextStyle(
-              color: AppTheme(themeController.brightness).primaryColor,
-              fontSize: fontSize),
-          dropdownColor: AppTheme(themeController.brightness).primaryPanelColor,
+          style: TextStyle(color: theme.primaryColor, fontSize: fontSize),
+          dropdownColor: theme.backgroundColor,
           items: selectedPassage.book.chapters.map((chapter) {
             final index = selectedPassage.book.chapters.indexOf(chapter);
             return DropdownMenuItem(
@@ -71,12 +70,10 @@ class BibleNavigator extends StatelessWidget {
                   fontSize: fontSize))),
       DropdownButton(
           underline: const SizedBox(),
-          iconEnabledColor: AppTheme(themeController.brightness).primaryColor,
+          iconEnabledColor: theme.primaryColor,
           value: selectedPassage.verse,
-          style: TextStyle(
-              color: AppTheme(themeController.brightness).primaryColor,
-              fontSize: fontSize),
-          dropdownColor: AppTheme(themeController.brightness).primaryPanelColor,
+          style: TextStyle(color: theme.primaryColor, fontSize: fontSize),
+          dropdownColor: theme.backgroundColor,
           items: selectedPassage.verses.map((verse) {
             final index = selectedPassage.verses.indexOf(verse);
             return DropdownMenuItem(

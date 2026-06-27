@@ -26,6 +26,7 @@ class _BibleScreenState extends State<BibleScreen>
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final selectedPassage = bibleController.passage;
 
     double screenHeight = MediaQuery.of(context).size.height;
@@ -80,8 +81,7 @@ class _BibleScreenState extends State<BibleScreen>
                                 ? screenHeight * .075
                                 : screenWidth * .075) *
                             animationController.value,
-                        color: AppTheme(themeController.brightness)
-                            .primaryPanelColor,
+                        color: theme.backgroundColor,
                         padding: const EdgeInsets.all(10),
                         child: BibleNavigator(
                           toggleBibleNavigator: toggleBibleNavigator,
@@ -90,8 +90,6 @@ class _BibleScreenState extends State<BibleScreen>
               ChapterPage(verses: (selectedPassage.verses))
             ]),
           )
-        : Center(
-            child: CircularProgressIndicator(
-                color: AppTheme(themeController.brightness).primaryColor));
+        : Center(child: CircularProgressIndicator(color: theme.primaryColor));
   }
 }

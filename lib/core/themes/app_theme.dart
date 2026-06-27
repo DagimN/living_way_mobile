@@ -68,7 +68,9 @@ class AppTheme {
   }
 
   Color get chipColor {
-    return brightness == Brightness.light ? Colors.white : inactiveColor;
+    return brightness == Brightness.light
+        ? const Color(0xFFD9D9D9)
+        : inactiveColor;
   }
 
   Color? get inactiveChipColor {

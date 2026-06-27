@@ -59,6 +59,7 @@ class _ChapterPageState extends State<ChapterPage>
     final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final selectedPassage = bibleController.passage;
 
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -137,8 +138,8 @@ class _ChapterPageState extends State<ChapterPage>
                               fontSize: 47 * themeController.textSize,
                               fontFamily: themeController.selectedFont.name,
                               color: isSelectedVerse
-                                  ? Colors.black
-                                  : Colors.black.withAlpha(
+                                  ? theme.accentColor
+                                  : theme.accentColor.withAlpha(
                                       (verseHighlightController.value * 255)
                                           .toInt()),
                             ),

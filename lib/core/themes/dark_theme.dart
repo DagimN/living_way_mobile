@@ -12,7 +12,7 @@ const inactiveColor = Color(0xFF5C605E);
 const inactiveIconColor = Color(0xFFBBB593);
 const pendingColor = Color(0xFFACA295);
 const secondaryColor = Color(0xFF297AA9);
-const accentColor = Color(0xFF7F8F99);
+const accentColor = Color(0xFF818D95);
 const iconColor = Color(0xFF7F8F99);
 
 // Gradients
