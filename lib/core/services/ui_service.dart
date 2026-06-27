@@ -19,16 +19,21 @@ class UIService {
       return;
     }
 
-    messengerKey.currentState?.hideCurrentSnackBar();
-    messengerKey.currentState?.showSnackBar(
-      SnackBar(
-        content: child ?? Text(Tr.t(message ?? "")),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: backgroundColor,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        duration: duration ?? const Duration(milliseconds: 4000),
-      ),
-    );
+    try {
+      messengerKey.currentState?.hideCurrentSnackBar();
+      messengerKey.currentState?.showSnackBar(
+        SnackBar(
+          content: child ?? Text(Tr.t(message ?? "")),
+          behavior: SnackBarBehavior.floating,
+          backgroundColor: backgroundColor,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+          duration: duration ?? const Duration(milliseconds: 4000),
+        ),
+      );
+    } catch (error) {
+      logger.e(error);
+    }
   }
 
   static Future<T?> showCustomDialog<T>({

@@ -22,6 +22,7 @@ class _EmailFormState extends State<EmailForm> {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     return Form(
         key: formKey,
@@ -29,10 +30,12 @@ class _EmailFormState extends State<EmailForm> {
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(Tr.t("signup.step2Title"),
-              style:
-                  const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
+              style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.w500,
+                  color: theme.accentColor)),
           Text(Tr.t("signup.step2Subtitle"),
-              style: const TextStyle(fontSize: 14)),
+              style: TextStyle(fontSize: 14, color: theme.accentColor)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
               child: TextFormField(

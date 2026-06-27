@@ -39,12 +39,18 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
+
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Text(Tr.t("signup.step4Title"),
-          style: const TextStyle(fontSize: 32, fontWeight: FontWeight.w500)),
-      Text(Tr.t("signup.step4Subtitle"), style: const TextStyle(fontSize: 14)),
+          style: TextStyle(
+              fontSize: 32,
+              fontWeight: FontWeight.w500,
+              color: theme.accentColor)),
+      Text(Tr.t("signup.step4Subtitle"),
+          style: TextStyle(fontSize: 14, color: theme.accentColor)),
       Container(
           height: screenHeight * .5,
           margin: const EdgeInsets.symmetric(vertical: 10),

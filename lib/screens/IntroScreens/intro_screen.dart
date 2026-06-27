@@ -69,6 +69,8 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
     final localizationController = Provider.of<LocalizationController>(context);
+    final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     int index = layoutController.initialIntroductionPageIndex;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -76,7 +78,9 @@ class _IntroScreenState extends State<IntroScreen> {
     List<Widget> pages = const [Page1(), Page2(), Page3(), Page4(), Page5()];
 
     return Scaffold(
+        backgroundColor: theme.backgroundColor,
         appBar: AppBar(
+            backgroundColor: theme.backgroundColor,
             leading: TextButton(
                 style: TextButton.styleFrom(
                     shape: RoundedRectangleBorder(
@@ -96,7 +100,8 @@ class _IntroScreenState extends State<IntroScreen> {
             ]),
         body: GestureDetector(
           onHorizontalDragStart: (details) {
-            _dragStartX = details.globalPosition.dx;
+            _dragStartX = details.globalPosition
+                .dx; //FIXME: On drag is not being registered on gaps
           },
           onHorizontalDragUpdate: (details) {
             setState(() {
@@ -169,7 +174,8 @@ class _IntroScreenState extends State<IntroScreen> {
             ],
           ),
         ),
-        bottomSheet: Padding(
+        bottomSheet: Container(
+            color: theme.backgroundColor,
             padding: const EdgeInsets.all(8.0),
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -184,7 +190,8 @@ class _IntroScreenState extends State<IntroScreen> {
                           onPressed: () async {
                             Navigator.pop(context);
                           },
-                          icon: const Icon(Icons.arrow_back)),
+                          icon: Icon(Icons.arrow_back,
+                              color: theme.primaryColor)),
                   Expanded(
                       child: DotIndicator(
                           currentIndex: index, dotRadius: 7, pages: pages)),

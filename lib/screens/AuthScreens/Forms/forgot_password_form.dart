@@ -17,11 +17,12 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: AppTheme(themeController.brightness).primaryColor,
-          foregroundColor: Colors.white),
+          backgroundColor: theme.primaryColor, foregroundColor: Colors.white),
+      backgroundColor: theme.backgroundColor,
       body: Container(
         margin: const EdgeInsets.all(16),
         child: Form(
@@ -31,10 +32,12 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   Text(Tr.t("auth.forgotPasswordTitle"),
-                      style: const TextStyle(
-                          fontSize: 32, fontWeight: FontWeight.w500)),
+                      style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.w500,
+                          color: theme.accentColor)),
                   Text(Tr.t("auth.forgotPasswordSubtitle"),
-                      style: const TextStyle(fontSize: 14)),
+                      style: TextStyle(fontSize: 14, color: theme.accentColor)),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
                       child: TextFormField(
@@ -64,9 +67,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  AppTheme(themeController.brightness)
-                                      .primaryColor,
+                              backgroundColor: theme.primaryColor,
                               foregroundColor: Colors.white),
                           onPressed: () async {
                             final isValid =
@@ -83,15 +84,11 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
                             if (isSent) {
                               UIService.showSnackbar(
-                                  backgroundColor:
-                                      AppTheme(themeController.brightness)
-                                          .successColor,
+                                  backgroundColor: theme.successColor,
                                   message: Tr.t('auth.forgotPasswordSuccess'));
                             } else {
                               UIService.showSnackbar(
-                                  backgroundColor:
-                                      AppTheme(themeController.brightness)
-                                          .failedColor,
+                                  backgroundColor: theme.failedColor,
                                   message: Tr.t('auth.forgotPasswordError'));
                             }
                           },

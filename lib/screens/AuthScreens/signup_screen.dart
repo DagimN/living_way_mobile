@@ -27,6 +27,7 @@ class _SignupScreenState extends State<SignupScreen> {
     double screenWidth = MediaQuery.sizeOf(context).width;
     Orientation orientation = MediaQuery.orientationOf(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     return PopScope(
         onPopInvokedWithResult: (isPopped, _) {
@@ -39,12 +40,15 @@ class _SignupScreenState extends State<SignupScreen> {
         child: Scaffold(
             appBar: signupFlowIndex != maxSignUpFlow
                 ? AppBar(
-                    backgroundColor:
-                        AppTheme(themeController.brightness).primaryColor,
+                    backgroundColor: theme.primaryColor,
                     foregroundColor: Colors.white,
                     title: Text(Tr.t('auth.signupTitle'),
                         style: const TextStyle(fontSize: 24)))
-                : AppBar(backgroundColor: Colors.white),
+                : AppBar(
+                    backgroundColor: theme.backgroundColor,
+                    foregroundColor: theme.primaryColor,
+                  ),
+            backgroundColor: theme.backgroundColor,
             body: SingleChildScrollView(
                 child: Container(
                     height: orientation == Orientation.portrait
@@ -59,12 +63,8 @@ class _SignupScreenState extends State<SignupScreen> {
                       Align(
                           alignment: Alignment.bottomCenter,
                           child: LinearProgressIndicator(
-                              color: AppTheme(themeController.brightness)
-                                  .primaryColor,
-                              backgroundColor:
-                                  AppTheme(themeController.brightness)
-                                      .primaryColor
-                                      .withAlpha(51),
+                              color: theme.primaryColor,
+                              backgroundColor: theme.primaryColor.withAlpha(51),
                               value: signupFlowIndex / maxSignUpFlow,
                               borderRadius: BorderRadius.circular(20)))
                     ])))));

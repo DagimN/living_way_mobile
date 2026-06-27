@@ -48,31 +48,32 @@ class _SignupCompleteState extends State<SignupComplete> {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
+
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return SizedBox(
-        height: screenHeight * .7, child: signupStatusWidget(themeController));
+        height: screenHeight * .7, child: signupStatusWidget(theme));
   }
 
-  Widget signupStatusWidget(ThemeController themeController) {
+  Widget signupStatusWidget(AppTheme theme) {
     if (isSigningUp) {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Container(
             height: 100,
             width: 100,
             margin: const EdgeInsets.all(16),
-            child: CircularProgressIndicator(
-                color: AppTheme(themeController.brightness).primaryColor)),
-        Text(Tr.t('signup.step5Loading'))
+            child: CircularProgressIndicator(color: theme.primaryColor)),
+        Text(Tr.t('signup.step5Loading'),
+            style: TextStyle(color: theme.accentColor))
       ]);
     }
 
     if (isSignupSuccessful && !isSigningUp) {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-        Icon(Icons.check_circle,
-            color: AppTheme(themeController.brightness).primaryColor,
-            size: 128),
-        Text(Tr.t('signup.step5Success'))
+        Icon(Icons.check_circle, color: theme.primaryColor, size: 128),
+        Text(Tr.t('signup.step5Success'),
+            style: TextStyle(color: theme.accentColor))
       ]);
     }
 
@@ -85,7 +86,8 @@ class _SignupCompleteState extends State<SignupComplete> {
                 response?.data['message'] ??
                     response?.statusMessage ??
                     Tr.t("signup.step5Error"),
-                textAlign: TextAlign.center)),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: theme.accentColor))),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
           ElevatedButton(
               onPressed: () async {
@@ -95,9 +97,8 @@ class _SignupCompleteState extends State<SignupComplete> {
               child: const Icon(Icons.arrow_back)),
           const SizedBox(width: 25),
           ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      AppTheme(themeController.brightness).primaryColor),
+              style:
+                  ElevatedButton.styleFrom(backgroundColor: theme.primaryColor),
               onPressed: () {
                 setState(() {
                   isSigningUp = true;

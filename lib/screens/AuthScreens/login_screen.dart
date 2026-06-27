@@ -14,6 +14,8 @@ class _LoginScreenState extends State<LoginScreen> {
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final emailFocusNode = FocusNode();
+  final passwordFocusNode = FocusNode();
 
   bool obscurePassword = true;
   bool isLoggingInViaGoogle = false;
@@ -64,6 +66,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -76,6 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
         appBar: AppBar(
             foregroundColor: Colors.white,
             backgroundColor: const Color(0x80000000)),
+        backgroundColor: theme.backgroundColor,
         body: SingleChildScrollView(
             child: Form(
                 key: formKey,
@@ -98,6 +102,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: TextFormField(
                                     controller: emailController,
+                                    focusNode: emailFocusNode,
+                                    onTap: () => setState(() {}),
                                     validator: (value) {
                                       if (value == null) {
                                         return Tr.t('auth.emptyFieldError');
@@ -119,11 +125,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.always,
                                         hintText: Tr.t('auth.emailPlaceholder'),
-                                        labelText: Tr.t('auth.email')))),
+                                        labelText: Tr.t('auth.email'),
+                                        labelStyle: emailFocusNode.hasFocus
+                                            ? null
+                                            : TextStyle(
+                                                color: theme.accentColor)))),
                             Container(
                                 margin: const EdgeInsets.symmetric(vertical: 5),
                                 child: TextFormField(
                                     controller: passwordController,
+                                    focusNode: passwordFocusNode,
+                                    onTap: () => setState(() {}),
                                     validator: (value) {
                                       if (value == null) {
                                         return Tr.t('auth.emptyFieldError');
@@ -151,7 +163,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                             FloatingLabelBehavior.always,
                                         hintText:
                                             Tr.t('auth.passwordPlaceholder'),
-                                        labelText: Tr.t('auth.password')))),
+                                        labelText: Tr.t('auth.password'),
+                                        labelStyle: passwordFocusNode.hasFocus
+                                            ? null
+                                            : TextStyle(
+                                                color: theme.accentColor)))),
                             Container(
                                 margin:
                                     const EdgeInsets.symmetric(vertical: 24),
@@ -164,7 +180,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                           }
                                         : null,
                                     child: Text(Tr.t('auth.forgotPassword'),
-                                        style: const TextStyle(
+                                        style: TextStyle(
+                                            color: theme.accentColor,
+                                            decorationColor: theme.accentColor,
                                             decoration:
                                                 TextDecoration.underline)))),
                             !isLoggingInViaManual
@@ -220,7 +238,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(Tr.t('auth.dontHaveAccount')),
+                                      Text(Tr.t('auth.dontHaveAccount'),
+                                          style: TextStyle(
+                                              color: theme.accentColor)),
                                       const SizedBox(width: 10),
                                       InkWell(
                                           onTap: !isPerformingAction
@@ -233,10 +253,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                               style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,
-                                                  color: AppTheme(
-                                                          themeController
-                                                              .brightness)
-                                                      .primaryColor)))
+                                                  color: theme.primaryColor)))
                                     ]))
                           ]))
                 ]))));
