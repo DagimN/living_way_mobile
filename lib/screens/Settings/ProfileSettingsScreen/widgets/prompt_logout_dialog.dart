@@ -17,11 +17,19 @@ class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final authController = Provider.of<AuthController>(context);
 
     return AlertDialog(
-        title: Text(Tr.t('common.logout')),
-        content: Text(Tr.t('profile.logoutMessage')),
+        backgroundColor: theme.backgroundColor,
+        title: Text(
+          Tr.t('common.logout'),
+          style: TextStyle(color: theme.accentColor),
+        ),
+        content: Text(
+          Tr.t('profile.logoutMessage'),
+          style: TextStyle(color: theme.accentColor),
+        ),
         actions: !isLoggingOut
             ? [
                 TextButton(
@@ -47,7 +55,10 @@ class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(Tr.t('common.cancel')))
+                    child: Text(
+                      Tr.t('common.cancel'),
+                      style: TextStyle(color: theme.accentColor),
+                    ))
               ]
             : [
                 Center(

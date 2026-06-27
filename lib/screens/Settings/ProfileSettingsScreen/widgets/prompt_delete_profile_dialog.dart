@@ -18,11 +18,19 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final authController = Provider.of<AuthController>(context);
 
     return AlertDialog(
-        title: Text(Tr.t('profile.deleteAccount')),
-        content: Text(Tr.t('profile.deleteAccountMessage')),
+        title: Text(
+          Tr.t('profile.deleteAccount'),
+          style: TextStyle(color: theme.accentColor),
+        ),
+        content: Text(
+          Tr.t('profile.deleteAccountMessage'),
+          style: TextStyle(color: theme.accentColor),
+        ),
+        backgroundColor: theme.backgroundColor,
         actions: !isDeleting
             ? [
                 TextButton(
@@ -48,7 +56,10 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(Tr.t('common.cancel')))
+                    child: Text(
+                      Tr.t('common.cancel'),
+                      style: TextStyle(color: theme.accentColor),
+                    ))
               ]
             : [
                 Center(

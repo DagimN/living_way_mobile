@@ -1,11 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
+import 'package:provider/provider.dart';
 
 class OurBeliefsTab extends StatelessWidget {
   const OurBeliefsTab({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
+
     return Container(
         margin: const EdgeInsets.all(24),
         child: SingleChildScrollView(
@@ -15,81 +20,120 @@ class OurBeliefsTab extends StatelessWidget {
             spacing: 15,
             children: [
               Text(Tr.t('aboutPage.ourBelief.bibleTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.bibleBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.bibleBody'),
+                  style: TextStyle(color: theme.accentColor)),
               Text(Tr.t('aboutPage.ourBelief.GodTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.GodBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.GodBody'),
+                  style: TextStyle(color: theme.accentColor)),
               Container(
                   margin: const EdgeInsets.only(left: 20),
                   child: Text(Tr.t('aboutPage.ourBelief.fatherGodTitle'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
-                  child: Text(Tr.t('aboutPage.ourBelief.fatherGodBody'))),
+                  child: Text(Tr.t('aboutPage.ourBelief.fatherGodBody'),
+                      style: TextStyle(color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
                   child: Text(Tr.t('aboutPage.ourBelief.sonGodTitle'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
-                  child: Text(Tr.t('aboutPage.ourBelief.sonGodBody'))),
+                  child: Text(Tr.t('aboutPage.ourBelief.sonGodBody'),
+                      style: TextStyle(color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
                   child: Text(Tr.t('aboutPage.ourBelief.spiritGodTitle'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
-                  child: Text(Tr.t('aboutPage.ourBelief.spiritGodBody'))),
+                  child: Text(Tr.t('aboutPage.ourBelief.spiritGodBody'),
+                      style: TextStyle(color: theme.accentColor))),
               Text(Tr.t('aboutPage.ourBelief.manTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.manBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.manBody'),
+                  style: TextStyle(color: theme.accentColor)),
               Text(Tr.t('aboutPage.ourBelief.salvationTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.salvationBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.salvationBody'),
+                  style: TextStyle(color: theme.accentColor)),
               Text(Tr.t('aboutPage.ourBelief.churchTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.churchBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.churchBody'),
+                  style: TextStyle(color: theme.accentColor)),
               Container(
                   margin: const EdgeInsets.only(left: 20),
                   child: Text(Tr.t('aboutPage.ourBelief.baptismTitle'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
-                  child: Text(Tr.t('aboutPage.ourBelief.baptismBody'))),
+                  child: Text(Tr.t('aboutPage.ourBelief.baptismBody'),
+                      style: TextStyle(color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
                   child: Text(Tr.t('aboutPage.ourBelief.lordSupperTitle'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
-                  child: Text(Tr.t('aboutPage.ourBelief.lordSupperBody'))),
+                  child: Text(Tr.t('aboutPage.ourBelief.lordSupperBody'),
+                      style: TextStyle(color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
                   child: Text(Tr.t('aboutPage.ourBelief.marriageTitle'),
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 14))),
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: theme.accentColor))),
               Container(
                   margin: const EdgeInsets.only(left: 20),
-                  child: Text(Tr.t('aboutPage.ourBelief.marriageBody'))),
+                  child: Text(Tr.t('aboutPage.ourBelief.marriageBody'),
+                      style: TextStyle(color: theme.accentColor))),
               Text(Tr.t('aboutPage.ourBelief.angelsTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.angelsBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.angelsBody'),
+                  style: TextStyle(color: theme.accentColor)),
               Text(Tr.t('aboutPage.ourBelief.secondComingTitle'),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.bold, fontSize: 16)),
-              Text(Tr.t('aboutPage.ourBelief.secondComingBody')),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                      color: theme.accentColor)),
+              Text(Tr.t('aboutPage.ourBelief.secondComingBody'),
+                  style: TextStyle(color: theme.accentColor)),
             ],
           ),
         ));

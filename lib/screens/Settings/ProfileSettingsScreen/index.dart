@@ -22,6 +22,8 @@ class ProfileSettingsScreen extends StatefulWidget {
 class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final firstNameFocusNode = FocusNode();
+  final lastNameFocusNode = FocusNode();
 
   bool isUpdatingAnonymous = false;
   bool isUpdatingProfileImage = false;
@@ -51,6 +53,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     Orientation orientation = MediaQuery.of(context).orientation;
 
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final authController = Provider.of<AuthController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final profile = profileController.userProfile;
@@ -168,7 +171,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   width: 35,
                                   child: IconButton(
                                       style: IconButton.styleFrom(
-                                          backgroundColor: Colors.white,
+                                          backgroundColor:
+                                              theme.backgroundColor,
                                           elevation: 5,
                                           shadowColor: Colors.black),
                                       onPressed: () async {
@@ -217,19 +221,27 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         ])),
                     TextFormField(
                         controller: firstNameController,
-                        onChanged: (value) => setState(() {}),
+                        onTap: () => setState(() {}),
+                        style: TextStyle(color: theme.accentColor),
                         enabled: !isUpdatingName,
                         decoration: InputDecoration(
                             labelText: Tr.t('profile.firstName'),
+                            labelStyle: firstNameFocusNode.hasFocus
+                                ? null
+                                : TextStyle(color: theme.accentColor),
                             border: const OutlineInputBorder()),
                         textInputAction: TextInputAction.next),
                     const SizedBox(height: 12),
                     TextFormField(
                         controller: lastNameController,
-                        onChanged: (value) => setState(() {}),
+                        onTap: () => setState(() {}),
+                        style: TextStyle(color: theme.accentColor),
                         enabled: !isUpdatingName,
                         decoration: InputDecoration(
                             labelText: Tr.t('profile.lastName'),
+                            labelStyle: lastNameFocusNode.hasFocus
+                                ? null
+                                : TextStyle(color: theme.accentColor),
                             border: const OutlineInputBorder()),
                         textInputAction: TextInputAction.done),
                     const SizedBox(height: 12),

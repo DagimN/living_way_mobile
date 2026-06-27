@@ -103,6 +103,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: TextFormField(
                                     controller: emailController,
                                     focusNode: emailFocusNode,
+                                    style: TextStyle(color: theme.accentColor),
                                     onTap: () => setState(() {}),
                                     validator: (value) {
                                       if (value == null) {
@@ -135,6 +136,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: TextFormField(
                                     controller: passwordController,
                                     focusNode: passwordFocusNode,
+                                    style: TextStyle(color: theme.accentColor),
                                     onTap: () => setState(() {}),
                                     validator: (value) {
                                       if (value == null) {

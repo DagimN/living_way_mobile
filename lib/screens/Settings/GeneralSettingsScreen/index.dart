@@ -10,6 +10,7 @@ class GeneralSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final localizationController = Provider.of<LocalizationController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final profileController = Provider.of<ProfileController>(context);
@@ -27,9 +28,7 @@ class GeneralSettingsScreen extends StatelessWidget {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: BoxDecoration(
-                gradient:
-                    AppTheme(themeController.brightness).backgroundGradient),
+            decoration: BoxDecoration(gradient: theme.backgroundGradient),
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Column(children: [
@@ -40,14 +39,12 @@ class GeneralSettingsScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)),
+                        icon:
+                            Icon(Icons.arrow_back, color: theme.primaryColor)),
                     Text(Tr.t('settings.general'),
                         style: TextStyle(
                             fontSize: 32,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor,
+                            color: theme.primaryColor,
                             fontWeight: FontWeight.w300))
                   ])),
               Container(
@@ -61,20 +58,18 @@ class GeneralSettingsScreen extends StatelessWidget {
                           children: [
                         Text(Tr.t("settings.interface"),
                             style: TextStyle(
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor,
+                                color: theme.primaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         const Divider(),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.theme')),
+                              Text(Tr.t('settings.theme'),
+                                  style: TextStyle(color: theme.accentColor)),
                               IconButton(
                                   style: IconButton.styleFrom(
-                                      foregroundColor:
-                                          AppTheme(themeController.brightness)
-                                              .primaryColor),
+                                      foregroundColor: theme.primaryColor),
                                   onPressed: () async {
                                     AnalyticsService.logEvent(
                                         'theme_toggle_requested',
@@ -92,16 +87,13 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.language')),
+                              Text(Tr.t('settings.language'),
+                                  style: TextStyle(color: theme.accentColor)),
                               TextButton(
                                   style: TextButton.styleFrom(
                                       backgroundColor:
-                                          AppTheme(themeController.brightness)
-                                              .primaryColor
-                                              .withAlpha(51),
-                                      foregroundColor:
-                                          AppTheme(themeController.brightness)
-                                              .primaryColor,
+                                          theme.primaryColor.withAlpha(51),
+                                      foregroundColor: theme.primaryColor,
                                       shape: RoundedRectangleBorder(
                                           borderRadius:
                                               BorderRadius.circular(20))),
@@ -124,17 +116,14 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.font')),
+                              Text(Tr.t('settings.font'),
+                                  style: TextStyle(color: theme.accentColor)),
                               DropdownButton(
                                   value: themeController.selectedFont,
                                   underline: const SizedBox(),
-                                  iconEnabledColor:
-                                      AppTheme(themeController.brightness)
-                                          .primaryColor,
+                                  iconEnabledColor: theme.primaryColor,
                                   style: TextStyle(
-                                      color:
-                                          AppTheme(themeController.brightness)
-                                              .primaryColor,
+                                      color: theme.primaryColor,
                                       fontFamily: selectedFont.name),
                                   items: Fonts.values
                                       .map((font) => DropdownMenuItem(
@@ -158,8 +147,9 @@ class GeneralSettingsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(Tr.t('settings.textSize'),
-                                  style:
-                                      TextStyle(fontFamily: selectedFont.name)),
+                                  style: TextStyle(
+                                      fontFamily: selectedFont.name,
+                                      color: theme.accentColor)),
                               Container(
                                   margin: const EdgeInsets.only(right: 10),
                                   child: Text(
@@ -176,8 +166,8 @@ class GeneralSettingsScreen extends StatelessWidget {
                             min: 0.1,
                             max: 1,
                             divisions: 9,
-                            activeColor: AppTheme(themeController.brightness)
-                                .primaryColor,
+                            activeColor: theme.primaryColor,
+                            inactiveColor: theme.backgroundColor,
                             onChanged: (value) async {
                               AnalyticsService.logEvent('text_size_changed',
                                   parameters: {
@@ -188,19 +178,18 @@ class GeneralSettingsScreen extends StatelessWidget {
                         const SizedBox(height: 16),
                         Text(Tr.t("settings.notifications"),
                             style: TextStyle(
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor,
+                                color: theme.primaryColor,
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500)),
                         const Divider(),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t("settings.receiveNotifications")),
+                              Text(Tr.t("settings.receiveNotifications"),
+                                  style: TextStyle(color: theme.accentColor)),
                               Switch(
-                                  activeThumbColor:
-                                      AppTheme(themeController.brightness)
-                                          .primaryColor,
+                                  activeThumbColor: theme.primaryColor,
+                                  inactiveTrackColor: theme.backgroundColor,
                                   value:
                                       profileController.willReceiveNotification,
                                   onChanged: (isActive) async {
@@ -230,11 +219,11 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t("settings.prayerReminder")),
+                              Text(Tr.t("settings.prayerReminder"),
+                                  style: TextStyle(color: theme.accentColor)),
                               Switch(
-                                  activeThumbColor:
-                                      AppTheme(themeController.brightness)
-                                          .primaryColor,
+                                  activeThumbColor: theme.primaryColor,
+                                  inactiveTrackColor: theme.backgroundColor,
                                   value: willRemindPrayer,
                                   onChanged: (value) async {
                                     AnalyticsService.logEvent(

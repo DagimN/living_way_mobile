@@ -15,6 +15,7 @@ class MoreScreen extends StatelessWidget {
     final settingsNavigation =
         Provider.of<LayoutController>(context).settingsNavigation;
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
 
     return SafeArea(
         child: SingleChildScrollView(
@@ -29,8 +30,7 @@ class MoreScreen extends StatelessWidget {
                           child: Text(Tr.t('navigation.more'),
                               style: TextStyle(
                                   fontSize: 32,
-                                  color: AppTheme(themeController.brightness)
-                                      .primaryColor,
+                                  color: theme.primaryColor,
                                   fontWeight: FontWeight.w300)))),
                   const SizedBox(height: 30),
                   Expanded(
@@ -49,10 +49,10 @@ class MoreScreen extends StatelessWidget {
                                   Navigator.pushNamed(
                                       context, navigationItem['route'] ?? '');
                                 },
-                                title: Text(Tr.t(navigationItem['name'] ?? '')),
-                                trailing: const Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 14));
+                                title: Text(Tr.t(navigationItem['name'] ?? ''),
+                                    style: TextStyle(color: theme.accentColor)),
+                                trailing: Icon(Icons.arrow_forward_ios_rounded,
+                                    size: 14, color: theme.accentColor));
                           }))
                 ]))));
   }

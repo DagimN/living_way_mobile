@@ -12,6 +12,7 @@ class ContinueContentListView extends StatelessWidget {
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
     final themeController = Provider.of<ThemeController>(context);
+    final theme = AppTheme(themeController.brightness);
     final pausedContent = contentController.library
         .where((content) => content.contentRemaining != null)
         .toList();
@@ -28,8 +29,10 @@ class ContinueContentListView extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(Tr.t('library.continueReading'),
-              style:
-                  const TextStyle(fontSize: 24, fontWeight: FontWeight.w400)),
+              style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.w400,
+                  color: theme.accentColor)),
           Container(
               height: orientation == Orientation.portrait
                   ? screenHeight * .1
