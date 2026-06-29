@@ -84,6 +84,42 @@
           ]
         }
       }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:836583958038:android:54737d7db178fe6535b737",
+        "android_client_info": {
+          "package_name": "com.livingway.app.staging"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAggkJrRrNHzIRBYKYYTbxhfofQY3r_HBY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "836583958038-ip3iir68lsogp4fm5tps7m058escjd2k.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.livingway.app"
+              }
+            }
+          ]
+        }
+      }
     }
   ],
   "configuration_version": "1"

@@ -16,7 +16,6 @@ class TimelineContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     GlobalKey timelineKey = GlobalKey();
     double screenWidth = MediaQuery.of(context).size.width;
-    Orientation orientation = MediaQuery.of(context).orientation;
 
     final themeController = Provider.of<ThemeController>(context);
     final theme = AppTheme(themeController.brightness);
@@ -55,61 +54,53 @@ class TimelineContainer extends StatelessWidget {
                   icon: Icon(getIcon(), color: theme.primaryColor),
                   isLast: isLast),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                SizedBox(
-                    width: orientation == Orientation.portrait
-                        ? screenWidth * .75
-                        : screenWidth * .85,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                (activity.title != null || activity.body != null)
+                    ? Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        spacing: 4,
                         children: [
-                          (activity.title != null || activity.body != null)
-                              ? Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  spacing: 4,
-                                  children: [
-                                    if (activity.title != null)
-                                      SizedBox(
-                                          width: screenWidth * .5,
-                                          child: Text(activity.title ?? "",
-                                              maxLines: 5,
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: theme.primaryColor))),
-                                    if (activity.body != null && child == null)
-                                      SizedBox(
-                                          width: screenWidth * .5,
-                                          child: Text(activity.body ?? "",
-                                              maxLines: 5,
-                                              style: TextStyle(
-                                                  fontSize: 12,
-                                                  fontWeight: FontWeight.w400,
-                                                  color: child == null
-                                                      ? theme.accentColor
-                                                      : theme.primaryColor))),
-                                  ],
-                                )
-                              : const SizedBox(),
-                          Tooltip(
-                              message: DateFormat("MMMM d, y 'at' h':'mm a")
-                                  .format(activity.upcomingDate ??
-                                      activity.timestamp),
-                              triggerMode: TooltipTriggerMode.tap,
-                              child: Text(
-                                  !activity.isOngoing
-                                      ? formatDateTime(activity.upcomingDate ??
-                                          activity.timestamp)
-                                      : Tr.t('messages.ongoing'),
-                                  style: TextStyle(
-                                      fontSize: 8,
-                                      fontStyle: FontStyle.italic,
-                                      color: theme.primaryColor,
-                                      fontWeight: activity.isOngoing
-                                          ? FontWeight.bold
-                                          : null)))
-                        ])),
-                const SizedBox(height: 12),
+                          if (activity.title != null)
+                            SizedBox(
+                                width: screenWidth * .8,
+                                child: Text(activity.title ?? "",
+                                    maxLines: 5,
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
+                                        color: theme.primaryColor))),
+                          if (activity.body != null)
+                            SizedBox(
+                                width: screenWidth * .8,
+                                child: Text(activity.body ?? "",
+                                    maxLines: 5,
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.w400,
+                                        color: child == null
+                                            ? theme.accentColor
+                                            : theme.primaryColor))),
+                        ],
+                      )
+                    : const SizedBox(),
+                Container(
+                  margin: const EdgeInsets.fromLTRB(0, 6, 0, 12),
+                  child: Tooltip(
+                      message: DateFormat("MMMM d, y 'at' h':'mm a")
+                          .format(activity.upcomingDate ?? activity.timestamp),
+                      triggerMode: TooltipTriggerMode.tap,
+                      child: Text(
+                          !activity.isOngoing
+                              ? formatDateTime(
+                                  activity.upcomingDate ?? activity.timestamp)
+                              : Tr.t('messages.ongoing'),
+                          style: TextStyle(
+                              fontSize: 8,
+                              fontStyle: FontStyle.italic,
+                              color: theme.primaryColor,
+                              fontWeight: activity.isOngoing
+                                  ? FontWeight.bold
+                                  : FontWeight.w700))),
+                ),
                 child ?? const SizedBox()
               ])
             ]),
