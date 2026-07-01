@@ -49,7 +49,7 @@ class LayoutController extends ChangeNotifier {
       notifyListeners();
     });
 
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 10), () {
       VersionCheckService.checkForUpdate();
     });
   }
