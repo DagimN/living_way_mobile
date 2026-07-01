@@ -147,9 +147,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text(Tr.t('settings.textSize'),
-                                  style: TextStyle(
-                                      fontFamily: selectedFont.name,
-                                      color: theme.accentColor)),
+                                  style: TextStyle(color: theme.accentColor)),
                               Container(
                                   margin: const EdgeInsets.only(right: 10),
                                   child: Text(
