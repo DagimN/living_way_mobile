@@ -99,9 +99,9 @@ class _IntroScreenState extends State<IntroScreen> {
                   child: Text(Tr.t('common.skip')))
             ]),
         body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
           onHorizontalDragStart: (details) {
-            _dragStartX = details.globalPosition
-                .dx; //FIXME: On drag is not being registered on gaps
+            _dragStartX = details.globalPosition.dx;
           },
           onHorizontalDragUpdate: (details) {
             setState(() {
