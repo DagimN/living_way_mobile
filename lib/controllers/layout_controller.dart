@@ -17,7 +17,7 @@ enum HomePageNavigation {
 }
 
 class LayoutController extends ChangeNotifier {
-  HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.bible;
+  HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.home;
   List<GlobalKey> verseKeys = [];
   int initialIntroductionPageIndex = 0;
   bool showSplashScreen = true;
@@ -44,7 +44,7 @@ class LayoutController extends ChangeNotifier {
       }
     });
 
-    Future.delayed(const Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 5), () {
       showSplashScreen = false;
       notifyListeners();
     });

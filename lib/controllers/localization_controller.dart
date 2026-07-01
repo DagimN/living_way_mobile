@@ -58,7 +58,7 @@ class LocalizationController extends ChangeNotifier {
       final cached = _cache.getStrings(locale.languageCode);
 
       if (cached == null) {
-        return await fetchFromRemote(locale);
+        return await _loadBundledFallback(locale);
       }
 
       return cached;
@@ -70,7 +70,7 @@ class LocalizationController extends ChangeNotifier {
   Future<Map<String, dynamic>> _loadBundledFallback(Locale locale) async {
     try {
       final jsonStr = await rootBundle.loadString(
-        'assets/translations/${locale.languageCode}_${locale.countryCode}.json',
+        'assets/translations/${locale.languageCode}-${locale.countryCode}.json',
       );
       return Map<String, dynamic>.from(jsonDecode(jsonStr) as Map);
     } catch (error) {

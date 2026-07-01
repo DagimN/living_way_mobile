@@ -15,7 +15,7 @@ class BibleTraverser extends StatefulWidget {
 class _BibleTraverserState extends State<BibleTraverser>
     with TickerProviderStateMixin {
   late final animationController = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 200), value: 1);
+      vsync: this, duration: const Duration(milliseconds: 200), value: 0);
   late final widthAnimation =
       Tween(begin: 72.0, end: 144.0).animate(animationController);
 

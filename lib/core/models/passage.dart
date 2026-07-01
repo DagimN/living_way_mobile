@@ -72,10 +72,10 @@ class Passage {
     final toVerse = (_toVerse ?? 0) + 1;
 
     if (_toVerse == null) {
-      return '${book.name} $chapter:$verse  ${translation?.name}';
+      return '${book.name} $chapter:$verse  ${translation?.name ?? ""}';
     }
 
-    return '${book.name} $chapter:$verse-$toVerse  ${translation?.name}';
+    return '${book.name} $chapter:$verse-$toVerse  ${translation?.name ?? ""}';
   }
 
   List<String> get verses {

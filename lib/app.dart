@@ -50,7 +50,7 @@ class LivingWayApp extends StatelessWidget {
                 path: 'assets/translations',
                 fallbackLocale: localizationController.supportedLocales.first,
                 assetLoader: localizationController.loader,
-                saveLocale: false,
+                saveLocale: true,
                 child: Consumer<AuthController>(
                     builder: (context, authController, _) {
                   final profileController =
