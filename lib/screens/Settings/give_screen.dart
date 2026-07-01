@@ -117,28 +117,21 @@ class GiveScreen extends StatelessWidget {
                                       )
                                     ],
                                   ),
-                                  SizedBox(
-                                      height:
-                                          orientation == Orientation.portrait
-                                              ? screenHeight * .15
-                                              : screenHeight * .25,
-                                      width: orientation == Orientation.portrait
-                                          ? screenHeight * .15
-                                          : screenHeight * .25,
-                                      child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(7),
-                                          child: CachedNetworkImage(
-                                            imageUrl: bank.logo,
-                                            memCacheHeight: orientation ==
-                                                    Orientation.portrait
-                                                ? (screenHeight * .4).toInt()
-                                                : (screenWidth * .4).toInt(),
-                                            maxHeightDiskCache: orientation ==
-                                                    Orientation.portrait
-                                                ? (screenHeight * .4).toInt()
-                                                : (screenWidth * .4).toInt(),
-                                          ))),
+                                  Expanded(
+                                    child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(7),
+                                        child: CachedNetworkImage(
+                                          imageUrl: bank.logo,
+                                          memCacheHeight: orientation ==
+                                                  Orientation.portrait
+                                              ? (screenHeight * .4).toInt()
+                                              : (screenWidth * .4).toInt(),
+                                          maxHeightDiskCache: orientation ==
+                                                  Orientation.portrait
+                                              ? (screenHeight * .4).toInt()
+                                              : (screenWidth * .4).toInt(),
+                                        )),
+                                  ),
                                   Container(
                                     margin: const EdgeInsets.symmetric(
                                         vertical: 10),
