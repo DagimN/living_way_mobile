@@ -36,7 +36,7 @@ class StoryViewScreenState extends State<StoryViewScreen> {
   }
 
   void videoControllerListener() {
-    if (context.mounted) {
+    if (mounted) {
       setState(() {
         currentSeek =
             widget.controller.value.position.inMilliseconds.toDouble();
