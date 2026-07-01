@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/core.dart';
-import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
 import 'MediaScreen/widgets/player_slider.dart';
@@ -73,12 +71,9 @@ class StoryViewScreenState extends State<StoryViewScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-
     return SafeArea(
         child: Scaffold(
-            backgroundColor:
-                AppTheme(themeController.brightness).backgroundColor,
+            backgroundColor: Colors.black,
             extendBody: true,
             extendBodyBehindAppBar: true,
             appBar: AppBar(
@@ -90,49 +85,50 @@ class StoryViewScreenState extends State<StoryViewScreen> {
               child: Hero(
                   tag: 'videoPlayer - ${widget.id}',
                   child: Stack(children: [
-                    VideoPlayer(widget.controller),
-                    Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          const SizedBox(),
-                          IconButton(
-                              style: IconButton.styleFrom(
-                                  backgroundColor: Colors.white,
-                                  shape: const CircleBorder()),
-                              onPressed: () async {
-                                if (widget.controller.value.isPlaying) {
-                                  await widget.controller.pause();
-                                  AnalyticsService.logEvent('story_paused');
-                                  setState(() {});
-                                  return;
-                                }
+                    Center(
+                      child: AspectRatio(
+                          aspectRatio: widget.controller.value.aspectRatio,
+                          child: VideoPlayer(widget.controller)),
+                    ),
+                    Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                      IconButton(
+                          style: IconButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              shape: const CircleBorder()),
+                          onPressed: () async {
+                            if (widget.controller.value.isPlaying) {
+                              await widget.controller.pause();
+                              AnalyticsService.logEvent('story_paused');
+                              setState(() {});
+                              return;
+                            }
 
-                                if (!widget.controller.value.isPlaying) {
-                                  await widget.controller.play();
-                                  AnalyticsService.logEvent('story_played');
-                                  setState(() {});
-                                  return;
-                                }
-                              },
-                              icon: Icon(widget.controller.value.isPlaying
-                                  ? Icons.pause
-                                  : Icons.play_arrow)),
-                          SizedBox(
-                              height: 50,
-                              child: PlayerSlider(
-                                  end: widget
-                                      .controller.value.duration.inMilliseconds
-                                      .toDouble(),
-                                  value: currentSeek,
-                                  onChanged: (value) async {
-                                    AnalyticsService.logEvent('video_seeked',
-                                        parameters: {"value": value});
-                                    await widget.controller.seekTo(
-                                        Duration(milliseconds: value.toInt()));
+                            if (!widget.controller.value.isPlaying) {
+                              await widget.controller.play();
+                              AnalyticsService.logEvent('story_played');
+                              setState(() {});
+                              return;
+                            }
+                          },
+                          icon: Icon(widget.controller.value.isPlaying
+                              ? Icons.pause
+                              : Icons.play_arrow)),
+                      SizedBox(
+                          height: 50,
+                          child: PlayerSlider(
+                              end: widget
+                                  .controller.value.duration.inMilliseconds
+                                  .toDouble(),
+                              value: currentSeek,
+                              onChanged: (value) async {
+                                AnalyticsService.logEvent('video_seeked',
+                                    parameters: {"value": value});
+                                await widget.controller.seekTo(
+                                    Duration(milliseconds: value.toInt()));
 
-                                    setState(() {});
-                                  }))
-                        ])
+                                setState(() {});
+                              }))
+                    ])
                   ])),
             )));
   }
