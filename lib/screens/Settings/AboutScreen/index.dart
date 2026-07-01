@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/Settings/AboutScreen/widgets/our_beliefs_tab.dart';
@@ -24,6 +25,9 @@ class AboutScreen extends StatelessWidget {
         extendBody: true,
         extendBodyBehindAppBar: true,
         appBar: AppBar(
+            systemOverlayStyle: themeController.brightness == Brightness.dark
+                ? SystemUiOverlayStyle.light
+                : SystemUiOverlayStyle.dark,
             backgroundColor: Colors.transparent,
             leading: IconButton(
                 onPressed: () {
