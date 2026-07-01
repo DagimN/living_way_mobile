@@ -16,6 +16,7 @@ class DailyFeedScreen extends StatelessWidget {
     final themeController = Provider.of<ThemeController>(context);
     final activityController = Provider.of<ActivityController>(context);
     final contentController = Provider.of<ContentController>(context);
+    final devotionController = Provider.of<DevotionController>(context);
 
     double screenHeight = MediaQuery.of(context).size.height;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -48,6 +49,7 @@ class DailyFeedScreen extends StatelessWidget {
                 AnalyticsService.logEvent('daily_feed_refreshed');
                 await contentController.fetchStories(isRefreshing: true);
                 await activityController.fetchActivities(isRefreshing: true);
+                await devotionController.fetchTopics(isRefreshing: true);
               },
               child: SingleChildScrollView(
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
@@ -58,8 +60,7 @@ class DailyFeedScreen extends StatelessWidget {
                             fontSize: 32,
                             color: AppTheme(themeController.brightness)
                                 .accentColor,
-                            fontWeight: FontWeight.w400)),
-                    actions: const [SearchButton()]),
+                            fontWeight: FontWeight.w400))),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: upcomingActivities.length,

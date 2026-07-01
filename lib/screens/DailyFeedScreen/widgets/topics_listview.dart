@@ -29,36 +29,26 @@ class TopicsListview extends StatelessWidget {
                 style: TextStyle(
                     fontSize: 16,
                     color: AppTheme(themeController.brightness).iconColor)),
-            Row(children: [
-              IconButton(
-                  style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () {
-                    showModalBottomSheet(
-                        context: context,
-                        backgroundColor: AppTheme(themeController.brightness)
-                            .backgroundColor,
-                        isScrollControlled: true,
-                        builder: (BuildContext context) {
-                          return FilterBottomSheet(
-                              sortOption: devotionController.sortOption,
-                              categoryFilter: devotionController.categoryFilter,
-                              booksSelected: devotionController.booksFiltered);
-                        });
-                  },
-                  icon: SvgPicture.asset(AppIcons.filter,
-                      height: 24,
-                      colorFilter: ColorFilter.mode(
-                          AppTheme(themeController.brightness).iconColor,
-                          BlendMode.srcIn))),
-              IconButton(
-                  style: IconButton.styleFrom(padding: EdgeInsets.zero),
-                  onPressed: () async {
-                    AnalyticsService.logEvent('topics_refresh');
-                    devotionController.fetchTopics(isRefreshing: true);
-                  },
-                  icon: Icon(Icons.refresh,
-                      color: AppTheme(themeController.brightness).iconColor))
-            ])
+            // IconButton(
+            //     style: IconButton.styleFrom(padding: EdgeInsets.zero),
+            //     onPressed: () {
+            //       showModalBottomSheet(
+            //           context: context,
+            //           backgroundColor: AppTheme(themeController.brightness)
+            //               .backgroundColor,
+            //           isScrollControlled: true,
+            //           builder: (BuildContext context) {
+            //             return FilterBottomSheet(
+            //                 sortOption: devotionController.sortOption,
+            //                 categoryFilter: devotionController.categoryFilter,
+            //                 booksSelected: devotionController.booksFiltered);
+            //           });
+            //     },
+            //     icon: SvgPicture.asset(AppIcons.filter,
+            //         height: 24,
+            //         colorFilter: ColorFilter.mode(
+            //             AppTheme(themeController.brightness).iconColor,
+            //             BlendMode.srcIn))),
           ]),
           SizedBox(
               width: screenWidth,

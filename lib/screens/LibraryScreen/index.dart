@@ -66,8 +66,7 @@ class LibraryScreen extends StatelessWidget {
                       style: TextStyle(
                           fontSize: 32,
                           color: theme.primaryColor,
-                          fontWeight: FontWeight.w300))),
-              actions: const [SearchButton()]),
+                          fontWeight: FontWeight.w300)))),
           SizedBox(
             height: orientation == Orientation.portrait
                 ? screenHeight * .78
