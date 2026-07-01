@@ -34,21 +34,25 @@ class Passage {
   }
 
   String get text {
-    if (book.chapters.isNotEmpty) {
-      if (_toVerse != null) {
-        String text = '';
+    try {
+      if (book.chapters.isNotEmpty) {
+        if (_toVerse != null) {
+          String text = '';
 
-        for (int from = _verse ?? 0; from <= _toVerse!; from++) {
-          text += '${book.chapters[_chapter ?? 0][from]} ';
+          for (int from = _verse ?? 0; from <= _toVerse!; from++) {
+            text += '${book.chapters[_chapter ?? 0][from]} ';
+          }
+
+          return text;
         }
 
-        return text;
+        return book.chapters[_chapter ?? 0][_verse ?? 0];
       }
 
-      return book.chapters[_chapter ?? 0][_verse ?? 0];
+      return '';
+    } catch (error) {
+      return '';
     }
-
-    return '';
   }
 
   String get label {
