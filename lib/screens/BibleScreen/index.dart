@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import 'widgets/bible_navigator.dart';
 import 'widgets/chapter_page.dart';
+import 'widgets/font_options_bottomsheet_button.dart';
 import 'widgets/translation_popup_button.dart';
 
 class BibleScreen extends StatefulWidget {
@@ -56,8 +57,8 @@ class _BibleScreenState extends State<BibleScreen>
                         Container(
                             constraints: BoxConstraints(
                                 maxWidth: orientation == Orientation.portrait
-                                    ? screenWidth * .35
-                                    : screenWidth * .25),
+                                    ? screenWidth * .25
+                                    : screenWidth * .15),
                             child: Text(selectedPassage.label.split(":")[0],
                                 style: TextStyle(
                                     color: AppTheme(themeController.brightness)
@@ -70,7 +71,10 @@ class _BibleScreenState extends State<BibleScreen>
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)
                       ])),
-                  actions: const [TranslationPopupButton()]),
+                  actions: const [
+                    TranslationPopupButton(),
+                    FontOptionsBottomsheetButton(),
+                  ]),
               AnimatedBuilder(
                   animation: CurvedAnimation(
                       parent: animationController, curve: Curves.easeInOutCirc),
