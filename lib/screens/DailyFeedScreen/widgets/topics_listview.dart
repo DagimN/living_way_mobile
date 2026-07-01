@@ -92,7 +92,9 @@ class TopicsListview extends StatelessWidget {
                                     : const SizedBox();
                           })
                       : Center(
-                          child: Text(Tr.t('home.noTopicsMessage'),
+                          child: Text(
+                              Tr.safe('home.noTopicsMessage',
+                                  fallback: "No topics available"),
                               style: const TextStyle(color: Colors.grey)))
                   : Center(
                       child: CircularProgressIndicator(

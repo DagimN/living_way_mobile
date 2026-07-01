@@ -35,7 +35,9 @@ class StoryListView extends StatelessWidget {
                       return StoryCard(story: story, isFirst: index == 0);
                     })
                 : Center(
-                    child: Text(Tr.t('home.noStoriesMessage'),
+                    child: Text(
+                        Tr.safe('home.noStoriesMessage',
+                            fallback: "No stories available"),
                         style: const TextStyle(color: Colors.grey)))
             : Center(
                 child: CircularProgressIndicator(
