@@ -81,25 +81,33 @@ This section is intended for important information that future developers should
 
 > [!IMPORTANT]
 > **EasyLocalization Package source must be changed**
-> The translations.dart file in the EasyLocalization package needs modification to resolve a major bug when providing locales to the app.
+> The translations.dart file in the EasyLocalization package needs modification to resolve a major bug when providing locales to the app. Make sure to change this at AppData/Local/Pub/Cache/hosted/pub.dev/easy_localization-3.0.8/lib/src/translations.dart
 
 ```dart
 String? getNested(String key) {
-    if (isNestedCached(key)) return _nestedKeysCache[key];
+    try {
+      if (isNestedCached(key)) return _nestedKeysCache[key];
 
-    final keys = key.split('.');
-    final kHead = keys.first;
+      final keys = key.split('.');
+      final kHead = keys.first;
 
-    var value = _translations![kHead];
+      var value = _translations![kHead];
 
-    for (var i = 1; i < keys.length; i++) {
-      if (value is Map<String, dynamic>) value = value[keys[i]];
+      // print(value);
+
+      for (var i = 1; i < keys.length; i++) {
+        if (value is Map<String, dynamic>) value = value[keys[i]];
+      }
+
+      if (value != null && value is String) {
+        cacheNestedKey(key, value);
+      }
+
+      return value;
+    } catch (e) {
+      print('Error in getNested: $e');
     }
 
-    if (value != null && value is String) { // <--- HIGHLIGHT: Make sure to change this at AppData/Local/Pub/Cache/hosted/pub.dev/easy_localization-3.0.8/lib/src/translations.dart
-      cacheNestedKey(key, value);
-    }
-
-    return value;
-}
+    return null;
+  }
 ```
