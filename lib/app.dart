@@ -46,6 +46,7 @@ class LivingWayApp extends StatelessWidget {
                 : localizationController.init(),
             builder: (context, asyncSnapshot) {
               return EasyLocalization(
+                //!  (&& value is String) has been patched in the package code in the translations.dart file at the getNested method
                 supportedLocales: localizationController.supportedLocales,
                 path: 'assets/translations',
                 fallbackLocale: localizationController.supportedLocales.first,
