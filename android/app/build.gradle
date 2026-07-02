@@ -1,9 +1,8 @@
 plugins {
-    id "com.android.application"
-    id "kotlin-android"
-    id "dev.flutter.flutter-gradle-plugin"
-    id 'com.google.gms.google-services'
-    id 'com.google.firebase.crashlytics'
+    id("com.android.application")
+    id("dev.flutter.flutter-gradle-plugin")
+    id('com.google.gms.google-services')
+    id('com.google.firebase.crashlytics')
 }
 
 def localProperties = new Properties()
@@ -33,10 +32,6 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
         coreLibraryDesugaringEnabled true
-    }
-
-    kotlinOptions {
-        jvmTarget = '17'
     }
 
     sourceSets {
@@ -92,6 +87,10 @@ android {
 
 kotlin {
   jvmToolchain(17)
+
+  compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+    }
 }
 
 flutter {

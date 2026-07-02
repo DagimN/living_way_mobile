@@ -48,22 +48,22 @@ class ContactsScreen extends StatelessWidget {
         return Icons.location_pin;
       case ContactType.social:
         if ((address ?? "").contains('facebook')) {
-          return FontAwesomeIcons.facebookF;
+          return FontAwesomeIcons.facebookF.data;
         }
 
         if ((address ?? "").contains('twitter')) {
-          return FontAwesomeIcons.twitter;
+          return FontAwesomeIcons.twitter.data;
         }
 
         if ((address ?? "").contains('youtube')) {
-          return FontAwesomeIcons.youtube;
+          return FontAwesomeIcons.youtube.data;
         }
 
         if ((address ?? "").contains('instagram')) {
-          return FontAwesomeIcons.instagram;
+          return FontAwesomeIcons.instagram.data;
         }
 
-        return FontAwesomeIcons.globe;
+        return FontAwesomeIcons.globe.data;
       default:
         return Icons.book;
     }

@@ -92,7 +92,7 @@ class _MediaScreenState extends State<MediaScreen>
             if (widget.topic.type == TopicType.video)
               IconButton(
                   icon:
-                      const Icon(FontAwesomeIcons.youtube, color: Colors.white),
+                      Icon(FontAwesomeIcons.youtube.data, color: Colors.white),
                   onPressed: () async {
                     AnalyticsService.logEvent('youtube_link_opened',
                         parameters: {
