@@ -14,7 +14,7 @@ class OurBeliefsTab extends StatelessWidget {
     return Container(
         margin: const EdgeInsets.all(24),
         child: SingleChildScrollView(
-          padding: const EdgeInsets.only(bottom: 100),
+          padding: const EdgeInsets.only(bottom: 200),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             spacing: 15,

@@ -43,56 +43,53 @@ class AboutScreen extends StatelessWidget {
                     ? screenHeight * .89
                     : screenHeight * .79,
                 child: SingleChildScrollView(
-                    physics: const NeverScrollableScrollPhysics(),
                     child: Column(children: [
-                      const SizedBox(height: 100),
-                      Image.asset(AppImages.aboutLogo,
-                          height: orientation == Orientation.portrait
-                              ? screenHeight * .3
-                              : screenHeight * .4,
-                          width: screenWidth * .7),
-                      Container(
-                          margin: const EdgeInsets.all(5),
-                          child: FutureBuilder(
-                              future: PackageInfo.fromPlatform(),
-                              builder: (context, snapshot) {
-                                final packageInfo = snapshot.data;
-                                String version = packageInfo?.version ?? "";
-                                String buildNumber =
-                                    packageInfo?.buildNumber ?? "";
+                  const SizedBox(height: 100),
+                  Image.asset(AppImages.aboutLogo,
+                      height: orientation == Orientation.portrait
+                          ? screenHeight * .3
+                          : screenHeight * .4,
+                      width: screenWidth * .7),
+                  Container(
+                      margin: const EdgeInsets.all(5),
+                      child: FutureBuilder(
+                          future: PackageInfo.fromPlatform(),
+                          builder: (context, snapshot) {
+                            final packageInfo = snapshot.data;
+                            String version = packageInfo?.version ?? "";
+                            String buildNumber = packageInfo?.buildNumber ?? "";
 
-                                return Text('v$version $buildNumber',
-                                    style: const TextStyle(
-                                        color: Color(0xFF65829A),
-                                        fontSize: 10));
-                              })),
-                      const SizedBox(height: 24),
-                      DefaultTabController(
-                          length: 3,
-                          child: Column(children: [
-                            TabBar(
-                              onTap: (index) async {
-                                AnalyticsService.logEvent('about_tab_selected',
-                                    parameters: {'index': index.toString()});
-                              },
-                              tabs: [
-                                Tab(child: Text(Tr.t("settings.whoWeAre"))),
-                                Tab(child: Text(Tr.t("settings.ourBeliefs"))),
-                                Tab(child: Text(Tr.t("settings.staff")))
-                              ],
-                              unselectedLabelColor: theme.accentColor,
-                            ),
-                            SizedBox(
-                                width: screenWidth,
-                                height: orientation == Orientation.portrait
-                                    ? screenHeight * .55
-                                    : screenHeight * .4,
-                                child: const TabBarView(children: [
-                                  WhoWeAreTab(),
-                                  OurBeliefsTab(),
-                                  StaffTab(),
-                                ]))
-                          ]))
-                    ])))));
+                            return Text('v$version $buildNumber',
+                                style: const TextStyle(
+                                    color: Color(0xFF65829A), fontSize: 10));
+                          })),
+                  const SizedBox(height: 24),
+                  DefaultTabController(
+                      length: 3,
+                      child: Column(children: [
+                        TabBar(
+                          onTap: (index) async {
+                            AnalyticsService.logEvent('about_tab_selected',
+                                parameters: {'index': index.toString()});
+                          },
+                          tabs: [
+                            Tab(child: Text(Tr.t("settings.whoWeAre"))),
+                            Tab(child: Text(Tr.t("settings.ourBeliefs"))),
+                            Tab(child: Text(Tr.t("settings.staff")))
+                          ],
+                          unselectedLabelColor: theme.accentColor,
+                        ),
+                        SizedBox(
+                            width: screenWidth,
+                            height: orientation == Orientation.portrait
+                                ? screenHeight * .55
+                                : screenHeight * .4,
+                            child: const TabBarView(children: [
+                              WhoWeAreTab(),
+                              OurBeliefsTab(),
+                              StaffTab(),
+                            ]))
+                      ]))
+                ])))));
   }
 }

@@ -64,7 +64,7 @@ class StaffTab extends StatelessWidget {
         itemCount: staffs.length,
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             childAspectRatio: orientation == Orientation.portrait ? 0.9 : 1.5,
-            crossAxisCount: screenWidth > 360 ? 3 : 2),
+            crossAxisCount: screenWidth > 420 ? 3 : 2),
         itemBuilder: (context, index) {
           final staff = staffs[index];
           return Container(
@@ -73,25 +73,24 @@ class StaffTab extends StatelessWidget {
                   gradient: AppTheme(themeController.brightness).topicGradient,
                   borderRadius: BorderRadius.circular(16)),
               child: Column(children: [
-                SizedBox(
-                    height: orientation == Orientation.portrait
-                        ? screenHeight * .15
-                        : screenHeight * .25,
-                    width: double.infinity,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(7),
-                        child: CachedNetworkImage(
-                          imageUrl: staff.image,
-                          memCacheHeight: orientation == Orientation.portrait
-                              ? (screenHeight * .4).toInt()
-                              : (screenWidth * .4).toInt(),
-                          maxHeightDiskCache:
-                              orientation == Orientation.portrait
-                                  ? (screenHeight * .4).toInt()
-                                  : (screenWidth * .4).toInt(),
-                          fit: BoxFit.cover,
-                          alignment: Alignment.topCenter,
-                        ))),
+                Expanded(
+                  child: SizedBox(
+                      width: double.infinity,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(7),
+                          child: CachedNetworkImage(
+                            imageUrl: staff.image,
+                            memCacheHeight: orientation == Orientation.portrait
+                                ? (screenHeight * .4).toInt()
+                                : (screenWidth * .4).toInt(),
+                            maxHeightDiskCache:
+                                orientation == Orientation.portrait
+                                    ? (screenHeight * .4).toInt()
+                                    : (screenWidth * .4).toInt(),
+                            fit: BoxFit.cover,
+                            alignment: Alignment.topCenter,
+                          ))),
+                ),
                 const SizedBox(height: 10),
                 Text(staff.name,
                     textAlign: TextAlign.center,
