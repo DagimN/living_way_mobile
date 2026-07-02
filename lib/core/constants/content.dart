@@ -161,7 +161,6 @@ List<(int, int, int, int?)> dailyVerses = [
   (2, 10, 44, null),
   (2, 18, 1, null),
   (2, 18, 17, null),
-  (2, 20, 25, null),
 
   // Numbers
   (3, 5, 23, 25),
@@ -398,7 +397,7 @@ List<(int, int, int, int?)> dailyVerses = [
   (32, 4, 1, null),
   (32, 5, 7, null),
   (32, 6, 6, null),
-  (32, 7, 17, null),
+  (32, 6, 16, null),
 
   // Nahum
   (33, 0, 2, null),
@@ -412,9 +411,9 @@ List<(int, int, int, int?)> dailyVerses = [
   (34, 2, 16, 17),
 
   // Zephaniah
-  (35, 3, 8, null),
-  (35, 3, 14, null),
-  (35, 3, 16, null),
+  (35, 2, 7, null),
+  (35, 2, 13, null),
+  (35, 2, 15, null),
 
   // Haggai
   (36, 0, 4, null),
@@ -574,7 +573,7 @@ List<(int, int, int, int?)> dailyVerses = [
   (46, 4, 15, 17),
   (46, 4, 6, null),
   (46, 5, 16, null),
-  (46, 5, 20, null),
+  (46, 4, 19, null),
   (46, 8, 6, null),
   (46, 8, 7, null),
   (46, 11, 8, 9),
@@ -676,7 +675,6 @@ List<(int, int, int, int?)> dailyVerses = [
   // Titus
   (55, 1, 10, 11),
   (55, 2, 3, 4),
-  (55, 3, 7, null),
 
   // Philemon
   (56, 0, 3, 4),
@@ -779,6 +777,6 @@ List<(int, int, int, int?)> dailyVerses = [
   (65, 20, 4, null),
   (65, 20, 5, null),
   (65, 21, 11, 12),
-  (65, 22, 16, null),
-  (65, 22, 19, 20)
+  (65, 21, 15, null),
+  (65, 21, 18, 19)
 ];
