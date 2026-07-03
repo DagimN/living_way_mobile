@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
-import 'filter_bottom_sheet.dart';
 import 'topic_card.dart';
 
 class TopicsListview extends StatelessWidget {
@@ -28,27 +26,7 @@ class TopicsListview extends StatelessWidget {
             Text(Tr.t('home.topics'),
                 style: TextStyle(
                     fontSize: 16,
-                    color: AppTheme(themeController.brightness).iconColor)),
-            // IconButton(
-            //     style: IconButton.styleFrom(padding: EdgeInsets.zero),
-            //     onPressed: () {
-            //       showModalBottomSheet(
-            //           context: context,
-            //           backgroundColor: AppTheme(themeController.brightness)
-            //               .backgroundColor,
-            //           isScrollControlled: true,
-            //           builder: (BuildContext context) {
-            //             return FilterBottomSheet(
-            //                 sortOption: devotionController.sortOption,
-            //                 categoryFilter: devotionController.categoryFilter,
-            //                 booksSelected: devotionController.booksFiltered);
-            //           });
-            //     },
-            //     icon: SvgPicture.asset(AppIcons.filter,
-            //         height: 24,
-            //         colorFilter: ColorFilter.mode(
-            //             AppTheme(themeController.brightness).iconColor,
-            //             BlendMode.srcIn))),
+                    color: AppTheme(themeController.brightness).iconColor))
           ]),
           SizedBox(
               width: screenWidth,
