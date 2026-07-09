@@ -192,8 +192,7 @@ class BibleController extends ChangeNotifier {
       await NotificationService.scheduleNotification(
           id: notificationId,
           title: 'Verse of the Day',
-          body:
-              '${passage.text} ${passage.labelWithTranslation}', //BUG: RangeError (length): Invalid value: Not in inclusive range 0..6: 7
+          body: '${passage.text} ${passage.labelWithTranslation}',
           scheduledDate: scheduledDate,
           payload: 'verseOfTheDay');
     }
