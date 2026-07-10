@@ -123,7 +123,9 @@
     "event": "Event",
     "externalLink": "External Link",
     "qrCode": "QR Code",
-    "votes": "{} {}"
+    "votes": "{} {}",
+    "startMessage": "It all started here",
+    "noActivitiesMessage": "Nothing to show yet. Come back later"
   },
   "content": {
     "downloaded": "{} downloaed successfully",
@@ -272,6 +274,7 @@
     "close": "Close",
     "failedGoogleLogin": "Could not login via Google",
     "failedSignup": "Could not signup. Please try again.",
-    "failedAppLaunch": "Could not open {}"
+    "failedAppLaunch": "Could not open {}",
+    "noResultsFound": "No results found"
   }
 }

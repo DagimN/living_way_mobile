@@ -85,6 +85,7 @@ dependencies:
   shorebird_code_push: ^2.0.6
   flutter_hooks: ^0.20.5
   percent_indicator: ^4.2.5
+  async: ^2.13.1
 
 dev_dependencies:
   flutter_test:

@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:living_way/controllers/theme_controller.dart';
+import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/avatar_stack.dart';
 import 'package:provider/provider.dart';
 
 class TimelineContainer extends StatelessWidget {
   final Activity activity;
-  final Widget? child;
+  final EdgeInsetsGeometry? margin;
   final bool isLast;
   const TimelineContainer(
-      {super.key, required this.activity, this.child, this.isLast = false});
+      {super.key, required this.activity, this.isLast = false, this.margin});
 
   @override
   Widget build(BuildContext context) {
@@ -18,28 +18,14 @@ class TimelineContainer extends StatelessWidget {
     double screenWidth = MediaQuery.of(context).size.width;
 
     final themeController = Provider.of<ThemeController>(context);
+    final profileController = Provider.of<ProfileController>(context);
     final theme = AppTheme(themeController.brightness);
-
-    IconData getIcon() {
-      switch (activity.type) {
-        case ContentType.external:
-          return Icons.link;
-        case ContentType.poll:
-          return Icons.poll;
-        case ContentType.gallery:
-          return Icons.photo;
-        case ContentType.article:
-          return Icons.article;
-        case ContentType.general:
-          return Icons.radio_button_checked;
-        default:
-          return Icons.calendar_month;
-      }
-    }
+    final child = activity.getChild(profile: profileController.userProfile);
 
     return Container(
         key: timelineKey,
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+        margin:
+            margin ?? const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
         child: Stack(
           children: [
             if (!isLast)
@@ -51,7 +37,7 @@ class TimelineContainer extends StatelessWidget {
             Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
               AvatarStack(
                   containerKey: timelineKey,
-                  icon: Icon(getIcon(), color: theme.primaryColor),
+                  icon: Icon(activity.icon, color: theme.primaryColor),
                   isLast: isLast),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 (activity.title != null || activity.body != null)

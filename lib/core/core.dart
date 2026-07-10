@@ -24,6 +24,7 @@ export 'models/content.dart';
 export 'models/localization_cache.dart';
 export 'models/passage.dart';
 export 'models/profile.dart';
+export 'models/search_result.dart';
 export 'models/signup_progress.dart';
 export 'models/staff.dart';
 export 'models/story/cache.dart';

@@ -123,7 +123,9 @@
     "event": "ክስተት",
     "externalLink": "ውጪ አገናኝ",
     "qrCode": "QR ኮድ",
-    "votesCount": "{} {}"
+    "votesCount": "{} {}",
+    "startMessage": "ሁሉም የተጀመረው እዚህ ነው",
+    "noActivitiesMessage": "እስካሁን ምንም የሚታይ ነገር የለም። በኋላ ይመለሱ"
   },
   "content": {
     "downloaded": "{} በተሳካ ሁኔታ ወርዷል",
@@ -272,6 +274,7 @@
     "close": "ዝጋ",
     "failedGoogleLogin": "በ Google በኩል መግባት አልተቻለም",
     "failedSignup": "መመዝገብ አልተቻለም። እባክዎ ዳግም ይሞክሩ",
-    "failedAppLaunch": "{} ሊከፈት አልተቻለም"
+    "failedAppLaunch": "{} ሊከፈት አልተቻለም",
+    "noResultsFound": "ምንም ውጤት አልተገኘም"
   }
 }

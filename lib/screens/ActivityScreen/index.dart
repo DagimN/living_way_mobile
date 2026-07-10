@@ -4,12 +4,6 @@ import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
-import 'widgets/article.dart';
-import 'widgets/event.dart';
-import 'widgets/external_link.dart';
-import 'widgets/gallery.dart';
-import 'widgets/poll.dart';
-
 class ActivityScreen extends StatelessWidget {
   const ActivityScreen({super.key});
 
@@ -17,7 +11,6 @@ class ActivityScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final activityController = Provider.of<ActivityController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final userProfile = Provider.of<ProfileController>(context).userProfile;
     final activityList = activityController.activityList;
     final theme = AppTheme(themeController.brightness);
 
@@ -34,7 +27,8 @@ class ActivityScreen extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 32,
                       color: theme.primaryColor,
-                      fontWeight: FontWeight.w300)))),
+                      fontWeight: FontWeight.w300))),
+          actions: const [SearchButton()]),
       SizedBox(
           height: orientation == Orientation.portrait
               ? screenHeight * .8
@@ -57,32 +51,11 @@ class ActivityScreen extends StatelessWidget {
                                 id: '',
                                 type: ContentType.undefined,
                                 timestamp: DateTime.now());
-                        final Widget? childWidget;
-
-                        switch (activity.type) {
-                          case ContentType.gallery:
-                            childWidget = Gallery(
-                                images: activity.images,
-                                minimumAllowedImagesForView:
-                                    activity.minimumAllowedViewImages);
-                          case ContentType.article:
-                            childWidget = Article(content: activity);
-                          case ContentType.poll:
-                            childWidget = Poll(
-                                content: activity, userProfile: userProfile);
-                          case ContentType.external:
-                            childWidget = ExternalLink(content: activity);
-                          case ContentType.event:
-                            childWidget = Event(content: activity);
-                          default:
-                            childWidget = null;
-                        }
 
                         return index < activityList.length
                             ? TimelineContainer(
                                 activity: activity,
-                                isLast: index == activityList.length - 1,
-                                child: childWidget)
+                                isLast: index == activityList.length - 1)
                             : Container(
                                 height: activityList.isEmpty
                                     ? screenHeight * .55
@@ -103,8 +76,10 @@ class ActivityScreen extends StatelessWidget {
                                                     AppImages.activitiesEnd)),
                                             Text(
                                                 activityList.isNotEmpty
-                                                    ? 'It all started here'
-                                                    : "Nothing to show yet.",
+                                                    ? Tr.t(
+                                                        'activity.startMessage')
+                                                    : Tr.t(
+                                                        'activity.noActivitiesMessage'),
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: theme.primaryColor)),

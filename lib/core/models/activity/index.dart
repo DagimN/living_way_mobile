@@ -1,6 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/event.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/external_link.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/gallery.dart';
+import 'package:living_way/screens/ActivityScreen/widgets/poll.dart';
 
 import '../../classes/cacheable.dart';
+import '../profile.dart';
 
 part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
 
@@ -183,6 +190,42 @@ class Activity extends HiveObject implements Cacheable {
     ]);
 
     return map;
+  }
+
+  IconData get icon {
+    switch (type) {
+      case ContentType.external:
+        return Icons.link;
+      case ContentType.poll:
+        return Icons.poll;
+      case ContentType.gallery:
+        return Icons.photo;
+      case ContentType.article:
+        return Icons.article;
+      case ContentType.general:
+        return Icons.radio_button_checked;
+      default:
+        return Icons.calendar_month;
+    }
+  }
+
+  Widget? getChild({Profile? profile}) {
+    switch (type) {
+      case ContentType.gallery:
+        return Gallery(
+            images: images,
+            minimumAllowedImagesForView: minimumAllowedViewImages);
+      case ContentType.article:
+        return Article(content: this);
+      case ContentType.poll:
+        return Poll(content: this, userProfile: profile);
+      case ContentType.external:
+        return ExternalLink(content: this);
+      case ContentType.event:
+        return Event(content: this);
+      default:
+        return null;
+    }
   }
 }
 

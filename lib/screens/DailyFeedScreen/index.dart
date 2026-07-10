@@ -60,7 +60,8 @@ class DailyFeedScreen extends StatelessWidget {
                             fontSize: 32,
                             color: AppTheme(themeController.brightness)
                                 .accentColor,
-                            fontWeight: FontWeight.w400))),
+                            fontWeight: FontWeight.w400)),
+                    actions: const [SearchButton()]),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: upcomingActivities.length,

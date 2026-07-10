@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:living_way/core/core.dart';
 
 class BibleController extends ChangeNotifier {
-  List<Book> bible = [];
+  static List<Book> _bible = [];
   List<Translation> translations = [
     Translation(
         name: "NKJV",
@@ -47,6 +47,8 @@ class BibleController extends ChangeNotifier {
 
     _initPersistence();
   }
+
+  List<Book> get bible => _bible;
 
   Future<void> _initPersistence() async {
     final data = await CacheService.instance
@@ -157,7 +159,7 @@ class BibleController extends ChangeNotifier {
     List data = isDefault
         ? await loadJson(translation.path!)
         : json.decode((await readFile(translation.path ?? "")) ?? "[]");
-    bible = data.indexed
+    _bible = data.indexed
         .map((book) => Book.fromJson({...book.$2, 'index': book.$1}))
         .toList();
 
@@ -195,6 +197,40 @@ class BibleController extends ChangeNotifier {
           body: '${passage.text} ${passage.labelWithTranslation}',
           scheduledDate: scheduledDate,
           payload: 'verseOfTheDay');
+    }
+  }
+
+  static Stream<BibleSearchResult> search(String query) async* {
+    try {
+      final searchTerm = query.trim().toLowerCase();
+      if (searchTerm.isEmpty) return;
+
+      for (final book in _bible) {
+        final chapters = book.chapters;
+
+        for (int chapterIndex = 0;
+            chapterIndex < chapters.length;
+            chapterIndex++) {
+          final verses = chapters[chapterIndex];
+
+          for (int verseIndex = 0; verseIndex < verses.length; verseIndex++) {
+            final text = verses[verseIndex];
+
+            if (text.toLowerCase().contains(searchTerm)) {
+              yield BibleSearchResult(
+                  passage: Passage(book: book)
+                    ..chapter = chapterIndex
+                    ..verse = verseIndex);
+            }
+          }
+        }
+
+        // Hand control back to the event loop between books so already-found
+        // results can paint before the next book starts scanning.
+        await Future.delayed(Duration.zero);
+      }
+    } catch (error) {
+      logger.e(error);
     }
   }
 

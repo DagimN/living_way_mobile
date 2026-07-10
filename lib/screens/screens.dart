@@ -24,5 +24,5 @@ export 'TopicScreen/index.dart';
 export 'home.dart';
 export 'more_screen.dart';
 export 'notification_screen.dart';
-export 'search_screen.dart';
+export 'SearchScreen/index.dart';
 export 'story_view_screen.dart';

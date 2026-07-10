@@ -96,4 +96,29 @@ class YouTubeService {
 
     return allVideos;
   }
+
+  Stream<YoutubeSearchResult> search(String query) async* {
+    final trimmed = query.trim();
+    if (trimmed.isEmpty) return;
+
+    final response = await _dio.get(
+      '/search',
+      queryParameters: {
+        'part': 'snippet',
+        'channelId': youtubeChannelId,
+        'q': trimmed,
+        'type': 'video',
+      },
+    );
+
+    final List<dynamic> items = response.data['items'] ?? [];
+    for (final item in items) {
+      yield YoutubeSearchResult(
+        videoId: item['id']['videoId'] as String,
+        title: item['snippet']['title'] as String,
+        thumbnailUrl:
+            item['snippet']['thumbnails']?['medium']?['url'] as String?,
+      );
+    }
+  }
 }

@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' hide SearchController;
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/AuthScreens/Forms/forgot_password_form.dart';
@@ -36,6 +36,9 @@ class LivingWayApp extends StatelessWidget {
             create: (_) => BibleController()),
         ChangeNotifierProvider<TransactionController>(
           create: (_) => TransactionController(),
+        ),
+        ChangeNotifierProvider<SearchController>(
+          create: (_) => SearchController(),
         )
       ],
       child: Consumer<LocalizationController>(
