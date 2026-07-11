@@ -37,7 +37,7 @@ class ActivityController extends ChangeNotifier {
 
   Future<void> _init() async {
     await _activityCache.init();
-    activityList = _activityCache.getAllSorted(); //FIXME: Clear stale cache
+    activityList = _activityCache.getAllSorted();
     _sortActivities();
     fetchActivities();
   }
@@ -78,6 +78,11 @@ class ActivityController extends ChangeNotifier {
 
       scheduleActivityNotifications();
       _sortActivities();
+
+      if (activityList.isNotEmpty) {
+        _activityCache.clear();
+      }
+
       for (final activity in activityList) {
         await _activityCache.save(activity);
       }
