@@ -56,8 +56,7 @@ class Activity extends HiveObject implements Cacheable {
   final ContentBanner? banner;
 
   @HiveField(14)
-  final bool
-      isRecurring; //TODO: Implement scheduled notifications for recurring activities
+  final bool isRecurring;
 
   Activity(
       {this.title,
