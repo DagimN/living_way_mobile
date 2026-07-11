@@ -97,28 +97,42 @@ class YouTubeService {
     return allVideos;
   }
 
-  Stream<YoutubeSearchResult> search(String query) async* {
-    final trimmed = query.trim();
-    if (trimmed.isEmpty) return;
+  Future<Map<String, dynamic>> search(String query, {String? pageToken}) async {
+    try {
+      final trimmed = query.trim();
+      if (trimmed.isEmpty) return {"items": [], "pageToken": null};
 
-    final response = await _dio.get(
-      '/search',
-      queryParameters: {
+      final params = {
         'part': 'snippet',
         'channelId': youtubeChannelId,
         'q': trimmed,
         'type': 'video',
-      },
-    );
+        "maxResults": 10,
+      };
 
-    final List<dynamic> items = response.data['items'] ?? [];
-    for (final item in items) {
-      yield YoutubeSearchResult(
-        videoId: item['id']['videoId'] as String,
-        title: item['snippet']['title'] as String,
-        thumbnailUrl:
-            item['snippet']['thumbnails']?['medium']?['url'] as String?,
-      );
+      if (pageToken != null) {
+        params['pageToken'] = pageToken;
+      }
+
+      final response = await _dio.get('/search', queryParameters: params);
+
+      final nextPageToken = response.data['nextPageToken'] ?? '';
+      final List<dynamic> items = response.data['items'] ?? [];
+
+      return {
+        "items": items
+            .map((item) => YoutubeSearchResult(
+                  videoId: item['id']['videoId'] as String,
+                  title: item['snippet']['title'] as String,
+                  thumbnailUrl: item['snippet']['thumbnails']?['medium']?['url']
+                      as String?,
+                ))
+            .toList(),
+        "pageToken": nextPageToken
+      };
+    } catch (error) {
+      logger.e(error);
+      return {"items": [], "pageToken": null};
     }
   }
 }

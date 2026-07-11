@@ -159,11 +159,11 @@ class ActivityController extends ChangeNotifier {
     }
   }
 
-  static Stream<ActivitySearchResult> search(String query,
-      {int page = 0, int limit = 10}) async* {
+  static Future<List<ActivitySearchResult>> search(String query,
+      {int page = 0, int limit = 10}) async {
     try {
       final trimmed = query.trim();
-      if (trimmed.isEmpty) return;
+      if (trimmed.isEmpty) return [];
 
       final response = await dio.get(
         '/search',
@@ -171,18 +171,16 @@ class ActivityController extends ChangeNotifier {
       );
 
       final List<dynamic> items = response.data['data'] ?? [];
-
-      for (final item in items) {
+      return items.map((item) {
         final activity = Activity.fromJson(item);
-
-        yield ActivitySearchResult(
-          activity: activity,
-          title: activity.title ?? "",
-          imageUrl: activity.banner?.url,
-        );
-      }
+        return ActivitySearchResult(
+            activity: activity,
+            title: activity.title ?? "",
+            imageUrl: activity.banner?.url);
+      }).toList();
     } catch (error) {
       logger.e(error);
+      return [];
     }
   }
 

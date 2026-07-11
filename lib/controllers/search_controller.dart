@@ -1,16 +1,41 @@
 import 'dart:async';
-import 'package:async/async.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 
 class SearchController extends ChangeNotifier {
-  SearchController();
+  final TextEditingController textFieldController = TextEditingController();
+  final ScrollController mediaSearchVerticalScrollController =
+      ScrollController();
+  final ScrollController mediaSearchHorizontalScrollController =
+      ScrollController();
+  final ScrollController activitiesSearchScrollController = ScrollController();
+  final ScrollController activitiesSearchMiniScrollController =
+      ScrollController();
+
+  SearchController() {
+    mediaSearchVerticalScrollController
+        .addListener(mediaSearchVerticalScrollListener);
+    mediaSearchHorizontalScrollController
+        .addListener(mediaSearchHorizontalScrollListener);
+
+    activitiesSearchScrollController
+        .addListener(activitiesSearchScrollListener);
+    activitiesSearchMiniScrollController
+        .addListener(activitiesSearchMiniScrollListener);
+  }
 
   final List<SearchResult> results = [];
   final Map<SearchResultType, String?> sourceErrors = {};
-  bool isSearching = false;
 
+  bool isSearchingActivities = false;
+  bool isSearchingMedia = false;
+  bool isSearchingBible = false;
+  bool mediaHasReachedEnd = false;
+  bool activitiesHasReachedEnd = false;
+  int activityResultsPage = 0;
+
+  String? youtubePageToken;
   StreamSubscription<SearchResult>? _subscription;
   Timer? _debounce;
 
@@ -21,10 +46,93 @@ class SearchController extends ChangeNotifier {
   List<YoutubeSearchResult> get youtubeResults =>
       results.whereType<YoutubeSearchResult>().toList();
 
+  void mediaSearchVerticalScrollListener() async {
+    if (mediaSearchVerticalScrollController.position.pixels >
+            (mediaSearchVerticalScrollController.position.maxScrollExtent *
+                .7) &&
+        !mediaHasReachedEnd &&
+        !isSearchingMedia) {
+      isSearchingMedia = true;
+      notifyListeners();
+
+      final result = await YouTubeService()
+          .search(textFieldController.text, pageToken: youtubePageToken);
+
+      final items = result['items'] as List<YoutubeSearchResult>;
+      results.addOrReplaceAll(
+          items, (existingMedia, newMedia) => existingMedia.id == newMedia.id);
+      youtubePageToken = result['pageToken'];
+      mediaHasReachedEnd = items.isEmpty;
+      isSearchingMedia = false;
+      notifyListeners();
+    }
+  }
+
+  void mediaSearchHorizontalScrollListener() async {
+    if (mediaSearchHorizontalScrollController.position.pixels >
+            (mediaSearchHorizontalScrollController.position.maxScrollExtent *
+                .7) &&
+        !mediaHasReachedEnd &&
+        !isSearchingMedia) {
+      isSearchingMedia = true;
+      notifyListeners();
+
+      final result = await YouTubeService()
+          .search(textFieldController.text, pageToken: youtubePageToken);
+
+      final items = result['items'] as List<YoutubeSearchResult>;
+      results.addOrReplaceAll(
+          items, (existingMedia, newMedia) => existingMedia.id == newMedia.id);
+      youtubePageToken = result['pageToken'];
+      mediaHasReachedEnd = items.isEmpty;
+      isSearchingMedia = false;
+      notifyListeners();
+    }
+  }
+
+  void activitiesSearchScrollListener() async {
+    if (activitiesSearchScrollController.position.pixels >
+            (activitiesSearchScrollController.position.maxScrollExtent * .7) &&
+        !activitiesHasReachedEnd &&
+        !isSearchingActivities) {
+      isSearchingActivities = true;
+      notifyListeners();
+
+      final result = await ActivityController.search(textFieldController.text,
+          page: activityResultsPage);
+
+      results.addAll(result);
+      ++activityResultsPage;
+      activitiesHasReachedEnd = result.isEmpty;
+      isSearchingActivities = false;
+      notifyListeners();
+    }
+  }
+
+  void activitiesSearchMiniScrollListener() async {
+    if (activitiesSearchMiniScrollController.position.pixels >
+            (activitiesSearchMiniScrollController.position.maxScrollExtent *
+                .7) &&
+        !activitiesHasReachedEnd &&
+        !isSearchingActivities) {
+      isSearchingActivities = true;
+      notifyListeners();
+
+      final result = await ActivityController.search(textFieldController.text,
+          page: activityResultsPage);
+
+      results.addAll(result);
+      ++activityResultsPage;
+      activitiesHasReachedEnd = result.isEmpty;
+      isSearchingActivities = false;
+      notifyListeners();
+    }
+  }
+
   void onQueryChanged(String query) {
     _debounce?.cancel();
     _debounce = Timer(
-      const Duration(milliseconds: 350),
+      const Duration(milliseconds: 1350),
       () => search(query),
     );
   }
@@ -38,27 +146,43 @@ class SearchController extends ChangeNotifier {
     results.clear();
     sourceErrors.clear();
     final trimmed = query.trim();
-    isSearching = trimmed.isNotEmpty;
+    isSearchingActivities = trimmed.isNotEmpty;
+    isSearchingMedia = trimmed.isNotEmpty;
+    isSearchingBible = trimmed.isNotEmpty;
     notifyListeners();
 
     if (trimmed.isEmpty) return;
 
-    final merged = StreamGroup.merge<SearchResult>([
-      _guarded(BibleController.search(trimmed), SearchResultType.bible),
-      _guarded(ActivityController.search(trimmed), SearchResultType.activity),
-      _guarded(YouTubeService().search(trimmed), SearchResultType.youtube),
-    ]);
-
-    _subscription = merged.listen(
+    _subscription =
+        _guarded(BibleController.search(trimmed), SearchResultType.bible)
+            .listen(
       (result) {
         results.add(result);
         notifyListeners();
       },
       onDone: () {
-        isSearching = false;
+        isSearchingBible = false;
         notifyListeners();
       },
     );
+
+    ActivityController.search(query).then((activityResults) {
+      results.addAll(activityResults);
+      ++activityResultsPage;
+      isSearchingActivities = false;
+
+      notifyListeners();
+    });
+
+    YouTubeService().search(query).then((mediaResults) {
+      final items = mediaResults['items'] as List<YoutubeSearchResult>;
+
+      results.addAll(items);
+      youtubePageToken = mediaResults["pageToken"];
+      isSearchingMedia = false;
+
+      notifyListeners();
+    });
   }
 
   void clear() {
@@ -66,13 +190,13 @@ class SearchController extends ChangeNotifier {
     _subscription?.cancel();
     results.clear();
     sourceErrors.clear();
-    isSearching = false;
+    isSearchingActivities = false;
+    isSearchingMedia = false;
+    isSearchingBible = false;
+    textFieldController.clear();
     notifyListeners();
   }
 
-  /// Wraps a single source's stream so an error there doesn't cancel the
-  /// merged stream or the other two sources (StreamGroup.merge would
-  /// otherwise propagate a single source's error and shut everything down).
   Stream<SearchResult> _guarded(
     Stream<SearchResult> source,
     SearchResultType type,

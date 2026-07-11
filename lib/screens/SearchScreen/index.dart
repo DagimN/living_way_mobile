@@ -35,9 +35,6 @@ class SearchScreen extends StatefulWidget {
 }
 
 class _SearchScreenState extends State<SearchScreen> {
-  final TextEditingController _searchTextEditingController =
-      TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     final ThemeController themeController =
@@ -48,9 +45,12 @@ class _SearchScreenState extends State<SearchScreen> {
         Provider.of<LayoutController>(context);
     final BibleController bibleController =
         Provider.of<BibleController>(context);
+    final textController = searchController.textFieldController;
 
-    final nothingYet =
-        !searchController.isSearching && searchController.results.isEmpty;
+    final nothingYet = !searchController.isSearchingActivities &&
+        !searchController.isSearchingMedia &&
+        !searchController.isSearchingBible &&
+        searchController.results.isEmpty;
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
@@ -74,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     margin: const EdgeInsets.all(10),
                     width: screenWidth * .8,
                     child: TextField(
-                        controller: _searchTextEditingController,
+                        controller: searchController.textFieldController,
                         autofocus: true,
                         onChanged: (value) =>
                             searchController.onQueryChanged(value),
@@ -89,8 +89,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                     icon: SvgPicture.asset(AppIcons.search,
                                         height: 24),
                                     onPressed: () {
-                                      searchController.search(
-                                          _searchTextEditingController.text);
+                                      searchController
+                                          .search(textController.text);
                                     }))))),
               ],
             ),
@@ -108,44 +108,33 @@ class _SearchScreenState extends State<SearchScreen> {
                           },
                           tabs: [
                             Tab(
-                                child: Row(
-                              children: [
-                                Text(Tr.t("bottomSheet.categoryAll"),
-                                    style: const TextStyle(fontSize: 10)),
-                                Text(' (${searchController.results.length})',
-                                    style: const TextStyle(fontSize: 10))
-                              ],
-                            )),
+                                child: Text(
+                                    '${Tr.t("bottomSheet.categoryAll")} (${searchController.results.length})',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 10))),
                             Tab(
-                                child: Row(
-                              children: [
-                                Text(Tr.t("navigation.media"),
-                                    style: const TextStyle(fontSize: 10)),
-                                Text(
-                                    ' (${searchController.youtubeResults.length})',
-                                    style: const TextStyle(fontSize: 10))
-                              ],
-                            )),
+                                child: Text(
+                                    '${Tr.t("navigation.media")} (${searchController.youtubeResults.length})',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 10))),
                             Tab(
-                                child: Row(
-                              children: [
-                                Text(Tr.t("navigation.activities"),
-                                    style: const TextStyle(fontSize: 9)),
-                                Text(
-                                    ' (${searchController.activityResults.length})',
-                                    style: const TextStyle(fontSize: 10))
-                              ],
-                            )),
+                                child: Text(
+                                    '${Tr.t("navigation.activities")} (${searchController.activityResults.length})',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 10))),
                             Tab(
-                                child: Row(
-                              children: [
-                                Text(Tr.t("navigation.bible"),
-                                    style: const TextStyle(fontSize: 10)),
-                                Text(
-                                    ' (${searchController.bibleResults.length})',
-                                    style: const TextStyle(fontSize: 10))
-                              ],
-                            )),
+                                child: Text(
+                                    '${Tr.t("navigation.bible")} (${searchController.bibleResults.length})',
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 2,
+                                    textAlign: TextAlign.center,
+                                    style: const TextStyle(fontSize: 10))),
                           ],
                           unselectedLabelColor: theme.accentColor,
                         ),
@@ -160,9 +149,12 @@ class _SearchScreenState extends State<SearchScreen> {
                                     title: Tr.t('navigation.media'),
                                     icon: Icons.play_circle_fill_rounded,
                                     items: searchController.youtubeResults,
-                                    isLoading: searchController.isSearching,
+                                    isLoading:
+                                        searchController.isSearchingMedia,
                                     height: screenHeight * 0.15,
                                     scrollDirection: Axis.horizontal,
+                                    scrollController: searchController
+                                        .mediaSearchHorizontalScrollController,
                                     errorText: searchController
                                         .sourceErrors[SearchResultType.youtube],
                                     itemBuilder: (context, item) =>
@@ -180,11 +172,14 @@ class _SearchScreenState extends State<SearchScreen> {
                                     title: Tr.t('navigation.activities'),
                                     icon: Icons.event_note_rounded,
                                     items: searchController.activityResults,
-                                    isLoading: searchController.isSearching,
+                                    isLoading:
+                                        searchController.isSearchingActivities,
                                     errorText: searchController.sourceErrors[
                                         SearchResultType.activity],
                                     height: screenHeight * 0.25,
                                     scrollDirection: Axis.vertical,
+                                    scrollController: searchController
+                                        .activitiesSearchMiniScrollController,
                                     itemBuilder: (context, item) =>
                                         TimelineContainer(
                                             activity: item.activity,
@@ -195,7 +190,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                     title: Tr.t('navigation.bible'),
                                     icon: Icons.menu_book_rounded,
                                     items: searchController.bibleResults,
-                                    isLoading: searchController.isSearching,
+                                    isLoading:
+                                        searchController.isSearchingBible,
                                     scrollDirection: Axis.vertical,
                                     height: screenHeight * 0.4,
                                     errorText: searchController
@@ -232,9 +228,11 @@ class _SearchScreenState extends State<SearchScreen> {
                                 title: Tr.t('navigation.media'),
                                 icon: Icons.play_circle_fill_rounded,
                                 items: searchController.youtubeResults,
-                                isLoading: searchController.isSearching,
+                                isLoading: searchController.isSearchingMedia,
                                 height: screenHeight * .8,
                                 scrollDirection: Axis.vertical,
+                                scrollController: searchController
+                                    .mediaSearchVerticalScrollController,
                                 showLabel: false,
                                 errorText: searchController
                                     .sourceErrors[SearchResultType.youtube],
@@ -256,12 +254,15 @@ class _SearchScreenState extends State<SearchScreen> {
                                 title: Tr.t('navigation.activities'),
                                 icon: Icons.event_note_rounded,
                                 items: searchController.activityResults,
-                                isLoading: searchController.isSearching,
+                                isLoading:
+                                    searchController.isSearchingActivities,
                                 errorText: searchController
                                     .sourceErrors[SearchResultType.activity],
                                 showLabel: false,
                                 height: screenHeight * .8,
                                 scrollDirection: Axis.vertical,
+                                scrollController: searchController
+                                    .activitiesSearchScrollController,
                                 itemBuilder: (context, item) =>
                                     TimelineContainer(
                                         activity: item.activity,
@@ -275,7 +276,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                 title: Tr.t('navigation.bible'),
                                 icon: Icons.menu_book_rounded,
                                 items: searchController.bibleResults,
-                                isLoading: searchController.isSearching,
+                                isLoading: searchController.isSearchingBible,
                                 scrollDirection: Axis.vertical,
                                 height: screenHeight * .8,
                                 errorText: searchController

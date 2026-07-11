@@ -9,6 +9,7 @@ class SearchSection<T> extends StatelessWidget {
   final List<T> items;
   final Axis scrollDirection;
   final ScrollPhysics? physics;
+  final ScrollController? scrollController;
   final double height;
   final Widget Function(BuildContext, T) itemBuilder;
   final bool isLoading;
@@ -26,7 +27,8 @@ class SearchSection<T> extends StatelessWidget {
       this.isLoading = false,
       this.showLabel = true,
       this.errorText,
-      this.physics});
+      this.physics,
+      this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class SearchSection<T> extends StatelessWidget {
         children: [
           if (showLabel)
             Row(
+              spacing: 4,
               children: [
                 Icon(icon, color: theme.primaryColor, size: 20),
                 const SizedBox(width: 8),
@@ -57,6 +60,15 @@ class SearchSection<T> extends StatelessWidget {
                   ),
                 ),
                 const Spacer(),
+                if (isLoading && items.isNotEmpty)
+                  SizedBox(
+                    width: 14,
+                    height: 14,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      color: theme.primaryColor,
+                    ),
+                  ),
                 if (items.isNotEmpty)
                   Text(
                     '${items.length}',
@@ -71,6 +83,7 @@ class SearchSection<T> extends StatelessWidget {
               width: screenWidth,
               height: height,
               child: ListView.builder(
+                controller: scrollController,
                 padding: EdgeInsets.only(
                     bottom: scrollDirection == Axis.vertical ? 100 : 0),
                 itemBuilder: (context, index) =>
@@ -80,7 +93,7 @@ class SearchSection<T> extends StatelessWidget {
                 physics: physics,
               ),
             ),
-          if (items.isEmpty && isLoading) ...[
+          if ((items.isEmpty || !showLabel) && isLoading) ...[
             const SizedBox(height: 12),
             Center(
               child: SizedBox(
