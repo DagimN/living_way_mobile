@@ -41,7 +41,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         },
                         icon:
                             Icon(Icons.arrow_back, color: theme.primaryColor)),
-                    Text(Tr.t('settings.general'),
+                    Text(Tr.t('general'),
                         style: TextStyle(
                             fontSize: 32,
                             color: theme.primaryColor,
@@ -56,7 +56,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                       child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                        Text(Tr.t("settings.interface"),
+                        Text(Tr.t("interface"),
                             style: TextStyle(
                                 color: theme.primaryColor,
                                 fontSize: 16,
@@ -65,7 +65,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.theme'),
+                              Text(Tr.t('theme'),
                                   style: TextStyle(color: theme.accentColor)),
                               IconButton(
                                   style: IconButton.styleFrom(
@@ -87,7 +87,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.language'),
+                              Text(Tr.t('language'),
                                   style: TextStyle(color: theme.accentColor)),
                               TextButton(
                                   style: TextButton.styleFrom(
@@ -116,7 +116,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.font'),
+                              Text(Tr.t('font'),
                                   style: TextStyle(color: theme.accentColor)),
                               DropdownButton(
                                   value: themeController.selectedFont,
@@ -146,7 +146,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t('settings.textSize'),
+                              Text(Tr.t('textSize'),
                                   style: TextStyle(color: theme.accentColor)),
                               Container(
                                   margin: const EdgeInsets.only(right: 10),
@@ -174,7 +174,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                               themeController.setTextSize = value;
                             }),
                         const SizedBox(height: 16),
-                        Text(Tr.t("settings.notifications"),
+                        Text(Tr.t("notifications"),
                             style: TextStyle(
                                 color: theme.primaryColor,
                                 fontSize: 16,
@@ -183,7 +183,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t("settings.receiveNotifications"),
+                              Text(Tr.t("receiveNotifications"),
                                   style: TextStyle(color: theme.accentColor)),
                               Switch(
                                   activeThumbColor: theme.primaryColor,
@@ -202,9 +202,8 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       bibleController.scheduleVersesOfTheDay();
                                       NotificationService.periodicNotification(
                                           id: NotificationCodes.prayer.value,
-                                          title: Tr.t('settings.prayerTime'),
-                                          body:
-                                              Tr.t('settings.prayerReminder'));
+                                          title: Tr.t('prayerTime'),
+                                          body: Tr.t('prayerReminder'));
                                     } else {
                                       NotificationService
                                           .cancelAllNotifications();
@@ -217,7 +216,7 @@ class GeneralSettingsScreen extends StatelessWidget {
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(Tr.t("settings.prayerReminder"),
+                              Text(Tr.t("prayerReminder"),
                                   style: TextStyle(color: theme.accentColor)),
                               Switch(
                                   activeThumbColor: theme.primaryColor,

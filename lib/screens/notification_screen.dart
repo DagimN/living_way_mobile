@@ -140,14 +140,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (notificationController.isEmpty) {
       body = Center(
           child: Text(
-        Tr.t('notifications.empty'),
+        Tr.t('emptyNotifications'),
         style: TextStyle(color: theme.accentColor),
       ));
     }
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(Tr.t('navigation.notifications')),
+          title: Text(Tr.t('notifications')),
           backgroundColor: theme.appbarColor,
           foregroundColor: theme.primaryColor,
           systemOverlayStyle: themeController.brightness == Brightness.light

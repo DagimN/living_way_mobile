@@ -44,12 +44,12 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
     double screenHeight = MediaQuery.sizeOf(context).height;
 
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text(Tr.t("signup.step4Title"),
+      Text(Tr.t("step4Title"),
           style: TextStyle(
               fontSize: 32,
               fontWeight: FontWeight.w500,
               color: theme.accentColor)),
-      Text(Tr.t("signup.step4Subtitle"),
+      Text(Tr.t("step4Subtitle"),
           style: TextStyle(fontSize: 14, color: theme.accentColor)),
       Container(
           height: screenHeight * .5,
@@ -67,7 +67,7 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
                 AnalyticsService.logEvent('signup_step_completed',
                     parameters: {'step': 'terms'});
               },
-              child: Text(Tr.t('common.agree'))))
+              child: Text(Tr.t('agree'))))
     ]);
   }
 }

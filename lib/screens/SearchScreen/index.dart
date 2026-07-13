@@ -20,7 +20,7 @@ class _NoResultsState extends StatelessWidget {
 
     return Center(
       child: Text(
-        Tr.t('messages.noResultsFound'),
+        Tr.t('noResultsFound'),
         style: TextStyle(color: theme.accentColor.withAlpha(153)),
       ),
     );
@@ -82,7 +82,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: InputDecoration(
                             border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(35)),
-                            hintText: Tr.t('common.search'),
+                            hintText: Tr.t('search'),
                             suffixIcon: Hero(
                                 tag: 'search',
                                 child: IconButton(
@@ -109,28 +109,28 @@ class _SearchScreenState extends State<SearchScreen> {
                           tabs: [
                             Tab(
                                 child: Text(
-                                    '${Tr.t("bottomSheet.categoryAll")} (${searchController.results.length})',
+                                    '${Tr.t("categoryAll")} (${searchController.results.length})',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 10))),
                             Tab(
                                 child: Text(
-                                    '${Tr.t("navigation.media")} (${searchController.youtubeResults.length})',
+                                    '${Tr.t("media")} (${searchController.youtubeResults.length})',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 10))),
                             Tab(
                                 child: Text(
-                                    '${Tr.t("navigation.activities")} (${searchController.activityResults.length})',
+                                    '${Tr.t("activities")} (${searchController.activityResults.length})',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     textAlign: TextAlign.center,
                                     style: const TextStyle(fontSize: 10))),
                             Tab(
                                 child: Text(
-                                    '${Tr.t("navigation.bible")} (${searchController.bibleResults.length})',
+                                    '${Tr.t("bible")} (${searchController.bibleResults.length})',
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 2,
                                     textAlign: TextAlign.center,
@@ -146,7 +146,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               child: Column(
                                 children: [
                                   SearchSection<YoutubeSearchResult>(
-                                    title: Tr.t('navigation.media'),
+                                    title: Tr.t('media'),
                                     icon: Icons.play_circle_fill_rounded,
                                     items: searchController.youtubeResults,
                                     isLoading:
@@ -169,7 +169,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                             }),
                                   ),
                                   SearchSection<ActivitySearchResult>(
-                                    title: Tr.t('navigation.activities'),
+                                    title: Tr.t('activities'),
                                     icon: Icons.event_note_rounded,
                                     items: searchController.activityResults,
                                     isLoading:
@@ -187,7 +187,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                             margin: EdgeInsets.zero),
                                   ),
                                   SearchSection<BibleSearchResult>(
-                                    title: Tr.t('navigation.bible'),
+                                    title: Tr.t('bible'),
                                     icon: Icons.menu_book_rounded,
                                     items: searchController.bibleResults,
                                     isLoading:
@@ -225,7 +225,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             SingleChildScrollView(
                               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                               child: SearchSection<YoutubeSearchResult>(
-                                title: Tr.t('navigation.media'),
+                                title: Tr.t('media'),
                                 icon: Icons.play_circle_fill_rounded,
                                 items: searchController.youtubeResults,
                                 isLoading: searchController.isSearchingMedia,
@@ -251,7 +251,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             SingleChildScrollView(
                               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                               child: SearchSection<ActivitySearchResult>(
-                                title: Tr.t('navigation.activities'),
+                                title: Tr.t('activities'),
                                 icon: Icons.event_note_rounded,
                                 items: searchController.activityResults,
                                 isLoading:
@@ -273,7 +273,7 @@ class _SearchScreenState extends State<SearchScreen> {
                             SingleChildScrollView(
                               padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
                               child: SearchSection<BibleSearchResult>(
-                                title: Tr.t('navigation.bible'),
+                                title: Tr.t('bible'),
                                 icon: Icons.menu_book_rounded,
                                 items: searchController.bibleResults,
                                 isLoading: searchController.isSearchingBible,

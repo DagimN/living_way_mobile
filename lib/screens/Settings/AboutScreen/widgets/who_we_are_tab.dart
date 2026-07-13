@@ -7,14 +7,14 @@ class WhoWeAreTab extends StatelessWidget {
   const WhoWeAreTab({super.key});
 
   static const List<String> aspirations = [
-    "aboutPage.aspireContent.christCentered",
-    "aboutPage.aspireContent.focusedEvangelism",
-    "aboutPage.aspireContent.discipleMaking",
-    "aboutPage.aspireContent.communityLife",
-    "aboutPage.aspireContent.friendlyToNewcomers",
-    "aboutPage.aspireContent.believersGrowth",
-    "aboutPage.aspireContent.broadMinistry",
-    "aboutPage.aspireContent.gospelLiving",
+    "christCentered",
+    "focusedEvangelism",
+    "discipleMaking",
+    "communityLife",
+    "friendlyToNewcomers",
+    "believersGrowth",
+    "broadMinistry",
+    "gospelLiving",
   ];
 
   @override
@@ -28,13 +28,13 @@ class WhoWeAreTab extends StatelessWidget {
             padding: const EdgeInsets.only(bottom: 200),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(Tr.t('aboutPage.whoWeAreDescription1'),
+              Text(Tr.t('whoWeAreDescription1'),
                   style: TextStyle(color: theme.accentColor)),
               const SizedBox(height: 16),
-              Text(Tr.t('aboutPage.whoWeAreDescription2'),
+              Text(Tr.t('whoWeAreDescription2'),
                   style: TextStyle(color: theme.accentColor)),
               const SizedBox(height: 32),
-              Text(Tr.t('aboutPage.aspireTitle'),
+              Text(Tr.t('aspireTitle'),
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.w400,

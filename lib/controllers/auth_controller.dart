@@ -78,8 +78,7 @@ class AuthController extends ChangeNotifier {
       if (account == null) {
         logger.e('Could not login via Google - account is null');
         UIService.showSnackbar(
-            backgroundColor: Colors.red,
-            message: Tr.t('messages.failedGoogleLogin'));
+            backgroundColor: Colors.red, message: Tr.t('failedGoogleLogin'));
         return false;
       }
 
@@ -89,8 +88,7 @@ class AuthController extends ChangeNotifier {
       if (idToken == null) {
         logger.e('Could not login via Google - idToken is null');
         UIService.showSnackbar(
-            backgroundColor: Colors.red,
-            message: Tr.t('messages.failedGoogleLogin'));
+            backgroundColor: Colors.red, message: Tr.t('failedGoogleLogin'));
         return false;
       }
 
@@ -100,8 +98,7 @@ class AuthController extends ChangeNotifier {
 
       if (!response.statusCode.isSuccess) {
         UIService.showSnackbar(
-            backgroundColor: Colors.red,
-            message: Tr.t('messages.failedGoogleLogin'));
+            backgroundColor: Colors.red, message: Tr.t('failedGoogleLogin'));
         return false;
       }
 
@@ -126,8 +123,7 @@ class AuthController extends ChangeNotifier {
       logger.e(error);
 
       UIService.showSnackbar(
-          backgroundColor: Colors.red,
-          message: Tr.t('messages.failedGoogleLogin'));
+          backgroundColor: Colors.red, message: Tr.t('failedGoogleLogin'));
 
       return false;
     }
@@ -158,7 +154,7 @@ class AuthController extends ChangeNotifier {
       return response;
     } on DioException catch (error) {
       UIService.showSnackbar(
-          backgroundColor: Colors.red, message: Tr.t('messages.failedSignup'));
+          backgroundColor: Colors.red, message: Tr.t('failedSignup'));
       logger.e(error);
       return error.response ??
           Response(

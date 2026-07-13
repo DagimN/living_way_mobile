@@ -73,9 +73,9 @@ class AboutScreen extends StatelessWidget {
                                 parameters: {'index': index.toString()});
                           },
                           tabs: [
-                            Tab(child: Text(Tr.t("settings.whoWeAre"))),
-                            Tab(child: Text(Tr.t("settings.ourBeliefs"))),
-                            Tab(child: Text(Tr.t("settings.staff")))
+                            Tab(child: Text(Tr.t("whoWeAre"))),
+                            Tab(child: Text(Tr.t("ourBeliefs"))),
+                            Tab(child: Text(Tr.t("staff")))
                           ],
                           unselectedLabelColor: theme.accentColor,
                         ),

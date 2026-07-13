@@ -36,7 +36,7 @@ class StoryListView extends StatelessWidget {
                     })
                 : Center(
                     child: Text(
-                        Tr.safe('home.noStoriesMessage',
+                        Tr.safe('noStoriesMessage',
                             fallback: "No stories available"),
                         style: const TextStyle(color: Colors.grey)))
             : Center(

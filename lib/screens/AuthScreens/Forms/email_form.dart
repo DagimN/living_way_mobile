@@ -29,28 +29,28 @@ class _EmailFormState extends State<EmailForm> {
         child: SingleChildScrollView(
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(Tr.t("signup.step2Title"),
+          Text(Tr.t("step2Title"),
               style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w500,
                   color: theme.accentColor)),
-          Text(Tr.t("signup.step2Subtitle"),
+          Text(Tr.t("step2Subtitle"),
               style: TextStyle(fontSize: 14, color: theme.accentColor)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
               child: TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
-                    if (value == null) return Tr.t("auth.emptyFieldError");
+                    if (value == null) return Tr.t("emptyFieldError");
 
                     if (value.trim().isEmpty) {
-                      return Tr.t("auth.emptyFieldError");
+                      return Tr.t("emptyFieldError");
                     }
 
                     if (!RegExp(
                             r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)*$")
                         .hasMatch(value)) {
-                      return Tr.t("auth.invalidEmailError");
+                      return Tr.t("invalidEmailError");
                     }
 
                     return null;
@@ -58,7 +58,7 @@ class _EmailFormState extends State<EmailForm> {
                   controller: emailController,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      hintText: Tr.t("auth.email")))),
+                      hintText: Tr.t("email")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(

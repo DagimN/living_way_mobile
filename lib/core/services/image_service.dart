@@ -126,14 +126,13 @@ abstract class ImageService {
             children: [
               const Icon(Icons.check_circle, color: Colors.white),
               const SizedBox(width: 12),
-              Text(Tr.t('settings.saveSuccess')),
+              Text(Tr.t('saveSuccess')),
             ],
           ));
     } catch (e) {
       logger.e("Error capturing image: $e");
       UIService.showSnackbar(
-          backgroundColor: Colors.redAccent,
-          message: Tr.t('settings.saveError'));
+          backgroundColor: Colors.redAccent, message: Tr.t('saveError'));
     }
   }
 }

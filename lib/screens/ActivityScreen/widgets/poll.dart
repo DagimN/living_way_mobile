@@ -47,7 +47,7 @@ class _PollState extends State<Poll> {
         child: Column(children: [
           FlutterPolls(
               pollId: widget.content.id,
-              votesText: Tr.t('common.votes'),
+              votesText: Tr.t('votes'),
               votedProgressColor: theme.primaryColor.withAlpha(76),
               votedBackgroundColor: theme.backgroundColor,
               votedPercentageTextStyle: TextStyle(color: theme.accentColor),
@@ -113,7 +113,7 @@ class _PollState extends State<Poll> {
 
                 UIService.showSnackbar(
                     backgroundColor: theme.failedColor,
-                    message: Tr.t('activity.voteError'));
+                    message: Tr.t('voteError'));
                 return Future.value(false);
               })
         ]));

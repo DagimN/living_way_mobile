@@ -36,7 +36,7 @@ class CommentBox extends StatelessWidget {
                 maxLines: 3,
                 decoration: InputDecoration(
                     contentPadding: const EdgeInsets.all(10),
-                    hintText: Tr.t('topics.commentPlaceholder2'),
+                    hintText: Tr.t('commentPlaceholder2'),
                     border: InputBorder.none)),
             Container(
                 margin: const EdgeInsets.symmetric(horizontal: 6),
@@ -67,7 +67,7 @@ class CommentBox extends StatelessWidget {
                             onSubmit();
                             onClose();
                           },
-                          child: Text(Tr.t('common.submit'),
+                          child: Text(Tr.t('submit'),
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 12))))
                 ]))

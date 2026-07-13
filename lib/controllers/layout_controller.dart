@@ -24,10 +24,10 @@ class LayoutController extends ChangeNotifier {
   bool showVerseOfTheDayControls = true;
 
   final List<Map<String, String>> settingsNavigation = [
-    {'name': "settings.general", 'route': '/settings'},
-    {'name': "settings.give", 'route': '/donation'},
-    {'name': "settings.contacts", 'route': '/contacts'},
-    {'name': "settings.about", 'route': '/about'}
+    {'name': "general", 'route': '/settings'},
+    {'name': "give", 'route': '/donation'},
+    {'name': "contacts", 'route': '/contacts'},
+    {'name': "about", 'route': '/about'}
   ];
   final bibleScrollController = ScrollController();
 

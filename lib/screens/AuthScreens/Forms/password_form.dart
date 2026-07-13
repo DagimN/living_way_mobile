@@ -28,12 +28,12 @@ class _PasswordFormState extends State<PasswordForm> {
     return Form(
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(Tr.t("signup.step3Title"),
+          Text(Tr.t("step3Title"),
               style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w500,
                   color: theme.accentColor)),
-          Text(Tr.t("signup.step3Subtitle"),
+          Text(Tr.t("step3Subtitle"),
               style: TextStyle(fontSize: 14, color: theme.accentColor)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
@@ -42,25 +42,25 @@ class _PasswordFormState extends State<PasswordForm> {
                       isPasswordVisible ? TextInputType.visiblePassword : null,
                   obscureText: !isPasswordVisible,
                   validator: (value) {
-                    if (value == null) return Tr.t("auth.emptyFieldError");
+                    if (value == null) return Tr.t("emptyFieldError");
 
                     if (value.trim().isEmpty) {
-                      return Tr.t("auth.emptyFieldError");
+                      return Tr.t("emptyFieldError");
                     }
 
                     if (!RegExp(r"^(?=.*[a-zA-Z])(?=.*\d).*$")
                         .hasMatch(value)) {
-                      return Tr.t("auth.passwordRequirementsAlpha");
+                      return Tr.t("passwordRequirementsAlpha");
                     }
 
                     if (!RegExp(r"^.{8,}$").hasMatch(value)) {
-                      return Tr.t("auth.invalidPasswordError");
+                      return Tr.t("invalidPasswordError");
                     }
 
                     if (!RegExp(
                             r"^(?=.*[!@#$%^&*()_+\-=\[\]{};':\\|,.<>\/?]).*$")
                         .hasMatch(value)) {
-                      return Tr.t("auth.passwordRequirementsSymbol");
+                      return Tr.t("passwordRequirementsSymbol");
                     }
 
                     return null;
@@ -68,7 +68,7 @@ class _PasswordFormState extends State<PasswordForm> {
                   controller: passwordController,
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      hintText: Tr.t("auth.password"),
+                      hintText: Tr.t("password"),
                       suffixIcon: IconButton(
                           onPressed: () {
                             setState(() {
@@ -86,15 +86,15 @@ class _PasswordFormState extends State<PasswordForm> {
                       : null,
                   obscureText: !isConfirmPasswordVisible,
                   validator: (value) {
-                    if (value == null) return Tr.t("auth.emptyFieldError");
+                    if (value == null) return Tr.t("emptyFieldError");
 
                     if (value.trim().isEmpty) {
-                      return Tr.t("auth.emptyFieldError");
+                      return Tr.t("emptyFieldError");
                     }
 
                     if (passwordController.text !=
                         confirmPasswordController.text) {
-                      return Tr.t("auth.passwordMismatchError");
+                      return Tr.t("passwordMismatchError");
                     }
 
                     return null;
@@ -112,7 +112,7 @@ class _PasswordFormState extends State<PasswordForm> {
                               ? Icons.visibility
                               : Icons.visibility_off)),
                       border: const OutlineInputBorder(),
-                      hintText: Tr.t("auth.confirmPassword")))),
+                      hintText: Tr.t("confirmPassword")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -131,7 +131,7 @@ class _PasswordFormState extends State<PasswordForm> {
                         parameters: {'step': 'password'});
                     widget.onProgress();
                   },
-                  child: Text(Tr.t('common.continue'))))
+                  child: Text(Tr.t('continue'))))
         ]));
   }
 }

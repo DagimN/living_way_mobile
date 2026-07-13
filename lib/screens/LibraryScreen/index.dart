@@ -62,7 +62,7 @@ class LibraryScreen extends StatelessWidget {
           BaseAppBar(
               title: Container(
                   margin: const EdgeInsets.all(10),
-                  child: Text(Tr.t('navigation.library'),
+                  child: Text(Tr.t('library'),
                       style: TextStyle(
                           fontSize: 32,
                           color: theme.primaryColor,
@@ -142,7 +142,7 @@ class LibraryScreen extends StatelessWidget {
                                       ),
                                     ),
                                     Text(
-                                      Tr.t('library.noBooks'),
+                                      Tr.t('noBooks'),
                                       style: TextStyle(color: Colors.grey[500]),
                                       textAlign: TextAlign.center,
                                     )

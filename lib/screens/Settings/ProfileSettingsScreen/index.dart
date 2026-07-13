@@ -105,7 +105,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               icon: Icon(Icons.arrow_back,
                                   color: AppTheme(themeController.brightness)
                                       .primaryColor)),
-                          Text(Tr.t('navigation.profile'),
+                          Text(Tr.t('profile'),
                               style: TextStyle(
                                   fontSize: 32,
                                   color: AppTheme(themeController.brightness)
@@ -205,8 +205,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                       themeController
                                                           .brightness)
                                                   .failedColor,
-                                              message: Tr.t(
-                                                  'profile.noImageSelected'));
+                                              message: Tr.t('noImageSelected'));
                                         }
 
                                         setState(() {
@@ -225,7 +224,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         style: TextStyle(color: theme.accentColor),
                         enabled: !isUpdatingName,
                         decoration: InputDecoration(
-                            labelText: Tr.t('profile.firstName'),
+                            labelText: Tr.t('firstName'),
                             labelStyle: firstNameFocusNode.hasFocus
                                 ? null
                                 : TextStyle(color: theme.accentColor),
@@ -238,7 +237,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                         style: TextStyle(color: theme.accentColor),
                         enabled: !isUpdatingName,
                         decoration: InputDecoration(
-                            labelText: Tr.t('profile.lastName'),
+                            labelText: Tr.t('lastName'),
                             labelStyle: lastNameFocusNode.hasFocus
                                 ? null
                                 : TextStyle(color: theme.accentColor),
@@ -247,7 +246,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                     const SizedBox(height: 12),
                     if (authController.isLoggedInViaManual)
                       SettingOptionTile(
-                          title: Tr.t('profile.changePassword'),
+                          title: Tr.t('changePassword'),
                           onTap: () async {
                             AnalyticsService.logEvent(
                                 'profile_change_password_opened');
@@ -292,14 +291,13 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       await profileController
                                           .editProfile(formData);
                                       UIService.showSnackbar(
-                                          message:
-                                              Tr.t('profile.updateSuccess'),
+                                          message: Tr.t('updateSuccess'),
                                           backgroundColor: AppTheme(
                                                   themeController.brightness)
                                               .successColor);
                                     } catch (e) {
                                       UIService.showSnackbar(
-                                          message: Tr.t('profile.updateFailed'),
+                                          message: Tr.t('updateFailed'),
                                           backgroundColor: AppTheme(
                                                   themeController.brightness)
                                               .failedColor);
@@ -309,7 +307,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       isUpdatingName = false;
                                     });
                                   },
-                                  child: Text(Tr.t('common.save'),
+                                  child: Text(Tr.t('save'),
                                       style: const TextStyle(
                                           color: Colors.white)))),
                     Container(
@@ -329,7 +327,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                   AppTheme(themeController.brightness)
                                       .primaryColor,
                               padding: EdgeInsets.zero),
-                          child: Text(Tr.t('common.logout'),
+                          child: Text(Tr.t('logout'),
                               style: const TextStyle(color: Colors.white))),
                     ),
                     Container(
@@ -348,7 +346,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                               foregroundColor: Colors.red,
                               padding: EdgeInsets.zero),
                           icon: const Icon(Icons.delete, color: Colors.red),
-                          label: Text(Tr.t('common.deleteAccount'))),
+                          label: Text(Tr.t('deleteAccount'))),
                     )
                   ])))
             ])))));

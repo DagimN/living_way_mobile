@@ -11,24 +11,24 @@ class ContactsScreen extends StatelessWidget {
 
   static List<Contacts> contacts = [
     Contacts(
-        title: 'settings.phoneNumbers',
+        title: 'phoneNumbers',
         addressList: ['+251901777774', '+251901777775'],
         type: ContactType.phone),
     Contacts(
-        title: 'settings.emailAddresses',
+        title: 'emailAddresses',
         addressList: [
           'Info@livingwayethiopia.org',
           'livingwayethiopia@gmail.com'
         ],
         type: ContactType.email),
     Contacts(
-        title: 'settings.address',
+        title: 'address',
         addressList: [
           "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu"
         ],
         type: ContactType.location),
     Contacts(
-        title: 'settings.socialMedia',
+        title: 'socialMedia',
         addressList: [
           'https://twitter.com/livingwayethiop',
           "https://www.facebook.com/LivingWayChurch1",
@@ -96,7 +96,7 @@ class ContactsScreen extends StatelessWidget {
                         icon: Icon(Icons.arrow_back,
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)),
-                    Text(Tr.t('settings.contacts'),
+                    Text(Tr.t('contacts'),
                         style: TextStyle(
                             fontSize: 32,
                             color: AppTheme(themeController.brightness)

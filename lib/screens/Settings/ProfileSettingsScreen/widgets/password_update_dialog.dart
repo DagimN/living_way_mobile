@@ -28,7 +28,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
     final themeController = Provider.of<ThemeController>(context);
 
     return AlertDialog(
-        title: Text(Tr.t('profile.changePassword')),
+        title: Text(Tr.t('changePassword')),
         content: Form(
             key: formKey,
             child: SingleChildScrollView(
@@ -63,8 +63,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
                               border: const OutlineInputBorder(),
-                              hintText:
-                                  Tr.t('profile.oldPasswordPlaceholder')))),
+                              hintText: Tr.t('oldPasswordPlaceholder')))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                       child: TextFormField(
@@ -92,8 +91,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
                               border: const OutlineInputBorder(),
-                              hintText:
-                                  Tr.t('profile.newPasswordPlaceholder')))),
+                              hintText: Tr.t('newPasswordPlaceholder')))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
                       child: TextFormField(
@@ -109,7 +107,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
 
                             if (newPasswordController.text !=
                                 confirmPasswordController.text) {
-                              return Tr.t('auth.passwordMismatchError');
+                              return Tr.t('passwordMismatchError');
                             }
 
                             return null;
@@ -126,8 +124,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                                       ? Icons.visibility
                                       : Icons.visibility_off)),
                               border: const OutlineInputBorder(),
-                              hintText:
-                                  Tr.t('auth.confirmPasswordPlaceholder'))))
+                              hintText: Tr.t('confirmPasswordPlaceholder'))))
                 ]))),
         actions: !isUpdating
             ? [
@@ -135,7 +132,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(Tr.t('common.cancel'))),
+                    child: Text(Tr.t('cancel'))),
                 TextButton(
                     onPressed: () async {
                       final isValid = formKey.currentState?.validate() ?? false;
@@ -165,20 +162,20 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
 
                       if (isSuccess) {
                         UIService.showSnackbar(
-                            message: Tr.t('profile.updateSuccess'),
+                            message: Tr.t('updateSuccess'),
                             backgroundColor:
                                 AppTheme(themeController.brightness)
                                     .successColor);
                         UIService.pop();
                       } else {
                         UIService.showSnackbar(
-                            message: Tr.t('profile.passwordIncorrect'),
+                            message: Tr.t('passwordIncorrect'),
                             backgroundColor:
                                 AppTheme(themeController.brightness)
                                     .failedColor);
                       }
                     },
-                    child: Text(Tr.t('common.update'),
+                    child: Text(Tr.t('update'),
                         style: TextStyle(
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)))

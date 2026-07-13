@@ -10,45 +10,45 @@ class StaffTab extends StatelessWidget {
   static List<Staff> staffs = [
     Staff(
         name: 'Admas Getachew',
-        position: 'aboutPage.pastor',
+        position: 'pastor',
         image: "https://livingwaytest.netlify.app/image/Elders/Admas.webp"),
     Staff(
         name: 'Keneaa Zekarias',
-        position: 'aboutPage.pastor',
+        position: 'pastor',
         image: "https://livingwaytest.netlify.app/image/Elders/Keneaa.webp"),
     Staff(
         name: 'Henock Bekele',
-        position: 'aboutPage.pastor',
+        position: 'pastor',
         image: "https://livingwaytest.netlify.app/image/Elders/Henock.webp"),
     Staff(
       name: 'Misikir Genene',
       image: "https://livingwaytest.netlify.app/image/Elders/Misikir.webp",
-      position: 'aboutPage.churchElder',
+      position: 'churchElder',
     ),
     Staff(
         name: 'Burakie Sahle',
         image: "https://livingwaytest.netlify.app/image/Elders/Burakie.webp",
-        position: 'aboutPage.churchElder'),
+        position: 'churchElder'),
     Staff(
         name: 'Esisha Mengistu',
         image: "https://livingwaytest.netlify.app/image/Elders/Esisha.webp",
-        position: 'aboutPage.churchElder'),
+        position: 'churchElder'),
     Staff(
         name: 'Fasil Negash',
         image: "https://livingwaytest.netlify.app/image/Elders/Fasil.webp",
-        position: 'aboutPage.churchElder'),
+        position: 'churchElder'),
     Staff(
         name: 'Yared Donis',
         image: "https://livingwaytest.netlify.app/image/Elders/Yared.webp",
-        position: 'aboutPage.churchElder'),
+        position: 'churchElder'),
     Staff(
         name: 'Minase Eliyas',
         image: "https://livingwaytest.netlify.app/image/Elders/Minase.webp",
-        position: 'aboutPage.churchElder'),
+        position: 'churchElder'),
     Staff(
         name: 'Dagem Daniel',
         image: "https://livingwaytest.netlify.app/image/Elders/Dagim.webp",
-        position: 'aboutPage.churchElder'),
+        position: 'churchElder'),
   ];
 
   @override

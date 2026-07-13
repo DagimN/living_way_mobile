@@ -23,11 +23,11 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
 
     return AlertDialog(
         title: Text(
-          Tr.t('profile.deleteAccount'),
+          Tr.t('deleteAccount'),
           style: TextStyle(color: theme.accentColor),
         ),
         content: Text(
-          Tr.t('profile.deleteAccountMessage'),
+          Tr.t('deleteAccountMessage'),
           style: TextStyle(color: theme.accentColor),
         ),
         backgroundColor: theme.backgroundColor,
@@ -50,14 +50,14 @@ class _PromptDeleteProfileDialogState extends State<PromptDeleteProfileDialog> {
                             '/home', (route) => false);
                       });
                     },
-                    child: Text(Tr.t('common.delete'),
+                    child: Text(Tr.t('delete'),
                         style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      Tr.t('common.cancel'),
+                      Tr.t('cancel'),
                       style: TextStyle(color: theme.accentColor),
                     ))
               ]

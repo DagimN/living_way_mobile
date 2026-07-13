@@ -107,17 +107,17 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onTap: () => setState(() {}),
                                     validator: (value) {
                                       if (value == null) {
-                                        return Tr.t('auth.emptyFieldError');
+                                        return Tr.t('emptyFieldError');
                                       }
 
                                       if (value.trim().isEmpty) {
-                                        return Tr.t('auth.emptyFieldError');
+                                        return Tr.t('emptyFieldError');
                                       }
 
                                       if (!RegExp(
                                               r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)*$")
                                           .hasMatch(value)) {
-                                        return Tr.t('auth.invalidEmailError');
+                                        return Tr.t('invalidEmailError');
                                       }
 
                                       return null;
@@ -125,8 +125,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                     decoration: InputDecoration(
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.always,
-                                        hintText: Tr.t('auth.emailPlaceholder'),
-                                        labelText: Tr.t('auth.email'),
+                                        hintText: Tr.t('emailPlaceholder'),
+                                        labelText: Tr.t('email'),
                                         labelStyle: emailFocusNode.hasFocus
                                             ? null
                                             : TextStyle(
@@ -140,11 +140,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     onTap: () => setState(() {}),
                                     validator: (value) {
                                       if (value == null) {
-                                        return Tr.t('auth.emptyFieldError');
+                                        return Tr.t('emptyFieldError');
                                       }
 
                                       if (value.trim().isEmpty) {
-                                        return Tr.t('auth.emptyFieldError');
+                                        return Tr.t('emptyFieldError');
                                       }
 
                                       return null;
@@ -163,9 +163,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                             }),
                                         floatingLabelBehavior:
                                             FloatingLabelBehavior.always,
-                                        hintText:
-                                            Tr.t('auth.passwordPlaceholder'),
-                                        labelText: Tr.t('auth.password'),
+                                        hintText: Tr.t('passwordPlaceholder'),
+                                        labelText: Tr.t('password'),
                                         labelStyle: passwordFocusNode.hasFocus
                                             ? null
                                             : TextStyle(
@@ -181,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                 context, '/forgot-password');
                                           }
                                         : null,
-                                    child: Text(Tr.t('auth.forgotPassword'),
+                                    child: Text(Tr.t('forgotPassword'),
                                         style: TextStyle(
                                             color: theme.accentColor,
                                             decorationColor: theme.accentColor,
@@ -204,7 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                             ? () => performManualLogin(
                                                 authController)
                                             : null,
-                                        child: Text(Tr.t('auth.login'))))
+                                        child: Text(Tr.t('login'))))
                                 : SizedBox(
                                     width: 25,
                                     height: 25,
@@ -240,7 +239,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(Tr.t('auth.dontHaveAccount'),
+                                      Text(Tr.t('dontHaveAccount'),
                                           style: TextStyle(
                                               color: theme.accentColor)),
                                       const SizedBox(width: 10),
@@ -251,7 +250,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                                       context, '/intro');
                                                 }
                                               : null,
-                                          child: Text(Tr.t('auth.signUp'),
+                                          child: Text(Tr.t('signUp'),
                                               style: TextStyle(
                                                   decoration:
                                                       TextDecoration.underline,

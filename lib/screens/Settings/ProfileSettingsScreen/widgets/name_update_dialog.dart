@@ -27,7 +27,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
     final themeController = Provider.of<ThemeController>(context);
 
     return AlertDialog(
-        title: Text(Tr.t('profile.changeName')),
+        title: Text(Tr.t('changeName')),
         content: Form(
             key: formKey,
             child: Column(
@@ -40,36 +40,36 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                           controller: firstNameController,
                           validator: (value) {
                             if (value == null) {
-                              return Tr.t("auth.emptyFieldError");
+                              return Tr.t("emptyFieldError");
                             }
 
                             if (value.trim().isEmpty) {
-                              return Tr.t("auth.emptyFieldError");
+                              return Tr.t("emptyFieldError");
                             }
 
                             return null;
                           },
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
-                              hintText: Tr.t("signup.firstNamePlaceholder")))),
+                              hintText: Tr.t("firstNamePlaceholder")))),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
                       child: TextFormField(
                           controller: lastNameController,
                           validator: (value) {
                             if (value == null) {
-                              return Tr.t("auth.emptyFieldError");
+                              return Tr.t("emptyFieldError");
                             }
 
                             if (value.trim().isEmpty) {
-                              return Tr.t("auth.emptyFieldError");
+                              return Tr.t("emptyFieldError");
                             }
 
                             return null;
                           },
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
-                              hintText: Tr.t("signup.lastNamePlaceholder"))))
+                              hintText: Tr.t("lastNamePlaceholder"))))
                 ])),
         actions: !isUpdating
             ? [
@@ -77,7 +77,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                     onPressed: () {
                       Navigator.pop(context);
                     },
-                    child: Text(Tr.t('common.cancel'),
+                    child: Text(Tr.t('cancel'),
                         style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () async {
@@ -103,7 +103,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                         UIService.pop();
                       });
                     },
-                    child: Text(Tr.t('common.update'),
+                    child: Text(Tr.t('update'),
                         style: TextStyle(
                             color: AppTheme(themeController.brightness)
                                 .primaryColor)))

@@ -31,12 +31,12 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                  Text(Tr.t("auth.forgotPasswordTitle"),
+                  Text(Tr.t("forgotPasswordTitle"),
                       style: TextStyle(
                           fontSize: 32,
                           fontWeight: FontWeight.w500,
                           color: theme.accentColor)),
-                  Text(Tr.t("auth.forgotPasswordSubtitle"),
+                  Text(Tr.t("forgotPasswordSubtitle"),
                       style: TextStyle(fontSize: 14, color: theme.accentColor)),
                   Container(
                       margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
@@ -44,17 +44,17 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                           keyboardType: TextInputType.emailAddress,
                           validator: (value) {
                             if (value == null) {
-                              return Tr.t("auth.emptyFieldError");
+                              return Tr.t("emptyFieldError");
                             }
 
                             if (value.trim().isEmpty) {
-                              return Tr.t("auth.emptyFieldError");
+                              return Tr.t("emptyFieldError");
                             }
 
                             if (!RegExp(
                                     r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+(?:\.[a-zA-Z]+)*$")
                                 .hasMatch(value)) {
-                              return Tr.t("auth.invalidEmailError");
+                              return Tr.t("invalidEmailError");
                             }
 
                             return null;
@@ -62,7 +62,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                           controller: emailController,
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
-                              hintText: Tr.t("auth.email")))),
+                              hintText: Tr.t("email")))),
                   Align(
                       alignment: Alignment.centerRight,
                       child: ElevatedButton(
@@ -85,14 +85,14 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                             if (isSent) {
                               UIService.showSnackbar(
                                   backgroundColor: theme.successColor,
-                                  message: Tr.t('auth.forgotPasswordSuccess'));
+                                  message: Tr.t('forgotPasswordSuccess'));
                             } else {
                               UIService.showSnackbar(
                                   backgroundColor: theme.failedColor,
-                                  message: Tr.t('auth.forgotPasswordError'));
+                                  message: Tr.t('forgotPasswordError'));
                             }
                           },
-                          child: Text(Tr.t('common.continue'))))
+                          child: Text(Tr.t('continue'))))
                 ]))),
       ),
     );

@@ -41,7 +41,7 @@ class ForcedUpdateDialog extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             Text(
-              Tr.t('settings.updateAvailable'),
+              Tr.t('updateAvailable'),
               textAlign: TextAlign.center,
               style: theme.textTheme.labelLarge?.copyWith(
                   fontWeight: FontWeight.w700,
@@ -51,7 +51,7 @@ class ForcedUpdateDialog extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             Text(
-              Tr.t('settings.updateRequired'),
+              Tr.t('updateRequired'),
               style: theme.textTheme.titleMedium
                   ?.copyWith(color: appTheme.accentColor, fontSize: 12),
             ),
@@ -101,7 +101,7 @@ class ForcedUpdateDialog extends StatelessWidget {
                   ),
                 ),
                 child: Text(
-                  Tr.t('common.update'),
+                  Tr.t('update'),
                   style: const TextStyle(
                       fontWeight: FontWeight.w600, letterSpacing: 0.5),
                 ),

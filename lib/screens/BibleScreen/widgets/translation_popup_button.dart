@@ -42,7 +42,7 @@ class TranslationPopupButton extends StatelessWidget {
                     UIService.showSnackbar(
                         backgroundColor:
                             AppTheme(themeController.brightness).pendingColor,
-                        message: Tr.t('settings.comingSoon'));
+                        message: Tr.t('comingSoon'));
                   }
 
                   if (translation.status == TranslationStatus.ready) {

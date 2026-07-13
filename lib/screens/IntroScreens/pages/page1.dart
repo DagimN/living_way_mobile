@@ -19,14 +19,14 @@ class Page1 extends StatelessWidget {
       Container(
           margin: const EdgeInsets.all(14),
           child: Column(children: [
-            Text(Tr.t('intro.page1Title'),
+            Text(Tr.t('page1Title'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w400,
                     color: theme.accentColor)),
             const SizedBox(height: 14),
-            Text(Tr.t('intro.page1Subtitle'),
+            Text(Tr.t('page1Subtitle'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,
