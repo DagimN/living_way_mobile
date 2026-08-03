@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -6,6 +7,7 @@ import 'package:add_2_calendar/add_2_calendar.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
+import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/DailyFeedScreen/widgets/updates_viewer_expanded.dart';
 import 'package:path_provider/path_provider.dart';
@@ -53,7 +55,8 @@ class NotificationService {
 
     await _plugin.initialize(
       settings: InitializationSettings(android: android, iOS: ios),
-      onDidReceiveNotificationResponse: _handleTap,
+      onDidReceiveNotificationResponse: (response) =>
+          _handleTap(response.payload),
     );
 
     if (androidPlugin != null) {
@@ -72,6 +75,18 @@ class NotificationService {
           AuthorizationStatus.authorized) {
         await messaging.subscribeToTopic('general');
       }
+    }
+
+    final NotificationAppLaunchDetails? notificationAppLaunchDetails =
+        await _plugin.getNotificationAppLaunchDetails();
+
+    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+      Timer.periodic(const Duration(seconds: 3), (timer) {
+        if (UIService.navigatorKey.currentContext == null) return;
+
+        _handleTap(notificationAppLaunchDetails?.notificationResponse?.payload);
+        timer.cancel();
+      });
     }
   }
 
@@ -154,13 +169,20 @@ class NotificationService {
     );
   }
 
-  static void _handleTap(NotificationResponse response) {
-    final payload = response.payload;
-
+  static void _handleTap(String? payload) async {
     if (payload == null) return;
 
-    if (payload == 'verseOfTheDay') {
-      UIService.push(const UpdatesViewerExpanded());
+    final decodedPayload = jsonDecode(payload);
+
+    if (payload.contains('key') && decodedPayload['key'] == "verseOfTheDay") {
+      final decodedPassage = jsonDecode(decodedPayload['value']);
+      final bible = await BibleController.loadBible(
+          decodedPassage['translation']['path']);
+      final passage = Passage.fromMap(bible, decodedPassage);
+
+      UIService.push(UpdatesViewerExpanded(
+        verse: passage,
+      ));
     }
 
     if (payload.contains('event_start')) {

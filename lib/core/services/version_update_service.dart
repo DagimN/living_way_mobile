@@ -45,7 +45,8 @@ class VersionCheckService {
             forceUpdate: false);
       }
     } catch (error) {
-      logger.e(error);
+      logger.e(
+          error); //BUG: RangeError (start): Invalid value: Not in inclusive range 0..5: -1
     }
   }
 

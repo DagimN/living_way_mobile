@@ -170,6 +170,14 @@ class BibleController extends ChangeNotifier {
     notifyListeners();
   }
 
+  static Future<List<Book>> loadBible(String path) async {
+    List data = await loadJson(path);
+
+    return data.indexed
+        .map((book) => Book.fromJson({...book.$2, 'index': book.$1}))
+        .toList();
+  }
+
   void scheduleVersesOfTheDay() async {
     dailyVerses.shuffle();
 
@@ -196,7 +204,8 @@ class BibleController extends ChangeNotifier {
           title: 'Verse of the Day',
           body: '${passage.text} ${passage.labelWithTranslation}',
           scheduledDate: scheduledDate,
-          payload: 'verseOfTheDay');
+          payload: jsonEncode(
+              {"key": "verseOfTheDay", "value": passage.toString()}));
     }
   }
 

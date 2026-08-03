@@ -8,17 +8,19 @@ class VerseOfTheDay extends StatelessWidget {
   final bool isEnlarged;
   final Radius radius;
   final GlobalKey? updatesViewerExpandedKey;
+  final Passage? verse;
   const VerseOfTheDay(
       {super.key,
       required this.isEnlarged,
       this.updatesViewerExpandedKey,
-      this.radius = const Radius.circular(16)});
+      this.radius = const Radius.circular(16),
+      this.verse});
 
   @override
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
-    final verseOfTheDay = bibleController.verseOfTheDay;
+    final verseOfTheDay = verse ?? bibleController.verseOfTheDay;
     final showVerseOfTheDayControls =
         layoutController.showVerseOfTheDayControls;
 
@@ -131,8 +133,8 @@ class VerseOfTheDay extends StatelessWidget {
                               Future.delayed(
                                   const Duration(seconds: 2),
                                   () => layoutController.scrollToVerse(
-                                      layoutController
-                                          .verseKeys[verseOfTheDay.verse]));
+                                      layoutController.verseKeys[verseOfTheDay
+                                          .verse])); //BUG: When navigating from notification there is an assertion error
                             },
                             icon: const Icon(Icons.forward,
                                 color: Colors.white))),
