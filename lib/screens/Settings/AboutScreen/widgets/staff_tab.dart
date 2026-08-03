@@ -46,7 +46,7 @@ class StaffTab extends StatelessWidget {
         image: "https://livingwaytest.netlify.app/image/Elders/Minase.webp",
         position: 'churchElder'),
     Staff(
-        name: 'Dagem Daniel',
+        name: 'Dagim Daniel',
         image: "https://livingwaytest.netlify.app/image/Elders/Dagim.webp",
         position: 'churchElder'),
   ];

@@ -5,8 +5,8 @@ buildscript {
     }
     
     dependencies{
-         classpath 'com.google.gms:google-services:4.4.2'
-         classpath 'com.google.firebase:firebase-crashlytics-gradle:3.0.2'
+         classpath 'com.google.gms:google-services:4.3.15'
+         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.7.1'
          classpath 'com.android.tools.build:gradle:8.11.1'
     }
 }
@@ -16,6 +16,30 @@ allprojects {
         google()
         mavenCentral()
     }    
+}
+
+subprojects {
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                compileSdkVersion 36
+                
+                // Ensure Java compatibility matches JDK 17
+                compileOptions {
+                    sourceCompatibility JavaVersion.VERSION_17
+                    targetCompatibility JavaVersion.VERSION_17
+                }
+            }
+        }
+    }
+}
+subprojects {
+    project.tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "17"
+            freeCompilerArgs += ["-Xno-param-assertions", "-Xno-call-assertions"]
+        }
+    }
 }
 
 rootProject.buildDir = '../build'

@@ -20,7 +20,7 @@
         "name": "prod_living_way",
         "request": "launch",
         "type": "dart",
-        "args": ["--flavor", "dev"]
+        "args": ["--flavor", "prod"]
       },
       {
         "name": "dev_living_way (profile mode)",
