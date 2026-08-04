@@ -17,8 +17,10 @@ class VersionCheckService {
   static Future<void> checkForUpdate() async {
     try {
       final info = await PackageInfo.fromPlatform();
-      final current = info.version
-          .replaceRange(info.version.indexOf('-'), info.version.length, "");
+      final current = info.version.contains('-')
+          ? info.version
+              .replaceRange(info.version.indexOf('-'), info.version.length, "")
+          : info.version;
       const url = appFlavor == "dev"
           ? Urls.devApiUrl
           : appFlavor == "staging"
@@ -45,8 +47,7 @@ class VersionCheckService {
             forceUpdate: false);
       }
     } catch (error) {
-      logger.e(
-          error); //BUG: RangeError (start): Invalid value: Not in inclusive range 0..5: -1
+      logger.e(error);
     }
   }
 
