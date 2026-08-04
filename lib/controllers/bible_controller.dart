@@ -199,11 +199,11 @@ class BibleController extends ChangeNotifier {
         verseOfTheDay = passage;
       }
 
-      await NotificationService.scheduleNotification(
+      await NotificationService.showNotification(
           id: notificationId,
           title: 'Verse of the Day',
           body: '${passage.text} ${passage.labelWithTranslation}',
-          scheduledDate: scheduledDate,
+          // scheduledDate: scheduledDate,
           payload: jsonEncode(
               {"key": "verseOfTheDay", "value": passage.toString()}));
     }

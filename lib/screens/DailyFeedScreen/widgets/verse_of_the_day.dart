@@ -118,8 +118,11 @@ class VerseOfTheDay extends StatelessWidget {
                     Expanded(
                         child: IconButton(
                             onPressed: () async {
-                              final todaysVerse =
-                                  Passage(book: verseOfTheDay.book);
+                              final todaysVerse = Passage(
+                                  book: bibleController.bible.firstWhere(
+                                      (book) =>
+                                          book.index ==
+                                          verseOfTheDay.book.index));
                               todaysVerse.chapter = verseOfTheDay.chapter;
                               todaysVerse.verse = verseOfTheDay.verse;
 
@@ -133,8 +136,8 @@ class VerseOfTheDay extends StatelessWidget {
                               Future.delayed(
                                   const Duration(seconds: 2),
                                   () => layoutController.scrollToVerse(
-                                      layoutController.verseKeys[verseOfTheDay
-                                          .verse])); //BUG: When navigating from notification there is an assertion error
+                                      layoutController
+                                          .verseKeys[verseOfTheDay.verse]));
                             },
                             icon: const Icon(Icons.forward,
                                 color: Colors.white))),

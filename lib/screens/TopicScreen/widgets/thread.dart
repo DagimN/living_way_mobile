@@ -122,7 +122,6 @@ class _ThreadState extends State<Thread> {
                       if (userProfile != null) {
                         thread.subThreads.add(ThreadData(
                             threadId: const Uuid().v4(),
-                            //TODO: Add thread flow field
                             commenter: userProfile.id,
                             comment: comment,
                             timestamp: DateTime.now()));
@@ -187,7 +186,6 @@ class _ThreadState extends State<Thread> {
                       if (widget.data.subThreads.isNotEmpty)
                         Text(widget.data.subThreads.length.toString())
                     ])
-            //TODO: Edit popup menu button for deleting, reporting
           ])
         ]));
   }
