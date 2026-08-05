@@ -1,9 +1,10 @@
 abstract class Urls {
-  static const devApiUrl = "http://10.200.32.26:3000";
+  static const devApiUrl = "http://10.93.69.26:3000";
   static const stagingApiUrl =
       "https://living-way-backend-bvjly6lnu-dagimns-projects.vercel.app";
   static const prodApiUrl = "https://living-way-backend.vercel.app";
-  static const termsUrl = "https://policies.google.com/terms?hl=en-US";
+  static const termsUrl =
+      "https://www.livingwayethiopia.org/terms-and-conditions";
   static const imageApiUrl = "https://picsum.photos/768/1024";
   static const unsplashApiUrl = "https://api.unsplash.com";
 }

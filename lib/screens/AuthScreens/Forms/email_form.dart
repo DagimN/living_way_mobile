@@ -77,7 +77,7 @@ class _EmailFormState extends State<EmailForm> {
                     AnalyticsService.logEvent('signup_step_completed',
                         parameters: {'step': 'email'});
                   },
-                  child: Text(Tr.t('common.continue'))))
+                  child: Text(Tr.t('continue'))))
         ])));
   }
 }
