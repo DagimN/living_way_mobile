@@ -18,6 +18,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Decode .env File
+        run: |
+          echo "${{ secrets.ENV_BASE64 }}" | base64 -d > .env
+
       - name: Set up Java JDK
         uses: actions/setup-java@v4
         with:
@@ -34,7 +38,7 @@ jobs:
         run: flutter pub get
 
       - name: Build Staging APK
-        run: flutter build apk --flavor staging --target lib/main.dart --split-per-abi --release
+        run: flutter build apk --flavor staging --target lib/main.dart --split-per-abi --debug
 
       - name: Upload Staging APK Artifact
         uses: actions/upload-artifact@v4
@@ -58,6 +62,10 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v4
+
+      - name: Decode .env File
+        run: |
+          echo "${{ secrets.ENV_BASE64 }}" | base64 -d > .env
 
       - name: Set up Java JDK
         uses: actions/setup-java@v4
