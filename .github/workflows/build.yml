@@ -1,0 +1,117 @@
+name: Flutter Android CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+      - main
+
+jobs:
+  # ==========================================
+  # JOB 1: STAGING BUILD (Triggered on dev)
+  # ==========================================
+  build-staging:
+    if: github.ref == 'refs/heads/dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Staging APK
+        run: flutter build apk --flavor staging --target lib/main.dart --split-per-abi --release
+
+      - name: Upload Staging APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: staging-apk-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-staging-debug.apk
+
+      - name: Prune Old Staging Artifacts
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: "staging-apk-*"
+          keep: 2
+
+  # ==========================================
+  # JOB 2: PRODUCTION BUILD (Triggered on main)
+  # ==========================================
+  build-production:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: "17"
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Decode Android Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
+
+      - name: Build Production APK
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: flutter build apk --flavor prod --target lib/main.dart --split-per-abi --release
+
+      - name: Build Play Store App Bundle (.aab)
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: flutter build appbundle --flavor prod --target lib/main.dart --release
+
+      - name: Upload Production APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-apk-${{ github.sha }}
+          path: build/app/outputs/flutter-apk/app-prod-release.apk
+
+      - name: Upload Play Store App Bundle Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-aab-${{ github.sha }}
+          path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+
+      - name: Prune Old Production APKs
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: "prod-apk-*"
+          keep: 2
+
+      - name: Prune Old Production AABs
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: "prod-aab-*"
+          keep: 2
