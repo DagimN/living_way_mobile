@@ -5,6 +5,7 @@
 list(APPEND FLUTTER_PLUGIN_LIST
   audioplayers_windows
   disk_space_2
+  file_selector_windows
   firebase_core
   flutter_inappwebview_windows
   flutter_secure_storage_windows

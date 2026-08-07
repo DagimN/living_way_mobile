@@ -7,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:gal/gal.dart';
-import 'package:hl_image_picker/hl_image_picker.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:path_provider/path_provider.dart';
@@ -30,15 +30,12 @@ abstract class ImageService {
       final isGranted = await checkPermission();
 
       if (isGranted) {
-        final result = await HLImagePicker().openPicker(
-            pickerOptions: HLPickerOptions(
-                maxSelectedAssets: imageCount,
-                enablePreview: true,
-                mediaType: MediaType.image,
-                compressFormat: CompressFormat.jpg,
-                compressQuality: .75));
+        final result = await ImagePicker()
+            .pickImage(source: ImageSource.gallery, imageQuality: 70);
 
-        return result.map((item) => File(item.path)).toList();
+        if (result == null) return [];
+
+        return [File(result.path)];
       }
     } catch (error) {
       logger.e(error);
