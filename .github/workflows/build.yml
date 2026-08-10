@@ -37,12 +37,6 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
-      - name: Prune Old Staging Artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: "staging-apk-*"
-          keep: 2
-
       - name: Build Staging APK
         run: flutter build apk --flavor staging --target lib/main.dart --split-per-abi --debug
 
@@ -51,6 +45,28 @@ jobs:
         with:
           name: staging-apk-${{ github.sha }}
           path: build/app/outputs/flutter-apk/*.apk
+
+       - name: Extract App Version from pubspec.yaml
+        id: get_version
+        run: |
+          # Extract version line (e.g., "1.0.0+12")
+          FULL_VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          
+          # Clean version (without build number, e.g., "1.0.0")
+          VERSION_NAME=$(echo $FULL_VERSION | cut -d'+' -f1)
+          
+          # Export variables to step output
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*.apk"
+          tag: "v${{ steps.get_version.outputs.version_name }}-${{ github.run_number }}"
+          name: "Release v${{ steps.get_version.outputs.version_name }} (Build ${{ github.run_number }})"
+          body: "Automated production build for version ${{ steps.get_version.outputs.full_version }}."
+          token: ${{ secrets.GH_TOKEN }}
 
   # ==========================================
   # JOB 2: PRODUCTION BUILD (Triggered on main)
@@ -86,18 +102,6 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
 
-      - name: Prune Old Production APKs
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: "prod-apk-*"
-          keep: 2
-
-      - name: Prune Old Production AABs
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: "prod-aab-*"
-          keep: 2
-
       - name: Build Production APK
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
@@ -123,3 +127,25 @@ jobs:
         with:
           name: prod-aab-${{ github.sha }}
           path: build/app/outputs/bundle/prodRelease/app-prod-release.aab
+
+      - name: Extract App Version from pubspec.yaml
+        id: get_version
+        run: |
+          # Extract version line (e.g., "1.0.0+12")
+          FULL_VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')
+          
+          # Clean version (without build number, e.g., "1.0.0")
+          VERSION_NAME=$(echo $FULL_VERSION | cut -d'+' -f1)
+          
+          # Export variables to step output
+          echo "full_version=$FULL_VERSION" >> $GITHUB_OUTPUT
+          echo "version_name=$VERSION_NAME" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*.apk,build/app/outputs/bundle/prodRelease/app-prod-release.aab"
+          tag: "v${{ steps.get_version.outputs.version_name }}-${{ github.run_number }}"
+          name: "Release v${{ steps.get_version.outputs.version_name }} (Build ${{ github.run_number }})"
+          body: "Automated production build for version ${{ steps.get_version.outputs.full_version }}."
+          token: ${{ secrets.GH_TOKEN }}
