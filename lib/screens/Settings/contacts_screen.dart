@@ -24,7 +24,7 @@ class ContactsScreen extends StatelessWidget {
     Contacts(
         title: 'address',
         addressList: [
-          "https://www.google.com/maps/place/Living+Way+Church,+Addis+Ababa,+Ethiopia/@9.0089674,38.7593991,17z/data=!3m1!4b1!4m6!3m5!1s0x164b85f25d21998b:0xbd3d2162cc867442!8m2!3d9.0089621!4d38.761974!16s%2Fg%2F11r9tz5ls6?entry=ttu"
+          "https://www.google.com/maps/place/ሕያው+መንገድ+ቤ%2Fክ%7C+Living+Way+Church/@9.0086425,38.761634,103m/data=!3m1!1e3!4m6!3m5!1s0x164b8500593bef9b:0xd578173a68457edc!8m2!3d9.008717!4d38.7616153!16s%2Fg%2F11x7kk29zl?entry=ttu&g_ep=EgoyMDI2MDgwNS4xIKXMDSoASAFQAw%3D%3D"
         ],
         type: ContactType.location),
     Contacts(
