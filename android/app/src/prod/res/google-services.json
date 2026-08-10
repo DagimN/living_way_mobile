@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "836583958038-rjvf2dtcsp4aa61hipqv50c9qln88k55.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.livingway.app",
+            "certificate_hash": "3645248c765455075fd9fd7955e9567b64d3e7eb"
+          }
+        },
+        {
           "client_id": "836583958038-4m9j6t80dotba8kvampsh02553hf3ndv.apps.googleusercontent.com",
           "client_type": 3
         }
