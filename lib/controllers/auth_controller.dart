@@ -204,8 +204,19 @@ class AuthController extends ChangeNotifier {
       notifyListeners();
 
       return true;
+    } on DioException catch (error) {
+      final response = error.response;
+
+      if (response?.statusCode == StatusCode.unauthorizedHttp401) {
+        UIService.showSnackbar(
+            backgroundColor: Colors.red,
+            message: "Incorrect email or password");
+      }
+      logger.e(error);
+      return false;
     } catch (error) {
       logger.e(error);
+
       return false;
     }
   }

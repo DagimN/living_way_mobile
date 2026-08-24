@@ -86,6 +86,7 @@ dependencies:
   flutter_hooks: ^0.20.5
   percent_indicator: ^4.2.5
   async: ^2.13.1
+  bcrypt: ^1.2.0
 
 dev_dependencies:
   flutter_test:
