@@ -212,12 +212,13 @@ class Content extends ChangeNotifier {
 
         if (file?.existsSync() ?? false) {
           file?.deleteSync();
-
-          file = (saveInfo?.isSuccessful ?? false)
-              ? File("/storage/emulated/0/Download/Living Way/$fileName")
-              : null;
-          this.filePath = (saveInfo?.isSuccessful ?? false) ? file?.path : null;
         }
+
+        file = (saveInfo?.isSuccessful ?? false)
+            ? File("/storage/emulated/0/Download/Living Way/$fileName")
+            : null;
+        this.filePath = (saveInfo?.isSuccessful ?? false) ? file?.path : null;
+        notifyListeners();
       }
 
       NotificationService.cancelNotification(notificationId);
