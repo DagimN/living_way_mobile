@@ -43,7 +43,7 @@ Future<void> _handleIncomingNotification(RemoteMessage message) async {
       title: message.data['title'],
       body: message.data['body'],
       imageUrl: imageUrl.isEmpty ? null : imageUrl,
-      location: event['location'],
+      location: event['location'] ?? "",
       eventStart: DateTime.tryParse(event['event_start']) ?? DateTime.now(),
       eventEnd: event['event_end'] != null
           ? DateTime.tryParse(event['event_end'] ?? "")

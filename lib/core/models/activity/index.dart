@@ -237,9 +237,9 @@ class ContentBanner {
   String? thumbnail;
 
   @HiveField(2)
-  String position;
+  String? position;
 
-  ContentBanner({required this.position, this.thumbnail, required this.url});
+  ContentBanner({this.position, this.thumbnail, required this.url});
 
   static ContentBanner? fromJson(json) {
     return json != null

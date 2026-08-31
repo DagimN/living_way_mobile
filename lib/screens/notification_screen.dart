@@ -89,12 +89,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(notification.title,
-                      style: TextStyle(
-                          color: theme.accentColor,
-                          fontWeight: notification.isRead
-                              ? FontWeight.normal
-                              : FontWeight.w600)),
+                  Expanded(
+                    child: Text(notification.title,
+                        style: TextStyle(
+                            color: theme.accentColor,
+                            fontWeight: notification.isRead
+                                ? FontWeight.normal
+                                : FontWeight.w600)),
+                  ),
                   // SizedBox(
                   //   height: 20,
                   //   child: IconButton(
