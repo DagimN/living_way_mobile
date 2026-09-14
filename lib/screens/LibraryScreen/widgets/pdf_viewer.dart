@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
@@ -139,38 +141,43 @@ class _PdfViewerState extends State<PdfViewer> {
                 Navigator.of(context).pop();
               }),
           actions: [
-            if (!(widget.content.file?.path.contains('storage') ?? false) &&
-                !widget.content.isPaidContent)
-              ListenableBuilder(
-                  listenable: widget.content,
-                  builder: (context, child) {
-                    return widget.content.isDownloading
-                        ? SizedBox(
-                            width: 30,
-                            height: 30,
-                            child: CircularProgressIndicator(
-                              value: widget.content.downloadProgress,
-                              color: AppTheme(themeController.brightness)
-                                  .primaryColor,
-                              backgroundColor:
-                                  AppTheme(themeController.brightness)
-                                      .backgroundColor,
-                              strokeCap: StrokeCap.round,
-                            ),
-                          )
-                        : IconButton(
-                            onPressed: () async {
-                              AnalyticsService.logEvent('pdf_download_started',
-                                  parameters: {
-                                    'content_id': widget.content.id
-                                  });
-                              widget.content.downloadContent(
-                                downloadToPublic: true,
-                              );
-                            },
-                            icon:
-                                const Icon(Icons.drive_folder_upload_outlined));
-                  }),
+            ListenableBuilder(
+                listenable: widget.content,
+                builder: (context, child) {
+                  if ((widget.content.file?.path.contains('storage') ??
+                          false) ||
+                      widget.content.isPaidContent ||
+                      !widget.content.isSaveable) {
+                    return const SizedBox();
+                  }
+
+                  if (widget.content.isDownloading) {
+                    return SizedBox(
+                      width: 30,
+                      height: 30,
+                      child: CircularProgressIndicator(
+                        value: widget.content.downloadProgress,
+                        color:
+                            AppTheme(themeController.brightness).primaryColor,
+                        backgroundColor: AppTheme(themeController.brightness)
+                            .backgroundColor,
+                        strokeCap: StrokeCap.round,
+                      ),
+                    );
+                  }
+
+                  if (Platform.isAndroid) {
+                    return IconButton(
+                        onPressed: () async {
+                          AnalyticsService.logEvent('pdf_save_started',
+                              parameters: {'content_id': widget.content.id});
+                          widget.content.saveContent();
+                        },
+                        icon: const Icon(Icons.drive_folder_upload_outlined));
+                  }
+
+                  return const SizedBox();
+                }),
             if (searcher?.pattern != null)
               IconButton(
                   icon: const Icon(Icons.close),

@@ -43,8 +43,9 @@ class LibraryScreen extends StatelessWidget {
       if (book.file == null) {
         AnalyticsService.logEvent('library_download_started',
             parameters: {'content_id': book.id});
-        book.downloadContent();
+        book.downloadContent(downloadToPublic: false);
         contentController.saveLibrary(book);
+
         return;
       }
 

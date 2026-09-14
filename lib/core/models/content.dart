@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
-import 'package:media_store_plus/media_store_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdfrx/pdfrx.dart';
 import 'package:image/image.dart' as image;
@@ -26,6 +25,7 @@ class Content extends ChangeNotifier {
   bool isFetching = true;
   bool isPopular;
   bool isPaidContent;
+  bool isSaveable;
   int? previouslyLeftOn;
   double? contentRemaining;
   bool isDownloading = false;
@@ -40,6 +40,7 @@ class Content extends ChangeNotifier {
       required this.source,
       this.isPopular = false,
       this.isPaidContent = false,
+      this.isSaveable = false,
       this.filePath,
       this.fileType,
       this.thumbnail,
@@ -159,7 +160,6 @@ class Content extends ChangeNotifier {
 
     if (context == null) return;
 
-    final screenWidth = MediaQuery.of(context).size.width;
     final themeController =
         Provider.of<ThemeController>(context, listen: false);
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
@@ -201,63 +201,29 @@ class Content extends ChangeNotifier {
         file = File(filePath);
       }
 
-      SaveInfo? saveInfo;
-
-      if (downloadToPublic) {
-        saveInfo = await MediaStore().saveFile(
-            tempFilePath: file?.path ?? filePath,
-            dirType: DirType.download,
-            dirName: DirName.download,
-            relativePath: "Living Way");
-
-        if (file?.existsSync() ?? false) {
-          file?.deleteSync();
-
-          file = (saveInfo?.isSuccessful ?? false)
-              ? File("/storage/emulated/0/Download/Living Way/$fileName")
-              : null;
-          this.filePath = (saveInfo?.isSuccessful ?? false) ? file?.path : null;
-        }
+      if (downloadToPublic && file != null) {
+        saveContent();
       }
 
       NotificationService.cancelNotification(notificationId);
 
-      if (saveInfo == null) {
-        UIService.showSnackbar(
-          message: '$title downloaded successfully',
-          backgroundColor: AppTheme(themeController.brightness).successColor,
-        );
-      }
+      UIService.showSnackbar(
+        message: '$title downloaded successfully',
+        backgroundColor: AppTheme(themeController.brightness).successColor,
+      );
 
-      if (saveInfo != null) {
-        saveInfo.isSuccessful
-            ? UIService.showSnackbar(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: screenWidth * .8,
-                        child: Text(
-                          Tr.arg('content.downloaded', title),
-                          maxLines: 2,
-                        ),
-                      ),
-                      SizedBox(
-                        width: screenWidth * .8,
-                        child: Text(
-                          file?.path ?? '',
-                          maxLines: 2,
-                        ),
-                      ),
-                    ]),
-                backgroundColor:
-                    AppTheme(themeController.brightness).successColor,
-              )
-            : UIService.showSnackbar(
-                backgroundColor:
-                    AppTheme(themeController.brightness).failedColor,
-                message: Tr.t('content.failedDownload'));
-      }
+      (this.filePath?.isNotEmpty ?? false)
+          ? UIService.showSnackbar(
+              child: Text(
+                Tr.arg('downloaded', title),
+                maxLines: 2,
+              ),
+              backgroundColor:
+                  AppTheme(themeController.brightness).successColor,
+            )
+          : UIService.showSnackbar(
+              backgroundColor: AppTheme(themeController.brightness).failedColor,
+              message: Tr.t('failedDownload'));
     } on FileSystemException catch (e) {
       if (e.message.toLowerCase().contains("no space left")) {
         logger.e("Critical Error: Device Storage Full.");
@@ -284,6 +250,44 @@ class Content extends ChangeNotifier {
     }
   }
 
+  void saveContent() async {
+    if (Platform.isIOS) return;
+
+    final context = UIService.navigatorKey.currentContext;
+
+    if (context == null) return;
+
+    final themeController =
+        Provider.of<ThemeController>(context, listen: false);
+
+    try {
+      final fileName = "$title.${fileType?.name}";
+      final path = '/storage/emulated/0/Download/Living Way/$fileName';
+      file?.copy(path);
+
+      if (file?.existsSync() ?? false) {
+        file?.deleteSync();
+      }
+
+      file = File(path);
+      filePath = path;
+      notifyListeners();
+
+      UIService.showSnackbar(
+        child: Text(
+          Tr.arg('downloaded', title),
+          maxLines: 2,
+        ),
+        backgroundColor: AppTheme(themeController.brightness).successColor,
+      );
+    } catch (error) {
+      UIService.showSnackbar(
+          backgroundColor: AppTheme(themeController.brightness).failedColor,
+          message: Tr.t('failedDownload'));
+      logger.e(error);
+    }
+  }
+
   static Content fromJson(map) {
     return Content(
         id: map['id'] ?? map['_id'] ?? "",
@@ -299,7 +303,8 @@ class Content extends ChangeNotifier {
                 (map['fileType'] as String).replaceAll('.', ""))
             : null,
         isPopular: map['isPopular'] ?? false,
-        isPaidContent: map['isPaidContent'] ?? false);
+        isPaidContent: map['isPaidContent'] ?? false,
+        isSaveable: map['isSaveable'] ?? false);
   }
 
   void updateFromJson(map) {
@@ -321,7 +326,8 @@ class Content extends ChangeNotifier {
       "previouslyLeftOn": previouslyLeftOn,
       "contentRemaining": contentRemaining,
       "filePath": filePath,
-      "isPaidContent": isPaidContent
+      "isPaidContent": isPaidContent,
+      "isSaveable": isSaveable,
     };
   }
 

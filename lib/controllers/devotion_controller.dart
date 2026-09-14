@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/core.dart';
-import 'package:media_store_plus/media_store_plus.dart';
 
 class DevotionController extends ChangeNotifier {
   final ScrollController scrollController = ScrollController();
@@ -126,22 +125,13 @@ class DevotionController extends ChangeNotifier {
     for (final topic
         in topicList.where((topic) => topic.type == TopicType.audio)) {
       for (final content in topic.playlist) {
-        final mediaStore = MediaStore();
         final fileName = "${content.title}.${content.fileType?.name}";
-        final bool isRegistered = await mediaStore.isFileExist(
-          fileName: fileName,
-          dirType: DirType.download,
-          dirName: DirName.download,
-          relativePath: "Living Way",
-        );
+        final path = await getFilePath(fileName);
 
-        if (!isRegistered) continue;
+        if (path == null) continue;
 
-        final String filePath =
-            "/storage/emulated/0/Download/Living Way/$fileName";
-
-        content.file = File(filePath);
-        content.filePath = filePath;
+        content.file = File(path);
+        content.filePath = path;
         content.notify();
       }
     }

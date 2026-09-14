@@ -9,7 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/constants/content.dart' as content;
 import 'package:living_way/core/core.dart';
-import 'package:media_store_plus/media_store_plus.dart';
+
 import 'package:pdfrx/pdfrx.dart';
 
 class ContentController extends ChangeNotifier {
@@ -200,22 +200,13 @@ class ContentController extends ChangeNotifier {
 
   Future<void> fetchDownloadedFiles() async {
     for (final book in library) {
-      final mediaStore = MediaStore();
       final fileName = "${book.title}.${book.fileType?.name}";
-      final bool isRegistered = await mediaStore.isFileExist(
-        fileName: fileName,
-        dirType: DirType.download,
-        dirName: DirName.download,
-        relativePath: "Living Way",
-      );
+      final path = await getFilePath(fileName);
 
-      if (!isRegistered) continue;
+      if (path == null) continue;
 
-      final String filePath =
-          "/storage/emulated/0/Download/Living Way/$fileName";
-
-      book.file = File(filePath);
-      book.filePath = filePath;
+      book.file = File(path);
+      book.filePath = path;
       book.notify();
     }
   }

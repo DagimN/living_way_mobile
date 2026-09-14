@@ -47,6 +47,36 @@ Future<bool> canSafelyDownload(int fileSizeInBytes) async {
   return freeMB > (fileMB + systemBuffer);
 }
 
+Future<String?> getFilePath(String fileName) async {
+  try {
+    final applicationDocumentsDir = await getApplicationDocumentsDirectory();
+    final downloadsDir = await getDownloadsDirectory();
+    final publicDir = Directory('/storage/emulated/0/Download/Living Way');
+
+    final targetDirs = [
+      applicationDocumentsDir,
+      downloadsDir,
+      publicDir
+    ].whereType<
+        Directory>(); //TODO: Add a dev admin controls for accessing app storage.
+
+    for (final dir in targetDirs) {
+      final filePath = '${dir.path}/$fileName';
+      final file = File(filePath);
+      final fileExists = await file.exists();
+
+      if (fileExists) {
+        return filePath;
+      }
+    }
+
+    return null;
+  } catch (e) {
+    logger.e('Error checking file existence: $e');
+    return null;
+  }
+}
+
 Future<void> cleanResources<T>(
     {required List<String> contentIds,
     String? path,
