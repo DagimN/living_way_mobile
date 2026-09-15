@@ -1,6 +1,6 @@
 import 'dart:io';
 import 'package:disk_space_2/disk_space_2.dart';
-import 'package:living_way/core/services/logging_service.dart';
+import 'package:living_way/core/core.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'dart:convert';
@@ -51,14 +51,10 @@ Future<String?> getFilePath(String fileName) async {
   try {
     final applicationDocumentsDir = await getApplicationDocumentsDirectory();
     final downloadsDir = await getDownloadsDirectory();
-    final publicDir = Directory('/storage/emulated/0/Download/Living Way');
+    final publicDir = Directory(publicDirPath);
 
-    final targetDirs = [
-      applicationDocumentsDir,
-      downloadsDir,
-      publicDir
-    ].whereType<
-        Directory>(); //TODO: Add a dev admin controls for accessing app storage.
+    final targetDirs = [applicationDocumentsDir, downloadsDir, publicDir]
+        .whereType<Directory>();
 
     for (final dir in targetDirs) {
       final filePath = '${dir.path}/$fileName';
@@ -75,6 +71,29 @@ Future<String?> getFilePath(String fileName) async {
     logger.e('Error checking file existence: $e');
     return null;
   }
+}
+
+Future<List<File>> getStorageFiles() async {
+  final directories = <Directory?>[
+    await getExternalStorageDirectory(),
+    await getApplicationDocumentsDirectory(),
+    await getDownloadsDirectory(),
+    Directory(publicDirPath),
+  ];
+  final files = <File>[];
+
+  for (final directory in directories.whereType<Directory>()) {
+    if (!await directory.exists()) continue;
+
+    await for (final entity
+        in directory.list(recursive: true, followLinks: false)) {
+      if (entity is File && !files.any((file) => file.path == entity.path)) {
+        files.add(entity);
+      }
+    }
+  }
+
+  return files;
 }
 
 Future<void> cleanResources<T>(

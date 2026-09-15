@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:living_way/controllers/controllers.dart';
@@ -8,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 
 import 'widgets/continue_content_list_view.dart';
+import 'widgets/dev_file_browser_screen.dart';
 import 'widgets/pdf_viewer.dart';
 import 'widgets/content_card.dart';
 
@@ -53,153 +57,187 @@ class LibraryScreen extends StatelessWidget {
           MaterialPageRoute(builder: (context) => PdfViewer(content: book)));
     }
 
-    return RefreshIndicator(
-      onRefresh: () {
-        return contentController.fetchContents(isRefreshing: true);
-      },
-      child: Container(
-        margin: const EdgeInsets.only(top: 30),
-        child: Column(children: [
-          BaseAppBar(
-              title: Container(
-                  margin: const EdgeInsets.all(10),
-                  child: Text(Tr.t('library'),
-                      style: TextStyle(
-                          fontSize: 32,
-                          color: theme.primaryColor,
-                          fontWeight: FontWeight.w300))),
-              actions: const [SearchButton()]),
-          SizedBox(
-            height: orientation == Orientation.portrait
-                ? screenHeight * .78
-                : screenHeight * .45,
-            width: screenWidth,
-            child: isFetching && contentController.library.isEmpty
-                ? Center(
-                    child: CircularProgressIndicator(color: theme.primaryColor))
-                : SingleChildScrollView(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    controller: contentController.contentScrollController,
-                    child: Column(
-                      children: [
-                        if (popularBooks.isNotEmpty)
-                          Container(
-                            height: orientation == Orientation.portrait
-                                ? screenHeight * .3
-                                : screenHeight * .7,
-                            width: screenWidth,
-                            margin: const EdgeInsets.symmetric(vertical: 10),
-                            child: CarouselView(
-                                itemExtent: orientation == Orientation.portrait
-                                    ? screenWidth * .45
-                                    : screenWidth * .3,
-                                shrinkExtent:
-                                    orientation == Orientation.portrait
-                                        ? screenWidth * .4
-                                        : screenWidth * .25,
-                                backgroundColor: Colors.transparent,
-                                itemSnapping: true,
-                                onTap: (index) {
-                                  final book = popularBooks[index];
+    return Stack(
+      children: [
+        RefreshIndicator(
+          onRefresh: () {
+            return contentController.fetchContents(isRefreshing: true);
+          },
+          child: Container(
+            margin: const EdgeInsets.only(top: 30),
+            child: Column(children: [
+              BaseAppBar(
+                  title: Container(
+                      margin: const EdgeInsets.all(10),
+                      child: Text(Tr.t('library'),
+                          style: TextStyle(
+                              fontSize: 32,
+                              color: theme.primaryColor,
+                              fontWeight: FontWeight.w300))),
+                  actions: const [SearchButton()]),
+              SizedBox(
+                height: orientation == Orientation.portrait
+                    ? screenHeight * .78
+                    : screenHeight * .45,
+                width: screenWidth,
+                child: isFetching && contentController.library.isEmpty
+                    ? Center(
+                        child: CircularProgressIndicator(
+                            color: theme.primaryColor))
+                    : SingleChildScrollView(
+                        padding: const EdgeInsets.only(bottom: 50),
+                        physics: const AlwaysScrollableScrollPhysics(),
+                        controller: contentController.contentScrollController,
+                        child: Column(
+                          children: [
+                            if (popularBooks.isNotEmpty)
+                              Container(
+                                height: orientation == Orientation.portrait
+                                    ? screenHeight * .3
+                                    : screenHeight * .7,
+                                width: screenWidth,
+                                margin:
+                                    const EdgeInsets.symmetric(vertical: 10),
+                                child: CarouselView(
+                                    itemExtent:
+                                        orientation == Orientation.portrait
+                                            ? screenWidth * .45
+                                            : screenWidth * .3,
+                                    shrinkExtent:
+                                        orientation == Orientation.portrait
+                                            ? screenWidth * .4
+                                            : screenWidth * .25,
+                                    backgroundColor: Colors.transparent,
+                                    itemSnapping: true,
+                                    onTap: (index) {
+                                      final book = popularBooks[index];
 
-                                  onBookTap(book);
-                                },
-                                children: popularBooks
-                                    .map((book) => ContentCard(content: book))
-                                    .toList()),
-                          ),
-                        if (popularBooks.isNotEmpty)
-                          const Padding(
-                            padding: EdgeInsets.all(8.0),
-                            child: Divider(),
-                          ),
-                        const ContinueContentListView(),
-                        (otherContents.isEmpty)
-                            ? Container(
-                                width: orientation == Orientation.portrait
-                                    ? screenWidth * .7
-                                    : screenWidth * .3,
-                                margin: orientation == Orientation.portrait &&
-                                        popularBooks.isEmpty
-                                    ? EdgeInsets.only(top: screenHeight * .15)
-                                    : null,
-                                child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    ColorFiltered(
-                                      colorFilter:
-                                          const ColorFilter.matrix(<double>[
-                                        0.35, 0.35, 0.35, 0,
-                                        0, // Red: 35% intensity, no offset
-                                        0.35, 0.35, 0.35, 0,
-                                        0, // Green: 35% intensity, no offset
-                                        0.35, 0.35, 0.35, 0,
-                                        0, // Blue: 35% intensity, no offset
-                                        0, 0, 0, 1, 0,
-                                      ]),
-                                      child: SvgPicture.asset(
-                                        AppImages.emptyLibrary,
-                                      ),
-                                    ),
-                                    Text(
-                                      Tr.t('noBooks'),
-                                      style: TextStyle(color: Colors.grey[500]),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              )
-                            : MasonryGridView.count(
-                                shrinkWrap: true,
-                                physics: const NeverScrollableScrollPhysics(),
-                                crossAxisCount:
-                                    orientation == Orientation.portrait ? 2 : 3,
-                                mainAxisSpacing: 4,
-                                crossAxisSpacing: 4,
-                                itemCount: otherContents.length + 1,
-                                itemBuilder: (context, index) {
-                                  final content = otherContents.length > index
-                                      ? otherContents[index]
-                                      : Content.empty();
-
-                                  return otherContents.length > index
-                                      ? ContentCard(
-                                          content: content,
-                                          onTap: () => onBookTap(content),
+                                      onBookTap(book);
+                                    },
+                                    children: popularBooks
+                                        .map((book) =>
+                                            ContentCard(content: book))
+                                        .toList()),
+                              ),
+                            if (popularBooks.isNotEmpty)
+                              const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Divider(),
+                              ),
+                            const ContinueContentListView(),
+                            (otherContents.isEmpty)
+                                ? Container(
+                                    width: orientation == Orientation.portrait
+                                        ? screenWidth * .7
+                                        : screenWidth * .3,
+                                    margin:
+                                        orientation == Orientation.portrait &&
+                                                popularBooks.isEmpty
+                                            ? EdgeInsets.only(
+                                                top: screenHeight * .15)
+                                            : null,
+                                    child: Column(
+                                      mainAxisSize: MainAxisSize.min,
+                                      children: [
+                                        ColorFiltered(
+                                          colorFilter:
+                                              const ColorFilter.matrix(<double>[
+                                            0.35, 0.35, 0.35, 0,
+                                            0, // Red: 35% intensity, no offset
+                                            0.35, 0.35, 0.35, 0,
+                                            0, // Green: 35% intensity, no offset
+                                            0.35, 0.35, 0.35, 0,
+                                            0, // Blue: 35% intensity, no offset
+                                            0, 0, 0, 1, 0,
+                                          ]),
+                                          child: SvgPicture.asset(
+                                            AppImages.emptyLibrary,
+                                          ),
+                                        ),
+                                        Text(
+                                          Tr.t('noBooks'),
+                                          style: TextStyle(
+                                              color: Colors.grey[500]),
+                                          textAlign: TextAlign.center,
                                         )
-                                      : contentController.isFetchingContents
-                                          ? AspectRatio(
-                                              aspectRatio:
-                                                  (content.width ?? 1) /
-                                                      (content.height ?? 1),
-                                              child: Shimmer.fromColors(
-                                                  direction:
-                                                      ShimmerDirection.rtl,
-                                                  baseColor:
-                                                      theme.backgroundColor,
-                                                  highlightColor: theme
-                                                      .primaryColor
-                                                      .withAlpha(120),
-                                                  child: Container(
-                                                      decoration: BoxDecoration(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(20),
-                                                          color: AppTheme(
-                                                                  themeController
-                                                                      .brightness)
-                                                              .backgroundColor))),
+                                      ],
+                                    ),
+                                  )
+                                : MasonryGridView.count(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    crossAxisCount:
+                                        orientation == Orientation.portrait
+                                            ? 2
+                                            : 3,
+                                    mainAxisSpacing: 4,
+                                    crossAxisSpacing: 4,
+                                    itemCount: otherContents.length + 1,
+                                    itemBuilder: (context, index) {
+                                      final content =
+                                          otherContents.length > index
+                                              ? otherContents[index]
+                                              : Content.empty();
+
+                                      return otherContents.length > index
+                                          ? ContentCard(
+                                              content: content,
+                                              onTap: () => onBookTap(content),
                                             )
-                                          : const SizedBox();
-                                },
-                              )
-                      ],
-                    ),
+                                          : contentController.isFetchingContents
+                                              ? AspectRatio(
+                                                  aspectRatio:
+                                                      (content.width ?? 1) /
+                                                          (content.height ?? 1),
+                                                  child: Shimmer.fromColors(
+                                                      direction:
+                                                          ShimmerDirection.rtl,
+                                                      baseColor:
+                                                          theme.backgroundColor,
+                                                      highlightColor: theme
+                                                          .primaryColor
+                                                          .withAlpha(120),
+                                                      child: Container(
+                                                          decoration: BoxDecoration(
+                                                              borderRadius:
+                                                                  BorderRadius
+                                                                      .circular(
+                                                                          20),
+                                                              color: AppTheme(
+                                                                      themeController
+                                                                          .brightness)
+                                                                  .backgroundColor))),
+                                                )
+                                              : const SizedBox();
+                                    },
+                                  )
+                          ],
+                        ),
+                      ),
+              )
+            ]),
+          ),
+        ),
+        if (appFlavor == 'dev' && Platform.isAndroid)
+          Positioned(
+            right: 16,
+            top: screenHeight * .8,
+            child: FloatingActionButton(
+              heroTag: 'library-dev-files',
+              tooltip: 'Open developer files',
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => const DevFileBrowserScreen(),
                   ),
-          )
-        ]),
-      ),
+                );
+              },
+              child: const Icon(Icons.folder_open),
+            ),
+          ),
+      ],
     );
   }
 }

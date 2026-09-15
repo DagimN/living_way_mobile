@@ -7,6 +7,7 @@ export 'config/env.dart';
 export 'config/paths.dart';
 
 export 'constants/content.dart';
+export 'constants/strings.dart';
 export 'constants/urls.dart';
 
 export 'extensions/string.dart';
