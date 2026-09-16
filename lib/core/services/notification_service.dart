@@ -11,6 +11,7 @@ import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/DailyFeedScreen/widgets/updates_viewer_expanded.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
 class NotificationService {
@@ -44,6 +45,9 @@ class NotificationService {
   );
 
   static Future<void> init({bool isForeground = true}) async {
+    tz.initializeTimeZones();
+    tz.setLocalLocation(tz.getLocation('Africa/Addis_Ababa'));
+
     FirebaseMessaging messaging = FirebaseMessaging.instance;
 
     const android = AndroidInitializationSettings('@drawable/ic_notification');

@@ -10,8 +10,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:living_way/app.dart';
 import 'package:living_way/core/core.dart';
 import 'package:pdfrx/pdfrx.dart';
-import 'package:timezone/data/latest_all.dart' as tz;
-import 'package:timezone/timezone.dart' as tz;
 
 @pragma('vm:entry-point')
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {

@@ -26,18 +26,18 @@
 		<true/>
 		<key>LSApplicationQueriesSchemes</key>
 		<array>
-		<string>instagram-stories</string>
-		<string>facebook-stories</string>
-		<string>facebook</string>
-		<string>instagram</string>
-		<string>twitter</string>
-		<string>whatsapp</string>
-		<string>tg</string>
+			<string>instagram-stories</string>
+			<string>facebook-stories</string>
+			<string>facebook</string>
+			<string>instagram</string>
+			<string>twitter</string>
+			<string>whatsapp</string>
+			<string>tg</string>
 		</array>
 		<key>NSAppTransportSecurity</key>
 		<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
+			<key>NSAllowsArbitraryLoads</key>
+			<true/>
 		</dict>
 		<key>UILaunchStoryboardName</key>
 		<string>LaunchScreen</string>
