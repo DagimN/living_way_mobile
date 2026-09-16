@@ -6,6 +6,7 @@ import 'package:living_way/screens/Settings/AboutScreen/widgets/our_beliefs_tab.
 import 'package:living_way/screens/Settings/AboutScreen/widgets/staff_tab.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 import 'widgets/who_we_are_tab.dart';
 
@@ -33,7 +34,37 @@ class AboutScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                icon: Icon(Icons.arrow_back, color: theme.primaryColor))),
+                icon: Icon(Icons.arrow_back, color: theme.primaryColor)),
+            actions: [
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.primaryColor.withAlpha(35),
+                      foregroundColor: theme.primaryColor,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadiusGeometry.circular(10)),
+                      elevation: 5,
+                      shadowColor: theme.accentColor.withAlpha(40)),
+                  child: Row(
+                    spacing: 4,
+                    children: [
+                      Text(Tr.t('faithStatement')),
+                      const Icon(Icons.open_in_new)
+                    ],
+                  ),
+                  onPressed: () {
+                    const url = appFlavor == "dev"
+                        ? Urls.devApiUrl
+                        : appFlavor == "staging"
+                            ? Urls.stagingApiUrl
+                            : Urls.prodApiUrl;
+
+                    launchUrlString('$url/faith_statement.pdf');
+                  },
+                ),
+              ),
+            ]),
         body: Container(
             width: screenWidth,
             height: screenHeight,
