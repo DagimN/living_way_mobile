@@ -42,7 +42,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 ? AppBar(
                     backgroundColor: theme.primaryColor,
                     foregroundColor: Colors.white,
-                    title: Text(Tr.t('auth.signupTitle'),
+                    title: Text(Tr.t('signupTitle'),
                         style: const TextStyle(fontSize: 24)))
                 : AppBar(
                     backgroundColor: theme.backgroundColor,

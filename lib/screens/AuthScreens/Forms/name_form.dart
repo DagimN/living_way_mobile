@@ -29,45 +29,45 @@ class _NameFormState extends State<NameForm> {
     return Form(
         key: formKey,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(Tr.t("signup.step1Title"),
+          Text(Tr.t("step1Title"),
               style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w500,
                   color: theme.accentColor)),
-          Text(Tr.t("signup.step1Subtitle"),
+          Text(Tr.t("step1Subtitle"),
               style: TextStyle(fontSize: 14, color: theme.accentColor)),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 24, 0, 8),
               child: TextFormField(
                   controller: firstNameController,
                   validator: (value) {
-                    if (value == null) return Tr.t("auth.emptyFieldError");
+                    if (value == null) return Tr.t("emptyFieldError");
 
                     if (value.trim().isEmpty) {
-                      return Tr.t("auth.emptyFieldError");
+                      return Tr.t("emptyFieldError");
                     }
 
                     return null;
                   },
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      hintText: Tr.t("signup.firstNamePlaceholder")))),
+                      hintText: Tr.t("firstNamePlaceholder")))),
           Container(
               margin: const EdgeInsets.fromLTRB(0, 8, 0, 24),
               child: TextFormField(
                   controller: lastNameController,
                   validator: (value) {
-                    if (value == null) return Tr.t("auth.emptyFieldError");
+                    if (value == null) return Tr.t("emptyFieldError");
 
                     if (value.trim().isEmpty) {
-                      return Tr.t("auth.emptyFieldError");
+                      return Tr.t("emptyFieldError");
                     }
 
                     return null;
                   },
                   decoration: InputDecoration(
                       border: const OutlineInputBorder(),
-                      hintText: Tr.t("signup.lastNamePlaceholder")))),
+                      hintText: Tr.t("lastNamePlaceholder")))),
           Align(
               alignment: Alignment.centerRight,
               child: ElevatedButton(
@@ -89,7 +89,7 @@ class _NameFormState extends State<NameForm> {
                         parameters: {'step': 'name'});
                     widget.onProgress();
                   },
-                  child: Text(Tr.t('common.continue'))))
+                  child: Text(Tr.t('continue'))))
         ]));
   }
 }

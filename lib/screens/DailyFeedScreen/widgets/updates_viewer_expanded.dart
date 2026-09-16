@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/core/themes/app_theme.dart';
+import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 import 'verse_of_the_day.dart';
@@ -10,7 +10,8 @@ import 'verse_of_the_day.dart';
 class UpdatesViewerExpanded extends StatefulWidget {
   final CachedNetworkImageProvider? image;
   final Widget? child;
-  const UpdatesViewerExpanded({super.key, this.image, this.child});
+  final Passage? verse;
+  const UpdatesViewerExpanded({super.key, this.image, this.child, this.verse});
 
   @override
   State<UpdatesViewerExpanded> createState() => _UpdatesViewerExpandedState();
@@ -80,7 +81,8 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
                                   AppTheme(brightness).backgroundGradient),
                           child: VerseOfTheDay(
                               updatesViewerExpandedKey: globalKey,
-                              isEnlarged: true)),
+                              isEnlarged: true,
+                              verse: widget.verse)),
                 ),
               )),
         ));

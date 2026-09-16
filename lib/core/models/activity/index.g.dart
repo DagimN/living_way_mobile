@@ -93,7 +93,7 @@ class ContentBannerAdapter extends TypeAdapter<ContentBanner> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ContentBanner(
-      position: fields[2] as String,
+      position: fields[2] as String?,
       thumbnail: fields[1] as String?,
       url: fields[0] as String,
     );

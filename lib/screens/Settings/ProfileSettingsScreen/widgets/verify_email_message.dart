@@ -54,7 +54,7 @@ class VerifyEmailMessage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      Tr.t('profile.verifyEmail'),
+                      Tr.t('verifyEmail'),
                       style: TextStyle(
                         color: theme.subHeadingColor,
                         fontSize: 16,
@@ -63,7 +63,7 @@ class VerifyEmailMessage extends StatelessWidget {
                     ),
                     const SizedBox(height: 6),
                     Text(
-                      Tr.arg('profile.verifyEmailMessage',
+                      Tr.arg('verifyEmailMessage',
                           profileController.userProfile?.email ?? ""),
                       style: TextStyle(
                         color: theme.iconColor.withAlpha(230),
@@ -84,7 +84,7 @@ class VerifyEmailMessage extends StatelessWidget {
                         ),
                         const SizedBox(width: 8),
                         Text(
-                          Tr.t('profile.verificationPending'),
+                          Tr.t('verificationPending'),
                           style: TextStyle(
                             color: theme.inactiveColor,
                             fontSize: 12,

@@ -27,7 +27,7 @@ class MoreScreen extends StatelessWidget {
                   BaseAppBar(
                       title: Container(
                           margin: const EdgeInsets.all(10),
-                          child: Text(Tr.t('navigation.more'),
+                          child: Text(Tr.t('more'),
                               style: TextStyle(
                                   fontSize: 32,
                                   color: theme.primaryColor,

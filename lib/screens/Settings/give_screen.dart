@@ -41,7 +41,7 @@ class GiveScreen extends StatelessWidget {
                             icon: Icon(Icons.arrow_back,
                                 color: AppTheme(themeController.brightness)
                                     .primaryColor)),
-                        Text(Tr.t('settings.give'),
+                        Text(Tr.t('give'),
                             style: TextStyle(
                                 fontSize: 32,
                                 color: AppTheme(themeController.brightness)

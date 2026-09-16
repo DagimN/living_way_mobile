@@ -78,7 +78,7 @@ class TimelineContainer extends StatelessWidget {
                           !activity.isOngoing
                               ? formatDateTime(
                                   activity.upcomingDate ?? activity.timestamp)
-                              : Tr.t('messages.ongoing'),
+                              : Tr.t('ongoing'),
                           style: TextStyle(
                               fontSize: 8,
                               fontStyle: FontStyle.italic,

@@ -96,7 +96,7 @@ class _IntroScreenState extends State<IntroScreen> {
                     AnalyticsService.logEvent('intro_skipped');
                     Navigator.pushNamed(context, '/signup');
                   },
-                  child: Text(Tr.t('common.skip')))
+                  child: Text(Tr.t('skip')))
             ]),
         body: GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -185,7 +185,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           onPressed: () async {
                             _changePage(index - 1, currentIndex: index);
                           },
-                          child: Text(Tr.t('common.back')))
+                          child: Text(Tr.t('back')))
                       : IconButton(
                           onPressed: () async {
                             Navigator.pop(context);
@@ -200,7 +200,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           onPressed: () async {
                             _changePage(index + 1, currentIndex: index);
                           },
-                          child: Text(Tr.t('common.next')))
+                          child: Text(Tr.t('next')))
                       : TextButton(
                           onPressed: () async {
                             AnalyticsService.logEvent('intro_completed');
@@ -209,7 +209,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                 '/signup',
                                 (route) => route.settings.name == '/login');
                           },
-                          child: Text(Tr.t('common.done')))
+                          child: Text(Tr.t('done')))
                 ])));
   }
 }

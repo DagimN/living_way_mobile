@@ -54,14 +54,14 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                 const BorderRadius.only(topLeft: radius, topRight: radius)),
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(Tr.t('bottomSheet.filter'),
+            Text(Tr.t('filter'),
                 style: TextStyle(
                     fontWeight: FontWeight.w600,
                     fontSize: 24,
                     color: AppTheme(themeController.brightness).accentColor)),
             Row(children: [
               TextButton(
-                  child: Text(Tr.t('common.reset'),
+                  child: Text(Tr.t('reset'),
                       style: TextStyle(
                           color: AppTheme(themeController.brightness)
                               .primaryColor)),
@@ -74,7 +74,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                     Navigator.pop(context);
                   }),
               TextButton(
-                  child: Text(Tr.t('common.apply'),
+                  child: Text(Tr.t('apply'),
                       style: TextStyle(
                           color: AppTheme(themeController.brightness)
                               .primaryColor)),
@@ -127,7 +127,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                       onPressed: () => setState(() {
                                             activityFilter = SortOptions.latest;
                                           }),
-                                      child: Text(Tr.t('home.sortLatest'),
+                                      child: Text(Tr.t('sortLatest'),
                                           textAlign: TextAlign.center,
                                           style:
                                               const TextStyle(fontSize: 10)))),
@@ -153,7 +153,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                             activityFilter =
                                                 SortOptions.mostActive;
                                           }),
-                                      child: Text(Tr.t('home.sortMostActive'),
+                                      child: Text(Tr.t('sortMostActive'),
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(fontSize: 10)))),
                               Padding(
@@ -178,7 +178,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                             activityFilter =
                                                 SortOptions.mostLiked;
                                           }),
-                                      child: Text(Tr.t('home.sortMostLiked'),
+                                      child: Text(Tr.t('sortMostLiked'),
                                           textAlign: TextAlign.center,
                                           style:
                                               const TextStyle(fontSize: 10)))),
@@ -204,7 +204,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                             activityFilter =
                                                 SortOptions.mostViewed;
                                           }),
-                                      child: Text(Tr.t('home.sortMostViewed'),
+                                      child: Text(Tr.t('sortMostViewed'),
                                           textAlign: TextAlign.center,
                                           style: const TextStyle(fontSize: 10))))
                             ])),
@@ -212,7 +212,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                     Container(
                         margin: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
-                        child: Text(Tr.t('bottomSheet.category'),
+                        child: Text(Tr.t('category'),
                             style: TextStyle(
                                 color: AppTheme(themeController.brightness)
                                     .subHeadingColor,
@@ -240,7 +240,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                   onPressed: () => setState(() {
                                         categoryFilter = CategoryFilter.all;
                                       }),
-                                  child: Text(Tr.t('bottomSheet.categoryAll'),
+                                  child: Text(Tr.t('categoryAll'),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(fontSize: 10)))),
                           Container(
@@ -264,7 +264,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                         booksSelected.removeWhere((book) =>
                                             (books['nt'] ?? []).contains(book));
                                       }),
-                                  child: Text(Tr.t('bottomSheet.categoryOT'),
+                                  child: Text(Tr.t('categoryOT'),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(fontSize: 10)))),
                           Container(
@@ -288,7 +288,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                                         booksSelected.removeWhere((book) =>
                                             (books['ot'] ?? []).contains(book));
                                       }),
-                                  child: Text(Tr.t('bottomSheet.categoryNT'),
+                                  child: Text(Tr.t('categoryNT'),
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(fontSize: 10))))
                         ])),
@@ -297,7 +297,7 @@ class _FilterBottomSheetState extends State<FilterBottomSheet>
                         margin: const EdgeInsets.symmetric(
                             vertical: 5, horizontal: 10),
                         child: Row(children: [
-                          Text(Tr.t('bottomSheet.books'),
+                          Text(Tr.t('books'),
                               style: TextStyle(
                                   color: AppTheme(themeController.brightness)
                                       .subHeadingColor,

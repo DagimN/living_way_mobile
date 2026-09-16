@@ -23,7 +23,7 @@ class ActivityScreen extends StatelessWidget {
       BaseAppBar(
           title: Container(
               margin: const EdgeInsets.all(10),
-              child: Text(Tr.t('navigation.activities'),
+              child: Text(Tr.t('activities'),
                   style: TextStyle(
                       fontSize: 32,
                       color: theme.primaryColor,
@@ -76,10 +76,9 @@ class ActivityScreen extends StatelessWidget {
                                                     AppImages.activitiesEnd)),
                                             Text(
                                                 activityList.isNotEmpty
-                                                    ? Tr.t(
-                                                        'activity.startMessage')
+                                                    ? Tr.t('startMessage')
                                                     : Tr.t(
-                                                        'activity.noActivitiesMessage'),
+                                                        'noActivitiesMessage'),
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     color: theme.primaryColor)),

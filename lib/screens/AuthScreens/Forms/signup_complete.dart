@@ -64,16 +64,14 @@ class _SignupCompleteState extends State<SignupComplete> {
             width: 100,
             margin: const EdgeInsets.all(16),
             child: CircularProgressIndicator(color: theme.primaryColor)),
-        Text(Tr.t('signup.step5Loading'),
-            style: TextStyle(color: theme.accentColor))
+        Text(Tr.t('step5Loading'), style: TextStyle(color: theme.accentColor))
       ]);
     }
 
     if (isSignupSuccessful && !isSigningUp) {
       return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
         Icon(Icons.check_circle, color: theme.primaryColor, size: 128),
-        Text(Tr.t('signup.step5Success'),
-            style: TextStyle(color: theme.accentColor))
+        Text(Tr.t('step5Success'), style: TextStyle(color: theme.accentColor))
       ]);
     }
 
@@ -85,7 +83,7 @@ class _SignupCompleteState extends State<SignupComplete> {
             child: Text(
                 response?.data['message'] ??
                     response?.statusMessage ??
-                    Tr.t("signup.step5Error"),
+                    Tr.t("step5Error"),
                 textAlign: TextAlign.center,
                 style: TextStyle(color: theme.accentColor))),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [

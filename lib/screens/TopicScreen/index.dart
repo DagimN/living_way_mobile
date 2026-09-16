@@ -95,7 +95,7 @@ class _TopicScreenState extends State<TopicScreen>
                                     const EdgeInsets.symmetric(horizontal: 14),
                                 border: OutlineInputBorder(
                                     borderRadius: BorderRadius.circular(24)),
-                                hintText: Tr.t('topics.commentPlaceholder')))))
+                                hintText: Tr.t('commentPlaceholder')))))
             ])));
   }
 
@@ -104,7 +104,7 @@ class _TopicScreenState extends State<TopicScreen>
     if (commentController.text.isEmpty) {
       UIService.showSnackbar(
           backgroundColor: Colors.orangeAccent,
-          message: Tr.t('topics.emptyCommentError'));
+          message: Tr.t('emptyCommentError'));
       return;
     }
 

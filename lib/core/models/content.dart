@@ -229,7 +229,7 @@ class Content extends ChangeNotifier {
         logger.e("Critical Error: Device Storage Full.");
 
         UIService.showSnackbar(
-            message: Tr.t('content.lowStorageError'),
+            message: Tr.t('lowStorageError'),
             backgroundColor: AppTheme(themeController.brightness).failedColor);
 
         final file = File(filePath);

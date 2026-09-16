@@ -55,7 +55,7 @@ class DailyFeedScreen extends StatelessWidget {
                   child: Column(mainAxisSize: MainAxisSize.min, children: [
                 UpdatesViewer(updates: updates),
                 BaseAppBar(
-                    title: Text(Tr.safe('navigation.home', fallback: "Home"),
+                    title: Text(Tr.safe('home', fallback: "Home"),
                         style: TextStyle(
                             fontSize: 32,
                             color: AppTheme(themeController.brightness)

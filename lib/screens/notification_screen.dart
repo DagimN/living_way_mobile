@@ -89,12 +89,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(notification.title,
-                      style: TextStyle(
-                          color: theme.accentColor,
-                          fontWeight: notification.isRead
-                              ? FontWeight.normal
-                              : FontWeight.w600)),
+                  Expanded(
+                    child: Text(notification.title,
+                        style: TextStyle(
+                            color: theme.accentColor,
+                            fontWeight: notification.isRead
+                                ? FontWeight.normal
+                                : FontWeight.w600)),
+                  ),
                   // SizedBox(
                   //   height: 20,
                   //   child: IconButton(
@@ -140,14 +142,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (notificationController.isEmpty) {
       body = Center(
           child: Text(
-        Tr.t('notifications.empty'),
+        Tr.t('emptyNotifications'),
         style: TextStyle(color: theme.accentColor),
       ));
     }
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(Tr.t('navigation.notifications')),
+          title: Text(Tr.t('notifications')),
           backgroundColor: theme.appbarColor,
           foregroundColor: theme.primaryColor,
           systemOverlayStyle: themeController.brightness == Brightness.light

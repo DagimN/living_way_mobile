@@ -43,7 +43,7 @@ class FlexibleUpdateDialog extends StatelessWidget {
                 ),
                 const SizedBox(width: 12),
                 Text(
-                  Tr.arg('settings.newUpdate', version),
+                  Tr.arg('newUpdate', version),
                   style: theme.textTheme.bodyLarge?.copyWith(
                     color: appTheme.accentColor,
                     fontWeight: FontWeight.w600,
@@ -76,7 +76,7 @@ class FlexibleUpdateDialog extends StatelessWidget {
                       ),
                       elevation: 0,
                     ),
-                    child: Text(Tr.t('common.update')),
+                    child: Text(Tr.t('update')),
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -87,7 +87,7 @@ class FlexibleUpdateDialog extends StatelessWidget {
                     },
                     style: TextButton.styleFrom(
                         foregroundColor: appTheme.accentColor),
-                    child: Text(Tr.t('common.notNow')),
+                    child: Text(Tr.t('notNow')),
                   ),
                 ),
               ],

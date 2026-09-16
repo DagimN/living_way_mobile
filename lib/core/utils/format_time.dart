@@ -19,23 +19,23 @@ String formatTime(TimeOfDay time, AppLocale locale) {
   int hour = 12;
 
   if (locale == AppLocale.en) {
-    if (time.hour > 12) {
-      hour = time.hour - 12;
+    if (hour > 12) {
+      hour = hour - 12;
     }
 
-    if (time.hour != 0 && time.hour <= 12) {
-      hour = time.hour;
+    if (hour != 0 && hour <= 12) {
+      hour = hour;
     }
   } else {
-    if (time.hour > 12) {
-      hour = (time.hour - 6) % 12;
+    if (hour > 12) {
+      hour = (hour - 6) % 12;
     }
 
-    if (time.hour != 0 && time.hour <= 12) {
-      hour = (time.hour + 6) % 12;
+    if (hour != 0 && hour <= 12) {
+      hour = (hour + 6) % 12;
     }
 
-    if (time.hour == 6) {
+    if (hour == 6) {
       hour = 12;
     }
   }
@@ -48,7 +48,7 @@ String formatTime(TimeOfDay time, AppLocale locale) {
     return '$hour:${minute < 10 ? '0$minute' : minute}';
   }
 
-  return '${time.hour}:${time.minute}';
+  return '$hour:$minute';
 }
 
 String formatDateTime(DateTime timestamp) {
@@ -57,22 +57,22 @@ String formatDateTime(DateTime timestamp) {
   final timeDifference = isPast
       ? currentDate.difference(timestamp)
       : timestamp.difference(currentDate);
-  final suffix = isPast ? Tr.t('time.ago') : Tr.t('time.left');
+  final suffix = isPast ? Tr.t('ago') : Tr.t('left');
 
   if (timeDifference.inDays < 1) {
     final isPlural = timeDifference.inHours > 1;
 
     return timeDifference.inHours == 0
-        ? '${Tr.t('time.hourLeft')} $suffix'
-        : '${timeDifference.inHours} ${Tr.t('time.hour${isPlural ? 's' : ''}')} $suffix';
+        ? '${Tr.t('hourLeft')} $suffix'
+        : '${timeDifference.inHours} ${Tr.t('hour${isPlural ? 's' : ''}')} $suffix';
   }
 
   if (timeDifference.inDays <= 7) {
     final isPlural = timeDifference.inDays > 1;
 
     return timeDifference.inDays == 7
-        ? '${Tr.t('time.oneWeek')} $suffix'
-        : '${timeDifference.inDays} ${Tr.t('time.day${isPlural ? 's' : ''}')} $suffix';
+        ? '${Tr.t('oneWeek')} $suffix'
+        : '${timeDifference.inDays} ${Tr.t('day${isPlural ? 's' : ''}')} $suffix';
   }
 
   if (timeDifference.inDays > 7) {

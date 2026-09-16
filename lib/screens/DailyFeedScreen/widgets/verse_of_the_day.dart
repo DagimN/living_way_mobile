@@ -8,17 +8,19 @@ class VerseOfTheDay extends StatelessWidget {
   final bool isEnlarged;
   final Radius radius;
   final GlobalKey? updatesViewerExpandedKey;
+  final Passage? verse;
   const VerseOfTheDay(
       {super.key,
       required this.isEnlarged,
       this.updatesViewerExpandedKey,
-      this.radius = const Radius.circular(16)});
+      this.radius = const Radius.circular(16),
+      this.verse});
 
   @override
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
-    final verseOfTheDay = bibleController.verseOfTheDay;
+    final verseOfTheDay = verse ?? bibleController.verseOfTheDay;
     final showVerseOfTheDayControls =
         layoutController.showVerseOfTheDayControls;
 
@@ -48,7 +50,7 @@ class VerseOfTheDay extends StatelessWidget {
                           const SizedBox(height: 36),
                           FittedBox(
                             child: Text(
-                                Tr.safe('home.verseOfTheDay',
+                                Tr.safe('verseOfTheDay',
                                     fallback: "Verse of the Day"),
                                 style: TextStyle(
                                     color: Colors.white,
@@ -88,7 +90,7 @@ class VerseOfTheDay extends StatelessWidget {
                               SharePlus.instance.share(ShareParams(
                                 text:
                                     '${verseOfTheDay.text}\n\n${verseOfTheDay.labelWithTranslation}',
-                                subject: Tr.safe('home.verseOfTheDay',
+                                subject: Tr.safe('verseOfTheDay',
                                     fallback: "Verse of the Day"),
                                 title: verseOfTheDay.labelWithTranslation,
                               ));
@@ -116,8 +118,11 @@ class VerseOfTheDay extends StatelessWidget {
                     Expanded(
                         child: IconButton(
                             onPressed: () async {
-                              final todaysVerse =
-                                  Passage(book: verseOfTheDay.book);
+                              final todaysVerse = Passage(
+                                  book: bibleController.bible.firstWhere(
+                                      (book) =>
+                                          book.index ==
+                                          verseOfTheDay.book.index));
                               todaysVerse.chapter = verseOfTheDay.chapter;
                               todaysVerse.verse = verseOfTheDay.verse;
 

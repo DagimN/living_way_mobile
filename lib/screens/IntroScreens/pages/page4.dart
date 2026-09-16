@@ -18,14 +18,14 @@ class Page4 extends StatelessWidget {
           height: screenHeight * .35,
           margin: const EdgeInsets.all(14),
           child: Column(children: [
-            Text(Tr.t('intro.page4Title'),
+            Text(Tr.t('page4Title'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 28,
                     fontWeight: FontWeight.w400,
                     color: theme.accentColor)),
             const SizedBox(height: 14),
-            Text(Tr.t('intro.page4Subtitle'),
+            Text(Tr.t('page4Subtitle'),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                     fontSize: 20,

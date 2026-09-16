@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:living_way/widgets/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -16,8 +17,10 @@ class VersionCheckService {
   static Future<void> checkForUpdate() async {
     try {
       final info = await PackageInfo.fromPlatform();
-      final current = info.version
-          .replaceRange(info.version.indexOf('-'), info.version.length, "");
+      final current = info.version.contains('-')
+          ? info.version
+              .replaceRange(info.version.indexOf('-'), info.version.length, "")
+          : info.version;
       const url = appFlavor == "dev"
           ? Urls.devApiUrl
           : appFlavor == "staging"
@@ -35,11 +38,13 @@ class VersionCheckService {
       final message = data['update_message'];
 
       if (_isOlderThan(current, minRequiredVersion)) {
-        _showUpdateDialog(latestVersion, message, data, forceUpdate: true);
+        return _showUpdateDialog(latestVersion, message, data,
+            forceUpdate: true);
       }
 
       if (_isOlderThan(current, latestVersion)) {
-        _showUpdateDialog(latestVersion, message, data, forceUpdate: false);
+        return _showUpdateDialog(latestVersion, message, data,
+            forceUpdate: false);
       }
     } catch (error) {
       logger.e(error);
@@ -63,10 +68,13 @@ class VersionCheckService {
     UIService.showCustomDialog(
         barrierDismissible: !forceUpdate,
         child: forceUpdate
-            ? ForcedUpdateDialog(
-                version: version,
-                message: message,
-                onUpdate: () => _openStore(data))
+            ? PopScope(
+                canPop: false,
+                child: ForcedUpdateDialog(
+                    version: version,
+                    message: message,
+                    onUpdate: () => _openStore(data)),
+              )
             : FlexibleUpdateDialog(
                 version: version,
                 message: message,

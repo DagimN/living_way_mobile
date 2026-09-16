@@ -27,7 +27,7 @@ class _UpdatesViewerState extends State<UpdatesViewer> {
   }
 
   void _changePage() async {
-    if (!_pageController.hasClients) return;
+    if (!_pageController.hasClients || !mounted) return;
 
     final nextIndex = ((_pageController.page?.round() ?? 0) + 1) %
         (widget.updates.length + 1);

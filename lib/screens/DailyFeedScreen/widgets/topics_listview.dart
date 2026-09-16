@@ -23,7 +23,7 @@ class TopicsListview extends StatelessWidget {
         alignment: Alignment.bottomCenter,
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(Tr.t('home.topics'),
+            Text(Tr.t('topics'),
                 style: TextStyle(
                     fontSize: 16,
                     color: AppTheme(themeController.brightness).iconColor))
@@ -61,7 +61,7 @@ class TopicsListview extends StatelessWidget {
                           })
                       : Center(
                           child: Text(
-                              Tr.safe('home.noTopicsMessage',
+                              Tr.safe('noTopicsMessage',
                                   fallback: "No topics available"),
                               style: const TextStyle(color: Colors.grey)))
                   : Center(

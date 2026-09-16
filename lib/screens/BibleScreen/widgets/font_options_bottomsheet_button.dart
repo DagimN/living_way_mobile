@@ -23,7 +23,7 @@ class FontOptionsBottomsheetButton extends StatelessWidget {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(Tr.t('settings.font'),
+                            Text(Tr.t('font'),
                                 style: TextStyle(color: theme.accentColor)),
                             DropdownButton(
                                 value: themeController.selectedFont,
@@ -51,7 +51,7 @@ class FontOptionsBottomsheetButton extends StatelessWidget {
                       Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(Tr.t('settings.textSize'),
+                            Text(Tr.t('textSize'),
                                 style: TextStyle(color: theme.accentColor)),
                             Container(
                                 margin: const EdgeInsets.only(right: 10),

@@ -26,7 +26,7 @@ class PrayerTimesListView extends StatelessWidget {
           },
           child: Row(children: [
             const Icon(Icons.add),
-            Text(Tr.t('settings.addTime'))
+            Text(Tr.t('addTime'))
           ])),
       // ...prayerTimes.map((time) =>
       //     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [

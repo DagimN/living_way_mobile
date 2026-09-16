@@ -23,11 +23,11 @@ class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
     return AlertDialog(
         backgroundColor: theme.backgroundColor,
         title: Text(
-          Tr.t('common.logout'),
+          Tr.t('logout'),
           style: TextStyle(color: theme.accentColor),
         ),
         content: Text(
-          Tr.t('profile.logoutMessage'),
+          Tr.t('logoutMessage'),
           style: TextStyle(color: theme.accentColor),
         ),
         actions: !isLoggingOut
@@ -49,14 +49,14 @@ class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
                             '/home', (route) => false);
                       });
                     },
-                    child: Text(Tr.t('common.logout'),
+                    child: Text(Tr.t('logout'),
                         style: const TextStyle(color: Colors.red))),
                 TextButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      Tr.t('common.cancel'),
+                      Tr.t('cancel'),
                       style: TextStyle(color: theme.accentColor),
                     ))
               ]

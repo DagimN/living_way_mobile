@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'book.dart';
 import 'translation.dart';
 
@@ -84,5 +86,31 @@ class Passage {
 
   List<String> get verses {
     return book.chapters.isEmpty ? [] : book.chapters[chapter];
+  }
+
+  factory Passage.fromMap(List<Book> bible, Map map) {
+    final bookIndex = map['bookIndex'] as int;
+    final passage = Passage(book: bible[bookIndex])
+      ..chapter = map['chapter']
+      ..verse = map['verse']
+      ..toVerse = map['toVerse'];
+    passage.translation = Translation.fromMap(map['translation']);
+
+    return passage;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "bookIndex": book.index,
+      "translation": translation?.toMap(),
+      "chapter": _chapter,
+      "verse": _verse,
+      "toVerse": _toVerse
+    };
+  }
+
+  @override
+  String toString() {
+    return jsonEncode(toMap());
   }
 }
