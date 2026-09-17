@@ -12,7 +12,9 @@ class Translation {
       this.path,
       this.isDefault = false});
 
-  static Translation fromMap(json) {
+  static Translation? fromMap(json) {
+    if (json == null) return null;
+
     return Translation(
         name: json['name'],
         path: json['path'],

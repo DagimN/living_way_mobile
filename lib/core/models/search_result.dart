@@ -1,5 +1,5 @@
 import 'activity/index.dart';
-import 'passage.dart';
+import 'resource/passage.dart';
 
 enum SearchResultType { bible, activity, youtube }
 

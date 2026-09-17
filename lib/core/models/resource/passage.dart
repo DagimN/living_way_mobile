@@ -5,6 +5,7 @@ import 'translation.dart';
 
 class Passage {
   Book book;
+  int? bookIndex;
   Translation? translation;
   int? _chapter;
   int? _verse;
@@ -14,6 +15,10 @@ class Passage {
 
   int get chapter => _chapter ?? 0;
   int get verse => _verse ?? 0;
+
+  set setBook(Book book) {
+    this.book = book;
+  }
 
   set chapter(int? value) {
     _chapter = value;
@@ -88,12 +93,14 @@ class Passage {
     return book.chapters.isEmpty ? [] : book.chapters[chapter];
   }
 
-  factory Passage.fromMap(List<Book> bible, Map map) {
+  factory Passage.fromMap(List<Book>? bible, Map map) {
     final bookIndex = map['bookIndex'] as int;
-    final passage = Passage(book: bible[bookIndex])
+    final book = bible != null ? bible[bookIndex] : Book.empty();
+    final passage = Passage(book: book)
       ..chapter = map['chapter']
       ..verse = map['verse']
-      ..toVerse = map['toVerse'];
+      ..toVerse = map['toVerse']
+      ..bookIndex = bookIndex;
     passage.translation = Translation.fromMap(map['translation']);
 
     return passage;

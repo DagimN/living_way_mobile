@@ -1,11 +1,11 @@
-import 'package:living_way/core/models/bible_quote.dart';
+import 'resource/passage.dart';
 
 class ThreadData {
   String threadId;
   String commenter;
   String comment;
   List<String> likers;
-  List<BibleQuote> quotes;
+  List<Passage> quotes;
   List<ThreadData> subThreads;
   DateTime timestamp;
 
@@ -27,7 +27,7 @@ class ThreadData {
         likers:
             ((json['likers'] as List?) ?? []).map((e) => e.toString()).toList(),
         quotes: (json['quotes'] as List)
-            .map((e) => BibleQuote.fromJson(e))
+            .map((e) => Passage.fromMap(null, e))
             .toList(),
         subThreads: (json['subThreads'] as List)
             .map((e) => ThreadData.fromJson(e))
@@ -40,7 +40,7 @@ class ThreadData {
       "commenter": commenter,
       "comment": comment,
       "likers": likers,
-      "quotes": quotes.map((quote) => quote.toJson()).toList(),
+      "quotes": quotes.map((quote) => quote.toMap()).toList(),
       "subThreads": subThreads.map((thread) => thread.toJson()).toList(),
       "timestamp": timestamp.toIso8601String()
     };
