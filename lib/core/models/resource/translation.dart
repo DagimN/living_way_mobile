@@ -12,6 +12,12 @@ class Translation {
       this.path,
       this.isDefault = false});
 
+  factory Translation.standard() => Translation(
+      name: "NKJV",
+      status: TranslationStatus.available,
+      path: 'assets/data/en_nkjv.json',
+      isDefault: true);
+
   static Translation? fromMap(json) {
     if (json == null) return null;
 

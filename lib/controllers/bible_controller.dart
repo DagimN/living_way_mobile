@@ -28,11 +28,7 @@ class BibleController extends ChangeNotifier {
         path: 'assets/data/en_niv.json',
         isDefault: true)
   ];
-  Translation translation = Translation(
-      name: "NKJV",
-      status: TranslationStatus.available,
-      path: 'assets/data/en_nkjv.json',
-      isDefault: true);
+  Translation translation = Translation.standard();
 
   Passage passage = Passage(book: Book.empty());
   Passage verseOfTheDay = Passage(book: Book.empty());
@@ -63,7 +59,8 @@ class BibleController extends ChangeNotifier {
 
     fetchTranslations();
 
-    translation = Translation.fromMap(json.decode(currentTranslation));
+    translation = Translation.fromMap(json.decode(currentTranslation)) ??
+        Translation.standard();
     loadTranslation(translation, isDefault: translation.isDefault)
         .then((value) => scheduleVersesOfTheDay());
 
@@ -73,10 +70,12 @@ class BibleController extends ChangeNotifier {
         path: '/translations');
   }
 
-  void _populateTranslationList(List<Translation> incomingTranslations) {
+  void _populateTranslationList(List<Translation?> incomingTranslations) {
     for (final translation in incomingTranslations) {
       final index = translations
           .indexWhere((translation) => translation.name == translation.name);
+
+      if (translation == null) continue;
 
       if (index != -1 &&
           translations[index].status != TranslationStatus.available) {
