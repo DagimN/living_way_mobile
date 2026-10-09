@@ -34,6 +34,9 @@
   "deleteAccount": "መለያ ሰርዝ",
   "later": "በኋላ",
   "notNow": "አሁን አይሆንም",
+  "completed": "ተጠናቋል",
+  "pending": "በሂደት ላይ",
+  "locked": "ተቆልፏል",
 
   "ago": "በፊት",
   "left": "ቀረ",
@@ -242,5 +245,23 @@
   "failedGoogleLogin": "በ Google በኩል መግባት አልተቻለም",
   "failedSignup": "መመዝገብ አልተቻለም። እባክዎ ዳግም ይሞክሩ",
   "failedAppLaunch": "{} ሊከፈት አልተቻለም",
-  "noResultsFound": "ምንም ውጤት አልተገኘም"
+  "noResultsFound": "ምንም ውጤት አልተገኘም",
+
+  "devotionals": "የመንፈሳዊ ሕይወት ንባቦች",
+  "devotionalPlan": "የመንፈሳዊ ሕይወት ንባብ ዕቅድ",
+  "devotionalReading": "ለመንፈሳዊ ሕይወት የሚሆን ንባብ",
+  "devotionItemUpdateError": "የመጠናቀቂያ ሁኔታን ማዘመን አልተቻለም።",
+  "devotionProgressLoginRequired": "ማንኛውንም ሂደት ከመመዝገብዎ በፊት ሎግ-ኢን ማረግ ያስፈልግዎታል።",
+  "viewFullCalendar": "ሙሉውን የቀን መቁጠሪያ ይመልከቱ",
+  "lockedDevotionItemTitle": "ለጊዜው ተቆልፏል",
+  "lockedDevotionItemSubtitle": "ሁሉም ሰው አብሮ እንዲያነብ ለማስቻል፣ ለ{} የተዘጋጀው ይህ መንፈሳዊ ንባብ ለተወሰነለት ቀን እስኪደርስ ድረስ ተቆልፏል።",
+  "futureDevotionalLocked": "የወደፊት መንፈሳዊ ንባብ ተቆልፏል",
+  "devotionItemLocked": "ለጊዜው ተቆልፏል",
+  "devotionItemUnavailable": "ለዚህ ቀን የተመደበ የንባብ ሥራ የለም።",
+  "readPassage": "ጽሑፉን ያንብቡ",
+  "readingLocked": "ንባብ ተቆልፏል",
+  "markPending": "በሂደት ላይ እንዳለ ምልክት ያድርጉ",
+  "markDone": "እንደተጠናቀቀ ምልክት ያድርጉ",
+  "markedPending": "በመጠባበቅ ላይ እንዳለ ምልክት ተደርጎበታል",
+  "markedCompleted": "በጣም ጥሩ! እንደተጠናቀቀ ምልክት ተደርጎበታል! 🎉"
 }

@@ -34,6 +34,9 @@
   "deleteAccount": "Delete Account",
   "later": "Later",
   "notNow": "Not Now",
+  "completed": "Completed",
+  "pending": "Pending",
+  "locked": "Locked",
 
   "ago": "ago",
   "left": "left",
@@ -240,5 +243,23 @@
   "failedGoogleLogin": "Could not login via Google",
   "failedSignup": "Could not signup. Please try again.",
   "failedAppLaunch": "Could not open {}",
-  "noResultsFound": "No results found"
+  "noResultsFound": "No results found",
+
+  "devotionals": "Devotionals",
+  "devotionalPlan": "Devotional Plan",
+  "devotionalReading": "DEVOTIONAL READING",
+  "devotionItemUpdateError": "Unable to update completion status.",
+  "devotionProgressLoginRequired": "You need to get logged in before recording any progress",
+  "viewFullCalendar": "View Full Calendar",
+  "lockedDevotionItemTitle": "Locked to prevent spoilers",
+  "lockedDevotionItemSubtitle": "This devotional item for {} is locked until its scheduled day to keep everyone reading together.",
+  "futureDevotionalLocked": "Future Devotional Locked",
+  "devotionItemLocked": "Locked to protect from reading spoilers.",
+  "devotionItemUnavailable": "No reading assigned for this date.",
+  "readPassage": "Read Passage",
+  "readingLocked": "Reading Locked",
+  "markPending": "Mark Pending",
+  "markDone": "Mark Done",
+  "markedPending": "Marked as pending",
+  "markedCompleted": "Great job! Marked as completed! 🎉"
 }
