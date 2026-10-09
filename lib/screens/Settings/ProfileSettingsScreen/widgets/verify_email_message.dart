@@ -14,6 +14,9 @@ class VerifyEmailMessage extends StatelessWidget {
     final theme = AppTheme(themeController.brightness);
 
     return Padding(
+      //TODO: Dark mode styling
+      //TODO: Add resend email button
+      //TODO: Successful email webpage should be designed
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
