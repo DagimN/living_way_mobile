@@ -146,12 +146,10 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                       final formData = FormData();
                       formData.fields.addAll([
                         MapEntry('id', profileController.userProfile?.id ?? ""),
+                        MapEntry('oldPassword', oldPasswordController.text),
                         MapEntry(
                             'newPassword', hash(newPasswordController.text))
                       ]);
-
-                      formData.fields.add(
-                          MapEntry('oldPassword', oldPasswordController.text));
 
                       final isSuccess =
                           await profileController.editProfile(formData);
