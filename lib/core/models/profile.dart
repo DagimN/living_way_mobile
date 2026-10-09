@@ -1,5 +1,4 @@
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:living_way/core/models/resource/devotion.dart';
 
 class Profile {
   String id;
@@ -13,7 +12,7 @@ class Profile {
   bool emailVerified;
   String? address;
   LatLng? coordinates;
-  List<Devotion> devotionProgress;
+  List<String> devotionProgress;
 
   Profile(
       {required this.id,
@@ -45,7 +44,7 @@ class Profile {
             ? LatLng.fromJson(json['coordinates'])
             : null,
         devotionProgress: List.from(json['devotionProgress'] ?? [])
-            .map((devotion) => Devotion.fromJson(devotion))
+            .map((devotion) => devotion.toString())
             .toList());
   }
 }

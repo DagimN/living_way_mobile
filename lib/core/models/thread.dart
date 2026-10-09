@@ -1,4 +1,4 @@
-import 'resource/passage.dart';
+import 'resource/passage/index.dart';
 
 class ThreadData {
   String threadId;

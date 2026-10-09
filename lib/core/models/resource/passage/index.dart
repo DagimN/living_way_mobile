@@ -1,20 +1,37 @@
 import 'dart:convert';
 
-import 'book.dart';
-import 'translation.dart';
+import 'package:hive/hive.dart';
 
+import '../book/index.dart';
+import '../translation/index.dart';
+
+part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
+
+@HiveType(typeId: 8)
 class Passage {
+  @HiveField(0)
   Book book;
+
+  @HiveField(1)
   int? bookIndex;
+
+  @HiveField(2)
   Translation? translation;
+
+  @HiveField(3)
   int? _chapter;
+
+  @HiveField(4)
   int? _verse;
+
+  @HiveField(5)
   int? _toVerse;
 
   Passage({required this.book});
 
   int get chapter => _chapter ?? 0;
   int get verse => _verse ?? 0;
+  int? get toVerse => _toVerse;
 
   set setBook(Book book) {
     this.book = book;
@@ -65,6 +82,7 @@ class Passage {
   String get label {
     final chapter = (_chapter ?? 0) + 1;
     final verse = (_verse ?? 0) + 1;
+    final toVerse = (_toVerse ?? 0) + 1;
 
     if (_verse == null) {
       return '${book.name} $chapter';
@@ -74,7 +92,7 @@ class Passage {
       return '${book.name} $chapter:$verse';
     }
 
-    return '${book.name} $chapter:$verse-$_toVerse';
+    return '${book.name} $chapter:$verse-$toVerse';
   }
 
   String get labelWithTranslation {

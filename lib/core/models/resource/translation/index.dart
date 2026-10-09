@@ -1,9 +1,21 @@
 import 'dart:convert';
 
+import 'package:hive/hive.dart';
+
+part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
+
+@HiveType(typeId: 9)
 class Translation {
+  @HiveField(0)
   String name;
+
+  @HiveField(1)
   TranslationStatus status;
+
+  @HiveField(2)
   String? path;
+
+  @HiveField(3)
   bool isDefault;
 
   Translation(
@@ -43,10 +55,18 @@ class Translation {
   }
 }
 
+@HiveType(typeId: 10)
 enum TranslationStatus {
+  @HiveField(0)
   ready,
+
+  @HiveField(1)
   pending,
+
+  @HiveField(2)
   available,
+
+  @HiveField(3)
   undefined;
 
   static TranslationStatus fromString(value) {

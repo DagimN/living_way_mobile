@@ -1,6 +1,16 @@
+import 'package:hive/hive.dart';
+
+part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
+
+@HiveType(typeId: 11)
 class Book {
+  @HiveField(0)
   int index;
+
+  @HiveField(1)
   String name;
+
+  @HiveField(2)
   List<List<String>> chapters;
 
   Book({required this.index, required this.name, required this.chapters});
