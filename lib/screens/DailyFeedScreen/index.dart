@@ -34,6 +34,11 @@ class DailyFeedScreen extends StatelessWidget {
                 activity.timestamp.isAfter(DateTime.now())) &&
             activity.banner != null)
         .toList();
+    bool areDevotionItemsAvailable = devotionController.devotionalList.any(
+        (devotion) => devotion.items
+            .any((item) => item.assignedDate.isAfter(DateTime.now())));
+    bool isFetchingDevotionals = devotionController.isFetching;
+
     upcomingActivities.sort((activityA, activityB) =>
         activityA.timestamp.compareTo(activityB.timestamp));
 
@@ -62,6 +67,8 @@ class DailyFeedScreen extends StatelessWidget {
                                 .accentColor,
                             fontWeight: FontWeight.w400)),
                     actions: const [SearchButton()]),
+                if (areDevotionItemsAvailable) const WeeklyDevotionalWidget(),
+                if (isFetchingDevotionals) const WeeklyDevotionalSkeleton(),
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: upcomingActivities.length,
