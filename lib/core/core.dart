@@ -10,6 +10,7 @@ export 'constants/content.dart';
 export 'constants/strings.dart';
 export 'constants/urls.dart';
 
+export 'extensions/datetime.dart';
 export 'extensions/string.dart';
 export 'extensions/list.dart';
 

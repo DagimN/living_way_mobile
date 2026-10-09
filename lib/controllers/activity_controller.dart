@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:living_way/core/core.dart';
-import 'package:living_way/core/extensions/datetime.dart';
 
 class ActivityController extends ChangeNotifier {
   static const url = appFlavor == "dev"
