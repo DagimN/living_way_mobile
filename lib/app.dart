@@ -109,6 +109,8 @@ class LivingWayApp extends StatelessWidget {
                                 const NotificationScreen(),
                             '/forgot-password': (context) =>
                                 const ForgotPasswordForm(),
+                            '/devotional-calendar': (context) =>
+                                const DevotionalCalendarScreen(),
                           })
                       : MaterialApp(
                           debugShowCheckedModeBanner: false,

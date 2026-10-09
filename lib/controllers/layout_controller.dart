@@ -25,6 +25,7 @@ class LayoutController extends ChangeNotifier {
 
   final List<Map<String, String>> settingsNavigation = [
     {'name': "general", 'route': '/settings'},
+    {'name': "devotionals", 'route': '/devotional-calendar'},
     {'name': "give", 'route': '/donation'},
     {'name': "contacts", 'route': '/contacts'},
     {'name': "about", 'route': '/about'}

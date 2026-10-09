@@ -5,6 +5,7 @@ export 'AuthScreens/signup_screen.dart';
 export 'BibleScreen/index.dart';
 
 export 'DailyFeedScreen/index.dart';
+export 'DevotionalCalendarScreen/index.dart';
 
 export 'IntroScreens/intro_screen.dart';
 export 'IntroScreens/splash_screen.dart';

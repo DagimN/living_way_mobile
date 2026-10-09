@@ -22,6 +22,9 @@ class ThemeController extends ChangeNotifier {
     notifyListeners();
   }
 
+  AppTheme get theme => AppTheme(
+      brightness); //TODO: Refactor the app theme notation throughout the code
+
   set setTextSize(double value) {
     textSize = value;
     notifyListeners();

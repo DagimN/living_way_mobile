@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 const primaryColor = Color(0xFFD38A1D);
 const backgroundColor = Color(0xFF3E392A);
 const primaryPaleColor = Color(0xFF847AA0);
-const primaryPanelColor = Color(0xFFF6F0FF);
+const primaryPanelColor = Color(0xFF403F3C);
 const primaryButtonColor = Color(0xFFB6915A);
 const secondaryButtonColor = Color(0xFFD38A1D);
 const appBarColor = Color(0xFF6E5837);

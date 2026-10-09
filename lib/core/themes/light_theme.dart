@@ -4,15 +4,15 @@ import 'package:flutter/material.dart';
 const primaryColor = Color(0xFFDA920D);
 const backgroundColor = Colors.white;
 const primaryPaleColor = Color(0xFF847AA0);
-const primaryPanelColor = Color(0xFFF6F0FF);
-const primaryButtonColor = Color(0xFFB6A3E7);
+const primaryPanelColor = Color(0xFFFFFCF4);
+const primaryButtonColor = Color.fromARGB(255, 231, 208, 163);
 const secondaryButtonColor = Color(0xFFFFDDB3);
 const inactiveColor = Color(0xFF343635);
 const inactiveIconColor = Color(0xFFBBB593);
 const pendingColor = Color(0xFFACA295);
 const secondaryColor = Color(0xFFFFF479);
 const accentColor = Colors.black;
-const appbarColor = Color(0xFFFFFAC7);
+const appbarColor = primaryColor;
 const iconColor = Colors.black;
 
 // Gradients
