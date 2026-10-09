@@ -251,7 +251,7 @@ class BibleController extends ChangeNotifier {
   }
 
   set setBook(Book value) {
-    passage.book = value;
+    passage.book = (value.chapters.isNotEmpty) ? value : bible[value.index];
     notifyListeners();
   }
 

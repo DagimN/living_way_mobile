@@ -71,6 +71,10 @@ class UIService {
         ?.push(MaterialPageRoute(builder: (context) => page));
   }
 
+  static void pushNamed<T>(String namedPage) {
+    navigatorKey.currentState?.pushNamed(namedPage);
+  }
+
   static void pushNamedAndRemoveUntil<T>(
       String namedPage, bool Function(Route<dynamic>) predicate) {
     navigatorKey.currentState?.pushNamedAndRemoveUntil(namedPage, predicate);

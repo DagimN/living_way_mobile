@@ -192,6 +192,10 @@ class NotificationService {
     if (payload.contains('event_start')) {
       _onCalendarEvent(payload);
     }
+
+    if (payload.contains('devotion')) {
+      UIService.pushNamed('/devotional-calendar');
+    }
   }
 
   static Future<void> showEventNotification({
