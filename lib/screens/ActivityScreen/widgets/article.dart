@@ -2,7 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/models/activity/index.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class Article extends StatelessWidget {
@@ -11,8 +10,7 @@ class Article extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -29,10 +27,7 @@ class Article extends StatelessWidget {
         decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(radius),
             border: Border.all(
-                color: AppTheme(themeController.brightness)
-                    .primaryColor
-                    .withAlpha(178),
-                width: 0.3)),
+                color: theme.primaryColor.withAlpha(178), width: 0.3)),
         child: TextButton(
             onPressed: () {
               showModalBottomSheet(

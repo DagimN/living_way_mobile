@@ -60,7 +60,7 @@ class LivingWayApp extends StatelessWidget {
                       Provider.of<ProfileController>(context);
                   final layoutController =
                       Provider.of<LayoutController>(context);
-                  final themeController = Provider.of<ThemeController>(context);
+                  final theme = Provider.of<ThemeController>(context).theme;
                   final bibleController = Provider.of<BibleController>(context);
 
                   Provider.of<ContentController>(context);
@@ -87,9 +87,7 @@ class LivingWayApp extends StatelessWidget {
                           locale: context.locale,
                           theme: ThemeData(
                               colorScheme: ColorScheme.fromSeed(
-                                  seedColor:
-                                      AppTheme(themeController.brightness)
-                                          .primaryColor),
+                                  seedColor: theme.primaryColor),
                               useMaterial3: true),
                           home: const HomeScreen(),
                           routes: {

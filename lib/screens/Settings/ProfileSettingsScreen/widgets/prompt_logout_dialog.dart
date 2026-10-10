@@ -16,8 +16,8 @@ class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final authController = Provider.of<AuthController>(context);
 
     return AlertDialog(
@@ -63,9 +63,7 @@ class _PromptLogoutDialogState extends State<PromptLogoutDialog> {
             : [
                 Center(
                     child: CircularProgressIndicator(
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
-                        strokeWidth: 2))
+                        color: theme.primaryColor, strokeWidth: 2))
               ]);
   }
 }

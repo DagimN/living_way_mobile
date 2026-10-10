@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/core/core.dart';
 import 'package:photo_view/photo_view.dart';
 import 'package:photo_view/photo_view_gallery.dart';
 import 'package:provider/provider.dart';
@@ -17,7 +16,7 @@ class ImagesPreview extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -41,9 +40,8 @@ class ImagesPreview extends StatelessWidget {
                       width: screenWidth,
                       height: screenHeight,
                       alignment: Alignment.center,
-                      child: CircularProgressIndicator(
-                          color: AppTheme(themeController.brightness)
-                              .primaryColor),
+                      child:
+                          CircularProgressIndicator(color: theme.primaryColor),
                     ),
                 scrollPhysics: const BouncingScrollPhysics(),
                 backgroundDecoration: const BoxDecoration(color: Colors.black),

@@ -16,8 +16,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Scaffold(
       appBar: AppBar(

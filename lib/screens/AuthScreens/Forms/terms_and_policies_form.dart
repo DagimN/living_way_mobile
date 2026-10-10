@@ -38,8 +38,7 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.sizeOf(context).height;
 
@@ -59,8 +58,7 @@ class _TermsAndPoliciesFormState extends State<TermsAndPoliciesForm> {
           alignment: Alignment.centerRight,
           child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      AppTheme(themeController.brightness).primaryColor,
+                  backgroundColor: theme.primaryColor,
                   foregroundColor: Colors.white),
               onPressed: () async {
                 widget.onProgress();

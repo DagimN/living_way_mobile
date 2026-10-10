@@ -30,6 +30,7 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
         CachedNetworkImageProvider(images[DateTime.now().day % images.length]);
 
     Brightness brightness = themeController.brightness;
+    AppTheme theme = themeController.theme;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
@@ -56,8 +57,7 @@ class _UpdatesViewerExpandedState extends State<UpdatesViewerExpanded> {
                 height: 24,
                 margin: const EdgeInsets.only(right: 16),
                 child: CircularProgressIndicator(
-                    strokeWidth: 2,
-                    color: AppTheme(themeController.brightness).primaryColor),
+                    strokeWidth: 2, color: theme.primaryColor),
               )
           ],
         ),

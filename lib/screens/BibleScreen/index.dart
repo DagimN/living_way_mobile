@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/core/core.dart';
 import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -26,8 +25,8 @@ class _BibleScreenState extends State<BibleScreen>
   @override
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final selectedPassage = bibleController.passage;
 
     double screenHeight = MediaQuery.of(context).size.height;
@@ -61,15 +60,12 @@ class _BibleScreenState extends State<BibleScreen>
                                     : screenWidth * .15),
                             child: Text(selectedPassage.label.split(":")[0],
                                 style: TextStyle(
-                                    color: AppTheme(themeController.brightness)
-                                        .primaryColor,
-                                    fontSize: 20))),
+                                    color: theme.primaryColor, fontSize: 20))),
                         Icon(
                             isBibleNavigatorVisible
                                 ? Icons.arrow_drop_up_rounded
                                 : Icons.arrow_drop_down_rounded,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)
+                            color: theme.primaryColor)
                       ])),
                   actions: const [
                     TranslationPopupButton(),

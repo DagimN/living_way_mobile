@@ -65,8 +65,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     final notificationController = Provider.of<NotificationController>(context);
     final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
 
+    AppTheme theme = themeController.theme;
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
     final notifications = notificationController.notifications;

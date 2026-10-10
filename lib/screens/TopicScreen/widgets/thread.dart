@@ -61,7 +61,7 @@ class _ThreadState extends State<Thread> {
   Widget build(BuildContext context) {
     final devotionController = Provider.of<DevotionController>(context);
     final userProfile = Provider.of<ProfileController>(context).userProfile;
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -165,8 +165,7 @@ class _ThreadState extends State<Thread> {
                                   : Icons.thumb_up_alt_outlined,
                               color:
                                   widget.data.likers.contains(userProfile?.id)
-                                      ? AppTheme(themeController.brightness)
-                                          .primaryColor
+                                      ? theme.primaryColor
                                       : null)),
                       if (widget.data.likers.isNotEmpty)
                         Text(shortenNumber(widget.data.likers.length)),

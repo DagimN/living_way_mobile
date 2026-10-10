@@ -11,7 +11,7 @@ class CommentBox extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final devotionController = Provider.of<DevotionController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -24,9 +24,7 @@ class CommentBox extends StatelessWidget {
         width: screenWidth * .7,
         decoration: BoxDecoration(
             color: Colors.white,
-            border: Border.all(
-                color: AppTheme(themeController.brightness).primaryColor,
-                width: 1),
+            border: Border.all(color: theme.primaryColor, width: 1),
             borderRadius: BorderRadius.circular(12)),
         child: Stack(children: [
           Column(children: [
@@ -60,9 +58,7 @@ class CommentBox extends StatelessWidget {
                               padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10)),
-                              backgroundColor:
-                                  AppTheme(themeController.brightness)
-                                      .primaryColor),
+                              backgroundColor: theme.primaryColor),
                           onPressed: () {
                             onSubmit();
                             onClose();
@@ -81,14 +77,10 @@ class CommentBox extends StatelessWidget {
                   child: IconButton(
                       style: IconButton.styleFrom(
                           padding: EdgeInsets.zero,
-                          backgroundColor: AppTheme(themeController.brightness)
-                              .inactiveColor
-                              .withAlpha(76)),
+                          backgroundColor: theme.inactiveColor.withAlpha(76)),
                       onPressed: onClose,
                       icon: Icon(Icons.close,
-                          size: 16,
-                          color: AppTheme(themeController.brightness)
-                              .inactiveColor))))
+                          size: 16, color: theme.inactiveColor))))
         ]));
   }
 }

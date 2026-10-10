@@ -11,23 +11,18 @@ class PrayerTimesListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // final profileController = Provider.of<ProfileController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     // final prayerTimes = profileController.prayerTimes;
     // final appLocale = themeController.appLocale;
 
     return Column(children: [
       TextButton(
-          style: TextButton.styleFrom(
-              foregroundColor:
-                  AppTheme(themeController.brightness).primaryColor),
+          style: TextButton.styleFrom(foregroundColor: theme.primaryColor),
           onPressed: () {
             // profileController
             //     .addPrayerTime(const TimeOfDay(hour: 23, minute: 0));
           },
-          child: Row(children: [
-            const Icon(Icons.add),
-            Text(Tr.t('addTime'))
-          ])),
+          child: Row(children: [const Icon(Icons.add), Text(Tr.t('addTime'))])),
       // ...prayerTimes.map((time) =>
       //     Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       //       TextButton(
@@ -37,11 +32,11 @@ class PrayerTimesListView extends StatelessWidget {
       //                 initialTime: time,
       //                 builder: (context, child) => Theme(
       //                     data: ThemeData(
-      //                         primaryColor: AppTheme(themeController.brightness)
+      //                         primaryColor:theme
       //                             .primaryColor,
       //                         timePickerTheme: TimePickerThemeData(
       //                             dayPeriodColor:
-      //                                 AppTheme(themeController.brightness)
+      //                                theme
       //                                     .primaryColor
       //                                     .withAlpha(76))),
       //                     child: child ?? const SizedBox()));
@@ -63,7 +58,7 @@ class PrayerTimesListView extends StatelessWidget {
       //             }
       //           },
       //           icon: Icon(Icons.remove_circle_outline,
-      //               color: AppTheme(themeController.brightness).primaryColor))
+      //               color:theme.primaryColor))
       //     ]))
     ]);
   }

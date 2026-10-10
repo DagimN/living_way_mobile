@@ -13,7 +13,7 @@ class TopicCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -33,7 +33,7 @@ class TopicCard extends StatelessWidget {
                         topic.backgroundImageUrl ?? ""))
                 : null,
             borderRadius: borderRadius,
-            gradient: AppTheme(themeController.brightness).topicGradient),
+            gradient: theme.topicGradient),
         child: TextButton(
             style: TextButton.styleFrom(
                 padding: EdgeInsets.zero,
@@ -82,8 +82,7 @@ class TopicCard extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 14,
                             color: topic.backgroundImageUrl != null
-                                ? AppTheme(themeController.brightness)
-                                    .inactiveIconColor
+                                ? theme.inactiveIconColor
                                 : null))),
               ),
               if (topic.type != TopicType.discussion)
@@ -99,8 +98,7 @@ class TopicCard extends StatelessWidget {
                             : screenHeight * .095,
                         padding: const EdgeInsets.all(5),
                         decoration: BoxDecoration(
-                            color: AppTheme(themeController.brightness)
-                                .secondaryColor,
+                            color: theme.secondaryColor,
                             borderRadius: const BorderRadius.only(
                                 topRight: Radius.circular(20),
                                 bottomLeft: Radius.circular(20))),

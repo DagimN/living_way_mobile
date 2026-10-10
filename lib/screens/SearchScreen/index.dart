@@ -15,8 +15,7 @@ class _NoResultsState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Center(
       child: Text(
@@ -37,8 +36,7 @@ class SearchScreen extends StatefulWidget {
 class _SearchScreenState extends State<SearchScreen> {
   @override
   Widget build(BuildContext context) {
-    final ThemeController themeController =
-        Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final SearchController searchController =
         Provider.of<SearchController>(context);
     final LayoutController layoutController =
@@ -54,10 +52,9 @@ class _SearchScreenState extends State<SearchScreen> {
 
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
-    final theme = AppTheme(themeController.brightness);
 
     return Scaffold(
-        backgroundColor: AppTheme(themeController.brightness).backgroundColor,
+        backgroundColor: theme.backgroundColor,
         body: SafeArea(
             child: SingleChildScrollView(
           physics: const NeverScrollableScrollPhysics(),

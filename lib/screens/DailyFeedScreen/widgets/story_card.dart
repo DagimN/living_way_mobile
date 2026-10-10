@@ -46,7 +46,7 @@ class _StoryCardState extends State<StoryCard> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final contentController = Provider.of<ContentController>(context);
 
     double screenHeight = MediaQuery.sizeOf(context).height;
@@ -84,18 +84,14 @@ class _StoryCardState extends State<StoryCard> {
                             child: VideoPlayer(controller!))))
                 : Shimmer.fromColors(
                     direction: ShimmerDirection.rtl,
-                    baseColor:
-                        AppTheme(themeController.brightness).backgroundColor,
-                    highlightColor: AppTheme(themeController.brightness)
-                        .primaryColor
-                        .withAlpha(120),
+                    baseColor: theme.backgroundColor,
+                    highlightColor: theme.primaryColor.withAlpha(120),
                     child: Container(
                         height: screenHeight * .3,
                         width: screenWidth * .35,
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
-                            color: AppTheme(themeController.brightness)
-                                .backgroundColor)))),
+                            color: theme.backgroundColor)))),
       ),
     );
   }

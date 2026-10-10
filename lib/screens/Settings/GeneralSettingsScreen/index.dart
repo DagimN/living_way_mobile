@@ -10,7 +10,7 @@ class GeneralSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+
     final localizationController = Provider.of<LocalizationController>(context);
     final layoutController = Provider.of<LayoutController>(context);
     final profileController = Provider.of<ProfileController>(context);
@@ -23,6 +23,7 @@ class GeneralSettingsScreen extends StatelessWidget {
     Orientation orientation = MediaQuery.of(context).orientation;
 
     Fonts selectedFont = themeController.selectedFont;
+    AppTheme theme = themeController.theme;
 
     return Scaffold(
         body: Container(
@@ -154,10 +155,8 @@ class GeneralSettingsScreen extends StatelessWidget {
                                       (themeController.textSize * 100)
                                           .toInt()
                                           .toString(),
-                                      style: TextStyle(
-                                          color: AppTheme(
-                                                  themeController.brightness)
-                                              .primaryColor)))
+                                      style:
+                                          TextStyle(color: theme.primaryColor)))
                             ]),
                         Slider(
                             value: themeController.textSize,

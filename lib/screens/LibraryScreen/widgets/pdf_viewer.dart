@@ -104,7 +104,7 @@ class _PdfViewerState extends State<PdfViewer> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final contentController = Provider.of<ContentController>(context);
 
     double screenWidth = MediaQuery.sizeOf(context).width;
@@ -157,10 +157,8 @@ class _PdfViewerState extends State<PdfViewer> {
                       height: 30,
                       child: CircularProgressIndicator(
                         value: widget.content.downloadProgress,
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
-                        backgroundColor: AppTheme(themeController.brightness)
-                            .backgroundColor,
+                        color: theme.primaryColor,
+                        backgroundColor: theme.backgroundColor,
                         strokeCap: StrokeCap.round,
                       ),
                     );
@@ -216,8 +214,7 @@ class _PdfViewerState extends State<PdfViewer> {
                 margin: const EdgeInsets.only(left: 30),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
-                    color: AppTheme(themeController.brightness)
-                        .secondaryButtonColor),
+                    color: theme.secondaryButtonColor),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -281,8 +278,7 @@ class _PdfViewerState extends State<PdfViewer> {
                             canvas, size, page);
                       },
                     ],
-                    backgroundColor:
-                        AppTheme(themeController.brightness).backgroundColor),
+                    backgroundColor: theme.backgroundColor),
               ),
             ),
             IgnorePointer(
@@ -300,9 +296,7 @@ class _PdfViewerState extends State<PdfViewer> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                           Icon(Icons.book_rounded,
-                              size: 48,
-                              color: AppTheme(themeController.brightness)
-                                  .primaryColor),
+                              size: 48, color: theme.primaryColor),
                           SizedBox(
                               width: 200,
                               child: Text(Tr.t('tableOfContentsUnavailable'),
@@ -345,8 +339,7 @@ class _PdfViewerState extends State<PdfViewer> {
                               padding: const EdgeInsets.all(10),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.circular(20),
-                                  color: AppTheme(themeController.brightness)
-                                      .secondaryButtonColor),
+                                  color: theme.secondaryButtonColor),
                               child: Slider(
                                   value: currentPageIndex.toDouble(),
                                   min: 1,
@@ -393,8 +386,7 @@ class _PdfViewerState extends State<PdfViewer> {
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(20),
-                                    color: AppTheme(themeController.brightness)
-                                        .secondaryButtonColor),
+                                    color: theme.secondaryButtonColor),
                                 child: Slider(
                                     value: blackTintOpacity.toDouble(),
                                     min: 0,

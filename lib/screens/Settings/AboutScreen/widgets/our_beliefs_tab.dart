@@ -8,8 +8,7 @@ class OurBeliefsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Container(
         margin: const EdgeInsets.all(24),

@@ -67,7 +67,7 @@ class _MediaScreenState extends State<MediaScreen>
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.sizeOf(context).height;
 
@@ -81,8 +81,7 @@ class _MediaScreenState extends State<MediaScreen>
           leading: IconButton(
               style: IconButton.styleFrom(
                   padding: EdgeInsets.zero,
-                  backgroundColor:
-                      AppTheme(themeController.brightness).primaryPaleColor,
+                  backgroundColor: theme.primaryPaleColor,
                   foregroundColor: Colors.white),
               onPressed: () {
                 Navigator.pop(context);
@@ -139,21 +138,18 @@ class _MediaScreenState extends State<MediaScreen>
                                               ? SizedBox(
                                                   height: 25,
                                                   width: 25,
-                                                  child: CircularProgressIndicator(
-                                                      color: AppTheme(
-                                                              themeController
-                                                                  .brightness)
-                                                          .primaryColor))
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                          color: theme
+                                                              .primaryColor))
                                               : SizedBox(
                                                   width: 25,
                                                   height: 25,
                                                   child: MiniMusicVisualizer(
                                                       radius: 20,
                                                       animate: isPlaying,
-                                                      color: AppTheme(
-                                                              themeController
-                                                                  .brightness)
-                                                          .primaryColor))
+                                                      color:
+                                                          theme.primaryColor))
                                           : !content.isDownloading
                                               ? content.file == null
                                                   ? SizedBox(
@@ -190,13 +186,8 @@ class _MediaScreenState extends State<MediaScreen>
                                                       CircularProgressIndicator(
                                                     value: content
                                                         .downloadProgress,
-                                                    color: AppTheme(
-                                                            themeController
-                                                                .brightness)
-                                                        .primaryColor,
-                                                    backgroundColor: AppTheme(
-                                                            themeController
-                                                                .brightness)
+                                                    color: theme.primaryColor,
+                                                    backgroundColor: theme
                                                         .primaryColor
                                                         .withAlpha(76),
                                                     strokeCap: StrokeCap.round,

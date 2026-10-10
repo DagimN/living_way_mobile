@@ -11,7 +11,7 @@ class StoryListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final stories = contentController.stories;
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -40,7 +40,6 @@ class StoryListView extends StatelessWidget {
                             fallback: "No stories available"),
                         style: const TextStyle(color: Colors.grey)))
             : Center(
-                child: CircularProgressIndicator(
-                    color: AppTheme(themeController.brightness).primaryColor)));
+                child: CircularProgressIndicator(color: theme.primaryColor)));
   }
 }

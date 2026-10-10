@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/models/activity/index.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:pretty_qr_code/pretty_qr_code.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
@@ -20,8 +19,7 @@ class ExternalLink extends StatelessWidget {
     Orientation orientation = MediaQuery.of(context).orientation;
 
     final borderRadius = BorderRadius.circular(15);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Container(
         width: orientation == Orientation.portrait
@@ -69,8 +67,7 @@ class ExternalLink extends StatelessWidget {
                             child: Text(content.body ?? "",
                                 style: TextStyle(color: theme.accentColor))),
                         Icon(Icons.arrow_circle_right_outlined,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)
+                            color: theme.primaryColor)
                       ]))
             ]),
             onPressed: () {

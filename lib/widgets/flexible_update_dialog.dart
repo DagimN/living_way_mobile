@@ -19,7 +19,7 @@ class FlexibleUpdateDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
     final theme = Theme.of(context);
-    final appTheme = AppTheme(themeController.brightness);
+    final appTheme = themeController.theme;
     final primaryColor = appTheme.primaryColor;
 
     return Dialog(

@@ -10,7 +10,7 @@ class GiveScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final transactionController = Provider.of<TransactionController>(context);
     final bankAccounts = transactionController.bankAccounts;
 
@@ -22,9 +22,7 @@ class GiveScreen extends StatelessWidget {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: BoxDecoration(
-                gradient:
-                    AppTheme(themeController.brightness).backgroundGradient),
+            decoration: BoxDecoration(gradient: theme.backgroundGradient),
             child: SafeArea(
                 child: RefreshIndicator(
               onRefresh: transactionController.fetchAccounts,
@@ -39,13 +37,11 @@ class GiveScreen extends StatelessWidget {
                               Navigator.pop(context);
                             },
                             icon: Icon(Icons.arrow_back,
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor)),
+                                color: theme.primaryColor)),
                         Text(Tr.t('give'),
                             style: TextStyle(
                                 fontSize: 32,
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor,
+                                color: theme.primaryColor,
                                 fontWeight: FontWeight.w300))
                       ])),
                   GridView.builder(
@@ -63,8 +59,7 @@ class GiveScreen extends StatelessWidget {
                         return Container(
                             margin: const EdgeInsets.all(5),
                             decoration: BoxDecoration(
-                                gradient: AppTheme(themeController.brightness)
-                                    .topicGradient,
+                                gradient: theme.topicGradient,
                                 borderRadius: BorderRadius.circular(16)),
                             child: Column(
                                 mainAxisAlignment:
@@ -79,10 +74,7 @@ class GiveScreen extends StatelessWidget {
                                               padding:
                                                   const EdgeInsets.all(8.0),
                                               child: Icon(Icons.star,
-                                                  color: AppTheme(
-                                                          themeController
-                                                              .brightness)
-                                                      .primaryColor),
+                                                  color: theme.primaryColor),
                                             )
                                           : const SizedBox(),
                                       IconButton(
@@ -98,10 +90,8 @@ class GiveScreen extends StatelessWidget {
 
                                           if (!isLaunched) {
                                             UIService.showSnackbar(
-                                                backgroundColor: AppTheme(
-                                                        themeController
-                                                            .brightness)
-                                                    .failedColor,
+                                                backgroundColor:
+                                                    theme.failedColor,
                                                 message: Tr.arg(
                                                     'failedAppLaunch',
                                                     bank.name));
@@ -140,9 +130,7 @@ class GiveScreen extends StatelessWidget {
                                         Text(bank.name,
                                             textAlign: TextAlign.center,
                                             style: TextStyle(
-                                                color: AppTheme(themeController
-                                                        .brightness)
-                                                    .primaryColor,
+                                                color: theme.primaryColor,
                                                 fontWeight: FontWeight.w500,
                                                 fontSize: 14)),
                                         InkWell(
@@ -164,10 +152,7 @@ class GiveScreen extends StatelessWidget {
                                               Text(bank.account,
                                                   textAlign: TextAlign.center,
                                                   style: TextStyle(
-                                                      color: AppTheme(
-                                                              themeController
-                                                                  .brightness)
-                                                          .primaryColor,
+                                                      color: theme.primaryColor,
                                                       fontWeight:
                                                           FontWeight.w400,
                                                       fontSize: 12)),

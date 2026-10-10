@@ -83,7 +83,7 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     const Radius radius = Radius.circular(7);
@@ -126,8 +126,7 @@ class _AudioMediaPlayerState extends State<AudioMediaPlayer> {
                       widget.player.state == PlayerState.playing
                           ? Icons.pause
                           : Icons.play_arrow,
-                      color:
-                          AppTheme(themeController.brightness).primaryColor))),
+                      color: theme.primaryColor))),
           Positioned(
               bottom: -10,
               child: PlayerSlider(

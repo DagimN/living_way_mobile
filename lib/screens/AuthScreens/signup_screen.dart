@@ -26,8 +26,7 @@ class _SignupScreenState extends State<SignupScreen> {
     double screenHeight = MediaQuery.sizeOf(context).height;
     double screenWidth = MediaQuery.sizeOf(context).width;
     Orientation orientation = MediaQuery.orientationOf(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return PopScope(
         onPopInvokedWithResult: (isPopped, _) {

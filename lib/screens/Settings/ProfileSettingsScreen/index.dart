@@ -52,8 +52,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
 
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final authController = Provider.of<AuthController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final profile = profileController.userProfile;
@@ -69,8 +69,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
       return Scaffold(
           appBar: AppBar(
               leading: IconButton(
-                  icon: Icon(Icons.arrow_back,
-                      color: AppTheme(themeController.brightness).primaryColor),
+                  icon: Icon(Icons.arrow_back, color: theme.primaryColor),
                   onPressed: () {
                     Navigator.pop(context);
                   })),
@@ -86,9 +85,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: BoxDecoration(
-                gradient:
-                    AppTheme(themeController.brightness).backgroundGradient),
+            decoration: BoxDecoration(gradient: theme.backgroundGradient),
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Column(children: [
@@ -103,13 +100,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                 Navigator.pop(context);
                               },
                               icon: Icon(Icons.arrow_back,
-                                  color: AppTheme(themeController.brightness)
-                                      .primaryColor)),
+                                  color: theme.primaryColor)),
                           Text(Tr.t('profile'),
                               style: TextStyle(
                                   fontSize: 32,
-                                  color: AppTheme(themeController.brightness)
-                                      .primaryColor,
+                                  color: theme.primaryColor,
                                   fontWeight: FontWeight.w300))
                         ]),
                         const SizedBox.shrink()
@@ -134,10 +129,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                     shape: BoxShape.circle,
                                     boxShadow: [
                                       BoxShadow(
-                                          color: AppTheme(
-                                                  themeController.brightness)
-                                              .primaryColor
-                                              .withAlpha(51),
+                                          color:
+                                              theme.primaryColor.withAlpha(51),
                                           offset: const Offset(0, 7),
                                           blurRadius: 21,
                                           spreadRadius: 1)
@@ -159,9 +152,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                       color: Colors.black.withAlpha(76)),
                                   child: Center(
                                       child: CircularProgressIndicator(
-                                          color: AppTheme(
-                                                  themeController.brightness)
-                                              .primaryColor)))
+                                          color: theme.primaryColor)))
                           ]),
                           Positioned(
                               bottom: 10,
@@ -201,10 +192,8 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                               .editProfile(formData);
                                         } else {
                                           UIService.showSnackbar(
-                                              backgroundColor: AppTheme(
-                                                      themeController
-                                                          .brightness)
-                                                  .failedColor,
+                                              backgroundColor:
+                                                  theme.failedColor,
                                               message: Tr.t('noImageSelected'));
                                         }
 
@@ -213,9 +202,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                         });
                                       },
                                       icon: Icon(Icons.image,
-                                          color: AppTheme(
-                                                  themeController.brightness)
-                                              .primaryColor,
+                                          color: theme.primaryColor,
                                           size: 20))))
                         ])),
                     TextFormField(
@@ -265,15 +252,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                           child: isUpdatingName
                               ? Center(
                                   child: CircularProgressIndicator(
-                                      color:
-                                          AppTheme(themeController.brightness)
-                                              .primaryColor))
+                                      color: theme.primaryColor))
                               : ElevatedButton(
                                   style: ElevatedButton.styleFrom(
                                       padding: EdgeInsets.zero,
-                                      backgroundColor:
-                                          AppTheme(themeController.brightness)
-                                              .primaryColor),
+                                      backgroundColor: theme.primaryColor),
                                   onPressed: () async {
                                     setState(() {
                                       isUpdatingName = true;
@@ -292,15 +275,11 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                           .editProfile(formData);
                                       UIService.showSnackbar(
                                           message: Tr.t('updateSuccess'),
-                                          backgroundColor: AppTheme(
-                                                  themeController.brightness)
-                                              .successColor);
+                                          backgroundColor: theme.successColor);
                                     } catch (e) {
                                       UIService.showSnackbar(
                                           message: Tr.t('updateFailed'),
-                                          backgroundColor: AppTheme(
-                                                  themeController.brightness)
-                                              .failedColor);
+                                          backgroundColor: theme.failedColor);
                                     }
 
                                     setState(() {
@@ -323,9 +302,7 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                     const PromptLogoutDialog());
                           },
                           style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  AppTheme(themeController.brightness)
-                                      .primaryColor,
+                              backgroundColor: theme.primaryColor,
                               padding: EdgeInsets.zero),
                           child: Text(Tr.t('logout'),
                               style: const TextStyle(color: Colors.white))),

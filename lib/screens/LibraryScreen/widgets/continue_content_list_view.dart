@@ -11,8 +11,8 @@ class ContinueContentListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final contentController = Provider.of<ContentController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final pausedContent = contentController.library
         .where((content) => content.contentRemaining != null)
         .toList();
@@ -97,15 +97,11 @@ class ContinueContentListView extends StatelessWidget {
                                         ? screenWidth * .15
                                         : screenWidth * .1,
                                     decoration: BoxDecoration(
-                                        color:
-                                            AppTheme(themeController.brightness)
-                                                .primaryPanelColor,
+                                        color: theme.primaryPanelColor,
                                         image: image),
                                     child: image == null
                                         ? Icon(Icons.book,
-                                            color: AppTheme(
-                                                    themeController.brightness)
-                                                .primaryColor)
+                                            color: theme.primaryColor)
                                         : null),
                               ),
                               SizedBox(

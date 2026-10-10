@@ -14,8 +14,7 @@ class MoreScreen extends StatelessWidget {
     Orientation orientation = MediaQuery.of(context).orientation;
     final settingsNavigation =
         Provider.of<LayoutController>(context).settingsNavigation;
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return SafeArea(
         child: SingleChildScrollView(

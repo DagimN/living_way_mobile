@@ -8,8 +8,7 @@ class Page5 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.sizeOf(context).height;
 

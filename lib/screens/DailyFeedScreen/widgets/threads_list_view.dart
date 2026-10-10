@@ -18,7 +18,7 @@ class ThreadsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final contentController = Provider.of<ContentController>(context);
     final devotionController = Provider.of<DevotionController>(context);
     final threads = topic.threads;
@@ -52,8 +52,7 @@ class ThreadsListView extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w600,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)),
+                            color: theme.primaryColor)),
                     DropdownButton<SortOptions>(
                         items: [
                           DropdownMenuItem(
@@ -71,13 +70,9 @@ class ThreadsListView extends StatelessWidget {
                             decoration: BoxDecoration(
                                 border: Border(
                                     bottom: BorderSide(
-                                        color:
-                                            AppTheme(themeController.brightness)
-                                                .primaryColor,
+                                        color: theme.primaryColor,
                                         width: 0.0)))),
-                        style: TextStyle(
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor),
+                        style: TextStyle(color: theme.primaryColor),
                         value: contentController.threadActivityFilter,
                         onChanged: (value) {
                           contentController.setThreadFilter =
@@ -95,9 +90,7 @@ class ThreadsListView extends StatelessWidget {
                         ? Container(
                             padding: const EdgeInsets.symmetric(vertical: 5),
                             decoration: BoxDecoration(
-                                color: AppTheme(themeController.brightness)
-                                    .inactiveColor
-                                    .withAlpha(51),
+                                color: theme.inactiveColor.withAlpha(51),
                                 borderRadius: BorderRadius.circular(10)),
                             child: Thread(
                                 topic: topic,

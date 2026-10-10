@@ -20,8 +20,8 @@ class LibraryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final contentController = Provider.of<ContentController>(context);
     final isFetching = contentController.isFetchingContents;
     final popularBooks = contentController.library
@@ -204,9 +204,7 @@ class LibraryScreen extends StatelessWidget {
                                                                   BorderRadius
                                                                       .circular(
                                                                           20),
-                                                              color: AppTheme(
-                                                                      themeController
-                                                                          .brightness)
+                                                              color: theme
                                                                   .backgroundColor))),
                                                 )
                                               : const SizedBox();

@@ -17,9 +17,9 @@ class TimelineContainer extends StatelessWidget {
     GlobalKey timelineKey = GlobalKey();
     double screenWidth = MediaQuery.of(context).size.width;
 
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final profileController = Provider.of<ProfileController>(context);
-    final theme = AppTheme(themeController.brightness);
+
     final child = activity.getChild(profile: profileController.userProfile);
 
     return Container(

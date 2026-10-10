@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:living_way/core/utils/format_time.dart';
 import 'package:provider/provider.dart';
 
@@ -16,7 +15,7 @@ class PlayerSlider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return Material(
@@ -32,7 +31,7 @@ class PlayerSlider extends StatelessWidget {
             child: Slider(
                 min: 0,
                 max: end,
-                activeColor: AppTheme(themeController.brightness).primaryColor,
+                activeColor: theme.primaryColor,
                 value: value,
                 onChanged: onChanged)),
         Positioned(

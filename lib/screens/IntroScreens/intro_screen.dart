@@ -69,8 +69,7 @@ class _IntroScreenState extends State<IntroScreen> {
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
     final localizationController = Provider.of<LocalizationController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     int index = layoutController.initialIntroductionPageIndex;
     double screenWidth = MediaQuery.of(context).size.width;

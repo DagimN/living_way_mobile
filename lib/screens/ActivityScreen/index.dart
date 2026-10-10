@@ -10,9 +10,8 @@ class ActivityScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final activityController = Provider.of<ActivityController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final activityList = activityController.activityList;
-    final theme = AppTheme(themeController.brightness);
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;

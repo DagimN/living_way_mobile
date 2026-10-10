@@ -120,10 +120,8 @@ class DevotionItem extends ChangeNotifier {
 
     final profileController =
         Provider.of<ProfileController>(context, listen: false);
-    final themeController =
-        Provider.of<ThemeController>(context, listen: false);
+    final theme = Provider.of<ThemeController>(context, listen: false).theme;
     final profile = profileController.userProfile;
-    final theme = AppTheme(themeController.brightness);
 
     if (profile == null) {
       UIService.showSnackbar(

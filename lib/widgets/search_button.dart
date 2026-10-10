@@ -10,7 +10,7 @@ class SearchButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Hero(
         tag: 'search',
@@ -26,8 +26,7 @@ class SearchButton extends StatelessWidget {
             },
             icon: SvgPicture.asset(AppIcons.search,
                 height: 24,
-                colorFilter: ColorFilter.mode(
-                    AppTheme(themeController.brightness).iconColor,
-                    BlendMode.srcIn))));
+                colorFilter:
+                    ColorFilter.mode(theme.iconColor, BlendMode.srcIn))));
   }
 }

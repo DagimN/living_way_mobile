@@ -84,8 +84,7 @@ abstract class ImageService {
   static Future<void> captureAndSaveImage(
       BuildContext context, GlobalKey key) async {
     try {
-      final themeController =
-          Provider.of<ThemeController>(context, listen: false);
+      final theme = Provider.of<ThemeController>(context, listen: false).theme;
       final isGranted = await checkPermission();
 
       if (!isGranted) {
@@ -118,7 +117,7 @@ abstract class ImageService {
 
       logger.i('Image successfully saved');
       UIService.showSnackbar(
-          backgroundColor: AppTheme(themeController.brightness).successColor,
+          backgroundColor: theme.successColor,
           child: Row(
             children: [
               const Icon(Icons.check_circle, color: Colors.white),

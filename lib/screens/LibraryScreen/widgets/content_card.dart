@@ -11,7 +11,7 @@ class ContentCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return ListenableBuilder(
         listenable: content,
@@ -36,16 +36,12 @@ class ContentCard extends StatelessWidget {
               aspectRatio: (content.width ?? 1) / (content.height ?? 1),
               child: Shimmer.fromColors(
                   direction: ShimmerDirection.rtl,
-                  baseColor:
-                      AppTheme(themeController.brightness).backgroundColor,
-                  highlightColor: AppTheme(themeController.brightness)
-                      .primaryColor
-                      .withAlpha(120),
+                  baseColor: theme.backgroundColor,
+                  highlightColor: theme.primaryColor.withAlpha(120),
                   child: Container(
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: AppTheme(themeController.brightness)
-                              .backgroundColor))),
+                          color: theme.backgroundColor))),
             );
           }
 
@@ -64,17 +60,14 @@ class ContentCard extends StatelessWidget {
                       width: double.infinity,
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(20),
-                          color: AppTheme(themeController.brightness)
-                              .primaryPanelColor,
+                          color: theme.primaryPanelColor,
                           image: image),
                       child: image == null
                           ? Column(
                               spacing: 4,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                Icon(Icons.book,
-                                    color: AppTheme(themeController.brightness)
-                                        .primaryColor),
+                                Icon(Icons.book, color: theme.primaryColor),
                                 Padding(
                                   padding: const EdgeInsets.all(8.0),
                                   child: Text(
@@ -95,19 +88,15 @@ class ContentCard extends StatelessWidget {
                               height: 30,
                               child: CircularProgressIndicator(
                                 value: content.downloadProgress,
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor,
-                                backgroundColor:
-                                    AppTheme(themeController.brightness)
-                                        .backgroundColor,
+                                color: theme.primaryColor,
+                                backgroundColor: theme.backgroundColor,
                                 strokeCap: StrokeCap.round,
                               ),
                             )
                           : Container(
                               padding: const EdgeInsets.all(5),
                               decoration: BoxDecoration(
-                                color: AppTheme(themeController.brightness)
-                                    .primaryColor,
+                                color: theme.primaryColor,
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(Icons.download,

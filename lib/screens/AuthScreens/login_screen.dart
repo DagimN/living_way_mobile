@@ -65,8 +65,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authController = Provider.of<AuthController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
@@ -191,10 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: screenWidth * .7,
                                     child: ElevatedButton(
                                         style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                AppTheme(themeController
-                                                        .brightness)
-                                                    .primaryColor,
+                                            backgroundColor: theme.primaryColor,
                                             foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                                 borderRadius:
@@ -208,9 +204,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                     width: 25,
                                     height: 25,
                                     child: CircularProgressIndicator(
-                                        color:
-                                            AppTheme(themeController.brightness)
-                                                .primaryColor,
+                                        color: theme.primaryColor,
                                         strokeWidth: 2)),
                             Container(
                                 margin: const EdgeInsets.all(16),
@@ -225,9 +219,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                         width: 25,
                                         height: 25,
                                         child: CircularProgressIndicator(
-                                            color: AppTheme(
-                                                    themeController.brightness)
-                                                .primaryColor,
+                                            color: theme.primaryColor,
                                             strokeWidth: 2))
                                     : Image.asset(AppIcons.google,
                                         height: 25, width: 25),

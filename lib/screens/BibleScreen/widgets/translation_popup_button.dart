@@ -10,8 +10,7 @@ class TranslationPopupButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return PopupMenuButton<Translation>(
         initialValue: bibleController.translation,
@@ -40,8 +39,7 @@ class TranslationPopupButton extends StatelessWidget {
 
                   if (translation.status == TranslationStatus.pending) {
                     UIService.showSnackbar(
-                        backgroundColor:
-                            AppTheme(themeController.brightness).pendingColor,
+                        backgroundColor: theme.pendingColor,
                         message: Tr.t('comingSoon'));
                   }
 

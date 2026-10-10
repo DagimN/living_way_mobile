@@ -9,8 +9,9 @@ class FontOptionsBottomsheetButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+
     Fonts selectedFont = themeController.selectedFont;
+    AppTheme theme = themeController.theme;
 
     return IconButton(
         icon: const Icon(Icons.text_fields_rounded),
@@ -59,10 +60,8 @@ class FontOptionsBottomsheetButton extends StatelessWidget {
                                     (themeController.textSize * 100)
                                         .toInt()
                                         .toString(),
-                                    style: TextStyle(
-                                        color:
-                                            AppTheme(themeController.brightness)
-                                                .primaryColor)))
+                                    style:
+                                        TextStyle(color: theme.primaryColor)))
                           ]),
                       Slider(
                           value: themeController.textSize,

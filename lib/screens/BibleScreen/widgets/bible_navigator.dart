@@ -11,8 +11,8 @@ class BibleNavigator extends StatelessWidget {
   Widget build(BuildContext context) {
     final bibleController = Provider.of<BibleController>(context);
     final layoutController = Provider.of<LayoutController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final selectedPassage = bibleController.passage;
 
     double fontSize = 16.0;
@@ -65,9 +65,7 @@ class BibleNavigator extends StatelessWidget {
       Container(
           margin: const EdgeInsets.symmetric(horizontal: 10),
           child: Text(':',
-              style: TextStyle(
-                  color: AppTheme(themeController.brightness).primaryColor,
-                  fontSize: fontSize))),
+              style: TextStyle(color: theme.primaryColor, fontSize: fontSize))),
       DropdownButton(
           underline: const SizedBox(),
           iconEnabledColor: theme.primaryColor,

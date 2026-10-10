@@ -11,7 +11,7 @@ class TopicsListview extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final devotionController = Provider.of<DevotionController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final topics = devotionController.topicList;
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -24,9 +24,7 @@ class TopicsListview extends StatelessWidget {
         child: Column(children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Text(Tr.t('topics'),
-                style: TextStyle(
-                    fontSize: 16,
-                    color: AppTheme(themeController.brightness).iconColor))
+                style: TextStyle(fontSize: 16, color: theme.iconColor))
           ]),
           SizedBox(
               width: screenWidth,
@@ -54,9 +52,7 @@ class TopicsListview extends StatelessWidget {
                                         margin: const EdgeInsets.all(10),
                                         child: CircularProgressIndicator(
                                             strokeWidth: 2,
-                                            color: AppTheme(
-                                                    themeController.brightness)
-                                                .primaryColor))
+                                            color: theme.primaryColor))
                                     : const SizedBox();
                           })
                       : Center(
@@ -65,9 +61,8 @@ class TopicsListview extends StatelessWidget {
                                   fallback: "No topics available"),
                               style: const TextStyle(color: Colors.grey)))
                   : Center(
-                      child: CircularProgressIndicator(
-                          color: AppTheme(themeController.brightness)
-                              .primaryColor)))
+                      child:
+                          CircularProgressIndicator(color: theme.primaryColor)))
         ]));
   }
 }

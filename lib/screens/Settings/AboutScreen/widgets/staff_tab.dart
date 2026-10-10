@@ -53,7 +53,7 @@ class StaffTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -70,7 +70,7 @@ class StaffTab extends StatelessWidget {
           return Container(
               margin: const EdgeInsets.all(5),
               decoration: BoxDecoration(
-                  gradient: AppTheme(themeController.brightness).topicGradient,
+                  gradient: theme.topicGradient,
                   borderRadius: BorderRadius.circular(16)),
               child: Column(children: [
                 Expanded(
@@ -95,16 +95,14 @@ class StaffTab extends StatelessWidget {
                 Text(staff.name,
                     textAlign: TextAlign.center,
                     style: TextStyle(
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
+                        color: theme.primaryColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 14)),
                 if (staff.position != null)
                   Text(Tr.t(staff.position ?? ""),
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                          color:
-                              AppTheme(themeController.brightness).primaryColor,
+                          color: theme.primaryColor,
                           fontWeight: FontWeight.w400,
                           fontSize: 12))
               ]));

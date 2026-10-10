@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:living_way/controllers/theme_controller.dart';
 import 'package:living_way/core/models/activity/index.dart';
 import 'package:living_way/screens/ActivityScreen/images_preview.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -14,7 +13,7 @@ class Event extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;
@@ -52,11 +51,8 @@ class Event extends StatelessWidget {
                                   color: Colors.grey[300])),
                           placeholder: (context, url) => Shimmer.fromColors(
                               direction: ShimmerDirection.rtl,
-                              baseColor: AppTheme(themeController.brightness)
-                                  .backgroundColor,
-                              highlightColor: AppTheme(themeController.brightness)
-                                  .primaryColor
-                                  .withAlpha(120),
+                              baseColor: theme.backgroundColor,
+                              highlightColor: theme.primaryColor.withAlpha(120),
                               child: Container(
                                   height: orientation == Orientation.portrait
                                       ? screenHeight * .35
@@ -64,15 +60,17 @@ class Event extends StatelessWidget {
                                   width: screenWidth,
                                   decoration: BoxDecoration(
                                       borderRadius: BorderRadius.circular(20),
-                                      color: AppTheme(themeController.brightness)
-                                          .backgroundColor))),
+                                      color: theme.backgroundColor))),
                           height: orientation == Orientation.portrait
                               ? screenHeight * .35
                               : screenWidth * .35,
                           memCacheHeight: orientation == Orientation.portrait
                               ? (screenHeight * .6).toInt()
                               : (screenWidth * .6).toInt(),
-                          maxHeightDiskCache: orientation == Orientation.portrait ? (screenHeight * .6).toInt() : (screenWidth * .6).toInt())))),
+                          maxHeightDiskCache:
+                              orientation == Orientation.portrait
+                                  ? (screenHeight * .6).toInt()
+                                  : (screenWidth * .6).toInt())))),
           if (content.locationUrl != null)
             Positioned(
                 bottom: 0,
@@ -80,8 +78,7 @@ class Event extends StatelessWidget {
                 child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: const CircleBorder(),
-                        backgroundColor:
-                            AppTheme(themeController.brightness).primaryColor),
+                        backgroundColor: theme.primaryColor),
                     onPressed: () {
                       launchUrl(Uri.parse(content.locationUrl ?? ""),
                           mode: LaunchMode.externalApplication);

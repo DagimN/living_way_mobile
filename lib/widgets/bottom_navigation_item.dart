@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:living_way/controllers/layout_controller.dart';
 import 'package:living_way/controllers/theme_controller.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:provider/provider.dart';
 
 class BottomNavigationItem extends StatelessWidget {
@@ -18,7 +17,7 @@ class BottomNavigationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final selected =
         layoutController.getSelectedHomePageNavigation == homePageNavigation;
 
@@ -31,21 +30,17 @@ class BottomNavigationItem extends StatelessWidget {
               ? SvgPicture.asset(icon!,
                   height: 28,
                   colorFilter: ColorFilter.mode(
-                      selected
-                          ? AppTheme(themeController.brightness).primaryColor
-                          : AppTheme(themeController.brightness).inactiveColor,
+                      selected ? theme.primaryColor : theme.inactiveColor,
                       BlendMode.srcIn))
               : Icon(iconWidegt.icon,
                   size: iconWidegt.size,
-                  color: selected
-                      ? AppTheme(themeController.brightness).primaryColor
-                      : AppTheme(themeController.brightness).inactiveColor)),
+                  color: selected ? theme.primaryColor : theme.inactiveColor)),
       if (selected)
         Container(
             height: 3,
             width: 7,
             decoration: BoxDecoration(
-                color: AppTheme(themeController.brightness).primaryColor,
+                color: theme.primaryColor,
                 borderRadius: const BorderRadius.all(Radius.circular(10))))
     ]);
   }

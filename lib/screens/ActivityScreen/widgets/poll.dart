@@ -31,8 +31,7 @@ class _PollState extends State<Poll> {
   @override
   Widget build(BuildContext context) {
     final activityController = Provider.of<ActivityController>(context);
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;

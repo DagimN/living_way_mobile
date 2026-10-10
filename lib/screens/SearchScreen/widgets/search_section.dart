@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 class SearchSection<T> extends StatelessWidget {
@@ -32,8 +31,8 @@ class SearchSection<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
+
     final screenWidth = MediaQuery.of(context).size.width;
 
     if (items.isEmpty && !isLoading && errorText == null) {

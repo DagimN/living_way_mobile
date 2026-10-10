@@ -24,7 +24,7 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return AlertDialog(
         title: Text(Tr.t('changeName')),
@@ -104,16 +104,12 @@ class NameUpdateDialogState extends State<NameUpdateDialog> {
                       });
                     },
                     child: Text(Tr.t('update'),
-                        style: TextStyle(
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)))
+                        style: TextStyle(color: theme.primaryColor)))
               ]
             : [
                 Center(
                     child: CircularProgressIndicator(
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
-                        strokeWidth: 2))
+                        color: theme.primaryColor, strokeWidth: 2))
               ]);
   }
 }

@@ -71,7 +71,7 @@ class ContactsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -81,9 +81,7 @@ class ContactsScreen extends StatelessWidget {
         body: Container(
             width: screenWidth,
             height: screenHeight,
-            decoration: BoxDecoration(
-                gradient:
-                    AppTheme(themeController.brightness).backgroundGradient),
+            decoration: BoxDecoration(gradient: theme.backgroundGradient),
             child: SafeArea(
                 child: Column(children: [
               Container(
@@ -93,14 +91,12 @@ class ContactsScreen extends StatelessWidget {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        icon: Icon(Icons.arrow_back,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)),
+                        icon:
+                            Icon(Icons.arrow_back, color: theme.primaryColor)),
                     Text(Tr.t('contacts'),
                         style: TextStyle(
                             fontSize: 32,
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor,
+                            color: theme.primaryColor,
                             fontWeight: FontWeight.w300))
                   ])),
               SizedBox(
@@ -115,8 +111,7 @@ class ContactsScreen extends StatelessWidget {
                           padding: const EdgeInsets.all(10),
                           margin: const EdgeInsets.all(20),
                           decoration: BoxDecoration(
-                              gradient: AppTheme(themeController.brightness)
-                                  .topicGradient,
+                              gradient: theme.topicGradient,
                               borderRadius: BorderRadius.circular(20)),
                           child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -127,9 +122,7 @@ class ContactsScreen extends StatelessWidget {
                                     child: Text(Tr.t(contact.title),
                                         style: TextStyle(
                                             fontSize: 14,
-                                            color: AppTheme(
-                                                    themeController.brightness)
-                                                .primaryColor))),
+                                            color: theme.primaryColor))),
                                 ...addresses.map((address) {
                                   return TextButton(
                                       onPressed: () async {
@@ -153,10 +146,8 @@ class ContactsScreen extends StatelessWidget {
                                                       mode: LaunchMode
                                                           .externalApplication)
                                                   : UIService.showSnackbar(
-                                                      backgroundColor: AppTheme(
-                                                              themeController
-                                                                  .brightness)
-                                                          .failedColor,
+                                                      backgroundColor:
+                                                          theme.failedColor,
                                                       message:
                                                           "Could not launch email address"));
                                           return;
@@ -172,10 +163,8 @@ class ContactsScreen extends StatelessWidget {
                                                   .externalApplication);
                                         } else {
                                           UIService.showSnackbar(
-                                              backgroundColor: AppTheme(
-                                                      themeController
-                                                          .brightness)
-                                                  .failedColor,
+                                              backgroundColor:
+                                                  theme.failedColor,
                                               message:
                                                   'Could not launch ${contact.type.name} address');
                                         }
@@ -187,9 +176,7 @@ class ContactsScreen extends StatelessWidget {
                                                         ContactType.social
                                                     ? address
                                                     : null),
-                                            color: AppTheme(
-                                                    themeController.brightness)
-                                                .primaryColor),
+                                            color: theme.primaryColor),
                                         const SizedBox(width: 20),
                                         SizedBox(
                                             width: orientation ==

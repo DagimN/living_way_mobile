@@ -25,7 +25,7 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return AlertDialog(
         title: Text(Tr.t('changePassword')),
@@ -161,29 +161,21 @@ class PasswordUpdateDialogState extends State<PasswordUpdateDialog> {
                       if (isSuccess) {
                         UIService.showSnackbar(
                             message: Tr.t('updateSuccess'),
-                            backgroundColor:
-                                AppTheme(themeController.brightness)
-                                    .successColor);
+                            backgroundColor: theme.successColor);
                         UIService.pop();
                       } else {
                         UIService.showSnackbar(
                             message: Tr.t('passwordIncorrect'),
-                            backgroundColor:
-                                AppTheme(themeController.brightness)
-                                    .failedColor);
+                            backgroundColor: theme.failedColor);
                       }
                     },
                     child: Text(Tr.t('update'),
-                        style: TextStyle(
-                            color: AppTheme(themeController.brightness)
-                                .primaryColor)))
+                        style: TextStyle(color: theme.primaryColor)))
               ]
             : [
                 Center(
                     child: CircularProgressIndicator(
-                        color:
-                            AppTheme(themeController.brightness).primaryColor,
-                        strokeWidth: 2))
+                        color: theme.primaryColor, strokeWidth: 2))
               ]);
   }
 }

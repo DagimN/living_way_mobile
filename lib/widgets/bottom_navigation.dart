@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:living_way/core/config/paths.dart';
 import 'package:living_way/controllers/controllers.dart';
-import 'package:living_way/core/themes/app_theme.dart';
 import 'package:living_way/widgets/widgets.dart';
 import 'package:provider/provider.dart';
 
@@ -10,7 +9,7 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     double screenWidth = MediaQuery.of(context).size.width;
 
     return SizedBox(
@@ -24,13 +23,10 @@ class BottomNavigation extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 10),
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
-                      color:
-                          AppTheme(themeController.brightness).backgroundColor,
+                      color: theme.backgroundColor,
                       border: Border(
                           top: BorderSide(
-                              color: AppTheme(themeController.brightness)
-                                  .primaryColor,
-                              width: 2.5))),
+                              color: theme.primaryColor, width: 2.5))),
                   child: const Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [

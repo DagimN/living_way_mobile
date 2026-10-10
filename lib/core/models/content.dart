@@ -160,8 +160,7 @@ class Content extends ChangeNotifier {
 
     if (context == null) return;
 
-    final themeController =
-        Provider.of<ThemeController>(context, listen: false);
+    final theme = Provider.of<ThemeController>(context, listen: false).theme;
     final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
     final appDir = dir ?? await getApplicationDocumentsDirectory();
     final fileName = "$title.${fileType?.name}";
@@ -177,7 +176,7 @@ class Content extends ChangeNotifier {
       if (!canDownload) {
         UIService.showSnackbar(
             message: 'Low Storage. Clear up some files before continuing',
-            backgroundColor: AppTheme(themeController.brightness).failedColor);
+            backgroundColor: theme.failedColor);
         return;
       }
 
@@ -209,7 +208,7 @@ class Content extends ChangeNotifier {
 
       UIService.showSnackbar(
         message: '$title downloaded successfully',
-        backgroundColor: AppTheme(themeController.brightness).successColor,
+        backgroundColor: theme.successColor,
       );
 
       (this.filePath?.isNotEmpty ?? false)
@@ -218,11 +217,10 @@ class Content extends ChangeNotifier {
                 Tr.arg('downloaded', title),
                 maxLines: 2,
               ),
-              backgroundColor:
-                  AppTheme(themeController.brightness).successColor,
+              backgroundColor: theme.successColor,
             )
           : UIService.showSnackbar(
-              backgroundColor: AppTheme(themeController.brightness).failedColor,
+              backgroundColor: theme.failedColor,
               message: Tr.t('failedDownload'));
     } on FileSystemException catch (e) {
       if (e.message.toLowerCase().contains("no space left")) {
@@ -230,7 +228,7 @@ class Content extends ChangeNotifier {
 
         UIService.showSnackbar(
             message: Tr.t('lowStorageError'),
-            backgroundColor: AppTheme(themeController.brightness).failedColor);
+            backgroundColor: theme.failedColor);
 
         final file = File(filePath);
 
@@ -257,8 +255,7 @@ class Content extends ChangeNotifier {
 
     if (context == null) return;
 
-    final themeController =
-        Provider.of<ThemeController>(context, listen: false);
+    final theme = Provider.of<ThemeController>(context, listen: false).theme;
 
     try {
       final fileName = "$title.${fileType?.name}";
@@ -278,12 +275,11 @@ class Content extends ChangeNotifier {
           Tr.arg('downloaded', title),
           maxLines: 2,
         ),
-        backgroundColor: AppTheme(themeController.brightness).successColor,
+        backgroundColor: theme.successColor,
       );
     } catch (error) {
       UIService.showSnackbar(
-          backgroundColor: AppTheme(themeController.brightness).failedColor,
-          message: Tr.t('failedDownload'));
+          backgroundColor: theme.failedColor, message: Tr.t('failedDownload'));
       logger.e(error);
     }
   }

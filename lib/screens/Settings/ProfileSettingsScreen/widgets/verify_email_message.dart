@@ -9,9 +9,8 @@ class VerifyEmailMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final profileController = Provider.of<ProfileController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final screenHeight = MediaQuery.sizeOf(context).height;
-    final theme = AppTheme(themeController.brightness);
 
     return Padding(
       //TODO: Dark mode styling

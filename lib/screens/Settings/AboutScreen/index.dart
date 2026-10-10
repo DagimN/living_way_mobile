@@ -16,8 +16,8 @@ class AboutScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
 
+    AppTheme theme = themeController.theme;
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
     Orientation orientation = MediaQuery.of(context).orientation;

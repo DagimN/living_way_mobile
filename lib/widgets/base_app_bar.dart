@@ -13,7 +13,7 @@ class BaseAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final notificationController = context.watch<NotificationController>();
     final profileController = Provider.of<ProfileController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Container(
         margin: const EdgeInsets.all(10),
@@ -30,7 +30,7 @@ class BaseAppBar extends StatelessWidget {
                       Navigator.pushNamed(context, '/notifications');
                     },
                     icon: Icon(Icons.notifications_none_rounded,
-                        color: AppTheme(themeController.brightness).iconColor)),
+                        color: theme.iconColor)),
                 if (notificationController.notifications
                     .where((notification) => !notification.isRead)
                     .isNotEmpty)
@@ -59,9 +59,7 @@ class BaseAppBar extends StatelessWidget {
                 },
                 icon: profileController.userProfile?.profileImageUrl != null
                     ? CircleAvatar(
-                        backgroundColor: AppTheme(themeController.brightness)
-                            .primaryColor
-                            .withAlpha(76),
+                        backgroundColor: theme.primaryColor.withAlpha(76),
                         backgroundImage: CachedNetworkImageProvider(
                             profileController.userProfile?.profileImageUrl ??
                                 ""))

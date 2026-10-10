@@ -24,7 +24,7 @@ class _TopicScreenState extends State<TopicScreen>
   @override
   Widget build(BuildContext context) {
     final userProfile = Provider.of<ProfileController>(context).userProfile;
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final devotionController = Provider.of<DevotionController>(context);
     double screenHeight = MediaQuery.of(context).size.height;
     double screenWidth = MediaQuery.of(context).size.width;
@@ -32,9 +32,7 @@ class _TopicScreenState extends State<TopicScreen>
     return Scaffold(
         resizeToAvoidBottomInset: true,
         body: Container(
-            decoration: BoxDecoration(
-                gradient:
-                    AppTheme(themeController.brightness).backgroundGradient),
+            decoration: BoxDecoration(gradient: theme.backgroundGradient),
             child: Stack(children: [
               SingleChildScrollView(
                   child: Column(children: [
@@ -55,9 +53,7 @@ class _TopicScreenState extends State<TopicScreen>
                       child: IconButton(
                           style: IconButton.styleFrom(
                               padding: EdgeInsets.zero,
-                              backgroundColor:
-                                  AppTheme(themeController.brightness)
-                                      .primaryPaleColor,
+                              backgroundColor: theme.primaryPaleColor,
                               foregroundColor: Colors.white),
                           onPressed: () {
                             Navigator.pop(context);

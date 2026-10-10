@@ -13,7 +13,7 @@ class DailyFeedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final activityController = Provider.of<ActivityController>(context);
     final contentController = Provider.of<ContentController>(context);
     final devotionController = Provider.of<DevotionController>(context);
@@ -63,8 +63,7 @@ class DailyFeedScreen extends StatelessWidget {
                     title: Text(Tr.safe('home', fallback: "Home"),
                         style: TextStyle(
                             fontSize: 32,
-                            color: AppTheme(themeController.brightness)
-                                .accentColor,
+                            color: theme.accentColor,
                             fontWeight: FontWeight.w400)),
                     actions: const [SearchButton()]),
                 if (areDevotionItemsAvailable) const WeeklyDevotionalWidget(),

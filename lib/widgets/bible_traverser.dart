@@ -23,7 +23,7 @@ class _BibleTraverserState extends State<BibleTraverser>
   Widget build(BuildContext context) {
     final layoutController = Provider.of<LayoutController>(context);
     final bibleController = Provider.of<BibleController>(context);
-    final themeController = Provider.of<ThemeController>(context);
+    final theme = Provider.of<ThemeController>(context).theme;
     final selectedPassage = bibleController.passage;
 
     final isTraversing = layoutController.getSelectedHomePageNavigation ==
@@ -46,8 +46,7 @@ class _BibleTraverserState extends State<BibleTraverser>
                       painter: _DiamondPainter(
                           isTraversing: isTraversing,
                           borderRadius: 9,
-                          color: AppTheme(themeController.brightness)
-                              .primaryColor),
+                          color: theme.primaryColor),
                       child: Row(
                           mainAxisSize: MainAxisSize.min,
                           mainAxisAlignment: MainAxisAlignment.center,

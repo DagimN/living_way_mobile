@@ -21,8 +21,7 @@ class _EmailFormState extends State<EmailForm> {
 
   @override
   Widget build(BuildContext context) {
-    final themeController = Provider.of<ThemeController>(context);
-    final theme = AppTheme(themeController.brightness);
+    final theme = Provider.of<ThemeController>(context).theme;
 
     return Form(
         key: formKey,
@@ -63,8 +62,7 @@ class _EmailFormState extends State<EmailForm> {
               alignment: Alignment.centerRight,
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                      backgroundColor:
-                          AppTheme(themeController.brightness).primaryColor,
+                      backgroundColor: theme.primaryColor,
                       foregroundColor: Colors.white),
                   onPressed: () async {
                     final isValid = formKey.currentState?.validate() ?? false;
