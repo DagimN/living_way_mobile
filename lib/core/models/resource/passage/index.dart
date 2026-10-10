@@ -25,13 +25,12 @@ class Passage {
   int? _verse;
 
   @HiveField(5)
-  int? _toVerse;
+  int? toVerse;
 
   Passage({required this.book});
 
   int get chapter => _chapter ?? 0;
   int get verse => _verse ?? 0;
-  int? get toVerse => _toVerse;
 
   set setBook(Book book) {
     this.book = book;
@@ -46,24 +45,20 @@ class Passage {
     _verse = value;
   }
 
-  set toVerse(int? value) {
-    _toVerse = value;
-  }
-
   void setVerseOfTheDay((Book, int, int, int?) value) {
     book = value.$1;
     _chapter = value.$2;
     _verse = value.$3;
-    _toVerse = value.$4;
+    toVerse = value.$4;
   }
 
   String get text {
     try {
       if (book.chapters.isNotEmpty) {
-        if (_toVerse != null) {
+        if (toVerse != null) {
           String text = '';
 
-          for (int from = _verse ?? 0; from <= _toVerse!; from++) {
+          for (int from = _verse ?? 0; from <= toVerse!; from++) {
             text += '${book.chapters[_chapter ?? 0][from]} ';
           }
 
@@ -82,29 +77,29 @@ class Passage {
   String get label {
     final chapter = (_chapter ?? 0) + 1;
     final verse = (_verse ?? 0) + 1;
-    final toVerse = (_toVerse ?? 0) + 1;
+    final toVerseL = (toVerse ?? 0) + 1;
 
     if (_verse == null) {
       return '${book.name} $chapter';
     }
 
-    if (_toVerse == null) {
+    if (toVerse == null) {
       return '${book.name} $chapter:$verse';
     }
 
-    return '${book.name} $chapter:$verse-$toVerse';
+    return '${book.name} $chapter:$verse-$toVerseL';
   }
 
   String get labelWithTranslation {
     final chapter = (_chapter ?? 0) + 1;
     final verse = (_verse ?? 0) + 1;
-    final toVerse = (_toVerse ?? 0) + 1;
+    final toVerseL = (toVerse ?? 0) + 1;
 
-    if (_toVerse == null) {
+    if (toVerse == null) {
       return '${book.name} $chapter:$verse  ${translation?.name ?? ""}';
     }
 
-    return '${book.name} $chapter:$verse-$toVerse  ${translation?.name ?? ""}';
+    return '${book.name} $chapter:$verse-$toVerseL  ${translation?.name ?? ""}';
   }
 
   List<String> get verses {
@@ -130,7 +125,7 @@ class Passage {
       "translation": translation?.toMap(),
       "chapter": _chapter,
       "verse": _verse,
-      "toVerse": _toVerse
+      "toVerse": toVerse
     };
   }
 

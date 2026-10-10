@@ -23,7 +23,7 @@ class PassageAdapter extends TypeAdapter<Passage> {
       ..translation = fields[2] as Translation?
       .._chapter = fields[3] as int?
       .._verse = fields[4] as int?
-      .._toVerse = fields[5] as int?;
+      ..toVerse = fields[5] as int?;
   }
 
   @override
@@ -41,7 +41,7 @@ class PassageAdapter extends TypeAdapter<Passage> {
       ..writeByte(4)
       ..write(obj._verse)
       ..writeByte(5)
-      ..write(obj._toVerse);
+      ..write(obj.toVerse);
   }
 
   @override
