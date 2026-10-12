@@ -70,6 +70,9 @@
   "forgotPasswordSubtitle": "ዳግም ማስጀመሪያ የይለፍ ቃል አገናኝ ወደ የገቢ መልእክት ሳጥንዎ ለመቀበል ኢሜልዎን ያስገቡ።",
   "forgotPasswordSuccess": "ዳግም አስጀምር አገናኝ በተሳካ ሁኔታ ተልኳል",
   "forgotPasswordError": "ዳግም ማስጀመሪያ አገናኝ መላክ አልተቻለም",
+  "emailVerificationSuccess": "የማረጋገጫ ኢሜይል በተሳካ ሁኔታ ተልኳል።",
+  "emailVerificationFailed": "የማረጋገጫ ኢሜይል መላክ አልተቻለም",
+  "resend": "እንደገና ላክ",
 
   "step1Title": "ሰላም!!",
   "step1Subtitle": "እንተዋወቅህ። ስሞት ምን ይባላል?",

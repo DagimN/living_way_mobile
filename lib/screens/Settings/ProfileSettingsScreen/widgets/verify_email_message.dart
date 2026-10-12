@@ -94,7 +94,17 @@ class VerifyEmailMessage extends StatelessWidget {
                     )
                   ],
                 ),
-              )
+              ),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: theme.primaryColor,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10))),
+                  onPressed: () {
+                    profileController.requestEmailVerification();
+                  },
+                  child: Text(Tr.t('resend'))),
             ],
           ),
         ),

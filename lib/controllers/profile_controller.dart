@@ -4,6 +4,9 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:functional_status_codes/functional_status_codes.dart";
 import "package:living_way/core/core.dart";
+import "package:provider/provider.dart";
+
+import "theme_controller.dart";
 
 class ProfileController extends ChangeNotifier {
   final posts = [];
@@ -110,6 +113,47 @@ class ProfileController extends ChangeNotifier {
       clearValues();
     } catch (error) {
       logger.e(error);
+    }
+  }
+
+  Future<void> requestEmailVerification() async {
+    if (userProfile == null || userProfile?.email == null) {
+      return;
+    }
+
+    final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
+    const url = appFlavor == "dev"
+        ? Urls.devApiUrl
+        : appFlavor == "staging"
+            ? Urls.stagingApiUrl
+            : Urls.prodApiUrl;
+
+    final context = UIService.navigatorKey.currentContext;
+    ThemeController? themeController;
+
+    if (context != null) {
+      themeController = Provider.of<ThemeController>(context, listen: false);
+    }
+
+    try {
+      final response = await dio.get('$url/api/v1/auth/verify/resend',
+          queryParameters: {"email": userProfile?.email});
+
+      if (!response.statusCode.isSuccess) {
+        UIService.showSnackbar(
+            backgroundColor: themeController?.theme.failedColor ?? Colors.red,
+            message: Tr.t('emailVerificationFailed'));
+        return;
+      }
+
+      UIService.showSnackbar(
+          backgroundColor: themeController?.theme.successColor ?? Colors.green,
+          message: Tr.t('emailVerificationSuccess'));
+    } catch (error) {
+      logger.e(error);
+    } finally {
+      dio.close();
+      notifyListeners();
     }
   }
 

@@ -88,6 +88,18 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
     }
 
     return Scaffold(
+        extendBodyBehindAppBar: true,
+        extendBody: true,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          foregroundColor: theme.primaryColor,
+          systemOverlayStyle: theme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
+          title: Text(Tr.t('profile'),
+              style:
+                  const TextStyle(fontSize: 32, fontWeight: FontWeight.w300)),
+        ),
         body: Container(
             width: screenWidth,
             height: screenHeight,
@@ -95,26 +107,6 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
             child: SafeArea(
                 child: SingleChildScrollView(
                     child: Column(children: [
-              Container(
-                  margin: const EdgeInsets.symmetric(vertical: 10),
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(children: [
-                          IconButton(
-                              onPressed: () {
-                                Navigator.pop(context);
-                              },
-                              icon: Icon(Icons.arrow_back,
-                                  color: theme.primaryColor)),
-                          Text(Tr.t('profile'),
-                              style: TextStyle(
-                                  fontSize: 32,
-                                  color: theme.primaryColor,
-                                  fontWeight: FontWeight.w300))
-                        ]),
-                        const SizedBox.shrink()
-                      ])),
               Container(
                   margin: const EdgeInsets.symmetric(horizontal: 16),
                   height: orientation == Orientation.portrait
