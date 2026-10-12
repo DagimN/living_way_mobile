@@ -85,5 +85,4 @@ void main() async {
   await NotificationService.init();
 
   runApp(const LivingWayApp());
-  //TODO: Create a widget that can work as a base screen
 }

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/AuthScreens/login_screen.dart';
@@ -67,7 +68,12 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
 
     if (!profile.emailVerified) {
       return Scaffold(
+          backgroundColor: theme.backgroundColor,
           appBar: AppBar(
+              backgroundColor: theme.backgroundColor,
+              systemOverlayStyle: theme.brightness == Brightness.light
+                  ? SystemUiOverlayStyle.dark
+                  : SystemUiOverlayStyle.light,
               leading: IconButton(
                   icon: Icon(Icons.arrow_back, color: theme.primaryColor),
                   onPressed: () {
