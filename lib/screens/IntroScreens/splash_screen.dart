@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
@@ -27,6 +28,15 @@ class _SplashScreenState extends State<SplashScreen> {
 
     return Scaffold(
         backgroundColor: theme.backgroundColor,
+        extendBody: true,
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          leading: const SizedBox.shrink(),
+          backgroundColor: Colors.transparent,
+          systemOverlayStyle: theme.brightness == Brightness.light
+              ? SystemUiOverlayStyle.dark
+              : SystemUiOverlayStyle.light,
+        ),
         body: Center(
             child: Image.asset(AppImages.aboutLogo,
                 height: orientation == Orientation.portrait
