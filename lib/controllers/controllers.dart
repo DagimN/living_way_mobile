@@ -5,6 +5,7 @@ export 'content_controller.dart';
 export 'devotion_controller.dart';
 export 'layout_controller.dart';
 export 'localization_controller.dart';
+export 'map_controller.dart';
 export 'notification_controller.dart';
 export 'profile_controller.dart';
 export 'search_controller.dart';

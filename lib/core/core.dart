@@ -1,5 +1,6 @@
 export 'classes/cache_exception.dart';
 export 'classes/cacheable.dart';
+export 'classes/places.dart';
 export 'classes/remote_translation_loader.dart';
 export 'classes/translation.dart';
 
@@ -37,11 +38,12 @@ export 'models/story/index.dart';
 export 'models/thread.dart';
 export 'models/topic.dart';
 
+export 'services/analytics_service.dart';
 export 'services/cache_service.dart';
+export 'services/google_places_service.dart';
 export 'services/hive_service.dart';
 export 'services/image_service.dart';
 export 'services/logging_service.dart';
-export 'services/analytics_service.dart';
 export 'services/notification_service.dart';
 export 'services/ui_service.dart';
 export 'services/version_update_service.dart';

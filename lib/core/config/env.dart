@@ -11,3 +11,4 @@ final youtubeApiKey = dotenv.get('YOUTUBE_API_KEY', fallback: '');
 final youtubeChannelId = dotenv.get('YOUTUBE_CHANNEL_ID', fallback: '');
 
 final googleClientId = dotenv.get('GOOGLE_CLIENT_ID', fallback: '');
+final googleMapsApiKey = dotenv.get('GOOGLE_MAPS_API_KEY', fallback: '');

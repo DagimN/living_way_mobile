@@ -48,3 +48,5 @@ app.*.map.json
 #Secret
 lib/core/config/secret
 .env
+android/local.properties
+ios/Flutter/GoogleMaps.local.xcconfig
