@@ -13,7 +13,6 @@ class VerifyEmailMessage extends StatelessWidget {
     final screenHeight = MediaQuery.sizeOf(context).height;
 
     return Padding(
-      //TODO: Add resend email button
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       child: Container(
         decoration: BoxDecoration(
