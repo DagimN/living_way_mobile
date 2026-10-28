@@ -34,12 +34,8 @@ class BibleController extends ChangeNotifier {
   Passage verseOfTheDay = Passage(book: Book.empty());
 
   BibleController() {
-    loadTranslation(translations.first, isDefault: translations.first.isDefault)
-        .then((value) {
-      scheduleVersesOfTheDay();
-
-      notifyListeners();
-    });
+    loadTranslation(translations.first,
+        isDefault: translations.first.isDefault);
 
     _initPersistence();
   }

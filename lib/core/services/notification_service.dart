@@ -84,12 +84,30 @@ class NotificationService {
     final NotificationAppLaunchDetails? notificationAppLaunchDetails =
         await _plugin.getNotificationAppLaunchDetails();
 
-    if (notificationAppLaunchDetails?.didNotificationLaunchApp ?? false) {
+    if (notificationAppLaunchDetails != null &&
+        notificationAppLaunchDetails.didNotificationLaunchApp) {
+      final notificationIds = CacheService.instance.readData<List<String>>(
+          'interactedNotificationIds',
+          defaultValue: []) as List<String>;
+
       Timer.periodic(const Duration(seconds: 3), (timer) {
         if (UIService.navigatorKey.currentContext == null) return;
 
-        _handleTap(notificationAppLaunchDetails?.notificationResponse?.payload);
+        final notificationResponse =
+            notificationAppLaunchDetails.notificationResponse;
+
+        if (notificationResponse == null) return;
+
+        final id = notificationResponse.id.toString();
+        final payload = notificationResponse.payload;
+
+        if (notificationIds.contains(id)) return;
+
+        _handleTap(payload);
         timer.cancel();
+        CacheService.instance.writeData<List<String>>(
+            'interactedNotificationIds',
+            notificationIds.length > 10 ? [id] : [...notificationIds, id]);
       });
     }
   }
@@ -358,6 +376,96 @@ class NotificationService {
       if (!ids.contains(notificationId)) {
         return notificationId;
       }
+    }
+  }
+
+  static Future<void> handleIncomingNotification(RemoteMessage message) async {
+    if (message.data.isEmpty) return;
+
+    int? notificationId;
+
+    final notificationType = message.data['type'] ?? "general";
+
+    String title = message.data['title'] ?? "";
+    String body = message.data['body'] ?? "";
+    String imageUrl = (message.data['image'] as String?) ?? "";
+    String payload = message.data['payload'] ?? "";
+
+    switch (notificationType) {
+      case "general":
+        notificationId =
+            NotificationCodes.general.extendedCode(message.hashCode ~/ 10000);
+        if (payload.isNotEmpty && payload.contains('event_start')) {
+          final event = jsonDecode(payload);
+          await showEventNotification(
+            id: notificationId,
+            title: title,
+            body: body,
+            imageUrl: imageUrl.isEmpty ? null : imageUrl,
+            location: event['location'] ?? "",
+            eventStart:
+                DateTime.tryParse(event['event_start']) ?? DateTime.now(),
+            eventEnd: event['event_end'] != null
+                ? DateTime.tryParse(event['event_end'] ?? "")
+                : null,
+          );
+        } else {
+          await showNotification(
+            id: notificationId,
+            title: title,
+            body: body,
+            payload: payload,
+            imageUrl: imageUrl.isEmpty ? null : imageUrl,
+          );
+        }
+        break;
+      case "verseoftheday":
+        notificationId = NotificationCodes.verseOfTheDay
+            .extendedCode(message.hashCode ~/ 10000);
+
+        final currentTranslation = await CacheService.instance.readData<String>(
+            'currentTranslation',
+            defaultValue: Translation.standard().toString());
+        final translation =
+            Translation.fromMap(json.decode(currentTranslation)) ??
+                Translation.standard();
+
+        final verse = List.from(jsonDecode(payload))
+            .map((item) => item != null ? int.parse(item.toString()) : null)
+            .toList();
+
+        final bible = await BibleController.loadBible(translation.path!);
+        final passage = Passage.fromMap(bible, {
+          "bookIndex": verse[0],
+          "chapter": verse[1],
+          "verse": verse[2],
+          "toVerse": verse[3],
+          "translation": translation.toMap()
+        });
+
+        title = 'Verse of the Day';
+        body = '${passage.text} ${passage.labelWithTranslation}';
+        payload =
+            jsonEncode({"key": "verseOfTheDay", "value": passage.toString()});
+
+        await showNotification(
+          id: notificationId,
+          title: title,
+          body: body,
+          payload: payload,
+          imageUrl: imageUrl.isEmpty ? null : imageUrl,
+        );
+        break;
+    }
+
+    if (notificationId != null) {
+      await NotificationCache().init();
+      await NotificationCache().save(Notification(
+          id: notificationId.toString(),
+          title: title,
+          body: body,
+          payload: payload,
+          imageUrl: imageUrl));
     }
   }
 }

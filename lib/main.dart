@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:ui';
 
 import 'package:easy_localization/easy_localization.dart';
@@ -22,47 +21,7 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
     await NotificationService.init(isForeground: false);
   }
 
-  await _handleIncomingNotification(message);
-}
-
-Future<void> _handleIncomingNotification(RemoteMessage message) async {
-  if (message.data.isEmpty) return;
-
-  final notificationId =
-      NotificationCodes.general.extendedCode(message.hashCode ~/ 10000);
-  final imageUrl = (message.data['image'] as String?) ?? "";
-  final payload = message.data['payload'] ?? "";
-
-  if (payload.isNotEmpty && payload.contains('event_start')) {
-    final event = jsonDecode(payload);
-    await NotificationService.showEventNotification(
-      id: notificationId,
-      title: message.data['title'],
-      body: message.data['body'],
-      imageUrl: imageUrl.isEmpty ? null : imageUrl,
-      location: event['location'] ?? "",
-      eventStart: DateTime.tryParse(event['event_start']) ?? DateTime.now(),
-      eventEnd: event['event_end'] != null
-          ? DateTime.tryParse(event['event_end'] ?? "")
-          : null,
-    );
-  } else {
-    await NotificationService.showNotification(
-      id: notificationId,
-      title: message.data['title'],
-      body: message.data['body'],
-      payload: message.data['payload'],
-      imageUrl: imageUrl.isEmpty ? null : imageUrl,
-    );
-  }
-
-  await NotificationCache().init();
-  await NotificationCache().save(Notification(
-      id: notificationId.toString(),
-      title: message.data['title'] ?? "",
-      body: message.data['body'] ?? "",
-      payload: message.data['payload'] ?? "",
-      imageUrl: imageUrl));
+  await NotificationService.handleIncomingNotification(message);
 }
 
 void main() async {
@@ -74,7 +33,8 @@ void main() async {
   await Firebase.initializeApp();
 
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  FirebaseMessaging.onMessage.listen(_handleIncomingNotification);
+  FirebaseMessaging.onMessage
+      .listen(NotificationService.handleIncomingNotification);
 
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   PlatformDispatcher.instance.onError = (error, stack) {
