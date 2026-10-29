@@ -151,7 +151,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
         appBar: AppBar(
           title: Text(Tr.t('notifications')),
           backgroundColor: theme.appbarColor,
-          foregroundColor: theme.primaryColor,
+          foregroundColor: theme.accentColor,
           systemOverlayStyle: themeController.brightness == Brightness.light
               ? SystemUiOverlayStyle.dark
               : SystemUiOverlayStyle.light,
