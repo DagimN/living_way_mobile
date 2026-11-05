@@ -17,6 +17,8 @@ enum HomePageNavigation {
 }
 
 class LayoutController extends ChangeNotifier {
+  late final AnimationController bibleTraverseController;
+  late final Animation<double> bibleTraverseWidthAnimation;
   HomePageNavigation _selectedHomePageNavigation = HomePageNavigation.home;
   List<GlobalKey> verseKeys = [];
   int initialIntroductionPageIndex = 0;
@@ -34,7 +36,6 @@ class LayoutController extends ChangeNotifier {
   final bibleScrollController = ScrollController();
 
   AnimationController? verseHighlightController;
-  AnimationController? bibleTraverseController;
   BibleController? bibleController;
 
   LayoutController({required TickerProvider vsync}) {
