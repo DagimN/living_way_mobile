@@ -34,6 +34,8 @@ class Passage {
 
   set setBook(Book book) {
     this.book = book;
+    _chapter = 0;
+    _verse = 0;
   }
 
   set chapter(int? value) {
@@ -127,6 +129,21 @@ class Passage {
       "verse": _verse,
       "toVerse": toVerse
     };
+  }
+
+  Passage copyWith(
+      {Book? book,
+      int? chapter,
+      int? verse,
+      int? toVerse,
+      int? bookIndex,
+      Translation? translation}) {
+    return Passage(book: book ?? this.book)
+      ..chapter = chapter ?? _chapter
+      ..verse = verse ?? _verse
+      ..toVerse = toVerse ?? toVerse
+      ..bookIndex = bookIndex ?? this.bookIndex
+      ..translation = translation ?? this.translation;
   }
 
   @override

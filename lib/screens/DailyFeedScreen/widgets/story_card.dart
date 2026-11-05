@@ -1,7 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
-import 'package:living_way/screens/story_view_screen.dart';
+import 'package:living_way/screens/StoryViewScreen/index.dart';
 import 'package:provider/provider.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:video_player/video_player.dart';
@@ -19,6 +20,7 @@ class StoryCard extends StatefulWidget {
 class _StoryCardState extends State<StoryCard> {
   VideoPlayerController? controller;
   bool isInitialized = false;
+  bool thumbnailHasError = false;
 
   void initializeVideoController() {
     if (controller == null) {
@@ -73,7 +75,7 @@ class _StoryCardState extends State<StoryCard> {
                           context,
                           MaterialPageRoute(
                               builder: (context) => StoryViewScreen(
-                                  id: widget.story.id,
+                                  story: widget.story,
                                   controller: controller!)));
                     },
                     style: TextButton.styleFrom(padding: EdgeInsets.zero),
@@ -81,7 +83,17 @@ class _StoryCardState extends State<StoryCard> {
                         opacity: widget.story.isViewed ? 0.5 : 1,
                         child: ClipRRect(
                             borderRadius: BorderRadius.circular(20),
-                            child: VideoPlayer(controller!))))
+                            child: widget.story.metadata?.image != null &&
+                                    !thumbnailHasError
+                                ? CachedNetworkImage(
+                                    imageUrl: widget.story.metadata!.image!,
+                                    height: screenHeight * .3,
+                                    fit: BoxFit.cover,
+                                    errorListener: (value) => setState(() {
+                                      thumbnailHasError = true;
+                                    }),
+                                  )
+                                : VideoPlayer(controller!))))
                 : Shimmer.fromColors(
                     direction: ShimmerDirection.rtl,
                     baseColor: theme.backgroundColor,

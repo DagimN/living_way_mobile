@@ -64,11 +64,6 @@ class _ChapterPageState extends State<ChapterPage>
 
     double screenHeight = MediaQuery.sizeOf(context).height;
 
-    List<GlobalObjectKey> verseKeys = List.generate(
-        selectedPassage.verses.length,
-        (index) => GlobalObjectKey(
-            '${selectedPassage.book.name} ${selectedPassage.chapter} ${index + 1}'));
-    layoutController.setVerseKeys = verseKeys;
     layoutController.setVerseAnimationController = verseHighlightController;
 
     return GestureDetector(
@@ -115,7 +110,7 @@ class _ChapterPageState extends State<ChapterPage>
                     return Container(
                       margin: const EdgeInsets.symmetric(vertical: 10),
                       child: RichText(
-                        key: verseKeys[index],
+                        key: layoutController.verseKeys[index],
                         text: TextSpan(children: [
                           TextSpan(
                             text: '${index + 1} ',

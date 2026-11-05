@@ -363,10 +363,8 @@ class DevotionalDetailBottomSheet extends StatelessWidget {
                       layoutController.setSelectedHomePageNavigation =
                           HomePageNavigation.bible;
 
-                      Future.delayed(
-                          const Duration(seconds: 2),
-                          () => layoutController.scrollToVerse(
-                              layoutController.verseKeys[item!.passage.verse]));
+                      Future.delayed(const Duration(seconds: 2),
+                          () => layoutController.scrollToVerse(item!.passage));
 
                       if (ModalRoute.of(context)?.settings.name != '/home') {
                         Navigator.pushNamedAndRemoveUntil(

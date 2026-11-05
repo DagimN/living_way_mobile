@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:living_way/core/core.dart';
 
+import 'layout_controller.dart';
+
 class BibleController extends ChangeNotifier {
   static List<Book> _bible = [];
   List<Translation> translations = [
@@ -32,6 +34,8 @@ class BibleController extends ChangeNotifier {
 
   Passage passage = Passage(book: Book.empty());
   Passage verseOfTheDay = Passage(book: Book.empty());
+
+  LayoutController? layoutController;
 
   BibleController() {
     loadTranslation(translations.first,
@@ -163,6 +167,8 @@ class BibleController extends ChangeNotifier {
     passage.translation = translation;
     verseOfTheDay.translation;
     notifyListeners();
+
+    layoutController?.generateVerseKeys(passage);
   }
 
   static Future<List<Book>> loadBible(String path) async {
@@ -249,20 +255,31 @@ class BibleController extends ChangeNotifier {
   set setBook(Book value) {
     passage.book = (value.chapters.isNotEmpty) ? value : bible[value.index];
     notifyListeners();
+
+    layoutController?.generateVerseKeys(passage);
   }
 
   set setChapter(int? v) {
     passage.chapter = v;
     notifyListeners();
+    layoutController?.generateVerseKeys(passage);
   }
 
   set setVerse(int? v) {
     passage.verse = v;
     notifyListeners();
+
+    layoutController?.generateVerseKeys(passage);
   }
 
   set setPassage(Passage value) {
     passage = value;
     notifyListeners();
+
+    layoutController?.generateVerseKeys(passage);
+  }
+
+  set setLayoutController(LayoutController value) {
+    layoutController = value;
   }
 }

@@ -79,7 +79,7 @@ class BibleNavigator extends StatelessWidget {
           }).toList(),
           onChanged: (value) {
             layoutController
-                .scrollToVerse(layoutController.verseKeys[value ?? 0]);
+                .scrollToVerse(bibleController.passage.copyWith(verse: value));
             bibleController.setVerse = value;
             toggleBibleNavigator();
           })

@@ -342,11 +342,8 @@ class _WeeklyDevotionalWidgetState extends State<WeeklyDevotionalWidget> {
                                               .setSelectedHomePageNavigation =
                                           HomePageNavigation.bible;
 
-                                      Future.delayed(
-                                          const Duration(seconds: 2),
-                                          () => layoutController.scrollToVerse(
-                                              layoutController.verseKeys[
-                                                  selectedItem.passage.verse]));
+                                      layoutController
+                                          .scrollToVerse(selectedItem.passage);
                                     },
                                     icon: Icon(
                                       Icons.arrow_forward_ios_rounded,

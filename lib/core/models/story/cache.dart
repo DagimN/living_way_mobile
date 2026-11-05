@@ -11,6 +11,18 @@ class StoryCache extends HiveService<Story> {
     if (!Hive.isAdapterRegistered(StoryAdapter().typeId)) {
       Hive.registerAdapter(StoryAdapter());
     }
+
+    if (!Hive.isAdapterRegistered(StoryMetadataAdapter().typeId)) {
+      Hive.registerAdapter(StoryMetadataAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(TimelineItemAdapter().typeId)) {
+      Hive.registerAdapter(TimelineItemAdapter());
+    }
+
+    if (!Hive.isAdapterRegistered(TimelineItemTypeAdapter().typeId)) {
+      Hive.registerAdapter(TimelineItemTypeAdapter());
+    }
   }
 
   List<Story> getByDateRange({

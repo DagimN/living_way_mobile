@@ -91,6 +91,7 @@ class _LivingWayAppState extends State<LivingWayApp>
 
                   authController.setProfileController = profileController;
                   layoutController.setBibleController = bibleController;
+                  bibleController.setLayoutController = layoutController;
 
                   return !layoutController.showSplashScreen
                       ? MaterialApp(

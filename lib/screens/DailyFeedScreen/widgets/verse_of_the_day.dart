@@ -133,11 +133,7 @@ class VerseOfTheDay extends StatelessWidget {
                               AnalyticsService.logEvent(
                                   'verse_of_the_day_navigated');
 
-                              Future.delayed(
-                                  const Duration(seconds: 2),
-                                  () => layoutController.scrollToVerse(
-                                      layoutController
-                                          .verseKeys[verseOfTheDay.verse]));
+                              layoutController.scrollToVerse(verseOfTheDay);
                             },
                             icon: const Icon(Icons.forward,
                                 color: Colors.white))),

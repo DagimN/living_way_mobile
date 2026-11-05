@@ -86,12 +86,32 @@ class LayoutController extends ChangeNotifier {
         curve: Curves.easeInOut, duration: const Duration(milliseconds: 500));
   }
 
-  void scrollToVerse(GlobalKey verseKey) async {
-    if (verseKey.currentContext != null) {
-      await Scrollable.ensureVisible(verseKey.currentContext!,
-          curve: Curves.easeInOut, duration: const Duration(milliseconds: 700));
-      verseHighlightController?.reverse();
-    }
+  void scrollToVerse(Passage passage) async {
+    generateVerseKeys(passage);
+
+    await Future.delayed(const Duration(milliseconds: 2000));
+
+    final context = verseKeys[passage.verse].currentContext;
+
+    if (context == null) return;
+
+    isScrollingToVerse = true;
+
+    // ignore: use_build_context_synchronously
+    await Scrollable.ensureVisible(context,
+        curve: Curves.easeInOut, duration: const Duration(milliseconds: 700));
+
+    verseHighlightController?.reverse();
+
+    isScrollingToVerse = false;
+  }
+
+  void generateVerseKeys(Passage passage) {
+    verseKeys = List.generate(
+        passage.verses.length,
+        (index) => GlobalObjectKey(
+            '${passage.book.name} ${passage.chapter} ${index + 1}'));
+    notifyListeners();
   }
 
   set setBibleController(BibleController value) {
@@ -110,10 +130,6 @@ class LayoutController extends ChangeNotifier {
         parameters: {'tab': value.name});
 
     notifyListeners();
-  }
-
-  set setVerseKeys(List<GlobalKey> keys) {
-    verseKeys = keys;
   }
 
   set setVerseAnimationController(AnimationController controller) {

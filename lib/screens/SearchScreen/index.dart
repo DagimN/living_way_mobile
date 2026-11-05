@@ -206,14 +206,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                               AnalyticsService.logEvent(
                                                   'searched_verse_navigated');
 
-                                              Future.delayed(
-                                                  const Duration(seconds: 2),
-                                                  () => layoutController
-                                                      .scrollToVerse(
-                                                          layoutController
-                                                                  .verseKeys[
-                                                              item.passage
-                                                                  .verse]));
+                                              layoutController
+                                                  .scrollToVerse(item.passage);
                                             }),
                                   ),
                                 ],
@@ -290,11 +284,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                       AnalyticsService.logEvent(
                                           'searched_verse_navigated');
 
-                                      Future.delayed(
-                                          const Duration(seconds: 2),
-                                          () => layoutController.scrollToVerse(
-                                              layoutController.verseKeys[
-                                                  item.passage.verse]));
+                                      layoutController
+                                          .scrollToVerse(item.passage);
                                     }),
                               ),
                             ),
