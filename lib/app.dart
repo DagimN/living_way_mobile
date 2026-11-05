@@ -7,8 +7,28 @@ import 'package:living_way/screens/AuthScreens/Forms/forgot_password_form.dart';
 import 'package:living_way/screens/screens.dart';
 import 'package:provider/provider.dart';
 
-class LivingWayApp extends StatelessWidget {
+class LivingWayApp extends StatefulWidget {
   const LivingWayApp({super.key});
+
+  @override
+  State<LivingWayApp> createState() => _LivingWayAppState();
+}
+
+class _LivingWayAppState extends State<LivingWayApp>
+    with SingleTickerProviderStateMixin {
+  late final LayoutController _layoutController;
+
+  @override
+  void initState() {
+    super.initState();
+    _layoutController = LayoutController(vsync: this);
+  }
+
+  @override
+  void dispose() {
+    _layoutController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +38,8 @@ class LivingWayApp extends StatelessWidget {
           create: (_) => LocalizationController(),
         ),
         ChangeNotifierProvider<AuthController>(create: (_) => AuthController()),
-        ChangeNotifierProvider<LayoutController>(
-            create: (_) => LayoutController()),
+        ChangeNotifierProvider<LayoutController>.value(
+            value: _layoutController),
         ChangeNotifierProvider<ContentController>(
             create: (_) => ContentController()),
         ChangeNotifierProvider<ProfileController>(

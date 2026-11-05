@@ -22,6 +22,7 @@ class LayoutController extends ChangeNotifier {
   int initialIntroductionPageIndex = 0;
   bool showSplashScreen = true;
   bool showVerseOfTheDayControls = true;
+  bool isScrollingToVerse = false;
 
   final List<Map<String, String>> settingsNavigation = [
     {'name': "general", 'route': '/settings'},
@@ -36,10 +37,16 @@ class LayoutController extends ChangeNotifier {
   AnimationController? bibleTraverseController;
   BibleController? bibleController;
 
-  LayoutController() {
+  LayoutController({required TickerProvider vsync}) {
+    bibleTraverseController = AnimationController(
+        vsync: vsync, duration: const Duration(milliseconds: 200), value: 0);
+    bibleTraverseWidthAnimation =
+        Tween<double>(begin: 72, end: 144).animate(bibleTraverseController);
+
     bibleScrollController.addListener(() {
       if (verseHighlightController != null &&
-          verseHighlightController?.value != 1) {
+          verseHighlightController?.value != 1 &&
+          !isScrollingToVerse) {
         verseHighlightController?.forward();
         bibleController?.setVerse = 0;
       }
@@ -92,9 +99,9 @@ class LayoutController extends ChangeNotifier {
 
   set setSelectedHomePageNavigation(HomePageNavigation value) {
     if (value == HomePageNavigation.bible) {
-      bibleTraverseController?.forward();
+      bibleTraverseController.forward();
     } else {
-      bibleTraverseController?.reverse();
+      bibleTraverseController.reverse();
     }
 
     _selectedHomePageNavigation = value;
@@ -112,10 +119,6 @@ class LayoutController extends ChangeNotifier {
     verseHighlightController = controller;
   }
 
-  set setBibleTraverserAnimationController(AnimationController controller) {
-    bibleTraverseController = controller;
-  }
-
   set setIntroPageIndex(int value) {
     initialIntroductionPageIndex = value;
     notifyListeners();
@@ -124,5 +127,11 @@ class LayoutController extends ChangeNotifier {
   set setShowVerseOfTheDayControls(bool value) {
     showVerseOfTheDayControls = value;
     notifyListeners();
+  }
+
+  @override
+  void dispose() {
+    bibleTraverseController.dispose();
+    super.dispose();
   }
 }

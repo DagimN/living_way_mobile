@@ -4,20 +4,8 @@ import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
-class BibleTraverser extends StatefulWidget {
+class BibleTraverser extends StatelessWidget {
   const BibleTraverser({super.key});
-
-  @override
-  // ignore: library_private_types_in_public_api
-  _BibleTraverserState createState() => _BibleTraverserState();
-}
-
-class _BibleTraverserState extends State<BibleTraverser>
-    with TickerProviderStateMixin {
-  late final animationController = AnimationController(
-      vsync: this, duration: const Duration(milliseconds: 200), value: 0);
-  late final widthAnimation =
-      Tween(begin: 72.0, end: 144.0).animate(animationController);
 
   @override
   Widget build(BuildContext context) {
@@ -32,16 +20,14 @@ class _BibleTraverserState extends State<BibleTraverser>
     final isLast =
         selectedPassage.chapter == (selectedPassage.book.chapters.length) - 1;
 
-    layoutController.setBibleTraverserAnimationController = animationController;
-
     return AnimatedBuilder(
-        animation: widthAnimation,
+        animation: layoutController.bibleTraverseWidthAnimation,
         builder: (context, child) {
           return Align(
               alignment: Alignment.topCenter,
               child: SizedBox(
                   height: 56,
-                  width: widthAnimation.value,
+                  width: layoutController.bibleTraverseWidthAnimation.value,
                   child: CustomPaint(
                       painter: _DiamondPainter(
                           isTraversing: isTraversing,
