@@ -40,18 +40,22 @@ class StoryViewScreenState extends State<StoryViewScreen> {
   }
 
   void videoControllerListener() {
-    if (mounted) {
-      final position = widget.controller.value.position;
-      setState(() {
-        currentSeek = position.inMilliseconds.toDouble();
-      });
-
-      if (position == widget.controller.value.duration && !isClosing) {
+    try {
+      if (mounted) {
+        final position = widget.controller.value.position;
         setState(() {
-          isClosing = true;
+          currentSeek = position.inMilliseconds.toDouble();
         });
-        Navigator.pop(context);
+
+        if (position == widget.controller.value.duration && !isClosing) {
+          setState(() {
+            isClosing = true;
+          });
+          Navigator.pop(context);
+        }
       }
+    } catch (error) {
+      logger.e(error);
     }
   }
 
@@ -66,6 +70,8 @@ class StoryViewScreenState extends State<StoryViewScreen> {
       DeviceOrientation.landscapeRight,
     ]);
 
+    widget.controller.seekTo(const Duration(seconds: 0));
+    widget.controller.pause();
     widget.controller.removeListener(videoControllerListener);
     super.dispose();
   }
@@ -139,7 +145,7 @@ class StoryViewScreenState extends State<StoryViewScreen> {
                                   controller: widget.controller,
                                   currentSeek: currentSeek,
                                   onUpdate: () => setState(() {}),
-                                  metadata: metadata)),
+                                  story: widget.story)),
                         ),
                       )
                     ]),
