@@ -15,7 +15,6 @@ class GeneralSettingsScreen extends StatelessWidget {
     final layoutController = Provider.of<LayoutController>(context);
     final profileController = Provider.of<ProfileController>(context);
     final activityController = Provider.of<ActivityController>(context);
-    final bibleController = Provider.of<BibleController>(context);
     final willRemindPrayer = profileController.willRemindPrayer;
 
     double screenHeight = MediaQuery.of(context).size.height;
@@ -198,7 +197,6 @@ class GeneralSettingsScreen extends StatelessWidget {
                                     if (isActive) {
                                       activityController
                                           .scheduleActivityNotifications();
-                                      bibleController.scheduleVersesOfTheDay();
                                       NotificationService.periodicNotification(
                                           id: NotificationCodes.prayer.value,
                                           title: Tr.t('prayerTime'),

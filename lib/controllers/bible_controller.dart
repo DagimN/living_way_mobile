@@ -61,8 +61,7 @@ class BibleController extends ChangeNotifier {
 
     translation = Translation.fromMap(json.decode(currentTranslation)) ??
         Translation.standard();
-    loadTranslation(translation, isDefault: translation.isDefault)
-        .then((value) => scheduleVersesOfTheDay());
+    loadTranslation(translation, isDefault: translation.isDefault);
 
     cleanResources(
         contentIds:
@@ -246,8 +245,7 @@ class BibleController extends ChangeNotifier {
 
   set setTranslation(Translation v) {
     translation = v;
-    loadTranslation(v, isDefault: v.isDefault)
-        .then((value) => scheduleVersesOfTheDay());
+    loadTranslation(v, isDefault: v.isDefault);
     CacheService.instance.writeData<String>('currentTranslation', v.toString());
     notifyListeners();
   }
