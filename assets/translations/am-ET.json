@@ -276,5 +276,12 @@
   "markPending": "በሂደት ላይ እንዳለ ምልክት ያድርጉ",
   "markDone": "እንደተጠናቀቀ ምልክት ያድርጉ",
   "markedPending": "በመጠባበቅ ላይ እንዳለ ምልክት ተደርጎበታል",
-  "markedCompleted": "በጣም ጥሩ! እንደተጠናቀቀ ምልክት ተደርጎበታል! 🎉"
+  "markedCompleted": "በጣም ጥሩ! እንደተጠናቀቀ ምልክት ተደርጎበታል! 🎉",
+
+  "timeline": "የጊዜ ሰሌዳ",
+  "share": "አጋራ",
+  "comment": "አስተያየት",
+  "timelineItem": "የጊዜ ሰሌዳ ንጥል",
+  "timelineLinkError": "ወደዚህ ሊንክ መሄድ አልተቻለም",
+  "noTimelineItems": "ምንም የጊዜ ሰሌዳ ንጥሎች የሉም"
 }

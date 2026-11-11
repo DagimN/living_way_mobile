@@ -207,8 +207,7 @@ class TimelineItem {
         AnalyticsService.logEvent('user_navigated_to_link_from_story');
       } else {
         UIService.showSnackbar(
-            backgroundColor: Colors.red,
-            message: 'Could not go to this link'); //TODO: Translate
+            backgroundColor: Colors.red, message: Tr.t('timelineLinkError'));
       }
     }
   }

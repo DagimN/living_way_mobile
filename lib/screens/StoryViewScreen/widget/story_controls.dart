@@ -149,7 +149,7 @@ class StoryControls extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     IconButton(
-                      tooltip: 'Timeline', //TODO: Translate
+                      tooltip: Tr.t("timeline"),
                       style: IconButton.styleFrom(
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,
@@ -160,7 +160,7 @@ class StoryControls extends StatelessWidget {
                       icon: const Icon(Icons.format_list_bulleted),
                     ),
                     IconButton(
-                      tooltip: 'Share', //TODO: Translate
+                      tooltip: Tr.t("share"),
                       style: IconButton.styleFrom(
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,
@@ -179,7 +179,7 @@ class StoryControls extends StatelessWidget {
                       icon: const Icon(Icons.share),
                     ),
                     IconButton(
-                      tooltip: 'Comment', //TODO: Translate
+                      tooltip: Tr.t("comment"),
                       style: IconButton.styleFrom(
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,

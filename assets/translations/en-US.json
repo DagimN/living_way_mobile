@@ -274,5 +274,12 @@
   "markPending": "Mark Pending",
   "markDone": "Mark Done",
   "markedPending": "Marked as pending",
-  "markedCompleted": "Great job! Marked as completed! 🎉"
+  "markedCompleted": "Great job! Marked as completed! 🎉",
+
+  "timeline": "Timeline",
+  "share": "Share",
+  "comment": "Comment",
+  "timelineItem": "Timeline item",
+  "timelineLinkError": "Could not go to this link",
+  "noTimelineItems": "No timeline items"
 }

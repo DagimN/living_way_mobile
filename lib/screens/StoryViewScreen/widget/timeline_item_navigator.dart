@@ -100,7 +100,7 @@ class TimelineItemNavigator extends StatelessWidget {
                         item.type?.icon ?? TimelineItemType.undefined.icon),
                     label: Text(
                       item.label.isEmpty
-                          ? item.type?.name ?? 'Timeline item' //TODO: Translate
+                          ? item.type?.name ?? Tr.t("timelineItem")
                           : item.label,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,

@@ -76,20 +76,20 @@ class TimelineBottomsheet extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 16),
-              const Text(
-                'Timeline', //TODO: Translate
-                style: TextStyle(
+              Text(
+                Tr.t("timeline"),
+                style: const TextStyle(
                     color: Colors.white,
                     fontSize: 20,
                     fontWeight: FontWeight.w600),
               ),
               const SizedBox(height: 12),
               if (timeline.isEmpty)
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 20),
                   child: Text(
-                    'No timeline items', //TODO: Translate
-                    style: TextStyle(color: Colors.white70),
+                    Tr.t("noTimelineItems"),
+                    style: const TextStyle(color: Colors.white70),
                   ),
                 )
               else
@@ -131,9 +131,7 @@ class TimelineBottomsheet extends StatelessWidget {
                             const SizedBox(width: 12),
                             Expanded(
                               child: Text(
-                                label.isEmpty
-                                    ? 'Timeline item'
-                                    : label, //TODO: Translate
+                                label.isEmpty ? Tr.t("timelineItem") : label,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
