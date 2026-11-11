@@ -2,10 +2,12 @@ import 'dart:ui';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:living_way/screens/MediaScreen/widgets/player_slider.dart';
 import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
@@ -13,7 +15,7 @@ import 'timeline_bottomsheet.dart';
 
 class StoryControls extends StatelessWidget {
   final VideoPlayerController controller;
-  final StoryMetadata? metadata;
+  final Story story;
   final double currentSeek;
   final Function() onUpdate;
   const StoryControls(
@@ -21,7 +23,7 @@ class StoryControls extends StatelessWidget {
       required this.controller,
       required this.currentSeek,
       required this.onUpdate,
-      this.metadata});
+      required this.story});
 
   Text _descriptionText(String description) {
     final spans = <InlineSpan>[];
@@ -65,6 +67,7 @@ class StoryControls extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeController>(context).theme;
+    final metadata = story.metadata;
 
     double screenWidth = MediaQuery.sizeOf(context).width;
 
@@ -162,7 +165,17 @@ class StoryControls extends StatelessWidget {
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,
                           shape: const CircleBorder()),
-                      onPressed: () {},
+                      onPressed: () async {
+                        const url = appFlavor == "dev"
+                            ? Urls.devApiUrl
+                            : appFlavor == "staging"
+                                ? Urls.stagingApiUrl
+                                : Urls.prodApiUrl;
+                        final String shareUrl =
+                            '$url/api/v1/content/story/${story.id}';
+                        SharePlus.instance.share(ShareParams(
+                            text: 'Check this out on Living Way: $shareUrl'));
+                      },
                       icon: const Icon(Icons.share),
                     ),
                     IconButton(

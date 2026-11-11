@@ -92,16 +92,31 @@ android {
             applicationId = "com.livingway.app"
             applicationIdSuffix = ".dev"
             versionNameSuffix = "-dev"
+            manifestPlaceholders = [
+                deepLinkHost: "10.227.226.26",
+                deepLinkScheme: "livingwaydev",
+                deepLinkHostScheme: "http"
+            ]
         }
         staging {
             dimension = "livingway"
             applicationId = "com.livingway.app"
             applicationIdSuffix = ".staging"
             versionNameSuffix = "-staging"
+            manifestPlaceholders = [
+                deepLinkHost: "living-way-backend-bvjly6lnu-dagimns-projects.vercel.app",
+                deepLinkScheme: "livingwaystaging",
+                deepLinkHostScheme: "https"
+            ]
         }
         prod {
             dimension = "livingway"
             applicationId = "com.livingway.app"
+            manifestPlaceholders = [
+                deepLinkHost: "www.living-way-backend.vercel.app",
+                deepLinkScheme: "livingway",
+                deepLinkHostScheme: "https"
+            ]
         }
     }
 }

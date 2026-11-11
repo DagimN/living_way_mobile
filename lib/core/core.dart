@@ -40,6 +40,7 @@ export 'models/topic.dart';
 
 export 'services/analytics_service.dart';
 export 'services/cache_service.dart';
+export 'services/deeplink_service.dart';
 export 'services/google_places_service.dart';
 export 'services/hive_service.dart';
 export 'services/image_service.dart';

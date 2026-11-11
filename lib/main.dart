@@ -43,6 +43,7 @@ void main() async {
   };
 
   await NotificationService.init();
+  DeepLinkService().initDeepLinks();
 
   runApp(const LivingWayApp());
 }

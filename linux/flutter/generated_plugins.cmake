@@ -7,6 +7,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   disk_space_2
   file_selector_linux
   flutter_secure_storage_linux
+  gtk
   url_launcher_linux
 )
 
