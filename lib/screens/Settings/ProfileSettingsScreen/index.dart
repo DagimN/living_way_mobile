@@ -387,8 +387,9 @@ class _ProfileSettingsScreenState extends State<ProfileSettingsScreen> {
                                                           const MapScreen())),
                                         ) as PlaceDetails?;
 
-                                        if (!mounted || selection == null)
+                                        if (!mounted || selection == null) {
                                           return;
+                                        }
 
                                         setState(() {
                                           addressController.text =
