@@ -7,9 +7,9 @@ class StoryInteractionsBottomsheet extends StatelessWidget {
 
   const StoryInteractionsBottomsheet({super.key, required this.interactions});
 
-  static void show(BuildContext context,
-      {required List<UserInteraction> interactions}) {
-    showModalBottomSheet(
+  static Future<void> show(BuildContext context,
+      {required List<UserInteraction> interactions}) async {
+    await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,

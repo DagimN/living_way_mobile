@@ -21,6 +21,7 @@ class StoryViewScreen extends StatefulWidget {
 class StoryViewScreenState extends State<StoryViewScreen> {
   double currentSeek = 0;
   bool isClosing = false;
+  bool isLooping = false;
   bool _showControls = true;
   Timer? _hideTimer;
 
@@ -47,7 +48,9 @@ class StoryViewScreenState extends State<StoryViewScreen> {
           currentSeek = position.inMilliseconds.toDouble();
         });
 
-        if (position == widget.controller.value.duration && !isClosing) {
+        if (position == widget.controller.value.duration &&
+            !isClosing &&
+            !isLooping) {
           setState(() {
             isClosing = true;
           });
@@ -84,6 +87,14 @@ class StoryViewScreenState extends State<StoryViewScreen> {
           _showControls = false;
         });
       }
+    });
+  }
+
+  void _loopStory(bool toggle) {
+    widget.controller.setLooping(toggle);
+
+    setState(() {
+      isLooping = toggle;
     });
   }
 
@@ -145,6 +156,7 @@ class StoryViewScreenState extends State<StoryViewScreen> {
                                   controller: widget.controller,
                                   currentSeek: currentSeek,
                                   onUpdate: () => setState(() {}),
+                                  onInteraction: _loopStory,
                                   story: widget.story)),
                         ),
                       )

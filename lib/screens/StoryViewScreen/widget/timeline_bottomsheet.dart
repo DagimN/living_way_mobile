@@ -34,10 +34,10 @@ class TimelineBottomsheet extends StatelessWidget {
   const TimelineBottomsheet(
       {super.key, required this.controller, required this.timeline});
 
-  static void show(BuildContext context,
+  static Future<void> show(BuildContext context,
       {required VideoPlayerController controller,
-      required List<TimelineItem> timeline}) {
-    showModalBottomSheet(
+      required List<TimelineItem> timeline}) async {
+    await showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       isScrollControlled: true,

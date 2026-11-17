@@ -19,11 +19,13 @@ class StoryControls extends StatelessWidget {
   final Story story;
   final double currentSeek;
   final Function() onUpdate;
+  final Function(bool toggle) onInteraction;
   const StoryControls(
       {super.key,
       required this.controller,
       required this.currentSeek,
       required this.onUpdate,
+      required this.onInteraction,
       required this.story});
 
   Text _descriptionText(String description) {
@@ -161,9 +163,13 @@ class StoryControls extends StatelessWidget {
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,
                           shape: const CircleBorder()),
-                      onPressed: () => TimelineBottomsheet.show(context,
-                          controller: controller,
-                          timeline: metadata?.timeline ?? []),
+                      onPressed: () async {
+                        onInteraction(true);
+                        await TimelineBottomsheet.show(context,
+                            controller: controller,
+                            timeline: metadata?.timeline ?? []);
+                        onInteraction(false);
+                      },
                       icon: const Icon(Icons.format_list_bulleted),
                     ),
                     IconButton(
@@ -173,6 +179,7 @@ class StoryControls extends StatelessWidget {
                           foregroundColor: Colors.white,
                           shape: const CircleBorder()),
                       onPressed: () async {
+                        onInteraction(true);
                         const url = appFlavor == "dev"
                             ? Urls.devApiUrl
                             : appFlavor == "staging"
@@ -180,8 +187,10 @@ class StoryControls extends StatelessWidget {
                                 : Urls.prodApiUrl;
                         final String shareUrl =
                             '$url/api/v1/content/story/${story.id}';
-                        SharePlus.instance.share(ShareParams(
+                        await SharePlus.instance.share(ShareParams(
                             text: 'Check this out on Living Way: $shareUrl'));
+
+                        onInteraction(false);
                       },
                       icon: const Icon(Icons.share),
                     ),
@@ -191,9 +200,12 @@ class StoryControls extends StatelessWidget {
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,
                           shape: const CircleBorder()),
-                      onPressed: () => StoryInteractionsBottomsheet.show(
-                          context,
-                          interactions: interactions),
+                      onPressed: () async {
+                        onInteraction(true);
+                        await StoryInteractionsBottomsheet.show(context,
+                            interactions: interactions);
+                        onInteraction(false);
+                      },
                       icon: const Icon(Icons.comment),
                     ),
                   ],
