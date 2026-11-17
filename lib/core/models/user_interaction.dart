@@ -36,6 +36,7 @@ class UserInteraction {
   factory UserInteraction.fromMap(Map<String, dynamic> map) {
     final type = InteractionType.fromString(map['type']);
     final dynamic content;
+    final voters = (map['voters'] as Map<String, dynamic>? ?? {});
 
     if (type == InteractionType.poll) {
       content = Poll.fromMap(json.decode(map['content']));
@@ -59,10 +60,12 @@ class UserInteraction {
         subInteractions: List.from(map['subInteractions'])
             .map((interaction) => UserInteraction.fromMap(interaction))
             .toList(),
-        voters: Map.fromIterable(Map.from(map['voters'])
-            .entries
-            .map((voter) => MapEntry(voter.key, Profile.fromJson(voter.value)))
-            .toList()),
+        voters: Map.fromEntries(voters.entries.map(
+          (voter) => MapEntry(
+            voter.key,
+            Profile.fromJson(voter.value as Map<String, dynamic>),
+          ),
+        )),
         createdAt: DateTime.parse(map['createdAt']));
   }
 

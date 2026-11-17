@@ -40,7 +40,9 @@ class Profile {
         emailVerified: json['emailVerified'] ?? false,
         phoneNumber: json['phoneNumber'],
         address: json['address'],
-        coordinates: json['coordinates'] != null
+        coordinates: json['coordinates'] != null &&
+                json['coordinates'] is List &&
+                (json['coordinates'] as List).isNotEmpty
             ? LatLng.fromJson(json['coordinates'])
             : null,
         devotionProgress: List.from(json['devotionProgress'] ?? [])

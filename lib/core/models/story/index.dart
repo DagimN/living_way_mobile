@@ -10,6 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../user_interaction.dart';
+
 part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
 
 @HiveType(typeId: 1)
@@ -29,14 +31,15 @@ class Story extends HiveObject implements Cacheable {
   @HiveField(4)
   StoryMetadata? metadata;
   File? file;
+  List<UserInteraction> interactions;
 
-  Story({
-    required this.id,
-    required this.sourceUrl,
-    required this.timestamp,
-    this.metadata,
-    this.file,
-  }) {
+  Story(
+      {required this.id,
+      required this.sourceUrl,
+      required this.timestamp,
+      this.metadata,
+      this.file,
+      this.interactions = const []}) {
     _loadStory();
   }
 
@@ -50,7 +53,10 @@ class Story extends HiveObject implements Cacheable {
         timestamp: DateTime.parse(json['createdAt']),
         metadata: json['metaData'] != null
             ? StoryMetadata.fromMap(json['metaData'])
-            : null);
+            : null,
+        interactions: List.from(json['interactions'])
+            .map((interaction) => UserInteraction.fromMap(interaction))
+            .toList());
   }
 
   Future<void> _loadStory() async {
