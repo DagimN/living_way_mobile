@@ -11,6 +11,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:video_player/video_player.dart';
 
+import 'story_interactions_bottomsheet.dart';
 import 'timeline_bottomsheet.dart';
 
 class StoryControls extends StatelessWidget {
@@ -68,8 +69,14 @@ class StoryControls extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeController>(context).theme;
     final metadata = story.metadata;
+    final interactions = story.interactions
+        .where((interaction) => !interaction.isFlagged)
+        .toList();
 
     double screenWidth = MediaQuery.sizeOf(context).width;
+
+    interactions
+        .sort((interactionA, interactionB) => interactionB.isPinned ? 1 : -1);
 
     return ClipRect(
       child: BackdropFilter(
@@ -184,7 +191,9 @@ class StoryControls extends StatelessWidget {
                           backgroundColor: theme.primaryColor,
                           foregroundColor: Colors.white,
                           shape: const CircleBorder()),
-                      onPressed: () {},
+                      onPressed: () => StoryInteractionsBottomsheet.show(
+                          context,
+                          interactions: interactions),
                       icon: const Icon(Icons.comment),
                     ),
                   ],

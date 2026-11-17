@@ -283,5 +283,6 @@
   "comment": "አስተያየት",
   "timelineItem": "የጊዜ ሰሌዳ ንጥል",
   "timelineLinkError": "ወደዚህ ሊንክ መሄድ አልተቻለም",
-  "noTimelineItems": "ምንም የጊዜ ሰሌዳ ንጥሎች የሉም"
+  "noTimelineItems": "ምንም የጊዜ ሰሌዳ ንጥሎች የሉም",
+  "noStoryInteractions": "እስካሁን ምንም አስተያየቶች ወይም ግንኙነቶች የሉም"
 }
