@@ -37,6 +37,10 @@ jobs:
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Decode local.properties
+        run: |
+          echo "${{ secrets.LOCAL_PROPERTIES_BASE64 }}" | base64 -d > android/local.properties
+
       - name: Build Staging APK
         run: flutter build apk --flavor staging --target lib/main.dart --split-per-abi --debug
 
@@ -101,6 +105,10 @@ jobs:
       - name: Decode Android Keystore
         run: |
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > android/app/keystore.jks
+
+      - name: Decode local.properties
+        run: |
+          echo "${{ secrets.LOCAL_PROPERTIES_BASE64 }}" | base64 -d > android/local.properties
 
       - name: Build Production APK
         env:
