@@ -111,7 +111,11 @@ flutter_native_splash:
   image: assets/images/about_logo.png
   android: true
   ios: true
-  color: "#000000"
+  color: "#FFFFFF"
+  color_dark: "#3E392A"
+  android_12:
+    color: "#FFFFFF"
+    color_dark: "#3E392A"
 
 # The following section is specific to Flutter packages.
 flutter:
