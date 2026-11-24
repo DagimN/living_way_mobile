@@ -1,21 +1,27 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
+
+import '../constants/urls.dart';
+import '../services/logging_service.dart';
 import 'activity/index.dart';
 import 'profile.dart';
 
 class UserInteraction {
-  final String id;
+  String id;
   final Profile user;
   final String targetId;
   final TargetInteraction target;
-  final dynamic content;
+  dynamic content;
   final InteractionType type;
   final List<Reaction> reactions;
   final bool isAnonymous;
   final bool isPinned;
   final bool isFlagged;
   final List<UserInteraction> subInteractions;
-  final Map<String, Profile>? voters;
+  Map<String, Profile>? voters;
   final DateTime createdAt;
 
   UserInteraction(
@@ -30,16 +36,28 @@ class UserInteraction {
       this.isPinned = false,
       this.isFlagged = false,
       this.subInteractions = const [],
-      this.voters,
+      this.voters = const {},
       required this.createdAt});
 
   factory UserInteraction.fromMap(Map<String, dynamic> map) {
     final type = InteractionType.fromString(map['type']);
     final dynamic content;
-    final voters = (map['voters'] as Map<String, dynamic>? ?? {});
+    final voters = Map.fromEntries(
+        (map['voters'] as Map<String, dynamic>? ?? {}).entries.map(
+              (voter) => MapEntry(
+                voter.key,
+                Profile.fromJson(voter.value as Map<String, dynamic>),
+              ),
+            ));
 
     if (type == InteractionType.poll) {
       content = Poll.fromMap(json.decode(map['content']));
+
+      (content as Poll).options = content.options.map((option) {
+        option.voters =
+            option.voters.map((voter) => voters[voter]?.id ?? "").toList();
+        return option;
+      }).toList();
     } else {
       content = map['content'];
     }
@@ -60,30 +78,40 @@ class UserInteraction {
         subInteractions: List.from(map['subInteractions'])
             .map((interaction) => UserInteraction.fromMap(interaction))
             .toList(),
-        voters: Map.fromEntries(voters.entries.map(
-          (voter) => MapEntry(
-            voter.key,
-            Profile.fromJson(voter.value as Map<String, dynamic>),
-          ),
-        )),
+        voters: voters,
         createdAt: DateTime.parse(map['createdAt']));
   }
 
   Map<String, dynamic> toMap() {
+    Map<String, String> votersMap = {};
+
+    if (type is Poll) {
+      List<PollOptions> pollOptions = (content as Poll).options;
+
+      (content as Poll).options = pollOptions.map((option) {
+        option.voters = option.voters.map((voter) {
+          final voterIndex = (votersMap.length + 1).toString();
+          votersMap[voterIndex] = voter;
+          return voterIndex;
+        }).toList();
+
+        return option;
+      }).toList();
+    }
+
     return {
       "userId": user.id,
       "targetId": targetId,
       "target": target.toString(),
       "content": type is Poll ? (content as Poll).toMap() : content,
       "type": type.name,
-      "reactions": reactions.map((reaction) => reaction.toMap()),
+      "reactions": reactions.map((reaction) => reaction.toMap()).toList(),
       "isAnonymous": isAnonymous,
       "isPinned": isPinned,
       "isFlagged": isFlagged,
-      "subInteractions": subInteractions.map((interaction) => interaction.id),
-      "voters": (voters ?? {})
-          .entries
-          .map((entry) => {entry.key.toString(): entry.value.id}),
+      "subInteractions":
+          subInteractions.map((interaction) => interaction.id).toList(),
+      "voters": votersMap,
       "createdAt": createdAt.toIso8601String()
     };
   }
@@ -91,6 +119,75 @@ class UserInteraction {
   @override
   String toString() {
     return jsonEncode(toMap());
+  }
+
+  Future<void> recordInteraction({UserInteraction? parent}) async {
+    try {
+      final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
+      const url = appFlavor == "dev"
+          ? Urls.devApiUrl
+          : appFlavor == "staging"
+              ? Urls.stagingApiUrl
+              : Urls.prodApiUrl;
+
+      final response = await dio.post('$url/api/v1/interact',
+          data: {"data": toMap(), "parent": parent?.id});
+
+      if (!response.statusCode.isSuccess) return;
+
+      id = response.data['interaction']['_id'];
+    } catch (error) {
+      logger.e(error);
+    }
+
+    return;
+  }
+
+  Future<void> recordVote(String userId, int optionIndex) async {
+    try {
+      final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
+      const url = appFlavor == "dev"
+          ? Urls.devApiUrl
+          : appFlavor == "staging"
+              ? Urls.stagingApiUrl
+              : Urls.prodApiUrl;
+
+      await dio.patch('$url/api/v1/interact/$id',
+          data: {"type": "poll", "userId": userId, "optionIndex": optionIndex});
+    } catch (error) {
+      logger.e(error);
+    }
+  }
+
+  Future<void> update() async {
+    try {
+      final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
+      const url = appFlavor == "dev"
+          ? Urls.devApiUrl
+          : appFlavor == "staging"
+              ? Urls.stagingApiUrl
+              : Urls.prodApiUrl;
+
+      await dio.patch('$url/api/v1/interact/$id',
+          data: {"type": type.name, "userId": user.id, "content": content});
+    } catch (error) {
+      logger.e(error);
+    }
+  }
+
+  Future<void> delete() async {
+    try {
+      final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
+      const url = appFlavor == "dev"
+          ? Urls.devApiUrl
+          : appFlavor == "staging"
+              ? Urls.stagingApiUrl
+              : Urls.prodApiUrl;
+
+      await dio.delete('$url/api/v1/interact/$id');
+    } catch (error) {
+      logger.e(error);
+    }
   }
 }
 
@@ -146,18 +243,17 @@ enum InteractionType {
 
 class Reaction {
   Profile user;
-  String reactionType;
+  String type;
 
-  Reaction({required this.user, required this.reactionType});
+  Reaction({required this.user, required this.type});
 
   factory Reaction.fromJson(Map<String, dynamic> map) {
     return Reaction(
-        user: Profile.fromJson(map['userId']),
-        reactionType: map['reactionType']);
+        user: Profile.fromJson(map['userId']), type: map['reactionType']);
   }
 
   Map<String, dynamic> toMap() {
-    return {"userId": user.id, "reactionType": reactionType};
+    return {"userId": user.id, "reactionType": type};
   }
 }
 

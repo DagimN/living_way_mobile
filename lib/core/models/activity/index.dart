@@ -251,10 +251,10 @@ class ContentBanner {
 @HiveType(typeId: 4)
 class PollOptions {
   @HiveField(0)
-  final String title;
+  String title;
 
   @HiveField(1)
-  final List<String> voters;
+  List<String> voters;
 
   PollOptions({required this.title, this.voters = const []});
 

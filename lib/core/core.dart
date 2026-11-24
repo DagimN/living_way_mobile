@@ -37,6 +37,7 @@ export 'models/story/cache.dart';
 export 'models/story/index.dart';
 export 'models/thread.dart';
 export 'models/topic.dart';
+export 'models/user_interaction.dart';
 
 export 'services/analytics_service.dart';
 export 'services/cache_service.dart';

@@ -10,8 +10,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../user_interaction.dart';
-
 part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
 
 @HiveType(typeId: 1)

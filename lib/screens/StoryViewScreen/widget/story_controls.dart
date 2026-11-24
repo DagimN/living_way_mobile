@@ -71,14 +71,8 @@ class StoryControls extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeController>(context).theme;
     final metadata = story.metadata;
-    final interactions = story.interactions
-        .where((interaction) => !interaction.isFlagged)
-        .toList();
 
     double screenWidth = MediaQuery.sizeOf(context).width;
-
-    interactions
-        .sort((interactionA, interactionB) => interactionB.isPinned ? 1 : -1);
 
     return ClipRect(
       child: BackdropFilter(
@@ -203,7 +197,7 @@ class StoryControls extends StatelessWidget {
                       onPressed: () async {
                         onInteraction(true);
                         await StoryInteractionsBottomsheet.show(context,
-                            interactions: interactions);
+                            story: story);
                         onInteraction(false);
                       },
                       icon: const Icon(Icons.comment),
