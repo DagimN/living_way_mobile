@@ -80,7 +80,7 @@ class _LivingWayAppState extends State<LivingWayApp>
                       Provider.of<ProfileController>(context);
                   final layoutController =
                       Provider.of<LayoutController>(context);
-                  final theme = Provider.of<ThemeController>(context).theme;
+                  final themeController = Provider.of<ThemeController>(context);
                   final bibleController = Provider.of<BibleController>(context);
 
                   Provider.of<ContentController>(context);
@@ -108,8 +108,17 @@ class _LivingWayAppState extends State<LivingWayApp>
                           locale: context.locale,
                           theme: ThemeData(
                               colorScheme: ColorScheme.fromSeed(
-                                  seedColor: theme.primaryColor),
+                                  seedColor:
+                                      AppTheme(Brightness.light).primaryColor,
+                                  brightness: Brightness.light),
                               useMaterial3: true),
+                          darkTheme: ThemeData(
+                              colorScheme: ColorScheme.fromSeed(
+                                  seedColor:
+                                      AppTheme(Brightness.dark).primaryColor,
+                                  brightness: Brightness.dark),
+                              useMaterial3: true),
+                          themeMode: themeController.themeMode,
                           home: const HomeScreen(),
                           routes: {
                             '/intro': (context) => const IntroScreen(),

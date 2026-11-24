@@ -67,22 +67,32 @@ class GeneralSettingsScreen extends StatelessWidget {
                             children: [
                               Text(Tr.t('theme'),
                                   style: TextStyle(color: theme.accentColor)),
-                              IconButton(
-                                  style: IconButton.styleFrom(
-                                      foregroundColor: theme.primaryColor),
-                                  onPressed: () async {
-                                    AnalyticsService.logEvent(
-                                        'theme_toggle_requested',
+                              DropdownButton<ThemeMode>(
+                                  value: themeController.themeMode,
+                                  underline: const SizedBox(),
+                                  iconEnabledColor: theme.primaryColor,
+                                  style: TextStyle(color: theme.primaryColor),
+                                  items: [
+                                    DropdownMenuItem(
+                                        value: ThemeMode.system,
+                                        child: Text(Tr.t('system'))),
+                                    DropdownMenuItem(
+                                        value: ThemeMode.light,
+                                        child: Text(Tr.t('light'))),
+                                    DropdownMenuItem(
+                                        value: ThemeMode.dark,
+                                        child: Text(Tr.t('dark'))),
+                                  ],
+                                  onChanged: (mode) {
+                                    if (mode == null) return;
+                                    AnalyticsService.logEvent('theme_changed',
                                         parameters: {
-                                          'previous_theme':
-                                              themeController.brightness.name
+                                          'theme_mode': mode.name,
+                                          'previous_theme_mode':
+                                              themeController.themeMode.name,
                                         });
-                                    themeController.toggleBrightness();
-                                  },
-                                  icon: Icon(themeController.brightness ==
-                                          Brightness.dark
-                                      ? Icons.nights_stay
-                                      : Icons.sunny))
+                                    themeController.setThemeMode(mode);
+                                  })
                             ]),
                         Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
