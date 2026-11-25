@@ -286,5 +286,6 @@
   "timelineLinkError": "Could not go to this link",
   "noTimelineItems": "No timeline items",
   "noStoryInteractions": "No comments or interactions yet",
-  "interactionLoginError": "You need to get logged in first before interacting with this story"
+  "interactionLoginError": "You need to get logged in first before interacting with this story",
+  "noRecents": "No Recents"
 }

@@ -288,5 +288,6 @@
   "timelineLinkError": "ወደዚህ ሊንክ መሄድ አልተቻለም",
   "noTimelineItems": "ምንም የጊዜ ሰሌዳ ንጥሎች የሉም",
   "noStoryInteractions": "እስካሁን ምንም አስተያየቶች ወይም ግንኙነቶች የሉም",
-  "interactionLoginError": "ከዚህ ጋር መስተጋብር ከመፍጠርዎ በፊት በመጀመሪያ መግባት ያስፈልግዎታል።"
+  "interactionLoginError": "ከዚህ ጋር መስተጋብር ከመፍጠርዎ በፊት በመጀመሪያ መግባት ያስፈልግዎታል።",
+  "noRecents": "የቅርብ ጊዜ"
 }

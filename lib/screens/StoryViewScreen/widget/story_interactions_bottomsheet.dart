@@ -4,6 +4,7 @@ import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
 import 'poll_content.dart';
+import 'reaction_picker_bar.dart';
 
 class StoryInteractionsBottomsheet extends StatefulWidget {
   final Story story;
@@ -26,17 +27,8 @@ class StoryInteractionsBottomsheet extends StatefulWidget {
 
 class _StoryInteractionsBottomsheetState
     extends State<StoryInteractionsBottomsheet> {
-  final List<String> _reactionOptions = [
-    '👍',
-    '❤️',
-    '🙌',
-    '🙏',
-    //TODO: Add another button to open a custom emoji keyboard
-  ];
-
   final _commentController = TextEditingController();
   late final story = widget.story;
-  String? _selectedReaction;
 
   @override
   void dispose() {
@@ -61,30 +53,6 @@ class _StoryInteractionsBottomsheetState
     return flattened;
   }
 
-  Map<String, int> _reactionCounts(
-      List<(UserInteraction, int)> entries, Profile? userProfile) {
-    final usersByReaction = <String, Set<String>>{};
-    for (final (interaction, _) in entries) {
-      if (interaction.type != InteractionType.reaction) continue;
-
-      usersByReaction
-          .putIfAbsent(interaction.content, () => <String>{})
-          .add(interaction.user.id);
-
-      if (!_reactionOptions.contains(interaction.content)) {
-        _reactionOptions.add(interaction.content);
-      }
-
-      if (interaction.user.id == userProfile?.id) {
-        setState(() {
-          _selectedReaction = interaction.content;
-        });
-      }
-    }
-    return usersByReaction
-        .map((reaction, users) => MapEntry(reaction, users.length));
-  }
-
   String _interactionContent(UserInteraction interaction) {
     final content = interaction.content;
     if (content == null) return '';
@@ -97,7 +65,34 @@ class _StoryInteractionsBottomsheetState
     return '${interaction.user.firstName} ${interaction.user.lastName}'.trim();
   }
 
-  void submitReaction(Profile? user, bool isSelected, String emoji) async {
+  void submitComment(Profile? user) async {
+    if (user == null) {
+      final theme = Provider.of<ThemeController>(context, listen: false).theme;
+      UIService.pop();
+      UIService.showSnackbar(
+          backgroundColor: theme.failedColor,
+          message: Tr.t("interactionLoginError"));
+      return;
+    }
+
+    final interaction = UserInteraction(
+        id: '',
+        user: user,
+        targetId: story.id,
+        target: TargetInteraction.story,
+        content: _commentController.text,
+        type: InteractionType.comment,
+        createdAt: DateTime.now());
+
+    setState(() {
+      story.interactions.insert(0, interaction);
+      _commentController.clear();
+    });
+
+    interaction.recordInteraction();
+  }
+
+  void submitReaction(Profile? user, String emoji) async {
     if (user == null) {
       final theme = Provider.of<ThemeController>(context, listen: false).theme;
       UIService.pop();
@@ -113,10 +108,6 @@ class _StoryInteractionsBottomsheetState
         (interaction) =>
             interaction.user.id == user.id &&
             interaction.type == InteractionType.reaction);
-
-    setState(() {
-      _selectedReaction = isSelected ? emoji : null;
-    });
 
     if (interaction == null) {
       interaction = UserInteraction(
@@ -153,33 +144,6 @@ class _StoryInteractionsBottomsheetState
         .addOrReplace(story, (item) => item.id == story.id);
   }
 
-  void submitComment(Profile? user) async {
-    if (user == null) {
-      final theme = Provider.of<ThemeController>(context, listen: false).theme;
-      UIService.pop();
-      UIService.showSnackbar(
-          backgroundColor: theme.failedColor,
-          message: Tr.t("interactionLoginError"));
-      return;
-    }
-
-    final interaction = UserInteraction(
-        id: '',
-        user: user,
-        targetId: story.id,
-        target: TargetInteraction.story,
-        content: _commentController.text,
-        type: InteractionType.comment,
-        createdAt: DateTime.now());
-
-    setState(() {
-      story.interactions.insert(0, interaction);
-      _commentController.clear();
-    });
-
-    interaction.recordInteraction();
-  }
-
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeController>(context).theme;
@@ -190,7 +154,6 @@ class _StoryInteractionsBottomsheetState
     final interactions = entries
         .where((entry) => entry.$1.type != InteractionType.reaction)
         .toList();
-    final reactionCounts = _reactionCounts(entries, profile);
 
     interactions.sort(
         (interactionA, interactionB) => interactionB.$1.isPinned ? 1 : -1);
@@ -332,36 +295,10 @@ class _StoryInteractionsBottomsheetState
                   ),
                 ),
               const SizedBox(height: 12),
-              SizedBox(
-                height: 42,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemCount: _reactionOptions.length,
-                  separatorBuilder: (_, __) => const SizedBox(width: 8),
-                  itemBuilder: (context, index) {
-                    final emoji = _reactionOptions[index];
-                    final selected = _selectedReaction == emoji;
-
-                    return ChoiceChip(
-                      selected: selected,
-                      onSelected: (isSelected) =>
-                          submitReaction(profile, isSelected, emoji),
-                      label: Text('$emoji ${reactionCounts[emoji] ?? ""}'),
-                      labelStyle: TextStyle(
-                        color: selected ? Colors.white : Colors.white70,
-                        fontSize: 13,
-                      ),
-                      backgroundColor: Colors.black,
-                      selectedColor: theme.primaryColor,
-                      side: BorderSide(
-                        color: selected ? theme.primaryColor : Colors.white24,
-                      ),
-                      showCheckmark: false,
-                      visualDensity: VisualDensity.compact,
-                    );
-                  },
-                ),
-              ),
+              ReactionPickerBar(
+                  interactions:
+                      entries.map((interaction) => interaction.$1).toList(),
+                  onEmojiSelected: (emoji) => submitReaction(profile, emoji)),
               const SizedBox(height: 10),
               TextField(
                 controller: _commentController,
