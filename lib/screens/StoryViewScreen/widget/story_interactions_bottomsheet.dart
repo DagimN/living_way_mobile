@@ -186,6 +186,8 @@ class _StoryInteractionsBottomsheetState
                 ),
               ),
               const SizedBox(height: 16),
+              //TODO: Add a admin control for posting pinned comments
+              const SizedBox(height: 16),
               if (interactions.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
@@ -218,12 +220,14 @@ class _StoryInteractionsBottomsheetState
                         margin: EdgeInsets.only(left: depth * 16),
                         padding: const EdgeInsets.all(12),
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: .06),
-                          borderRadius: BorderRadius.circular(12),
-                        ),
+                            color: interaction.isPinned
+                                ? theme.primaryColor.withValues(alpha: .12)
+                                : Colors.white.withValues(alpha: .06),
+                            borderRadius: BorderRadius.circular(12),
+                            border: interaction.isPinned
+                                ? Border.all(color: theme.primaryColor)
+                                : null),
                         child: Column(
-                          //TODO: Highlight a pinned comment
-                          //TODO: Add a admin control for posting pinned comments
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
