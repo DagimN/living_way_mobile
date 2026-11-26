@@ -49,7 +49,7 @@ class InteractionTile extends StatelessWidget {
       margin: EdgeInsets.only(left: depth * 16),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-          color: interaction.isPinned
+          color: interaction.isPinned || isReplying
               ? theme.primaryColor.withValues(alpha: .12)
               : Colors.white.withValues(alpha: .06),
           borderRadius: BorderRadius.circular(12),
