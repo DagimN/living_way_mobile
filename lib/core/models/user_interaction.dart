@@ -16,7 +16,7 @@ class UserInteraction {
   final TargetInteraction target;
   dynamic content;
   final InteractionType type;
-  final List<Reaction> reactions;
+  List<Profile> reactions;
   final bool isAnonymous;
   final bool isPinned;
   final bool isFlagged;
@@ -70,7 +70,7 @@ class UserInteraction {
         content: content,
         type: type,
         reactions: List.from(map['reactions'])
-            .map((reaction) => Reaction.fromJson(reaction))
+            .map((reaction) => Profile.fromJson(reaction))
             .toList(),
         isAnonymous: map['isAnonymous'] ?? false,
         isPinned: map['isPinned'] ?? false,
@@ -105,7 +105,7 @@ class UserInteraction {
       "target": target.toString(),
       "content": type is Poll ? (content as Poll).toMap() : content,
       "type": type.name,
-      "reactions": reactions.map((reaction) => reaction.toMap()).toList(),
+      "reactions": reactions.map((reactor) => reactor.id),
       "isAnonymous": isAnonymous,
       "isPinned": isPinned,
       "isFlagged": isFlagged,
@@ -159,7 +159,8 @@ class UserInteraction {
     }
   }
 
-  Future<void> update() async {
+  Future<void> update(
+      InteractionType type, String userId, String? content) async {
     try {
       final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
       const url = appFlavor == "dev"
@@ -169,7 +170,7 @@ class UserInteraction {
               : Urls.prodApiUrl;
 
       await dio.patch('$url/api/v1/interact/$id',
-          data: {"type": type.name, "userId": user.id, "content": content});
+          data: {"type": type.name, "userId": userId, "content": content});
     } catch (error) {
       logger.e(error);
     }
@@ -238,22 +239,6 @@ enum InteractionType {
       default:
         return undefined;
     }
-  }
-}
-
-class Reaction {
-  Profile user;
-  String type;
-
-  Reaction({required this.user, required this.type});
-
-  factory Reaction.fromJson(Map<String, dynamic> map) {
-    return Reaction(
-        user: Profile.fromJson(map['userId']), type: map['reactionType']);
-  }
-
-  Map<String, dynamic> toMap() {
-    return {"userId": user.id, "reactionType": type};
   }
 }
 

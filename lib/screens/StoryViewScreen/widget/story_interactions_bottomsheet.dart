@@ -3,7 +3,7 @@ import 'package:living_way/controllers/controllers.dart';
 import 'package:living_way/core/core.dart';
 import 'package:provider/provider.dart';
 
-import 'poll_content.dart';
+import 'interaction_tile.dart';
 import 'reaction_picker_bar.dart';
 
 class StoryInteractionsBottomsheet extends StatefulWidget {
@@ -30,6 +30,8 @@ class _StoryInteractionsBottomsheetState
   final _commentController = TextEditingController();
   late final story = widget.story;
 
+  UserInteraction? parentInteraction;
+
   @override
   void dispose() {
     _commentController.dispose();
@@ -53,18 +55,6 @@ class _StoryInteractionsBottomsheetState
     return flattened;
   }
 
-  String _interactionContent(UserInteraction interaction) {
-    final content = interaction.content;
-    if (content == null) return '';
-    if (content is String) return content;
-    return content.toString();
-  }
-
-  String _authorName(UserInteraction interaction) {
-    if (interaction.isAnonymous) return Tr.t('anonymous');
-    return '${interaction.user.firstName} ${interaction.user.lastName}'.trim();
-  }
-
   void submitComment(Profile? user) async {
     if (user == null) {
       final theme = Provider.of<ThemeController>(context, listen: false).theme;
@@ -84,12 +74,24 @@ class _StoryInteractionsBottomsheetState
         type: InteractionType.comment,
         createdAt: DateTime.now());
 
+    interaction.recordInteraction(parent: parentInteraction);
+
     setState(() {
-      story.interactions.insert(0, interaction);
+      if (parentInteraction == null) {
+        story.interactions.insert(0, interaction);
+      } else {
+        parentInteraction!.subInteractions.insert(0, interaction);
+        story.interactions.addOrReplace(
+            parentInteraction!, (item) => parentInteraction?.id == item.id);
+        parentInteraction = null;
+      }
+
       _commentController.clear();
     });
 
-    interaction.recordInteraction();
+    Provider.of<ContentController>(context, listen: false)
+        .stories
+        .addOrReplace(story, (item) => item.id == story.id);
   }
 
   void submitReaction(Profile? user, String emoji) async {
@@ -135,13 +137,48 @@ class _StoryInteractionsBottomsheetState
           story.interactions
               .addOrReplace(interaction!, (item) => item.id == interaction?.id);
         });
-        interaction.update();
+        interaction.update(InteractionType.reaction, user.id, emoji);
       }
     }
 
     Provider.of<ContentController>(context, listen: false)
         .stories
         .addOrReplace(story, (item) => item.id == story.id);
+  }
+
+  void recordInteractionReaction(UserInteraction interaction, Profile? user) {
+    if (user == null) {
+      final theme = Provider.of<ThemeController>(context, listen: false).theme;
+      UIService.pop();
+      UIService.showSnackbar(
+          backgroundColor: theme.failedColor,
+          message: Tr.t("interactionLoginError"));
+      return;
+    }
+
+    final reactions = interaction.reactions;
+
+    Profile? reactor =
+        reactions.firstWhereOrNull((reactor) => reactor.id == user.id);
+
+    if (reactor == null) {
+      reactions.add(user);
+    } else {
+      reactions.removeWhere((reactor) => user.id == reactor.id);
+    }
+
+    interaction.reactions = reactions;
+
+    setState(() {
+      story.interactions
+          .addOrReplace(interaction, (item) => interaction.id == item.id);
+    });
+
+    Provider.of<ContentController>(context, listen: false)
+        .stories
+        .addOrReplace(story, (item) => item.id == story.id);
+
+    interaction.update(InteractionType.reaction, user.id, null);
   }
 
   @override
@@ -186,8 +223,6 @@ class _StoryInteractionsBottomsheetState
                 ),
               ),
               const SizedBox(height: 16),
-              //TODO: Add a admin control for posting pinned comments
-              const SizedBox(height: 16),
               if (interactions.isEmpty)
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 20),
@@ -204,96 +239,17 @@ class _StoryInteractionsBottomsheetState
                     separatorBuilder: (_, __) => const SizedBox(height: 8),
                     itemBuilder: (context, index) {
                       final (interaction, depth) = interactions[index];
-                      final author = _authorName(interaction);
-                      final isPoll = interaction.content is Poll;
-                      final content =
-                          isPoll ? null : _interactionContent(interaction);
-                      final profileImage = interaction.user.profileImageUrl;
-                      final reactionUsers = <String, Set<String>>{};
-                      for (final reaction in interaction.reactions) {
-                        reactionUsers
-                            .putIfAbsent(reaction.type, () => <String>{})
-                            .add(reaction.user.id);
-                      }
 
-                      return Container(
-                        margin: EdgeInsets.only(left: depth * 16),
-                        padding: const EdgeInsets.all(12),
-                        decoration: BoxDecoration(
-                            color: interaction.isPinned
-                                ? theme.primaryColor.withValues(alpha: .12)
-                                : Colors.white.withValues(alpha: .06),
-                            borderRadius: BorderRadius.circular(12),
-                            border: interaction.isPinned
-                                ? Border.all(color: theme.primaryColor)
-                                : null),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              children: [
-                                CircleAvatar(
-                                  radius: 16,
-                                  backgroundColor: Colors.white12,
-                                  backgroundImage: !interaction.isAnonymous &&
-                                          profileImage != null
-                                      ? NetworkImage(profileImage)
-                                      : null,
-                                  child: interaction.isAnonymous ||
-                                          profileImage == null
-                                      ? const Icon(Icons.person,
-                                          size: 18, color: Colors.white70)
-                                      : null,
-                                ),
-                                const SizedBox(width: 8),
-                                Expanded(
-                                  child: Text(
-                                    author.isEmpty
-                                        ? interaction.user.email
-                                        : author,
-                                    style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                                Text(
-                                  formatDateTime(interaction.createdAt),
-                                  style: const TextStyle(
-                                      color: Colors.white54, fontSize: 11),
-                                ),
-                              ],
-                            ),
-                            if (isPoll) ...[
-                              const SizedBox(height: 10),
-                              PollContent(interaction: interaction),
-                            ] else if (content!.isNotEmpty) ...[
-                              const SizedBox(height: 4),
-                              Text(
-                                content,
-                                style: const TextStyle(color: Colors.white),
-                              ),
-                            ],
-                            if (interaction.reactions.isNotEmpty) ...[
-                              const SizedBox(height: 8),
-                              Wrap(
-                                spacing: 8,
-                                runSpacing: 4,
-                                children: reactionUsers.entries
-                                    .map((entry) => Chip(
-                                          visualDensity: VisualDensity.compact,
-                                          backgroundColor: Colors.white12,
-                                          label: Text(
-                                            '${entry.key} ${entry.value.length}',
-                                            style: const TextStyle(
-                                                color: Colors.white70,
-                                                fontSize: 12),
-                                          ),
-                                        ))
-                                    .toList(),
-                              ),
-                            ], //TODO: Add a reactions button and a reply button
-                          ],
-                        ),
+                      return InteractionTile(
+                        interaction: interaction,
+                        depth: depth,
+                        onReplyToInteraction: () {
+                          setState(() {
+                            parentInteraction = interaction;
+                          });
+                        },
+                        onRecordInteractionReaction: () =>
+                            recordInteractionReaction(interaction, profile),
                       );
                     },
                   ),
@@ -303,6 +259,17 @@ class _StoryInteractionsBottomsheetState
                   interactions:
                       entries.map((interaction) => interaction.$1).toList(),
                   onEmojiSelected: (emoji) => submitReaction(profile, emoji)),
+              const SizedBox(height: 10),
+              if (parentInteraction != null)
+                InteractionTile(
+                  interaction: parentInteraction!,
+                  isReplying: true,
+                  onDismissReplying: () {
+                    setState(() {
+                      parentInteraction = null;
+                    });
+                  },
+                ),
               const SizedBox(height: 10),
               TextField(
                 controller: _commentController,
