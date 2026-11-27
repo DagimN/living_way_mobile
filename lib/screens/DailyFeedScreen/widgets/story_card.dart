@@ -85,15 +85,20 @@ class _StoryCardState extends State<StoryCard> {
                             borderRadius: BorderRadius.circular(20),
                             child: widget.story.metadata?.image != null &&
                                     !thumbnailHasError
-                                ? CachedNetworkImage(
-                                    imageUrl: widget.story.metadata!.image!,
-                                    height: screenHeight * .3,
-                                    fit: BoxFit.cover,
-                                    errorListener: (value) => setState(() {
-                                      thumbnailHasError = true;
-                                    }),
+                                ? Container(
+                                    color: Colors.black26,
+                                    child: CachedNetworkImage(
+                                      imageUrl: widget.story.metadata!.image!,
+                                      height: screenHeight * .3,
+                                      fit: BoxFit.cover,
+                                      errorListener: (value) => setState(() {
+                                        thumbnailHasError = true;
+                                      }),
+                                    ),
                                   )
-                                : VideoPlayer(controller!))))
+                                : Container(
+                                    color: Colors.black38,
+                                    child: VideoPlayer(controller!)))))
                 : Shimmer.fromColors(
                     direction: ShimmerDirection.rtl,
                     baseColor: theme.backgroundColor,
