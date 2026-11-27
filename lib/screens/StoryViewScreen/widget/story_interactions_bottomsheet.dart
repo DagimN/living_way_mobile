@@ -181,6 +181,24 @@ class _StoryInteractionsBottomsheetState
     interaction.update(InteractionType.reaction, user.id, null);
   }
 
+  void deleteInteraction(UserInteraction deletedInteraction) {
+    setState(() {
+      story.interactions
+          .removeWhere((item) => deletedInteraction.id == item.id);
+      story.interactions = story.interactions.map((interaction) {
+        interaction.subInteractions
+            .removeWhere((item) => deletedInteraction.id == item.id);
+        return interaction;
+      }).toList();
+    });
+
+    Provider.of<ContentController>(context, listen: false)
+        .stories
+        .addOrReplace(story, (item) => item.id == story.id);
+
+    deletedInteraction.delete();
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Provider.of<ThemeController>(context).theme;
@@ -250,6 +268,8 @@ class _StoryInteractionsBottomsheetState
                         },
                         onRecordInteractionReaction: () =>
                             recordInteractionReaction(interaction, profile),
+                        onDeleteInteraction: () =>
+                            deleteInteraction(interaction),
                       );
                     },
                   ),

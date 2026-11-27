@@ -12,6 +12,7 @@ class InteractionTile extends StatelessWidget {
   final Function()? onRecordInteractionReaction;
   final Function()? onReplyToInteraction;
   final Function()? onDismissReplying;
+  final Function()? onDeleteInteraction;
   final bool isReplying;
 
   const InteractionTile(
@@ -21,6 +22,7 @@ class InteractionTile extends StatelessWidget {
       this.onRecordInteractionReaction,
       this.onReplyToInteraction,
       this.onDismissReplying,
+      this.onDeleteInteraction,
       this.isReplying = false});
 
   String _interactionContent(UserInteraction interaction) {
@@ -104,15 +106,16 @@ class InteractionTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.end,
                       spacing: 4,
                       children: [
-                        SizedBox(
-                          width: 20,
-                          child: IconButton(
-                              style: IconButton.styleFrom(
-                                  padding: EdgeInsets.zero),
-                              onPressed: onReplyToInteraction,
-                              icon: const Icon(Icons.reply,
-                                  color: Colors.white70, size: 16)),
-                        ),
+                        if (depth == 0)
+                          SizedBox(
+                            width: 20,
+                            child: IconButton(
+                                style: IconButton.styleFrom(
+                                    padding: EdgeInsets.zero),
+                                onPressed: onReplyToInteraction,
+                                icon: const Icon(Icons.reply,
+                                    color: Colors.white70, size: 16)),
+                          ),
                         SizedBox(
                           width: 20,
                           child: IconButton(
@@ -135,7 +138,18 @@ class InteractionTile extends StatelessWidget {
                                         interaction.reactions.length.toString())
                                 ],
                               )),
-                        )
+                        ),
+                        if (interaction.user.id == profile?.id &&
+                            onDeleteInteraction != null)
+                          SizedBox(
+                            width: 20,
+                            child: IconButton(
+                                style: IconButton.styleFrom(
+                                    padding: EdgeInsets.zero),
+                                onPressed: onDeleteInteraction,
+                                icon: const Icon(Icons.delete,
+                                    color: Colors.white70, size: 16)),
+                          )
                       ]),
                 if (isReplying)
                   IconButton(
