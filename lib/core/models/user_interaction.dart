@@ -105,7 +105,7 @@ class UserInteraction {
       "target": target.toString(),
       "content": type is Poll ? (content as Poll).toMap() : content,
       "type": type.name,
-      "reactions": reactions.map((reactor) => reactor.id),
+      "reactions": reactions.map((reactor) => reactor.id).toList(),
       "isAnonymous": isAnonymous,
       "isPinned": isPinned,
       "isFlagged": isFlagged,
