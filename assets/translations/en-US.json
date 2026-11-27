@@ -37,6 +37,8 @@
   "completed": "Completed",
   "pending": "Pending",
   "locked": "Locked",
+  "checkUpdates": "Check for updates",
+  "latestVersion": "This is latest version",
 
   "ago": "ago",
   "left": "left",

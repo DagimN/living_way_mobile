@@ -14,7 +14,7 @@ import 'ui_service.dart';
 class VersionCheckService {
   VersionCheckService();
 
-  static Future<void> checkForUpdate() async {
+  static Future<bool> checkForUpdate() async {
     try {
       final info = await PackageInfo.fromPlatform();
       final current = info.version.contains('-')
@@ -38,16 +38,19 @@ class VersionCheckService {
       final message = data['update_message'];
 
       if (_isOlderThan(current, minRequiredVersion)) {
-        return _showUpdateDialog(latestVersion, message, data,
-            forceUpdate: true);
+        _showUpdateDialog(latestVersion, message, data, forceUpdate: true);
+        return false;
       }
 
       if (_isOlderThan(current, latestVersion)) {
-        return _showUpdateDialog(latestVersion, message, data,
-            forceUpdate: false);
+        _showUpdateDialog(latestVersion, message, data, forceUpdate: false);
+        return false;
       }
+
+      return true;
     } catch (error) {
       logger.e(error);
+      return false;
     }
   }
 

@@ -10,8 +10,15 @@ import 'package:url_launcher/url_launcher_string.dart';
 
 import 'widgets/who_we_are_tab.dart';
 
-class AboutScreen extends StatelessWidget {
+class AboutScreen extends StatefulWidget {
   const AboutScreen({super.key});
+
+  @override
+  State<AboutScreen> createState() => _AboutScreenState();
+}
+
+class _AboutScreenState extends State<AboutScreen> {
+  bool isCheckingLatestVersion = false;
 
   @override
   Widget build(BuildContext context) {
@@ -81,19 +88,59 @@ class AboutScreen extends StatelessWidget {
                           ? screenHeight * .3
                           : screenHeight * .4,
                       width: screenWidth * .7),
-                  Container(
-                      margin: const EdgeInsets.all(5),
-                      child: FutureBuilder(
-                          future: PackageInfo.fromPlatform(),
-                          builder: (context, snapshot) {
-                            final packageInfo = snapshot.data;
-                            String version = packageInfo?.version ?? "";
-                            String buildNumber = packageInfo?.buildNumber ?? "";
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      isCheckingLatestVersion
+                          ? const SizedBox(
+                              height: 12,
+                              width: 12,
+                              child: CircularProgressIndicator(
+                                color: Color(0xFF5B89AE),
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : InkWell(
+                              child: Text(Tr.t('checkUpdates'),
+                                  style: const TextStyle(
+                                      decoration: TextDecoration.underline,
+                                      color: Color(0xFF5B89AE),
+                                      decorationColor: Color(0xFF5B89AE),
+                                      fontSize: 12)),
+                              onTap: () async {
+                                setState(() {
+                                  isCheckingLatestVersion = true;
+                                });
+                                final isLatest =
+                                    await VersionCheckService.checkForUpdate();
+                                setState(() {
+                                  isCheckingLatestVersion = false;
+                                });
 
-                            return Text('v$version $buildNumber',
-                                style: const TextStyle(
-                                    color: Color(0xFF65829A), fontSize: 10));
-                          })),
+                                if (isLatest) {
+                                  UIService.showSnackbar(
+                                      backgroundColor: theme.successColor,
+                                      message: Tr.t("latestVersion"));
+                                }
+                              },
+                            ),
+                      Container(
+                          margin: const EdgeInsets.all(5),
+                          child: FutureBuilder(
+                              future: PackageInfo.fromPlatform(),
+                              builder: (context, snapshot) {
+                                final packageInfo = snapshot.data;
+                                String version = packageInfo?.version ?? "";
+                                String buildNumber =
+                                    packageInfo?.buildNumber ?? "";
+
+                                return Text('v$version $buildNumber',
+                                    style: const TextStyle(
+                                        color: Color(0xFF65829A),
+                                        fontSize: 10));
+                              })),
+                    ],
+                  ),
                   const SizedBox(height: 24),
                   DefaultTabController(
                       length: 3,
