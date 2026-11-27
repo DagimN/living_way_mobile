@@ -76,6 +76,7 @@ class UserInteraction {
         isPinned: map['isPinned'] ?? false,
         isFlagged: map['isFlagged'] ?? false,
         subInteractions: List.from(map['subInteractions'])
+            .whereType<Map<String, dynamic>>()
             .map((interaction) => UserInteraction.fromMap(interaction))
             .toList(),
         voters: voters,
