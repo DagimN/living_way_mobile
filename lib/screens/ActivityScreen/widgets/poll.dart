@@ -30,7 +30,6 @@ class _PollState extends State<Poll> {
 
   @override
   Widget build(BuildContext context) {
-    final activityController = Provider.of<ActivityController>(context);
     final theme = Provider.of<ThemeController>(context).theme;
 
     double screenWidth = MediaQuery.of(context).size.width;
@@ -71,8 +70,7 @@ class _PollState extends State<Poll> {
                             updatingContent.pollOptions
                                 .replaceRange(pollIndex, pollIndex + 1, [poll]);
 
-                            final success = await activityController
-                                .updatePoll(updatingContent);
+                            final success = await updatingContent.update();
 
                             setState(() {
                               selectedPollId = success ? null : selectedPollId;
@@ -99,8 +97,7 @@ class _PollState extends State<Poll> {
                   updatingContent.pollOptions
                       .replaceRange(pollIndex, pollIndex + 1, [poll]);
 
-                  final success =
-                      await activityController.updatePoll(updatingContent);
+                  final success = await updatingContent.update();
 
                   setState(() {
                     selectedPollId = success ? pollOption.id : null;

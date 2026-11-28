@@ -49,7 +49,8 @@ class ActivityScreen extends StatelessWidget {
                             : Activity(
                                 id: '',
                                 type: ContentType.undefined,
-                                timestamp: DateTime.now());
+                                timestamp: DateTime.now(),
+                                rsvp: []);
 
                         return index < activityList.length
                             ? TimelineContainer(

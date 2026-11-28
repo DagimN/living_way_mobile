@@ -1,13 +1,14 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:functional_status_codes/functional_status_codes.dart';
 import 'package:hive/hive.dart';
+import 'package:living_way/core/core.dart' hide Poll;
 import 'package:living_way/screens/ActivityScreen/widgets/article.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/event.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/external_link.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/gallery.dart';
 import 'package:living_way/screens/ActivityScreen/widgets/poll.dart';
-
-import '../../classes/cacheable.dart';
-import '../profile.dart';
 
 part 'index.g.dart'; // dart run build_runner build --delete-conflicting-outputs
 
@@ -58,6 +59,8 @@ class Activity extends HiveObject implements Cacheable {
   @HiveField(14)
   final bool isRecurring;
 
+  List<String> rsvp;
+
   Activity(
       {this.title,
       this.body,
@@ -73,7 +76,8 @@ class Activity extends HiveObject implements Cacheable {
       this.isRecurring = false,
       required this.id,
       required this.type,
-      required this.timestamp}) {
+      required this.timestamp,
+      required this.rsvp}) {
     if (minimumAllowedViewImages > 5) {
       throw RangeError('Minimum allowed images should not be more than 5');
     }
@@ -131,7 +135,10 @@ class Activity extends HiveObject implements Cacheable {
         isRecurring: json['isRecurring'] ?? false,
         upcomingDate: json['upcomingDate'] != null
             ? DateTime.parse(json['upcomingDate'])
-            : null);
+            : null,
+        rsvp: List.from(json['rsvp'] ?? [])
+            .map((rsvp) => rsvp.toString())
+            .toList());
   }
 
   Map<String, dynamic> toMap() {
@@ -174,7 +181,7 @@ class Activity extends HiveObject implements Cacheable {
     }
 
     if (banner != null) {
-      map.addEntries([MapEntry('banner', banner)]);
+      map.addEntries([MapEntry('banner', banner?.toMap())]);
     }
 
     if (upcomingDate != null) {
@@ -185,7 +192,8 @@ class Activity extends HiveObject implements Cacheable {
       MapEntry('isOngoing', isOngoing),
       MapEntry('isRecurring', isRecurring),
       MapEntry('type', type.name),
-      MapEntry('timestamp', timestamp.toIso8601String())
+      MapEntry('timestamp', timestamp.toIso8601String()),
+      MapEntry('rsvp', rsvp)
     ]);
 
     return map;
@@ -226,6 +234,26 @@ class Activity extends HiveObject implements Cacheable {
         return null;
     }
   }
+
+  Future<bool> update() async {
+    try {
+      final dio = Dio(BaseOptions(connectTimeout: const Duration(seconds: 15)));
+      const url = appFlavor == "dev"
+          ? Urls.devApiUrl
+          : appFlavor == "staging"
+              ? Urls.stagingApiUrl
+              : Urls.prodApiUrl;
+
+      final response = await dio.put('$url/api/v1/content/activity/edit',
+          data: {"id": id, "data": toMap()});
+      AnalyticsService.logEvent('activity_updated',
+          parameters: {'activity_id': id});
+      return response.statusCode.isSuccess;
+    } catch (e) {
+      logger.e(e);
+      return false;
+    }
+  }
 }
 
 @HiveType(typeId: 3)
@@ -245,6 +273,10 @@ class ContentBanner {
     return json != null
         ? ContentBanner(position: json['position'], url: json['url'])
         : null;
+  }
+
+  Map<String, dynamic> toMap() {
+    return {"url": url, "thumbnail": thumbnail, "position": position};
   }
 }
 

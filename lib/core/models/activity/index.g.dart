@@ -17,22 +17,22 @@ class ActivityAdapter extends TypeAdapter<Activity> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return Activity(
-      title: fields[1] as String?,
-      body: fields[2] as String?,
-      images: (fields[3] as List).cast<String>(),
-      content: (fields[4] as List).cast<String>(),
-      minimumAllowedViewImages: fields[5] as int,
-      pollOptions: (fields[6] as List).cast<PollOptions>(),
-      externalLink: fields[11] as String?,
-      locationUrl: fields[12] as String?,
-      banner: fields[13] as ContentBanner?,
-      isOngoing: fields[10] as bool,
-      upcomingDate: fields[9] as DateTime?,
-      isRecurring: fields[14] as bool,
-      id: fields[0] as String,
-      type: fields[7] as ContentType,
-      timestamp: fields[8] as DateTime,
-    );
+        title: fields[1] as String?,
+        body: fields[2] as String?,
+        images: (fields[3] as List).cast<String>(),
+        content: (fields[4] as List).cast<String>(),
+        minimumAllowedViewImages: fields[5] as int,
+        pollOptions: (fields[6] as List).cast<PollOptions>(),
+        externalLink: fields[11] as String?,
+        locationUrl: fields[12] as String?,
+        banner: fields[13] as ContentBanner?,
+        isOngoing: fields[10] as bool,
+        upcomingDate: fields[9] as DateTime?,
+        isRecurring: fields[14] as bool,
+        id: fields[0] as String,
+        type: fields[7] as ContentType,
+        timestamp: fields[8] as DateTime,
+        rsvp: []);
   }
 
   @override

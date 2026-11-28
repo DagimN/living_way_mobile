@@ -87,19 +87,6 @@ class ActivityController extends ChangeNotifier {
     }
   }
 
-  Future<bool> updatePoll(Activity poll) async {
-    try {
-      final response =
-          await dio.put('/edit', data: {"id": poll.id, "data": poll.toMap()});
-      AnalyticsService.logEvent('poll_updated',
-          parameters: {'poll_id': poll.id});
-      return response.statusCode.isSuccess;
-    } catch (e) {
-      logger.e(e);
-      return false;
-    }
-  }
-
   Future<void> scheduleActivityNotifications() async {
     final events = activityList.where((activity) =>
         activity.type == ContentType.event &&
