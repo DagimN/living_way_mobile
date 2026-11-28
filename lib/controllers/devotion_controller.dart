@@ -196,13 +196,6 @@ class DevotionController extends ChangeNotifier {
         item.passage.book = bibleController != null
             ? bibleController.bible[item.passage.book.index]
             : Book.empty();
-        NotificationService.scheduleNotification(
-            id: NotificationCodes.devotions
-                .extendedCode(item.assignedDate.dateInNumbers),
-            title: "Today's devotion - ${item.title}",
-            body: item.subTitle,
-            scheduledDate: item.assignedDate,
-            payload: 'devotion');
       }
     }
     _devotionalItemsByDate = itemsByDate;

@@ -75,7 +75,6 @@ class ActivityController extends ChangeNotifier {
         notifyListeners();
       });
 
-      scheduleActivityNotifications();
       _sortActivities();
 
       if (activityList.isNotEmpty) {
